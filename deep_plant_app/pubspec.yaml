@@ -43,7 +43,7 @@ dependencies:
   xml2json: ^6.1.0
   http: ^0.13.6
   qr_code_scanner: ^1.0.1
-  flutter_screenutil: ^5.8.4
+  flutter_screenutil: ^5.7.0
   intl: ^0.18.1
 
 dev_dependencies:
