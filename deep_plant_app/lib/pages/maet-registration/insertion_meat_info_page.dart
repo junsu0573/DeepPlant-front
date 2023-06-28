@@ -1,9 +1,15 @@
+import 'package:deep_plant_app/models/meat_data_model.dart';
+import 'package:deep_plant_app/widgets/custom_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:deep_plant_app/source/meat_info_source.dart';
-import 'package:deep_plant_app/source/widget_source.dart';
+import 'package:go_router/go_router.dart';
 
 class InsertionMeatInfo extends StatefulWidget {
-  const InsertionMeatInfo({super.key});
+  final MeatData meatData;
+  const InsertionMeatInfo({
+    super.key,
+    required this.meatData,
+  });
 
   @override
   State<InsertionMeatInfo> createState() => _InsertionMeatInfoState();
@@ -79,6 +85,17 @@ class _InsertionMeatInfoState extends State<InsertionMeatInfo> {
     }
   }
 
+  void saveData(MeatData meatData, MeatInfoSource source) {
+    meatData.species = source.species[selectedOrder];
+    if (selectedOrder == '소') {
+      meatData.lDivision = source.cattleLarge[selectedLarge];
+      meatData.sDivision = source.cattleSmall[selectedLittle];
+    } else if (selectedOrder == '돼지') {
+      meatData.lDivision = source.pigLarge[selectedLarge];
+      meatData.sDivision = source.pigSmall[selectedLittle];
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     List<String> orders = source.orders;
@@ -88,20 +105,9 @@ class _InsertionMeatInfoState extends State<InsertionMeatInfo> {
     List<List<String>> tableData_2 = source.tableData_2;
 
     return Scaffold(
+      backgroundColor: Colors.white,
       resizeToAvoidBottomInset: false,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0.0,
-        foregroundColor: Colors.black,
-        actions: [
-          elevated(
-            colorb: Colors.white,
-            colori: Colors.black,
-            icon: Icons.close,
-            size: 30.0,
-          ),
-        ],
-      ),
+      appBar: CustomAppBar(title: '', backButton: false, closeButton: true),
       body: GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
         child: Padding(
@@ -305,7 +311,12 @@ class _InsertionMeatInfoState extends State<InsertionMeatInfo> {
                     height: 55,
                     width: 350,
                     child: ElevatedButton(
-                      onPressed: isFinal ? () => {} : null,
+                      onPressed: isFinal
+                          ? () {
+                              saveData(widget.meatData, MeatInfoSource());
+                              context.go('/option/show-step');
+                            }
+                          : null,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.grey[800],
                         disabledBackgroundColor: Colors.grey[400],

@@ -1,14 +1,18 @@
 import 'dart:io';
 
+import 'package:deep_plant_app/models/meat_data_model.dart';
 import 'package:deep_plant_app/widgets/custom_appbar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
 class InsertionMeatImage extends StatefulWidget {
+  final MeatData meatData;
   const InsertionMeatImage({
     super.key,
+    required this.meatData,
   });
 
   @override
@@ -88,6 +92,12 @@ class _InsertionMeatImageState extends State<InsertionMeatImage> {
     setState(() {
       isLoading = false;
     });
+  }
+
+  void saveDate(
+      MeatData meatData, File? image, String year, String month, String day) {
+    meatData.imageFile = image;
+    meatData.date = '{$year}-{$month}-{$day}';
   }
 
   @override
@@ -333,6 +343,9 @@ class _InsertionMeatImageState extends State<InsertionMeatImage> {
                   onPressed: pickedImage != null
                       ? () async {
                           //await saveImage();
+                          saveDate(
+                              widget.meatData, pickedImage, year, month, day);
+                          context.go('/option/show-step');
                         }
                       : null,
                   style: ElevatedButton.styleFrom(

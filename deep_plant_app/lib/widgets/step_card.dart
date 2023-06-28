@@ -78,7 +78,7 @@ class StepCard extends StatelessWidget {
               SizedBox(
                 height: 5,
               ),
-              Text(subText),
+              isCompleted ? Text('완료') : Text(subText),
             ],
           ),
           Spacer(),

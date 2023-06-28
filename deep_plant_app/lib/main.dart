@@ -1,5 +1,6 @@
 import 'package:deep_plant_app/models/meat_data_model.dart';
 import 'package:deep_plant_app/models/user_model.dart';
+import 'package:deep_plant_app/pages/maet-registration/freshmeat_evaluation_page.dart';
 import 'package:deep_plant_app/pages/maet-registration/insertion_meat_image.dart';
 import 'package:deep_plant_app/pages/maet-registration/insertion_meat_info_page.dart';
 import 'package:deep_plant_app/pages/maet-registration/show_step_page.dart';
@@ -27,6 +28,7 @@ void main() async {
 
 // 회원가입을 위한 유저 객체
 UserModel newUser = UserModel();
+MeatData newMeat = MeatData();
 
 // 라우팅
 final _router = GoRouter(
@@ -91,20 +93,32 @@ final _router = GoRouter(
         GoRoute(
           path: 'show-step',
           builder: (context, state) => ShowStep(
-            meat: MeatData(),
+            meat: newMeat,
           ),
           routes: [
             GoRoute(
               path: 'insert-his-num',
-              builder: (context, state) => GetHistoryPage(),
+              builder: (context, state) => GetHistoryPage(
+                meatData: newMeat,
+              ),
             ),
             GoRoute(
               path: 'insert-meat-info',
-              builder: (context, state) => InsertionMeatInfo(),
+              builder: (context, state) => InsertionMeatInfo(
+                meatData: newMeat,
+              ),
             ),
             GoRoute(
               path: 'insert-meat-image',
-              builder: (context, state) => InsertionMeatImage(),
+              builder: (context, state) => InsertionMeatImage(
+                meatData: newMeat,
+              ),
+            ),
+            GoRoute(
+              path: 'insert-fresh-evaluation',
+              builder: (context, state) => FreshmeatEvaluation(
+                meatData: newMeat,
+              ),
             ),
           ],
         ),
@@ -118,18 +132,24 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ScreenUtilInit(
-      designSize: const Size(720, 1280),
-      builder: (context, child) => MaterialApp.router(
-        title: 'DeepPlant-demo',
-        // 기본 색상
-        theme: ThemeData(
-          primaryColor: const Color.fromRGBO(51, 51, 51, 1),
-          buttonTheme:
-              const ButtonThemeData(buttonColor: Color.fromRGBO(51, 51, 51, 1)),
-        ),
-        routerConfig: _router,
+    return MaterialApp.router(
+      debugShowCheckedModeBanner: false,
+      title: 'DeepPlant-demo',
+      // 기본 색상
+      theme: ThemeData(
+        primaryColor: const Color.fromRGBO(51, 51, 51, 1),
+        buttonTheme:
+            const ButtonThemeData(buttonColor: Color.fromRGBO(51, 51, 51, 1)),
       ),
+      routerConfig: _router,
+      builder: (context, child) {
+        return ScreenUtilInit(
+          designSize: const Size(720, 1280),
+          builder: (context, _) {
+            return child!;
+          },
+        );
+      },
     );
   }
 }
