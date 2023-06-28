@@ -1,3 +1,4 @@
+import 'package:deep_plant_app/models/meat_data_model.dart';
 import 'package:deep_plant_app/widgets/custom_appbar.dart';
 import 'package:flutter/material.dart';
 
@@ -7,7 +8,11 @@ import 'package:intl/intl.dart';
 import 'package:go_router/go_router.dart';
 
 class GetHistoryPage extends StatefulWidget {
-  const GetHistoryPage({super.key});
+  final MeatData meatData;
+  GetHistoryPage({
+    super.key,
+    required this.meatData,
+  });
 
   @override
   State<GetHistoryPage> createState() => _GetHistoryPageState();
@@ -230,7 +235,9 @@ class _GetHistoryPageState extends State<GetHistoryPage> {
                   width: 350,
                   child: ElevatedButton(
                     onPressed: isFinal
-                        ? () => context.go('/option/show-step/insert-meat-info')
+                        ? () {
+                            context.go('/option/show-step/insert-meat-info');
+                          }
                         : null,
                     style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.grey[800],
