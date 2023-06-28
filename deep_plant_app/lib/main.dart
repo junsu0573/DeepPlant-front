@@ -1,11 +1,12 @@
 import 'package:deep_plant_app/models/meat_data_model.dart';
 import 'package:deep_plant_app/models/user_model.dart';
+import 'package:deep_plant_app/pages/insertion_meat_image.dart';
+import 'package:deep_plant_app/pages/insertion_meat_info_page.dart';
 import 'package:deep_plant_app/pages/maet-registration/show_step_page.dart';
 import 'package:deep_plant_app/pages/my-page/edit_user_info_page.dart';
 import 'package:deep_plant_app/pages/my-page/my_page.dart';
 import 'package:deep_plant_app/pages/my-page/reset_pw_page.dart';
 import 'package:deep_plant_app/pages/option_page.dart';
-import 'package:deep_plant_app/pages/set_historyNumPage.dart';
 import 'package:deep_plant_app/pages/sign-up/certification_page.dart';
 import 'package:deep_plant_app/pages/home_page.dart';
 import 'package:deep_plant_app/pages/sign-up/email_verification.dart';
@@ -14,11 +15,9 @@ import 'package:deep_plant_app/pages/sign_in_page.dart';
 import 'package:deep_plant_app/pages/sign-up/succeed_sign_up_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:deep_plant_app/pages/get_history_page.dart';
-import 'package:deep_plant_app/pages/get_qr_page.dart';
-import 'package:deep_plant_app/pages/insertion_camera_page.dart';
-import 'package:deep_plant_app/pages/insertion_meat_info_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -101,23 +100,16 @@ final _router = GoRouter(
             ),
             GoRoute(
               path: 'insert-meat-info',
-              builder: (context, state) => HistoryNumPage(),
+              builder: (context, state) => InsertionMeatInfo(),
             ),
             GoRoute(
-              path: 'logged-in',
-              builder: (context, state) => const LoggedInPage(),
+              path: 'insert-meat-image',
+              builder: (context, state) => InsertionMeatImage(),
             ),
           ],
         ),
       ],
     ),
-<<<<<<< HEAD
-    GoRoute(
-      path: '/logged-in',
-      builder: (context, state) => const InsertionCameraPage(),
-    ),
-=======
->>>>>>> cb3516f (routing)
   ],
 );
 
@@ -126,7 +118,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-<<<<<<< HEAD
     return ScreenUtilInit(
       designSize: const Size(720, 1280),
       builder: (context, child) => MaterialApp.router(
@@ -134,20 +125,11 @@ class MyApp extends StatelessWidget {
         // 기본 색상
         theme: ThemeData(
           primaryColor: const Color.fromRGBO(51, 51, 51, 1),
-          buttonTheme: const ButtonThemeData(buttonColor: Color.fromRGBO(51, 51, 51, 1)),
+          buttonTheme:
+              const ButtonThemeData(buttonColor: Color.fromRGBO(51, 51, 51, 1)),
         ),
         routerConfig: _router,
-=======
-    return MaterialApp.router(
-      title: 'DeepPlant-demo',
-      // 기본 색상
-      theme: ThemeData(
-        primaryColor: const Color.fromRGBO(51, 51, 51, 1),
-        buttonTheme:
-            const ButtonThemeData(buttonColor: Color.fromRGBO(51, 51, 51, 1)),
->>>>>>> cb3516f (routing)
       ),
-      routerConfig: _router,
     );
   }
 }

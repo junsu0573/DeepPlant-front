@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:deep_plant_app/source/meat_info_source.dart';
 import 'package:deep_plant_app/source/widget_source.dart';
 
-class InsertionMeatInfoPage extends StatefulWidget {
-  const InsertionMeatInfoPage({super.key});
+class InsertionMeatInfo extends StatefulWidget {
+  const InsertionMeatInfo({super.key});
 
   @override
-  State<InsertionMeatInfoPage> createState() => _InsertionMeatInfoPageState();
+  State<InsertionMeatInfo> createState() => _InsertionMeatInfoState();
 }
 
-class _InsertionMeatInfoPageState extends State<InsertionMeatInfoPage> {
+class _InsertionMeatInfoState extends State<InsertionMeatInfo> {
   MeatInfoSource source = MeatInfoSource();
   List<String>? largeData;
   List<List<String>>? tableData;
@@ -272,7 +272,9 @@ class _InsertionMeatInfoPageState extends State<InsertionMeatInfoPage> {
                       hint: Text('소부위 선택'),
                       iconEnabledColor: Colors.grey[400],
                       value: selectedLittle,
-                      items: (orderNum == 0 ? tableData_1[largeNum] : tableData_2[largeNum])
+                      items: (orderNum == 0
+                              ? tableData_1[largeNum]
+                              : tableData_2[largeNum])
                           .map((e) => DropdownMenuItem(
                                 value: e,
                                 child: Center(

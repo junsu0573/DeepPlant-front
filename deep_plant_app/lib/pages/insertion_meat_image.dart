@@ -6,16 +6,16 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
-class InsertionCameraPage extends StatefulWidget {
-  const InsertionCameraPage({
+class InsertionMeatImage extends StatefulWidget {
+  const InsertionMeatImage({
     super.key,
   });
 
   @override
-  State<InsertionCameraPage> createState() => _InsertionCameraPageState();
+  State<InsertionMeatImage> createState() => _InsertionMeatImageState();
 }
 
-class _InsertionCameraPageState extends State<InsertionCameraPage> {
+class _InsertionMeatImageState extends State<InsertionMeatImage> {
   final _authentication = FirebaseAuth.instance;
   User? loggedUser;
   File? pickedImage;
