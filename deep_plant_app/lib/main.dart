@@ -1,7 +1,7 @@
 import 'package:deep_plant_app/models/meat_data_model.dart';
 import 'package:deep_plant_app/models/user_model.dart';
-import 'package:deep_plant_app/pages/insertion_meat_image.dart';
-import 'package:deep_plant_app/pages/insertion_meat_info_page.dart';
+import 'package:deep_plant_app/pages/maet-registration/insertion_meat_image.dart';
+import 'package:deep_plant_app/pages/maet-registration/insertion_meat_info_page.dart';
 import 'package:deep_plant_app/pages/maet-registration/show_step_page.dart';
 import 'package:deep_plant_app/pages/my-page/edit_user_info_page.dart';
 import 'package:deep_plant_app/pages/my-page/my_page.dart';
@@ -17,7 +17,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:deep_plant_app/pages/get_history_page.dart';
+import 'package:deep_plant_app/pages/maet-registration/get_history_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
