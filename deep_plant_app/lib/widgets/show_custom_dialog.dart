@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 void ShowDeletePhotoDialog(BuildContext context) {
   showCustomDialog(context, 'assets/images/trash.png', '사진을 삭제하시겠습니까 ?',
-      '삭제된 사진은 복구할 수 없습니다.', '취소', '삭제', () {}, () {/*  삭제 기능  */});
+      '삭제된 사진은 복구할 수 없습니다.', '취소', '삭제', () {}, () {/*   삭제 기능  */});
 }
 
 void ShowExitDialog(BuildContext context) {
