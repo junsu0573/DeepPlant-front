@@ -7,6 +7,7 @@ class MeatData {
   String? sDivision;
   File? imageFile;
   String? date;
+  Map<String, double>? freshData;
 
   MeatData({
     this.historyNumber,
@@ -15,5 +16,6 @@ class MeatData {
     this.sDivision,
     this.imageFile,
     this.date,
+    this.freshData,
   });
 }

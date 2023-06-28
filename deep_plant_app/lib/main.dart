@@ -1,5 +1,6 @@
 import 'package:deep_plant_app/models/meat_data_model.dart';
 import 'package:deep_plant_app/models/user_model.dart';
+import 'package:deep_plant_app/pages/maet-registration/freshmeat_evaluation_page.dart';
 import 'package:deep_plant_app/pages/maet-registration/insertion_meat_image.dart';
 import 'package:deep_plant_app/pages/maet-registration/insertion_meat_info_page.dart';
 import 'package:deep_plant_app/pages/maet-registration/show_step_page.dart';
@@ -103,11 +104,21 @@ final _router = GoRouter(
             ),
             GoRoute(
               path: 'insert-meat-info',
-              builder: (context, state) => InsertionMeatInfo(),
+              builder: (context, state) => InsertionMeatInfo(
+                meatData: newMeat,
+              ),
             ),
             GoRoute(
               path: 'insert-meat-image',
-              builder: (context, state) => InsertionMeatImage(),
+              builder: (context, state) => InsertionMeatImage(
+                meatData: newMeat,
+              ),
+            ),
+            GoRoute(
+              path: 'insert-fresh-evaluation',
+              builder: (context, state) => FreshmeatEvaluation(
+                meatData: newMeat,
+              ),
             ),
           ],
         ),

@@ -1,10 +1,15 @@
+import 'package:deep_plant_app/models/meat_data_model.dart';
 import 'package:deep_plant_app/widgets/custom_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:deep_plant_app/source/meat_info_source.dart';
 import 'package:go_router/go_router.dart';
 
 class InsertionMeatInfo extends StatefulWidget {
-  const InsertionMeatInfo({super.key});
+  final MeatData meatData;
+  const InsertionMeatInfo({
+    super.key,
+    required this.meatData,
+  });
 
   @override
   State<InsertionMeatInfo> createState() => _InsertionMeatInfoState();
@@ -77,6 +82,17 @@ class _InsertionMeatInfoState extends State<InsertionMeatInfo> {
         isFinal = true;
         break;
       }
+    }
+  }
+
+  void saveData(MeatData meatData, MeatInfoSource source) {
+    meatData.species = source.species[selectedOrder];
+    if (selectedOrder == '소') {
+      meatData.lDivision = source.cattleLarge[selectedLarge];
+      meatData.sDivision = source.cattleSmall[selectedLittle];
+    } else if (selectedOrder == '돼지') {
+      meatData.lDivision = source.pigLarge[selectedLarge];
+      meatData.sDivision = source.pigSmall[selectedLittle];
     }
   }
 
@@ -296,7 +312,10 @@ class _InsertionMeatInfoState extends State<InsertionMeatInfo> {
                     width: 350,
                     child: ElevatedButton(
                       onPressed: isFinal
-                          ? () => context.go('/option/show-step')
+                          ? () {
+                              saveData(widget.meatData, MeatInfoSource());
+                              context.go('/option/show-step');
+                            }
                           : null,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.grey[800],

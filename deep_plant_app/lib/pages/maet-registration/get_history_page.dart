@@ -236,6 +236,7 @@ class _GetHistoryPageState extends State<GetHistoryPage> {
                   child: ElevatedButton(
                     onPressed: isFinal
                         ? () {
+                            widget.meatData.historyNumber = historyNum;
                             context.go('/option/show-step/insert-meat-info');
                           }
                         : null,
