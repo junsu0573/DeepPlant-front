@@ -28,7 +28,7 @@ class _InsertionMeatInfoState extends State<InsertionMeatInfo> {
   String? finalNumber; // -> 모든 선택 이후에 만들게 될 텍스트
   bool isFinal = false; // -> 모든 선택이 완료되었는지에 대한 분류
 
-  void setOrder(String order, Source) {
+  void setOrder(String order, MeatInfoSource source) {
     if (order == '소') {
       orderNum = 0;
       isselectedorder = true;

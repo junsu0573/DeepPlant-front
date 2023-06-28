@@ -11,8 +11,8 @@ class ApiSource {
 
     if (response.statusCode == 200) {
       final body = convert.utf8.decode(response.bodyBytes);
-      final Xml2JsonData = Xml2Json()..parse(body);
-      final jsonData = Xml2JsonData.toParker();
+      final xml2JsonData = Xml2Json()..parse(body);
+      final jsonData = xml2JsonData.toParker();
 
       final parsingData = convert.jsonDecode(jsonData);
 

@@ -30,10 +30,6 @@ void customDialog(BuildContext context) {
                 onPressed: () {
                   Navigator.of(context).pop(); // 취소버튼: 다이얼로그 창 끄기
                 },
-                child: Text(
-                  '취소',
-                  style: TextStyle(color: Colors.black),
-                ),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.white,
                   padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
@@ -43,6 +39,10 @@ void customDialog(BuildContext context) {
                       color: Colors.grey,
                     ),
                   ),
+                ),
+                child: Text(
+                  '취소',
+                  style: TextStyle(color: Colors.black),
                 ),
               ),
               SizedBox(
@@ -53,10 +53,6 @@ void customDialog(BuildContext context) {
                   Navigator.pop(context);
                   Navigator.pop(context); // 나가기 버튼: 다이얼로그 창 끄고 페이지에서 나가기
                 },
-                child: Text(
-                  '나가기',
-                  style: TextStyle(color: Colors.black),
-                ),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.white,
                   padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
@@ -66,6 +62,10 @@ void customDialog(BuildContext context) {
                       color: Colors.grey,
                     ),
                   ),
+                ),
+                child: Text(
+                  '나가기',
+                  style: TextStyle(color: Colors.black),
                 ),
               ),
             ],

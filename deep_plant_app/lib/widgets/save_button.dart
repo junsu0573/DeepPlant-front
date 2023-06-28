@@ -1,23 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-class SaveButton extends StatefulWidget {
+
+class SaveButton extends StatelessWidget {
   final VoidCallback onPressed;
 
   const SaveButton({
+    super.key,
     required this.onPressed,
   });
 
-  @override
-  _SaveButtonState createState() => _SaveButtonState();
-}
-
-class _SaveButtonState extends State<SaveButton> {
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.only(bottom: 28.sp),
       child: ElevatedButton(
-        onPressed: widget.onPressed,
+        onPressed: onPressed,
         style: ElevatedButton.styleFrom(
           disabledBackgroundColor: Color(0xFFC4C4C4),
           backgroundColor: Color(0xFF515151),

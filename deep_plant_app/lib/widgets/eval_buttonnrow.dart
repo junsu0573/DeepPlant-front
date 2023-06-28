@@ -9,6 +9,7 @@ class EvalButton extends StatelessWidget {
   final VoidCallback onPressed;
 
   const EvalButton({
+    super.key,
     required this.isSelected,
     required this.backgroundColor,
     required this.onPressed,
@@ -43,6 +44,7 @@ class EvalRow extends StatefulWidget {
   final List<String> text;
 
   const EvalRow({
+    super.key,
     required this.isSelected,
     required this.onEvalButtonPressed,
     required this.text,

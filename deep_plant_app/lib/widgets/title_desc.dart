@@ -6,6 +6,7 @@ class TitleDesc extends StatelessWidget {
   final String desc;
 
   const TitleDesc({
+    super.key,
     required this.title,
     required this.desc,
   });
@@ -31,7 +32,7 @@ class TitleDesc extends StatelessWidget {
         SizedBox(
           width: 10.w,
         ),
-        Container(
+        SizedBox(
           height: 50.h,
           child: Center(
             child: Text(
