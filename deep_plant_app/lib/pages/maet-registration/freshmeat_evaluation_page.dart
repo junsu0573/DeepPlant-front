@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:deep_plant_app/widgets/custom_dialog.dart';
 import 'package:deep_plant_app/widgets/save_button.dart';
 import 'package:deep_plant_app/widgets/title_desc.dart';
 import 'package:flutter/material.dart';
@@ -108,7 +109,7 @@ class _FreshmeatEvaluationpageState extends State<FreshmeatEvaluationpage> {
           //customDialog(context);
         },
         closeButtonOnPressed: () {
-          CustomDialog(context);
+          customDialog(context);
         },
       ),
       body: SingleChildScrollView(

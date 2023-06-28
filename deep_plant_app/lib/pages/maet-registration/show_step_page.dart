@@ -32,7 +32,7 @@ class _ShowStepState extends State<ShowStep> {
               height: 50,
             ),
             GestureDetector(
-              onTap: () => context.go('/option/show-step/insert-meat-info'),
+              onTap: () => context.go('/option/show-step/insert-his-num'),
               child: StepCard(
                 mainText: '육류 기본정보 입력',
                 subText: '데이터를 입력해 주세요.',
