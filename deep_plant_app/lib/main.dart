@@ -3,6 +3,7 @@ import 'package:deep_plant_app/models/user_model.dart';
 import 'package:deep_plant_app/pages/maet-registration/insertion_meat_image.dart';
 import 'package:deep_plant_app/pages/maet-registration/insertion_meat_info_page.dart';
 import 'package:deep_plant_app/pages/maet-registration/show_step_page.dart';
+import 'package:deep_plant_app/pages/manage_data_page.dart';
 import 'package:deep_plant_app/pages/my-page/edit_user_info_page.dart';
 import 'package:deep_plant_app/pages/my-page/my_page.dart';
 import 'package:deep_plant_app/pages/my-page/reset_pw_page.dart';
@@ -125,8 +126,7 @@ class MyApp extends StatelessWidget {
         // 기본 색상
         theme: ThemeData(
           primaryColor: const Color.fromRGBO(51, 51, 51, 1),
-          buttonTheme:
-              const ButtonThemeData(buttonColor: Color.fromRGBO(51, 51, 51, 1)),
+          buttonTheme: const ButtonThemeData(buttonColor: Color.fromRGBO(51, 51, 51, 1)),
         ),
         routerConfig: _router,
       ),
