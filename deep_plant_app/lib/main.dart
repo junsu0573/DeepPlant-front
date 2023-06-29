@@ -1,5 +1,6 @@
 import 'package:deep_plant_app/models/meat_data_model.dart';
 import 'package:deep_plant_app/models/user_model.dart';
+import 'package:deep_plant_app/pages/maet-registration/complete_registration_page.dart';
 import 'package:deep_plant_app/pages/maet-registration/freshmeat_evaluation_page.dart';
 import 'package:deep_plant_app/pages/maet-registration/insertion_meat_image.dart';
 import 'package:deep_plant_app/pages/maet-registration/insertion_meat_info_page.dart';
@@ -40,7 +41,9 @@ final _router = GoRouter(
       routes: [
         GoRoute(
           path: 'sign-in',
-          builder: (context, state) => const SignIn(),
+          builder: (context, state) => SignIn(
+            user: newUser,
+          ),
           routes: [
             GoRoute(
               path: ('certification'),
@@ -121,6 +124,12 @@ final _router = GoRouter(
               ),
             ),
           ],
+        ),
+        GoRoute(
+          path: 'complete_register',
+          builder: (context, state) => CompleteResgistration(
+            meatData: newMeat,
+          ),
         ),
       ],
     ),

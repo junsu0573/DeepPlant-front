@@ -1,3 +1,4 @@
+import 'package:deep_plant_app/models/user_model.dart';
 import 'package:deep_plant_app/widgets/text_insertion_field.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -5,7 +6,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
 class SignIn extends StatefulWidget {
+  final UserModel user;
   const SignIn({
+    required this.user,
     super.key,
   });
 
@@ -105,7 +108,8 @@ class _SignInState extends State<SignIn> {
                     // 딥플랜트 로고 이미지
                     padding: const EdgeInsets.all(0),
                     child: ColorFiltered(
-                      colorFilter: const ColorFilter.mode(Colors.black, BlendMode.modulate),
+                      colorFilter: const ColorFilter.mode(
+                          Colors.black, BlendMode.modulate),
                       child: Image.asset(
                         'assets/images/logo.png',
                         width: 111.w,
@@ -194,7 +198,9 @@ class _SignInState extends State<SignIn> {
                       borderRadius: BorderRadius.circular(30),
                       underline: Container(
                         decoration: const BoxDecoration(
-                          border: Border(bottom: BorderSide(color: Colors.transparent, width: 0)),
+                          border: Border(
+                              bottom: BorderSide(
+                                  color: Colors.transparent, width: 0)),
                         ),
                       ),
                       icon: const Icon(
