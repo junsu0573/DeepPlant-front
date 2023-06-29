@@ -20,10 +20,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:deep_plant_app/pages/maet-registration/get_history_page.dart';
+import 'package:deep_plant_app/pages/manage_data_page.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  await initializeDateFormatting();
   runApp(const MyApp());
 }
 
@@ -151,8 +154,7 @@ class MyApp extends StatelessWidget {
       // 기본 색상
       theme: ThemeData(
         primaryColor: const Color.fromRGBO(51, 51, 51, 1),
-        buttonTheme:
-            const ButtonThemeData(buttonColor: Color.fromRGBO(51, 51, 51, 1)),
+        buttonTheme: const ButtonThemeData(buttonColor: Color.fromRGBO(51, 51, 51, 1)),
       ),
       routerConfig: _router,
       builder: (context, child) {
