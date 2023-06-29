@@ -24,7 +24,7 @@ class _TongueDataInputPageState extends State<TongueDataInputPage> {
     final Umamidata = Umami.text;
     final Richnessdata = Richness.text;
 
-    //경로 수정
+    //경로  수정
     //firebase 전송
     await FirebaseFirestore.instance.collection('evaluations').doc().set({
       'Sourness': Sournessdata,
