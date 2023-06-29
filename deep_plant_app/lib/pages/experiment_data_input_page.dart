@@ -1,10 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:deep_plant_app/widgets/custom_appbar.dart';
+import 'package:deep_plant_app/widgets/save_button.dart';
+import 'package:deep_plant_app/widgets/textfield_with_title.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:pages/appbar/custom_appbar.dart';
-
-import '../buttons/save_button.dart';
-import '../textfield/textfield_with_title.dart';
 
 class ExperimentDataInputPage extends StatefulWidget {
   const ExperimentDataInputPage({super.key});
@@ -45,7 +44,7 @@ class _ExperimentDataInputPageState extends State<ExperimentDataInputPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar:
-          CustomAppBar(title: '추가정보 입력', back_button: true, close_button: true),
+          CustomAppBar(title: '추가정보 입력', backButton: true, closeButton: true),
       body: GestureDetector(
         onTap: () {
           FocusScope.of(context).unfocus(); // 키보드 unfocus
