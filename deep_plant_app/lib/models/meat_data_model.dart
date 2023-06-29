@@ -1,13 +1,17 @@
-import 'dart:io';
-
 class MeatData {
   String? historyNumber;
   String? species;
   String? lDivision;
   String? sDivision;
-  File? imageFile;
+  String? imageFile;
   String? date;
   Map<String, double>? freshData;
+
+  String? userEmail;
+  String? gradeNm;
+  String? farmAddr;
+  String? butcheryPlaceNm;
+  String? butcheryYmd;
 
   MeatData({
     this.historyNumber,
@@ -17,5 +21,10 @@ class MeatData {
     this.imageFile,
     this.date,
     this.freshData,
+    this.userEmail,
+    this.gradeNm,
+    this.farmAddr,
+    this.butcheryPlaceNm,
+    this.butcheryYmd,
   });
 }

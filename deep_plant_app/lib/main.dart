@@ -1,5 +1,6 @@
 import 'package:deep_plant_app/models/meat_data_model.dart';
 import 'package:deep_plant_app/models/user_model.dart';
+import 'package:deep_plant_app/pages/maet-registration/complete_registration_page.dart';
 import 'package:deep_plant_app/pages/maet-registration/freshmeat_evaluation_page.dart';
 import 'package:deep_plant_app/pages/maet-registration/insertion_meat_image.dart';
 import 'package:deep_plant_app/pages/maet-registration/insertion_meat_info_page.dart';
@@ -26,8 +27,10 @@ void main() async {
   runApp(const MyApp());
 }
 
-// 회원가입을 위한 유저 객체
+// 회원가입 및 로그인을 위한 유저 객체
 UserModel newUser = UserModel();
+
+// 육류 입력 정보 저장을 위한 객체
 MeatData newMeat = MeatData();
 
 // 라우팅
@@ -40,7 +43,10 @@ final _router = GoRouter(
       routes: [
         GoRoute(
           path: 'sign-in',
-          builder: (context, state) => const SignIn(),
+          builder: (context, state) => SignIn(
+            user: newUser,
+            meatData: newMeat,
+          ),
           routes: [
             GoRoute(
               path: ('certification'),
@@ -121,6 +127,13 @@ final _router = GoRouter(
               ),
             ),
           ],
+        ),
+        GoRoute(
+          path: 'complete_register',
+          builder: (context, state) => CompleteResgistration(
+            meatData: newMeat,
+            user: newUser,
+          ),
         ),
       ],
     ),

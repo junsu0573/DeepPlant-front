@@ -1,4 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:deep_plant_app/models/meat_data_model.dart';
 import 'package:deep_plant_app/widgets/custom_dialog.dart';
 import 'package:deep_plant_app/widgets/save_button.dart';
 import 'package:deep_plant_app/widgets/title_desc.dart';
@@ -6,16 +6,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:deep_plant_app/widgets/custom_appbar.dart';
 import 'package:deep_plant_app/widgets/eval_buttonnrow.dart';
+import 'package:go_router/go_router.dart';
 
-class FreshmeatEvaluationpage extends StatefulWidget {
-  const FreshmeatEvaluationpage({Key? key}) : super(key: key);
+class FreshmeatEvaluation extends StatefulWidget {
+  final MeatData meatData;
+  const FreshmeatEvaluation({
+    super.key,
+    required this.meatData,
+  });
 
   @override
-  State<FreshmeatEvaluationpage> createState() =>
-      _FreshmeatEvaluationpageState();
+  State<FreshmeatEvaluation> createState() => _FreshmeatEvaluationState();
 }
 
-class _FreshmeatEvaluationpageState extends State<FreshmeatEvaluationpage> {
+class _FreshmeatEvaluationState extends State<FreshmeatEvaluation> {
   // 5개 평가 항목을 모두 false로 설정(기본값)
   final List<bool> _selectedMabling = List.filled(5, false);
   final List<bool> _selectedColor = List.filled(5, false);
@@ -24,7 +28,18 @@ class _FreshmeatEvaluationpageState extends State<FreshmeatEvaluationpage> {
   final List<bool> _selectedOverall = List.filled(5, false);
   final ScrollController _scrollController = ScrollController(); //화면 오른쪽에 스크롤러
 
-  void _sendEvaluation() async {
+  bool _isAllselected() {
+    if (_selectedMabling.contains(true) &&
+        _selectedColor.contains(true) &&
+        _selectedTexture.contains(true) &&
+        _selectedSurfaceMoisture.contains(true) &&
+        _selectedOverall.contains(true)) {
+      return true;
+    }
+    return false;
+  }
+
+  void _sendEvaluation(MeatData meatData) {
     //firebase에 데이터 전송하는 '저장' 버튼 기능
 
     // 사용자가 선택한 값(true)의 index에 1을 더한다.
@@ -35,7 +50,7 @@ class _FreshmeatEvaluationpageState extends State<FreshmeatEvaluationpage> {
     double surfaceMoistureIndex = _selectedSurfaceMoisture.indexOf(true) + 1;
     double overallIndex = _selectedOverall.indexOf(true) + 1;
 
-    Map<String, dynamic> freshData = {
+    Map<String, double> freshData = {
       //데이터를 Map 형식으로 지정
       'Mabling': mablingIndex,
       'Color': colorIndex,
@@ -44,18 +59,8 @@ class _FreshmeatEvaluationpageState extends State<FreshmeatEvaluationpage> {
       'Overall': overallIndex,
     };
 
-    Map<String, dynamic> newData = {
-      'meat': freshData,
-      'users-1': [],
-      'users-2': [],
-      'users-3': [],
-    };
-
-    //firebase
-    await FirebaseFirestore.instance
-        .collection('meat')
-        .doc('0-0-0-0-0')
-        .update({'fix_data': newData});
+    // 데이터를 객체에 저장
+    meatData.freshData = freshData;
   }
 
   @override
@@ -154,7 +159,14 @@ class _FreshmeatEvaluationpageState extends State<FreshmeatEvaluationpage> {
                 ],
               ),
             ),
-            SaveButton(onPressed: _sendEvaluation)
+            SaveButton(
+              onPressed: _isAllselected()
+                  ? () {
+                      _sendEvaluation(widget.meatData);
+                      context.go('/option/show-step');
+                    }
+                  : null,
+            ),
           ],
         ),
       ),
