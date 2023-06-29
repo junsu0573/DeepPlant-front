@@ -27,8 +27,10 @@ void main() async {
   runApp(const MyApp());
 }
 
-// 회원가입을 위한 유저 객체
+// 회원가입 및 로그인을 위한 유저 객체
 UserModel newUser = UserModel();
+
+// 육류 입력 정보 저장을 위한 객체
 MeatData newMeat = MeatData();
 
 // 라우팅
@@ -43,6 +45,7 @@ final _router = GoRouter(
           path: 'sign-in',
           builder: (context, state) => SignIn(
             user: newUser,
+            meatData: newMeat,
           ),
           routes: [
             GoRoute(
@@ -129,6 +132,7 @@ final _router = GoRouter(
           path: 'complete_register',
           builder: (context, state) => CompleteResgistration(
             meatData: newMeat,
+            user: newUser,
           ),
         ),
       ],

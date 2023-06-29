@@ -1,14 +1,19 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:deep_plant_app/models/meat_data_model.dart';
 import 'package:deep_plant_app/models/user_model.dart';
 import 'package:deep_plant_app/widgets/text_insertion_field.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 
 class SignIn extends StatefulWidget {
   final UserModel user;
+  final MeatData meatData;
   const SignIn({
     required this.user,
+    required this.meatData,
     super.key,
   });
 
@@ -30,6 +35,8 @@ class _SignInState extends State<SignIn> {
 
   // firbase authentic
   final _authentication = FirebaseAuth.instance;
+
+  final _firestore = FirebaseFirestore.instance;
 
   // 아이디 유효성 검사
   String? idValidate(String? value) {
@@ -61,15 +68,55 @@ class _SignInState extends State<SignIn> {
       isLoading = true; // 로딩 상태를 활성화
     });
 
+    // 유저 등급 설정
+    String userLevel = '';
+    if (selectedDropdown == '사용자 1') {
+      userLevel = 'users_1';
+    } else if (selectedDropdown == '사용자 2') {
+      userLevel = 'users_2';
+    } else if (selectedDropdown == '사용자 3') {
+      userLevel = 'users_3';
+    }
+
     // 데이터를 가져오는 비동기 작업
     try {
       await _authentication.signInWithEmailAndPassword(
         email: _userId,
         password: _userPw,
       );
+
+      // 유저가 입력한 ID가 해당 level 컬렉션에 존재하는지 확인
+      DocumentSnapshot docSnapshot =
+          await _firestore.collection(userLevel).doc(_userId).get();
+
+      if (!docSnapshot.exists) {
+        _authentication.signOut();
+        throw Error();
+      }
+
+      // 유저의 데이터를 객체에 저장
+      Map<String, dynamic>? data = docSnapshot.data() as Map<String, dynamic>?;
+
+      if (data != null) {
+        widget.user.name = data['name'];
+        widget.user.email = _userId;
+        widget.meatData.userEmail = _userId;
+        widget.user.level = userLevel;
+      }
+
+      // 유저의 로그 정보를 fire store에 저장
+      DateTime now = DateTime.now();
+
+      String userLog = DateFormat('yyyy-MM-ddTHH:mm:ssZ').format(now);
+
+      Map<String, dynamic> updateData = {
+        'lastLog': userLog,
+      };
+      await _firestore.collection(userLevel).doc(_userId).update(updateData);
     } catch (e) {
+      // 로딩 상태를 비활성화
       setState(() {
-        isLoading = false; // 로딩 상태를 비활성화
+        isLoading = false;
       });
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -85,9 +132,8 @@ class _SignInState extends State<SignIn> {
     });
 
     // 데이터 fetch 성공시 다음 페이지를 push
-    Future.delayed(Duration.zero, () {
-      context.pushReplacement('/option');
-    });
+    if (!mounted) return;
+    context.pushReplacement('/option');
   }
 
   @override

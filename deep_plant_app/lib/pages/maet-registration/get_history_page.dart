@@ -29,6 +29,11 @@ class _GetHistoryPageState extends State<GetHistoryPage> {
   bool isValue = false;
   String? historyNum;
 
+  String? farmAdd;
+  String? basetime;
+  String? houseName;
+  String? grade;
+
   final List<String> tableData = [];
 
   final List<String> baseData = [
@@ -68,42 +73,50 @@ class _GetHistoryPageState extends State<GetHistoryPage> {
           baseUrl:
               "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?serviceKey=$apikey&traceNo=$traceNo");
 
-      final meatData = await source.getJsonData();
+      final meatAPIData = await source.getJsonData();
 
-      String farmAdd =
-          meatData['response']['body']['items']['item'][1]['farmAddr'];
-      String houseName =
-          meatData['response']['body']['items']['item'][4]['butcheryPlaceNm'];
-      String basetime =
-          meatData['response']['body']['items']['item'][4]['butcheryYmd'];
+      farmAdd = meatAPIData['response']['body']['items']['item'][1]['farmAddr'];
+      houseName = meatAPIData['response']['body']['items']['item'][4]
+          ['butcheryPlaceNm'];
+      basetime =
+          meatAPIData['response']['body']['items']['item'][4]['butcheryYmd'];
       String basetimeResolve =
-          DateFormat('yyyy-MM-dd').format(DateTime.parse(basetime)).toString();
+          DateFormat('yyyy-MM-dd').format(DateTime.parse(basetime!)).toString();
       String breeding =
-          meatData['response']['body']['items']['item'][0]['lsTypeNm'];
-      String gender = meatData['response']['body']['items']['item'][0]['sexNm'];
-      String grade =
-          meatData['response']['body']['items']['item'][4]['gradeNm'];
+          meatAPIData['response']['body']['items']['item'][0]['lsTypeNm'];
+      String gender =
+          meatAPIData['response']['body']['items']['item'][0]['sexNm'];
+      grade = meatAPIData['response']['body']['items']['item'][4]['gradeNm'];
       String birth =
-          meatData['response']['body']['items']['item'][0]['birthYmd'];
+          meatAPIData['response']['body']['items']['item'][0]['birthYmd'];
       String birthResolve =
           DateFormat('yyyy-MM-dd').format(DateTime.parse(birth)).toString();
 
       tableData.addAll([
         traceNo,
-        farmAdd,
-        houseName,
+        farmAdd!,
+        houseName!,
         basetimeResolve,
         breeding,
         gender,
-        grade,
+        grade!,
         birthResolve
       ]);
+
       isFinal = true;
     } catch (e) {
       tableData.clear();
       isFinal = false;
       // 여기에 다이얼로그로 수정!!
     }
+  }
+
+  void saveData() {
+    widget.meatData.historyNumber = historyNum;
+    widget.meatData.gradeNm = grade;
+    widget.meatData.farmAddr = farmAdd;
+    widget.meatData.butcheryPlaceNm = houseName;
+    widget.meatData.butcheryYmd = basetime;
   }
 
   @override
@@ -236,7 +249,7 @@ class _GetHistoryPageState extends State<GetHistoryPage> {
                   child: ElevatedButton(
                     onPressed: isFinal
                         ? () {
-                            widget.meatData.historyNumber = historyNum;
+                            saveData();
                             context.go('/option/show-step/insert-meat-info');
                           }
                         : null,
