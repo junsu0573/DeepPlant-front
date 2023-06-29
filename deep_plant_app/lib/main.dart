@@ -9,9 +9,9 @@ import 'package:deep_plant_app/pages/my-page/edit_user_info_page.dart';
 import 'package:deep_plant_app/pages/my-page/my_page.dart';
 import 'package:deep_plant_app/pages/my-page/reset_pw_page.dart';
 import 'package:deep_plant_app/pages/option_page.dart';
-import 'package:deep_plant_app/pages/sign-up/certification_page.dart';
 import 'package:deep_plant_app/pages/home_page.dart';
 import 'package:deep_plant_app/pages/sign-up/email_verification.dart';
+import 'package:deep_plant_app/pages/sign-up/id_pw_insertion_page.dart';
 import 'package:deep_plant_app/pages/sign-up/insertion_idnpw.dart';
 import 'package:deep_plant_app/pages/sign_in_page.dart';
 import 'package:deep_plant_app/pages/sign-up/succeed_sign_up_page.dart';
@@ -51,12 +51,11 @@ final _router = GoRouter(
             user: newUser,
             meatData: newMeat,
           ),
+          // 회원가입을 위한 라우팅
           routes: [
             GoRoute(
               path: ('certification'),
-              builder: (context, state) => Certification(
-                user: newUser,
-              ),
+              builder: (context, state) => IdPwInsertion(),
               routes: [
                 GoRoute(
                   path: ('insert-id-pw'),
@@ -80,6 +79,7 @@ final _router = GoRouter(
       path: ('/succeed-sign-up'),
       builder: (context, state) => const SucceedSignUp(),
     ),
+    // 사용자 1을 위한 라우팅
     GoRoute(
       path: '/option',
       builder: (context, state) => OptionPage(),
