@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:deep_plant_app/models/meat_data_model.dart';
 import 'package:deep_plant_app/models/user_model.dart';
 import 'package:deep_plant_app/widgets/text_insertion_field.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -9,8 +10,10 @@ import 'package:intl/intl.dart';
 
 class SignIn extends StatefulWidget {
   final UserModel user;
+  final MeatData meatData;
   const SignIn({
     required this.user,
+    required this.meatData,
     super.key,
   });
 
@@ -97,13 +100,13 @@ class _SignInState extends State<SignIn> {
       if (data != null) {
         widget.user.name = data['name'];
         widget.user.email = _userId;
+        widget.meatData.userEmail = _userId;
         widget.user.level = userLevel;
       }
 
       // 유저의 로그 정보를 fire store에 저장
       DateTime now = DateTime.now();
 
-      // ISO 8601 형식으로 변환
       String userLog = DateFormat('yyyy-MM-ddTHH:mm:ssZ').format(now);
 
       Map<String, dynamic> updateData = {

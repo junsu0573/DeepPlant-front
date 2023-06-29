@@ -45,6 +45,7 @@ final _router = GoRouter(
           path: 'sign-in',
           builder: (context, state) => SignIn(
             user: newUser,
+            meatData: newMeat,
           ),
           routes: [
             GoRoute(
@@ -131,6 +132,7 @@ final _router = GoRouter(
           path: 'complete_register',
           builder: (context, state) => CompleteResgistration(
             meatData: newMeat,
+            user: newUser,
           ),
         ),
       ],

@@ -2,16 +2,20 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:deep_plant_app/models/meat_data_model.dart';
+import 'package:deep_plant_app/models/user_model.dart';
 import 'package:deep_plant_app/widgets/save_button.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 
 class CompleteResgistration extends StatefulWidget {
   final MeatData meatData;
+  final UserModel user;
   const CompleteResgistration({
     super.key,
     required this.meatData,
+    required this.user,
   });
 
   @override
@@ -39,12 +43,22 @@ class _CompleteResgistrationState extends State<CompleteResgistration> {
       // meat 컬렉션에 데이터 저장
       final refData = firestore.collection('meat').doc(managementNumber);
 
+      DateTime now = DateTime.now();
+
+      String saveDate = DateFormat('yyyy-MM-ddTHH:mm:ssZ').format(now);
+
       await refData.set({
-        'trace_number': widget.meatData.historyNumber,
+        'traceNumber': widget.meatData.historyNumber,
         'species': widget.meatData.species,
         'l_division': widget.meatData.lDivision,
         's_division': widget.meatData.sDivision,
         'fresh': widget.meatData.freshData,
+        'email': widget.meatData.userEmail,
+        'saveTime': saveDate,
+        'gradeNm': widget.meatData.gradeNm,
+        'farmAddr': widget.meatData.butcheryPlaceNm,
+        'butcheryPlaceNm': widget.meatData.butcheryPlaceNm,
+        'butcheryYmd': widget.meatData.butcheryYmd,
       });
 
       // 0-0-0-0-0 에 관리번호 저장
@@ -70,6 +84,12 @@ class _CompleteResgistrationState extends State<CompleteResgistration> {
           }
         }
       }
+
+      // user의 meatList에 관리번호 추가
+      DocumentReference refNum =
+          firestore.collection(widget.user.level!).doc(widget.user.email);
+      List<dynamic> newNum = [managementNumber];
+      await refNum.update({'meatList': FieldValue.arrayUnion(newNum)});
 
       // fire storage에 이미지 저장
       final refImage =
