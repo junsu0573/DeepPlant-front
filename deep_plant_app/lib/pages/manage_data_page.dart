@@ -22,6 +22,15 @@ class _ManageDataState extends State<ManageData> {
   final List<bool> _selections2 = [true, false];
   String option1 = '1개월';
   String option2 = '최신순';
+  bool isSelectedTable = false;
+
+  DateTime selectedDay = DateTime(
+    DateTime.now().year,
+    DateTime.now().month,
+    DateTime.now().day,
+  );
+
+  DateTime focusedDay = DateTime.now();
 
   _ManageDataState() {
     search.addListener(() {
@@ -86,8 +95,14 @@ class _ManageDataState extends State<ManageData> {
   List<DataRow> getRows() {
     List<String> source = infoData.userData;
     List<DataRow> dataRow = [];
-    for (var i = 0; i < source.length; i++) {
-      var csvDataCells = source[i].split(',');
+
+    // 이 과정은 기존 source에 담긴 데이터를 textfield를 통해 입력받는 'text' 변수와 비교하게 된다.
+    // source에 담긴 data 값을 text의 시작과 비교하고, controller를 통해 실시간적으로 정보를 교류하게 된다.
+    // contains는 중간 아무 요소나 비교, startwith는 시작부터, endwith는 끝부터 비교하는 기능임을 기억해두자.
+    List<String> filteredData = source.where((data) => data.contains(text)).toList();
+
+    for (var i = 0; i < filteredData.length; i++) {
+      var csvDataCells = filteredData[i].split(',');
       List<DataCell> cells = [];
       for (var j = 0; j < csvDataCells.length - 1; j++) {
         cells.add(DataCell(Text(
@@ -205,81 +220,121 @@ class _ManageDataState extends State<ManageData> {
                               topRight: Radius.circular(15.0),
                             )),
                             builder: (BuildContext context) {
-                              return Container(
-                                margin: EdgeInsets.all(18.0),
-                                height: 300,
-                                child: Center(
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: <Widget>[
-                                      Text(
-                                        '조회기간',
-                                        style: TextStyle(
-                                          fontSize: 18.0,
-                                        ),
-                                      ),
-                                      ToggleButton(
-                                        insertOptionFunc: insertOption1,
-                                        options: [
-                                          Text('3일'),
-                                          Text('1개월'),
-                                          Text('3개월'),
-                                          Text('직접설정'),
-                                        ],
-                                        isSelected: _selections1,
-                                        isRadius: false,
-                                        minHeight: 30.0,
-                                        minWidth: 80.0,
-                                      ),
-                                      Text(
-                                        '정렬',
-                                        style: TextStyle(
-                                          fontSize: 18.0,
-                                        ),
-                                      ),
-                                      ToggleButton(
-                                        insertOptionFunc: insertOption2,
-                                        options: [
-                                          Text('최신순'),
-                                          Text('과거순'),
-                                        ],
-                                        isSelected: _selections2,
-                                        isRadius: false,
-                                        minHeight: 30.0,
-                                        minWidth: 160.0,
-                                      ),
-                                      ElevatedButton(
-                                        onPressed: () {
-                                          Navigator.pop(context);
-                                          setState(() {});
-                                        },
-                                        style: ElevatedButton.styleFrom(
-                                          backgroundColor: Colors.grey[800],
-                                          disabledBackgroundColor: Colors.grey[400],
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(10.0),
-                                          ),
-                                        ),
-                                        child: SizedBox(
-                                          width: MediaQuery.of(context).size.width,
-                                          height: 55.0,
-                                          child: Center(
-                                            child: Text(
-                                              '확인',
+                              return !isSelectedTable
+                                  ? Container(
+                                      margin: EdgeInsets.all(18.0),
+                                      height: 300,
+                                      child: Center(
+                                        child: Column(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: <Widget>[
+                                            Text(
+                                              '조회기간',
                                               style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 17.0,
+                                                fontSize: 18.0,
                                               ),
-                                              textAlign: TextAlign.center,
                                             ),
-                                          ),
+                                            ToggleButton(
+                                              insertOptionFunc: insertOption1,
+                                              options: [
+                                                Text('3일'),
+                                                Text('1개월'),
+                                                Text('3개월'),
+                                                Text('직접설정'),
+                                              ],
+                                              isSelected: _selections1,
+                                              isRadius: false,
+                                              minHeight: 30.0,
+                                              minWidth: 80.0,
+                                            ),
+                                            Text(
+                                              '정렬',
+                                              style: TextStyle(
+                                                fontSize: 18.0,
+                                              ),
+                                            ),
+                                            ToggleButton(
+                                              insertOptionFunc: insertOption2,
+                                              options: [
+                                                Text('최신순'),
+                                                Text('과거순'),
+                                              ],
+                                              isSelected: _selections2,
+                                              isRadius: false,
+                                              minHeight: 30.0,
+                                              minWidth: 160.0,
+                                            ),
+                                            ElevatedButton(
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                                setState(() {});
+                                              },
+                                              style: ElevatedButton.styleFrom(
+                                                backgroundColor: Colors.grey[800],
+                                                disabledBackgroundColor: Colors.grey[400],
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius: BorderRadius.circular(10.0),
+                                                ),
+                                              ),
+                                              child: SizedBox(
+                                                width: MediaQuery.of(context).size.width,
+                                                height: 55.0,
+                                                child: Center(
+                                                  child: Text(
+                                                    '확인',
+                                                    style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 17.0,
+                                                    ),
+                                                    textAlign: TextAlign.center,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                       ),
-                                    ],
-                                  ),
-                                ),
-                              );
+                                    )
+                                  : TableCalendar(
+                                      locale: 'ko_KR',
+                                      firstDay: DateTime.utc(2022, 1, 1),
+                                      lastDay: DateTime.utc(2023, 12, 31),
+                                      headerStyle: HeaderStyle(
+                                        formatButtonVisible: false,
+                                        titleCentered: true,
+                                        titleTextStyle: TextStyle(
+                                          fontSize: 17.0,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                        leftChevronMargin: EdgeInsets.only(left: 85.0, top: 5.0),
+                                        rightChevronMargin: EdgeInsets.only(right: 85.0, top: 5.0),
+                                      ),
+                                      calendarStyle: CalendarStyle(
+                                        outsideDaysVisible: false,
+                                        cellMargin: EdgeInsets.all(0),
+                                        todayDecoration: const BoxDecoration(
+                                          color: Colors.grey,
+                                          shape: BoxShape.circle,
+                                        ),
+                                        selectedDecoration: const BoxDecoration(
+                                          color: Colors.black,
+                                          shape: BoxShape.circle,
+                                        ),
+                                      ),
+                                      focusedDay: focusedDay,
+                                      onDaySelected: (DateTime selectedDay, DateTime focusedDay) {
+                                        // 선택된 날짜의 상태를 갱신합니다.
+                                        setState(() {
+                                          this.selectedDay = selectedDay;
+                                          this.focusedDay = focusedDay;
+                                        });
+                                      },
+                                      selectedDayPredicate: (DateTime day) {
+                                        // selectedDay 와 동일한 날짜의 모양을 바꿔줍니다.
+                                        return isSameDay(selectedDay, day);
+                                      },
+                                    );
                             },
                           );
                         },
