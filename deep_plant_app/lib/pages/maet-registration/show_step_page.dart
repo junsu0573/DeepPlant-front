@@ -73,7 +73,11 @@ class _ShowStepState extends State<ShowStep> {
             Container(
               margin: EdgeInsets.only(bottom: 10),
               child: SaveButton(
-                onPressed: _isAllCompleted() ? () {} : null,
+                onPressed: _isAllCompleted()
+                    ? () {
+                        context.go('/option/complete_register');
+                      }
+                    : null,
               ),
             ),
           ],

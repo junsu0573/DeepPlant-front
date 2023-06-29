@@ -23,6 +23,7 @@ class _InsertionMeatImageState extends State<InsertionMeatImage> {
   final _authentication = FirebaseAuth.instance;
   User? loggedUser;
   File? pickedImage;
+  String? imagePath;
   bool isLoading = false;
   bool isFinal = false;
   bool isImageAssigned = false;
@@ -56,6 +57,7 @@ class _InsertionMeatImageState extends State<InsertionMeatImage> {
 
       if (pickedImageFile != null) {
         // pickedImage에 촬영한 이미지를 달아놓는다.
+        imagePath = pickedImageFile.path;
         pickedImage = File(pickedImageFile.path);
         now = DateTime.now();
         year = now.year.toString();
@@ -79,10 +81,12 @@ class _InsertionMeatImageState extends State<InsertionMeatImage> {
       // 이미지를 firbaseStorage에 userid/시간.png 형식으로 저장
 
       // 이미지 이름 생성!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-      final refImage =
-          FirebaseStorage.instance.ref().child('${loggedUser!.uid}.png');
+      final refImage = FirebaseStorage.instance.ref().child('1-2-3-4-5.png');
 
-      await refImage.putFile(pickedImage!);
+      await refImage.putFile(
+        File(imagePath!),
+        SettableMetadata(contentType: 'image/jpeg'),
+      );
     } catch (e) {
       setState(() {
         isLoading = false;
@@ -94,9 +98,9 @@ class _InsertionMeatImageState extends State<InsertionMeatImage> {
     });
   }
 
-  void saveDate(
-      MeatData meatData, File? image, String year, String month, String day) {
-    meatData.imageFile = image;
+  void saveData(MeatData meatData, String? imagePath, String year, String month,
+      String day) {
+    meatData.imageFile = imagePath;
     meatData.date = '{$year}-{$month}-{$day}';
   }
 
@@ -342,9 +346,10 @@ class _InsertionMeatImageState extends State<InsertionMeatImage> {
                 child: ElevatedButton(
                   onPressed: pickedImage != null
                       ? () async {
-                          //await saveImage();
-                          saveDate(
-                              widget.meatData, pickedImage, year, month, day);
+                          await saveImage();
+                          saveData(
+                              widget.meatData, imagePath, year, month, day);
+                          if (!mounted) return;
                           context.go('/option/show-step');
                         }
                       : null,
