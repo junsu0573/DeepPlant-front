@@ -92,6 +92,9 @@ class _ExperimentDataInputPageState extends State<ExperimentDataInputPage> {
               ),
               SaveButton(
                 onPressed: _sendEvaluation,
+                text: '저장',
+                width: 658.w,
+                heigh: 104.h,
               ),
             ],
           ),

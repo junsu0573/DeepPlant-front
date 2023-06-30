@@ -3,6 +3,7 @@ import 'package:deep_plant_app/widgets/custom_appbar.dart';
 import 'package:deep_plant_app/widgets/save_button.dart';
 import 'package:deep_plant_app/widgets/step_card.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
 class ShowStep extends StatefulWidget {
@@ -78,6 +79,9 @@ class _ShowStepState extends State<ShowStep> {
                         context.go('/option/complete_register');
                       }
                     : null,
+                text: '저장',
+                width: 310.w,
+                heigh: 104.h,
               ),
             ),
           ],

@@ -93,6 +93,9 @@ class _TongueDataInputPageState extends State<TongueDataInputPage> {
             ),
             SaveButton(
               onPressed: _sendEvaluation,
+              text: '저장',
+              width: 658.w,
+              heigh: 104.h,
             ),
           ],
         ),
