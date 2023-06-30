@@ -1,6 +1,6 @@
 import 'package:deep_plant_app/models/meat_data_model.dart';
-import 'package:deep_plant_app/widgets/custom_dialog.dart';
 import 'package:deep_plant_app/widgets/save_button.dart';
+import 'package:deep_plant_app/widgets/show_custom_dialog.dart';
 import 'package:deep_plant_app/widgets/title_desc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -114,7 +114,7 @@ class _FreshmeatEvaluationState extends State<FreshmeatEvaluation> {
           //customDialog (context);
         },
         closeButtonOnPressed: () {
-          customDialog(context);
+          ShowExitDialog(context);
         },
       ),
       body: SingleChildScrollView(
