@@ -1,4 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:deep_plant_app/pages/sign-up/certification_bottom_sheet.dart';
+import 'package:deep_plant_app/source/pallete.dart';
 import 'package:deep_plant_app/widgets/common_button.dart';
 import 'package:deep_plant_app/widgets/custom_appbar.dart';
 import 'package:deep_plant_app/widgets/save_button.dart';
@@ -29,7 +31,7 @@ class _IdPwInsertionState extends State<IdPwInsertion> {
   // 버튼 활성화 확인을 위한 변수
   bool _isValidId = false;
   bool _isValidPw = false;
-  bool _isValidCPw = false;
+  bool isValidCPw = false;
 
   // validation 문구를 위한 변수
   bool isRedTextId = false;
@@ -90,20 +92,20 @@ class _IdPwInsertionState extends State<IdPwInsertion> {
   String? cPwValidate(String? value) {
     if (value!.isEmpty) {
       setState(() {
-        _isValidCPw = false;
+        isValidCPw = false;
         isRedTextCPw = false;
       });
       return null;
     } else if (userPassword != userCPassword) {
       setState(() {
-        _isValidCPw = false;
+        isValidCPw = false;
         isRedTextCPw = true;
       });
       return null;
     }
 
     setState(() {
-      _isValidCPw = true;
+      isValidCPw = true;
       isRedTextCPw = false;
     });
 
@@ -303,7 +305,16 @@ class _IdPwInsertionState extends State<IdPwInsertion> {
                   ),
                 ),
                 SaveButton(
-                  onPressed: isAllChecked() ? () {} : null,
+                  onPressed: isAllChecked()
+                      ? () {
+                          showModalBottomSheet(
+                            isScrollControlled: true,
+                            backgroundColor: Colors.transparent,
+                            context: context,
+                            builder: (context) => CertificationBottomSheet(),
+                          );
+                        }
+                      : null,
                   text: '다음',
                   width: 658.w,
                   heigh: 104.h,
@@ -315,4 +326,158 @@ class _IdPwInsertionState extends State<IdPwInsertion> {
       ),
     );
   }
+}
+
+// 약관동의 창
+void _certificationSheet(BuildContext context) {
+  bool isChecked1 = false;
+  bool isChecked2 = false;
+  bool isChecked3 = false;
+  bool isChecked4 = false;
+
+  showModalBottomSheet(
+    context: context,
+    isScrollControlled: true,
+    backgroundColor: Colors.transparent,
+    builder: (context) => Container(
+      height: MediaQuery.of(context).size.height * 0.67,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.vertical(top: Radius.circular(25.sp)),
+      ),
+      child: Container(
+        margin: EdgeInsets.fromLTRB(60.w, 44.h, 60.w, 0),
+        child: Column(
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  '약관동의',
+                  style: TextStyle(
+                    fontSize: 36.sp,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                SizedBox(
+                  height: 28.h,
+                ),
+                Text(
+                  '간단한 약관동의 후 회원가입이 진행됩니다.',
+                  style:
+                      TextStyle(fontSize: 32.sp, fontWeight: FontWeight.w400),
+                ),
+                SizedBox(
+                  height: 81.h,
+                ),
+                Row(
+                  children: [
+                    Checkbox(
+                      value: isChecked1,
+                      onChanged: null,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                    Text(
+                      '개인정보 수집제공 동의(필수)',
+                      style: TextStyle(
+                        fontSize: 30.sp,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    Spacer(),
+                    TextButton(
+                      onPressed: () {},
+                      child: Text(
+                        '보기',
+                        style: TextStyle(
+                          fontSize: 30.sp,
+                          color: Palette.lightOptionColor,
+                          decoration: TextDecoration.underline,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Checkbox(
+                      value: isChecked2,
+                      onChanged: null,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                    Text(
+                      '제 3자 정보제공 동의 (필수)',
+                      style: TextStyle(
+                        fontSize: 30.sp,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    Spacer(),
+                    TextButton(
+                      onPressed: () {},
+                      child: Text(
+                        '보기',
+                        style: TextStyle(
+                          fontSize: 30.sp,
+                          color: Palette.lightOptionColor,
+                          decoration: TextDecoration.underline,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Checkbox(
+                      value: isChecked3,
+                      onChanged: null,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                    Text(
+                      '알림받기 (선택)',
+                      style: TextStyle(
+                        fontSize: 30.sp,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
+                ),
+                Divider(),
+                Row(
+                  children: [
+                    Checkbox(
+                      value: isChecked4,
+                      onChanged: (value) {
+                        isChecked4 = value!;
+                      },
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                    Text(
+                      '모두 확인 및 동의합니다.',
+                      style: TextStyle(
+                        fontSize: 30.sp,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 57.h,
+            ),
+            SaveButton(text: '다음', width: 658.w, heigh: 104.h),
+          ],
+        ),
+      ),
+    ),
+  );
 }
