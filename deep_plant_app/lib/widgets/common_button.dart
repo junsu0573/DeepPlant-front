@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class CommonButton extends StatelessWidget {
-  final String text;
+  final Widget text;
   final void Function()? onPress;
   final double width;
   final double height;
@@ -26,13 +26,7 @@ class CommonButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(30),
           ),
         ),
-        child: Text(
-          text,
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 18,
-          ),
-        ),
+        child: text,
       ),
     );
   }

@@ -9,13 +9,15 @@ class EmailVerification extends StatelessWidget {
   Widget build(BuildContext context) {
     // 유저의 이메일 valid 검사
     void getUserValid() {
-      User? user = FirebaseAuth.instance.currentUser;
-      if (user != null && user.emailVerified) {
-        context.go('/succeed-sign-up');
-      } else {
+      try {
+        User? user = FirebaseAuth.instance.currentUser;
+        user!.reload();
+        if (user.emailVerified) {
+          context.go('/succeed-sign-up');
+        }
+      } catch (e) {
         print('인증 실패');
       }
-      print(user!.emailVerified);
     }
 
     return Scaffold(

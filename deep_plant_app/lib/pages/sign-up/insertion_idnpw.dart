@@ -383,7 +383,7 @@ class _InsertionIdnPwState extends State<InsertionIdnPw> {
                             ),
                           ),
                           CommonButton(
-                            text: '검색',
+                            text: Text('검색'),
                             onPress: () {},
                             width: 100,
                             height: 45,

@@ -2,23 +2,29 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 //////////////////////////////////////////////////////////////////////////////////////
-String UnselectedText = '선택되지 않은 항목이 있습니다.';
-String FileUploadFailText = '파일 업로드 실패';
-String TemporarySaveText = '데이터 등록을 실패했습니다.';
+String unselectedText = '선택되지 않은 항목이 있습니다.';
+String fileUploadFailedText = '파일 업로드 실패';
+String tempSaveText = '데이터 등록을 실패했습니다.';
+String duplicateEmailText = '중복된 이메일입니다.';
 
 void showUnselectedPopup(BuildContext context) {
   // 선택되지않은_popup
-  showPopup(context, UnselectedText);
+  showPopup(context, unselectedText);
 }
 
 void showFileUploadFailPopup(BuildContext context) {
   // 실패_popup
-  showPopup(context, FileUploadFailText);
+  showPopup(context, fileUploadFailedText);
 }
 
 void showTemporarySavePopup(BuildContext context) {
   // 임시저장_popup
-  showPopup(context, TemporarySaveText);
+  showPopup(context, tempSaveText);
+}
+
+void showDuplicateEmailPopup(BuildContext context) {
+  // 이메일 중복
+  showPopup(context, duplicateEmailText);
 }
 /////////////////////////////////////////////// ////////////////////////////////////////
 
