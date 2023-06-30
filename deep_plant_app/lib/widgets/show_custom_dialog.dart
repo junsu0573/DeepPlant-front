@@ -26,7 +26,7 @@ void ShowDataRegisterDialog(BuildContext context) {
       '진행중인 데이터 등록이 있습니다.',
       '이어서 등록하시겠습니까 ?',
       '처음부터',
-      '이어서 등록', () {/*  처음부터 기능  */}, () {/*  이어서 등록 기능  */});
+      '이어서 등록', () {/*  처음부터 기능  */}, () {/*   이어서 등록 기능  */});
 }
 
 void ShowFreshmeatEvaluationDialog(BuildContext context) {
