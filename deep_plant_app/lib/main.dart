@@ -22,6 +22,7 @@ import 'package:go_router/go_router.dart';
 import 'package:deep_plant_app/pages/maet-registration/get_history_page.dart';
 import 'package:deep_plant_app/pages/manage_data_page.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:deep_plant_app/pages/deep_aging_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
