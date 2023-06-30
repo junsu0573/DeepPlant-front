@@ -74,7 +74,7 @@ class ResetPW extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   CommonButton(
-                      text: '저장', onPress: () {}, width: 350, height: 45),
+                      text: Text('저장'), onPress: () {}, width: 350, height: 45),
                 ],
               ),
             ],

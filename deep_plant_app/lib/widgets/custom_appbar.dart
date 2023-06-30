@@ -25,6 +25,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       elevation: 0,
       automaticallyImplyLeading: backButton,
+      foregroundColor: Colors.black,
       title: Text(
         title,
         style: TextStyle(
@@ -32,7 +33,6 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           fontSize: 36.sp,
           fontFamily: 'Inter',
           fontWeight: FontWeight.w600,
-          height: 1.11.h, // line-height와 동일한 역할을 수행
         ),
       ),
       actions: closeButton

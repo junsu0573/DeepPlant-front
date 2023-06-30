@@ -48,7 +48,7 @@ class EditUserInfo extends StatelessWidget {
               // 비밀번호 변경 버튼
               Center(
                 child: CommonButton(
-                    text: '비밀번호 변경하기',
+                    text: Text('비밀번호 변경하기'),
                     onPress: () {
                       context.go('/option/my-page/edit-info/reset-pw');
                     },

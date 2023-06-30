@@ -6,6 +6,7 @@ import 'package:deep_plant_app/models/user_model.dart';
 import 'package:deep_plant_app/widgets/save_button.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
@@ -159,6 +160,9 @@ class _CompleteResgistrationState extends State<CompleteResgistration> {
                     margin: EdgeInsets.only(bottom: 10),
                     child: SaveButton(
                       onPressed: () => context.go('/option'),
+                      text: '홈으로 이동',
+                      width: 658.w,
+                      heigh: 104.h,
                     ),
                   ),
                 ],

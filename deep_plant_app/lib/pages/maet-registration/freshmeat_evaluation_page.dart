@@ -166,6 +166,9 @@ class _FreshmeatEvaluationState extends State<FreshmeatEvaluation> {
                       context.go('/option/show-step');
                     }
                   : null,
+              text: '저장',
+              width: 658.w,
+              heigh: 104.h,
             ),
           ],
         ),

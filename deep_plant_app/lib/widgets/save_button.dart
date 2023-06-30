@@ -3,10 +3,16 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SaveButton extends StatelessWidget {
   final VoidCallback? onPressed;
+  final String text;
+  final double width;
+  final double heigh;
 
   const SaveButton({
     super.key,
     this.onPressed,
+    required this.text,
+    required this.width,
+    required this.heigh,
   });
 
   @override
@@ -18,13 +24,13 @@ class SaveButton extends StatelessWidget {
         style: ElevatedButton.styleFrom(
           disabledBackgroundColor: Color(0xFFC4C4C4),
           backgroundColor: Color(0xFF515151),
-          minimumSize: Size(658.w, 104.h),
+          minimumSize: Size(width, heigh),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(19.sp),
           ),
         ),
         child: Text(
-          '저장',
+          text,
           style: TextStyle(
             color: Colors.white,
             fontSize: 30.sp,
