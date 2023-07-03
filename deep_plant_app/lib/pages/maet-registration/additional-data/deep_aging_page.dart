@@ -1,6 +1,7 @@
 import 'package:deep_plant_app/models/deep_aging_data_model.dart';
 import 'package:deep_plant_app/widgets/custom_appbar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
 class DeepAging extends StatefulWidget {
@@ -103,7 +104,7 @@ class _DeepAgingState extends State<DeepAging> {
                   height: 70.0,
                   child: OutlinedButton.icon(
                     onPressed: () async {
-                      context.go('/insert');
+                      context.go('/option/show-step-2/deep-aging-data/insert');
                       if (active()) {
                         setState(
                           () {
@@ -118,11 +119,13 @@ class _DeepAgingState extends State<DeepAging> {
                                 ),
                                 height: 70.0,
                                 child: OutlinedButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    context.go('/option/show-step-2/deep-aging-data/insert');
+                                  },
                                   child: Row(
                                     children: [
                                       Padding(
-                                        padding: const EdgeInsets.all(8.0),
+                                        padding: const EdgeInsets.all(2.0),
                                         child: RichText(
                                           maxLines: 2,
                                           text: TextSpan(
@@ -131,7 +134,7 @@ class _DeepAgingState extends State<DeepAging> {
                                                 text: '  ${widgets.length + 1}차\n',
                                                 style: TextStyle(
                                                   color: Colors.black,
-                                                  fontSize: 13.0,
+                                                  fontSize: 20.sp,
                                                   fontWeight: FontWeight.bold,
                                                 ),
                                               ),
@@ -139,7 +142,7 @@ class _DeepAgingState extends State<DeepAging> {
                                                 text: '처리일',
                                                 style: TextStyle(
                                                   color: Colors.black,
-                                                  fontSize: 13.0,
+                                                  fontSize: 20.sp,
                                                   fontWeight: FontWeight.bold,
                                                 ),
                                               ),
@@ -161,13 +164,11 @@ class _DeepAgingState extends State<DeepAging> {
                                           '${widget.agingdata.insertedHour}시간 ${widget.agingdata.insertedMinute}분',
                                           style: TextStyle(
                                             color: Colors.black,
-                                            fontSize: 18.0,
+                                            fontSize: 32.sp,
                                           ),
                                         ),
                                       ),
-                                      SizedBox(
-                                        width: 18.0,
-                                      ),
+                                      Spacer(flex: 2),
                                       Padding(
                                         padding: const EdgeInsets.all(8.0),
                                         child: Text(

@@ -2,6 +2,7 @@ import 'package:deep_plant_app/models/meat_data_model.dart';
 import 'package:deep_plant_app/models/user_model.dart';
 import 'package:deep_plant_app/pages/maet-registration/additional-data/deep_aging_page.dart';
 import 'package:deep_plant_app/pages/maet-registration/additional-data/experiment_data_input_page.dart';
+import 'package:deep_plant_app/pages/maet-registration/additional-data/insert_deep_aging_data_page.dart';
 import 'package:deep_plant_app/pages/maet-registration/basic-data/complete_registration_page.dart';
 import 'package:deep_plant_app/pages/maet-registration/additional-data/complete_registration_page_2.dart';
 import 'package:deep_plant_app/pages/maet-registration/basic-data/freshmeat_evaluation_page.dart';
@@ -144,11 +145,18 @@ final _router = GoRouter(
           ),
           routes: [
             GoRoute(
-              path: 'deep-aging-data',
-              builder: (context, state) => DeepAging(
-                agingdata: deepAging,
-              ),
-            ),
+                path: 'deep-aging-data',
+                builder: (context, state) => DeepAging(
+                      agingdata: deepAging,
+                    ),
+                routes: [
+                  GoRoute(
+                    path: 'insert',
+                    builder: (context, state) => InsertDeepAgingData(
+                      agingdata: deepAging,
+                    ),
+                  )
+                ]),
             GoRoute(
               path: 'fresh-meat-data',
               builder: (context, state) => FreshmeatEvaluation(
@@ -205,8 +213,7 @@ class MyApp extends StatelessWidget {
       // 기본 색상
       theme: ThemeData(
         primaryColor: const Color.fromRGBO(51, 51, 51, 1),
-        buttonTheme:
-            const ButtonThemeData(buttonColor: Color.fromRGBO(51, 51, 51, 1)),
+        buttonTheme: const ButtonThemeData(buttonColor: Color.fromRGBO(51, 51, 51, 1)),
       ),
       routerConfig: _router,
       builder: (context, child) {

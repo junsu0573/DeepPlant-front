@@ -435,8 +435,8 @@ class _InsertDeepAgingDataState extends State<InsertDeepAgingData> {
                       width: 350,
                       child: ElevatedButton(
                         onPressed: () {
-                          saveData(widget.agingdata, '0$selectedMonth', '0$selectedDay', selectedYear!, insertedHour!, insertedMinute!);
-                          context.go('/');
+                          saveData(widget.agingdata, '0$selectedMonth', '$selectedDay', selectedYear!, insertedHour!, insertedMinute!);
+                          context.go('/option/show-step-2/deep-aging-data/');
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.grey[800],
