@@ -33,6 +33,11 @@ class _InsertDeepAgingDataState extends State<InsertDeepAgingData> {
 
   bool isInsertedHour = false;
   bool isInsertedMinute = false;
+  bool isInsertedMonth = false;
+  bool isInsertedDay = false;
+  bool isInsertedYear = false;
+
+  bool isFinal = false;
 
   int? insertedHour;
   int? insertedMinute;
@@ -55,6 +60,18 @@ class _InsertDeepAgingDataState extends State<InsertDeepAgingData> {
     }
     if (int.parse(selectedDay!) < 10) {
       selectedDay = '0$selectedDay';
+    }
+  }
+
+  void successAssign() {
+    if (isInsertedDay && isInsertedHour && isInsertedMinute && isInsertedYear && isInsertedMonth) {
+      setState(() {
+        isFinal = true;
+      });
+    } else {
+      setState(() {
+        isFinal = false;
+      });
     }
   }
 
@@ -222,6 +239,8 @@ class _InsertDeepAgingDataState extends State<InsertDeepAgingData> {
                                 setState(() {
                                   selectedMonth = selected;
                                   month = false;
+                                  isInsertedMonth = true;
+                                  successAssign();
                                 });
                               },
                             ),
@@ -256,6 +275,8 @@ class _InsertDeepAgingDataState extends State<InsertDeepAgingData> {
                                   setState(() {
                                     selectedYear = yearData[i].toString();
                                     initialValue = yearData[i];
+                                    isInsertedYear = true;
+                                    successAssign();
                                   });
                                 },
                                 itemBuilder: (context, index) {
@@ -300,6 +321,8 @@ class _InsertDeepAgingDataState extends State<InsertDeepAgingData> {
                                   this.focusedDay = focusedDay;
                                   selectedDay = selected.day.toString();
                                   day = false;
+                                  isInsertedDay = true;
+                                  successAssign();
                                 });
                               },
                               selectedDayPredicate: (DateTime day) {
@@ -355,6 +378,8 @@ class _InsertDeepAgingDataState extends State<InsertDeepAgingData> {
                                 setState(() {
                                   if (value != '') {
                                     insertedHour = int.parse(value);
+                                    isInsertedHour = true;
+                                    successAssign();
                                   }
                                 });
                               },
@@ -395,6 +420,8 @@ class _InsertDeepAgingDataState extends State<InsertDeepAgingData> {
                                 setState(() {
                                   if (value != '') {
                                     insertedMinute = int.parse(value);
+                                    isInsertedMinute = true;
+                                    successAssign();
                                   }
                                 });
                               },
@@ -449,11 +476,13 @@ class _InsertDeepAgingDataState extends State<InsertDeepAgingData> {
                 height: 55,
                 width: 350,
                 child: ElevatedButton(
-                  onPressed: () {
-                    setting();
-                    saveData(widget.agingdata, '$selectedMonth', '$selectedDay', selectedYear!, insertedHour!, insertedMinute!);
-                    context.go('/option/show-step-2/deep-aging-data/');
-                  },
+                  onPressed: isFinal
+                      ? () {
+                          setting();
+                          saveData(widget.agingdata, '$selectedMonth', '$selectedDay', selectedYear!, insertedHour!, insertedMinute!);
+                          context.go('/option/show-step-2/deep-aging-data/');
+                        }
+                      : null,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.grey[800],
                     disabledBackgroundColor: Colors.grey[400],

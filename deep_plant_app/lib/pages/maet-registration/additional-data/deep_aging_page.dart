@@ -250,7 +250,7 @@ class _DeepAgingState extends State<DeepAging> {
                 height: 55,
                 width: 350,
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: (widget.agingdata.selectedDay != null) ? () {} : null,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.grey[800],
                     disabledBackgroundColor: Colors.grey[400],
