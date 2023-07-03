@@ -13,7 +13,18 @@ class DeepAging extends StatefulWidget {
 
 class _DeepAgingState extends State<DeepAging> {
   // 딥에이징 데이터 추가 시에 등록될 버튼이 추가될 위치.
+  int totalMinute = 0;
+  int totalHour = 0;
   List<Widget> widgets = [];
+  bool isexist = false;
+
+  bool active() {
+    if (widget.agingdata.insertedHour != null) {
+      return true;
+    }
+    return false;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -93,94 +104,96 @@ class _DeepAgingState extends State<DeepAging> {
                   child: OutlinedButton.icon(
                     onPressed: () async {
                       context.go('/insert');
-                      setState(
-                        () {
-                          // 이로 인해 버튼이 추가되어 표현된다.
-                          widgets.add(
-                            Container(
-                              padding: EdgeInsets.only(
-                                top: 5.0,
-                                bottom: 5.0,
-                                left: 30.0,
-                                right: 30.0,
-                              ),
-                              height: 70.0,
-                              child: OutlinedButton(
-                                onPressed: () {},
-                                child: Row(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: RichText(
-                                        maxLines: 2,
-                                        text: TextSpan(
-                                          children: <TextSpan>[
-                                            TextSpan(
-                                              text: '  ${widgets.length + 1}차\n',
-                                              style: TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 13.0,
-                                                fontWeight: FontWeight.bold,
+                      if (active()) {
+                        setState(
+                          () {
+                            // 이로 인해 버튼이 추가되어 표현된다.
+                            widgets.add(
+                              Container(
+                                padding: EdgeInsets.only(
+                                  top: 5.0,
+                                  bottom: 5.0,
+                                  left: 30.0,
+                                  right: 30.0,
+                                ),
+                                height: 70.0,
+                                child: OutlinedButton(
+                                  onPressed: () {},
+                                  child: Row(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: RichText(
+                                          maxLines: 2,
+                                          text: TextSpan(
+                                            children: <TextSpan>[
+                                              TextSpan(
+                                                text: '  ${widgets.length + 1}차\n',
+                                                style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 13.0,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
                                               ),
-                                            ),
-                                            TextSpan(
-                                              text: '처리일',
-                                              style: TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 13.0,
-                                                fontWeight: FontWeight.bold,
+                                              TextSpan(
+                                                text: '처리일',
+                                                style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 13.0,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
                                               ),
-                                            ),
-                                          ],
+                                            ],
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: VerticalDivider(
-                                        thickness: 2,
-                                        width: 1,
-                                        color: Colors.grey[300],
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: VerticalDivider(
+                                          thickness: 2,
+                                          width: 1,
+                                          color: Colors.grey[300],
+                                        ),
                                       ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Text(
-                                        '${widget.agingdata.insertedHour}시간 ${widget.agingdata.insertedMinute}분',
-                                        style: TextStyle(
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Text(
+                                          '${widget.agingdata.insertedHour}시간 ${widget.agingdata.insertedMinute}분',
+                                          style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 18.0,
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: 18.0,
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Text(
+                                          '${widget.agingdata.selectedYear}.${widget.agingdata.selectedMonth}.${widget.agingdata.selectedDay}',
+                                          style: TextStyle(
+                                            color: Colors.grey[400],
+                                            fontSize: 12.0,
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(4.0),
+                                        child: Icon(
+                                          Icons.arrow_forward_ios_outlined,
                                           color: Colors.black,
-                                          fontSize: 18.0,
+                                          size: 20.0,
                                         ),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: 18.0,
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Text(
-                                        '${widget.agingdata.selectedYear}.${widget.agingdata.selectedMonth}.${widget.agingdata.selectedDay}',
-                                        style: TextStyle(
-                                          color: Colors.grey[400],
-                                          fontSize: 12.0,
-                                        ),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(4.0),
-                                      child: Icon(
-                                        Icons.arrow_forward_ios_outlined,
-                                        color: Colors.black,
-                                        size: 20.0,
-                                      ),
-                                    )
-                                  ],
+                                      )
+                                    ],
+                                  ),
                                 ),
                               ),
-                            ),
-                          );
-                        },
-                      );
+                            );
+                          },
+                        );
+                      }
                     },
                     // 이 아래는 추가하는 버튼에 대한 내용이며, 위는 setState를 통해 버튼이 만들어진다.
                     icon: Icon(
@@ -223,7 +236,7 @@ class _DeepAgingState extends State<DeepAging> {
                   ),
                   child: Center(
                     child: Text(
-                      '${widgets.length}회/ ${widgets.length * 6}시간 00분',
+                      '${widgets.length}회/ $totalHour시간 $totalMinute분',
                       textAlign: TextAlign.center,
                       style: TextStyle(fontSize: 19),
                     ),
@@ -241,15 +254,6 @@ class _DeepAgingState extends State<DeepAging> {
                 width: 350,
                 child: ElevatedButton(
                   onPressed: () {},
-                  // onPressed: pickedImage != null
-                  //     ? () async {
-                  //         await saveImage();
-                  //         saveData(
-                  //             widget.meatData, imagePath, year, month, day);
-                  //         if (!mounted) return;
-                  //         context.go('/option/show-step');
-                  //       }
-                  //     : null,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.grey[800],
                     disabledBackgroundColor: Colors.grey[400],
