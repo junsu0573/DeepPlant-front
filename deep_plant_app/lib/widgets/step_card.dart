@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class StepCard extends StatelessWidget {
   final String mainText;
@@ -18,8 +19,8 @@ class StepCard extends StatelessWidget {
     return Container(
       padding: EdgeInsets.all(10),
       margin: EdgeInsets.all(3),
-      width: 350,
-      height: 100,
+      width: 588.w,
+      height: 159.h,
       decoration: BoxDecoration(
         color: isCompleted ? Color(0xFFE1E1E1) : Colors.white,
         border: Border.all(

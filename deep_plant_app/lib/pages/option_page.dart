@@ -93,7 +93,9 @@ class OptionPage extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.all(5.0),
                   child: GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      context.go('/option/add-data');
+                    },
                     child: Container(
                       padding: const EdgeInsets.all(20),
                       width: 240,
