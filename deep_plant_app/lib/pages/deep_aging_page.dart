@@ -1,8 +1,11 @@
+import 'package:deep_plant_app/models/deep_aging_data_model.dart';
 import 'package:deep_plant_app/widgets/custom_appbar.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class DeepAging extends StatefulWidget {
-  const DeepAging({super.key});
+  const DeepAging({super.key, required this.agingdata});
+  final DeepAgingData agingdata;
 
   @override
   State<DeepAging> createState() => _DeepAgingState();
@@ -68,9 +71,11 @@ class _DeepAgingState extends State<DeepAging> {
           SizedBox(
             height: 15.0,
           ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: widgets,
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: widgets,
+            ),
           ),
           // 만일 버튼 위젯이 4개가 된다면, 추가 버튼은 사라질 것이다.
           if (widgets.length < 4)
@@ -86,7 +91,8 @@ class _DeepAgingState extends State<DeepAging> {
                   ),
                   height: 70.0,
                   child: OutlinedButton.icon(
-                    onPressed: () {
+                    onPressed: () async {
+                      context.go('/insert');
                       setState(
                         () {
                           // 이로 인해 버튼이 추가되어 표현된다.
@@ -140,7 +146,7 @@ class _DeepAgingState extends State<DeepAging> {
                                     Padding(
                                       padding: const EdgeInsets.all(8.0),
                                       child: Text(
-                                        '6시간 00분',
+                                        '${widget.agingdata.insertedHour}시간 ${widget.agingdata.insertedMinute}분',
                                         style: TextStyle(
                                           color: Colors.black,
                                           fontSize: 18.0,
@@ -148,12 +154,12 @@ class _DeepAgingState extends State<DeepAging> {
                                       ),
                                     ),
                                     SizedBox(
-                                      width: 24.0,
+                                      width: 18.0,
                                     ),
                                     Padding(
                                       padding: const EdgeInsets.all(8.0),
                                       child: Text(
-                                        '2022.09.19',
+                                        '${widget.agingdata.selectedYear}.${widget.agingdata.selectedMonth}.${widget.agingdata.selectedDay}',
                                         style: TextStyle(
                                           color: Colors.grey[400],
                                           fontSize: 12.0,
@@ -194,7 +200,7 @@ class _DeepAgingState extends State<DeepAging> {
               ],
             ),
           Padding(
-            padding: const EdgeInsets.all(25.0),
+            padding: const EdgeInsets.only(top: 25.0, left: 25.0, right: 25.0, bottom: 5.0),
             child: Row(
               children: [
                 Text(
@@ -205,7 +211,7 @@ class _DeepAgingState extends State<DeepAging> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(25.0),
+            padding: const EdgeInsets.only(left: 25.0, right: 25.0, top: 5.0, bottom: 20.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
@@ -224,6 +230,42 @@ class _DeepAgingState extends State<DeepAging> {
                   ),
                 ),
               ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 20.0, right: 20.0, top: 20.0, bottom: 20.0),
+            child: Transform.translate(
+              offset: Offset(0, 0),
+              child: SizedBox(
+                height: 55,
+                width: 350,
+                child: ElevatedButton(
+                  onPressed: () {},
+                  // onPressed: pickedImage != null
+                  //     ? () async {
+                  //         await saveImage();
+                  //         saveData(
+                  //             widget.meatData, imagePath, year, month, day);
+                  //         if (!mounted) return;
+                  //         context.go('/option/show-step');
+                  //       }
+                  //     : null,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.grey[800],
+                    disabledBackgroundColor: Colors.grey[400],
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                  ),
+                  child: Text(
+                    '저장',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 17.0,
+                    ),
+                  ),
+                ),
+              ),
             ),
           )
         ],
