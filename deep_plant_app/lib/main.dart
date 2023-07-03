@@ -12,7 +12,6 @@ import 'package:deep_plant_app/pages/option_page.dart';
 import 'package:deep_plant_app/pages/home_page.dart';
 import 'package:deep_plant_app/pages/sign-up/email_verification.dart';
 import 'package:deep_plant_app/pages/sign-up/id_pw_insertion_page.dart';
-import 'package:deep_plant_app/pages/sign-up/insertion_idnpw.dart';
 import 'package:deep_plant_app/pages/sign_in_page.dart';
 import 'package:deep_plant_app/pages/sign-up/succeed_sign_up_page.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -52,20 +51,16 @@ final _router = GoRouter(
           // 회원가입을 위한 라우팅
           routes: [
             GoRoute(
-              path: ('certification'),
-              builder: (context, state) => IdPwInsertion(),
+              path: ('sign-up'),
+              builder: (context, state) => IdPwInsertion(
+                user: newUser,
+              ),
               routes: [
                 GoRoute(
                   path: ('email-verify'),
-                  builder: (context, state) => InsertionIdnPw(
+                  builder: (context, state) => EmailVerification(
                     user: newUser,
                   ),
-                  routes: [
-                    GoRoute(
-                      path: ('email-verification'),
-                      builder: (context, state) => EmailVerification(),
-                    ),
-                  ],
                 ),
               ],
             ),

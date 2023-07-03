@@ -1,8 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:deep_plant_app/models/user_model.dart';
 import 'package:deep_plant_app/pages/sign-up/certification_bottom_sheet.dart';
-import 'package:deep_plant_app/source/pallete.dart';
 import 'package:deep_plant_app/widgets/common_button.dart';
 import 'package:deep_plant_app/widgets/custom_appbar.dart';
+import 'package:deep_plant_app/widgets/level_dropdown_button.dart';
 import 'package:deep_plant_app/widgets/save_button.dart';
 import 'package:deep_plant_app/widgets/show_custom_popup.dart';
 import 'package:email_validator/email_validator.dart';
@@ -10,7 +11,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class IdPwInsertion extends StatefulWidget {
-  const IdPwInsertion({super.key});
+  final UserModel user;
+  const IdPwInsertion({
+    super.key,
+    required this.user,
+  });
 
   @override
   State<IdPwInsertion> createState() => _IdPwInsertionState();
@@ -24,6 +29,7 @@ class _IdPwInsertionState extends State<IdPwInsertion> {
   final _firestore = FirebaseFirestore.instance;
 
   bool _isUnique = false;
+  String userName = '';
   String userEmail = '';
   String userPassword = '';
   String userCPassword = '';
@@ -156,7 +162,11 @@ class _IdPwInsertionState extends State<IdPwInsertion> {
 
   // 모든 값이 올바르게 입력됐는지 확인
   bool isAllChecked() {
-    if (_isValidId && _isValidPw && _isValidPw && _isUnique) {
+    if (_isValidId &&
+        _isValidPw &&
+        _isValidPw &&
+        _isUnique &&
+        userName.isNotEmpty) {
       return true;
     }
     return false;
@@ -183,6 +193,26 @@ class _IdPwInsertionState extends State<IdPwInsertion> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      SizedBox(
+                        height: 30.h,
+                      ),
+                      SizedBox(
+                        width: 540.w,
+                        // 이름 입력 필드
+                        child: TextFormField(
+                          decoration: InputDecoration(
+                            hintText: '이름',
+                          ),
+                          onSaved: (value) {
+                            userName = value!;
+                          },
+                          onChanged: (value) {
+                            setState(() {
+                              userName = value;
+                            });
+                          },
+                        ),
+                      ),
                       SizedBox(
                         height: 30.h,
                       ),
@@ -299,19 +329,35 @@ class _IdPwInsertionState extends State<IdPwInsertion> {
                         ),
                       ),
                       SizedBox(
-                        height: 470.h,
+                        height: 30.h,
+                      ),
+                      Text(
+                        '권한',
+                        style: TextStyle(fontSize: 30.sp),
+                      ),
+                      // 사용자 권한 dropdown 버튼
+                      LevelDropdownButton(
+                        user: widget.user,
                       ),
                     ],
                   ),
                 ),
+                SizedBox(
+                  height: 180.h,
+                ),
                 SaveButton(
                   onPressed: isAllChecked()
                       ? () {
+                          widget.user.email = userEmail;
+                          widget.user.name = userName;
+                          widget.user.password = userPassword;
                           showModalBottomSheet(
                             isScrollControlled: true,
                             backgroundColor: Colors.transparent,
                             context: context,
-                            builder: (context) => CertificationBottomSheet(),
+                            builder: (context) => CertificationBottomSheet(
+                              user: widget.user,
+                            ),
                           );
                         }
                       : null,
@@ -326,158 +372,4 @@ class _IdPwInsertionState extends State<IdPwInsertion> {
       ),
     );
   }
-}
-
-// 약관동의 창
-void _certificationSheet(BuildContext context) {
-  bool isChecked1 = false;
-  bool isChecked2 = false;
-  bool isChecked3 = false;
-  bool isChecked4 = false;
-
-  showModalBottomSheet(
-    context: context,
-    isScrollControlled: true,
-    backgroundColor: Colors.transparent,
-    builder: (context) => Container(
-      height: MediaQuery.of(context).size.height * 0.67,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(25.sp)),
-      ),
-      child: Container(
-        margin: EdgeInsets.fromLTRB(60.w, 44.h, 60.w, 0),
-        child: Column(
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  '약관동의',
-                  style: TextStyle(
-                    fontSize: 36.sp,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                SizedBox(
-                  height: 28.h,
-                ),
-                Text(
-                  '간단한 약관동의 후 회원가입이 진행됩니다.',
-                  style:
-                      TextStyle(fontSize: 32.sp, fontWeight: FontWeight.w400),
-                ),
-                SizedBox(
-                  height: 81.h,
-                ),
-                Row(
-                  children: [
-                    Checkbox(
-                      value: isChecked1,
-                      onChanged: null,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
-                    Text(
-                      '개인정보 수집제공 동의(필수)',
-                      style: TextStyle(
-                        fontSize: 30.sp,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    Spacer(),
-                    TextButton(
-                      onPressed: () {},
-                      child: Text(
-                        '보기',
-                        style: TextStyle(
-                          fontSize: 30.sp,
-                          color: Palette.lightOptionColor,
-                          decoration: TextDecoration.underline,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    Checkbox(
-                      value: isChecked2,
-                      onChanged: null,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
-                    Text(
-                      '제 3자 정보제공 동의 (필수)',
-                      style: TextStyle(
-                        fontSize: 30.sp,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    Spacer(),
-                    TextButton(
-                      onPressed: () {},
-                      child: Text(
-                        '보기',
-                        style: TextStyle(
-                          fontSize: 30.sp,
-                          color: Palette.lightOptionColor,
-                          decoration: TextDecoration.underline,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    Checkbox(
-                      value: isChecked3,
-                      onChanged: null,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
-                    Text(
-                      '알림받기 (선택)',
-                      style: TextStyle(
-                        fontSize: 30.sp,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ],
-                ),
-                Divider(),
-                Row(
-                  children: [
-                    Checkbox(
-                      value: isChecked4,
-                      onChanged: (value) {
-                        isChecked4 = value!;
-                      },
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
-                    Text(
-                      '모두 확인 및 동의합니다.',
-                      style: TextStyle(
-                        fontSize: 30.sp,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 57.h,
-            ),
-            SaveButton(text: '다음', width: 658.w, heigh: 104.h),
-          ],
-        ),
-      ),
-    ),
-  );
 }
