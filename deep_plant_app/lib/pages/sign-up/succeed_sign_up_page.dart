@@ -11,12 +11,23 @@ class SucceedSignUp extends StatelessWidget {
         children: [
           const Expanded(
             child: Center(
-              child: Text(
-                '회원가입이 완료되었습니다 !',
-                style: TextStyle(
-                  fontSize: 25,
-                  fontWeight: FontWeight.bold,
-                ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    '회원가입이 완료되었습니다 !',
+                    style: TextStyle(
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Text(
+                    '이메일 인증을 완료해주세요.',
+                    style: TextStyle(
+                      fontSize: 20,
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
@@ -26,7 +37,7 @@ class SucceedSignUp extends StatelessWidget {
             margin: const EdgeInsets.only(bottom: 20),
             child: ElevatedButton(
               onPressed: () {
-                context.go('/logged-in');
+                context.go('/sign-in');
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Theme.of(context).primaryColor,

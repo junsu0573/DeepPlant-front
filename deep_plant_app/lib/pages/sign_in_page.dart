@@ -29,10 +29,6 @@ class _SignInState extends State<SignIn> {
   bool isLoading = false;
   bool? _isAutoLogin = false;
 
-  // dropdown 버튼 리스트
-  List<String> dropdownList = ['사용자 1', '사용자 2', '사용자 3'];
-  String selectedDropdown = '사용자 1';
-
   // firbase authentic
   final _authentication = FirebaseAuth.instance;
 
@@ -68,41 +64,41 @@ class _SignInState extends State<SignIn> {
       isLoading = true; // 로딩 상태를 활성화
     });
 
-    // 유저 등급 설정
-    String userLevel = '';
-    if (selectedDropdown == '사용자 1') {
-      userLevel = 'users_1';
-    } else if (selectedDropdown == '사용자 2') {
-      userLevel = 'users_2';
-    } else if (selectedDropdown == '사용자 3') {
-      userLevel = 'users_3';
-    }
-
     // 데이터를 가져오는 비동기 작업
     try {
+      // 유저의 이메일이 valid 해야 로그인 진행
       await _authentication.signInWithEmailAndPassword(
         email: _userId,
         password: _userPw,
       );
+      final bool isValid = await getUserValid();
+      if (!isValid) {
+        _authentication.signOut();
+        print('here');
+        throw Error();
+      }
 
-      // 유저가 입력한 ID가 해당 level 컬렉션에 존재하는지 확인
+      // 유저가 입력한 ID의 level 값을 가져온다
+      String userLevel = '';
       DocumentSnapshot docSnapshot =
-          await _firestore.collection(userLevel).doc(_userId).get();
+          await _firestore.collection('user_emails').doc(_userId).get();
 
       if (!docSnapshot.exists) {
         _authentication.signOut();
         throw Error();
+      } else {
+        userLevel = docSnapshot.get('level');
       }
 
       // 유저의 데이터를 객체에 저장
-      Map<String, dynamic>? data = docSnapshot.data() as Map<String, dynamic>?;
+      DocumentSnapshot userDocSnapshot =
+          await _firestore.collection(userLevel).doc(_userId).get();
+      String userName = userDocSnapshot.get('name');
 
-      if (data != null) {
-        widget.user.name = data['name'];
-        widget.user.email = _userId;
-        widget.meatData.userEmail = _userId;
-        widget.user.level = userLevel;
-      }
+      widget.user.name = userName;
+      widget.user.email = _userId;
+      widget.user.level = userLevel;
+      widget.meatData.userEmail = _userId;
 
       // 유저의 로그 정보를 fire store에 저장
       DateTime now = DateTime.now();
@@ -134,6 +130,20 @@ class _SignInState extends State<SignIn> {
     // 데이터 fetch 성공시 다음 페이지를 push
     if (!mounted) return;
     context.pushReplacement('/option');
+  }
+
+  // 유저의 이메일 valid 검사
+  Future<bool> getUserValid() async {
+    try {
+      User? user = FirebaseAuth.instance.currentUser;
+      await user!.reload();
+      if (user.emailVerified) {
+        return true;
+      }
+    } catch (e) {
+      print('인증 실패');
+    }
+    return false;
   }
 
   @override
@@ -206,61 +216,12 @@ class _SignInState extends State<SignIn> {
                     },
                     isCenter: true,
                   ),
-                  // 사용자 권한 dropdown 버튼
-                  Container(
-                    width: 300,
-                    height: 50,
-                    margin: const EdgeInsets.symmetric(vertical: 3),
-                    decoration: BoxDecoration(
-                        border: Border.all(
-                          color: Colors.grey.shade400,
-                          width: 1.0,
-                        ),
-                        borderRadius: BorderRadius.circular(30)),
-                    child: DropdownButton(
-                      padding: const EdgeInsets.only(left: 40),
-                      value: selectedDropdown,
-                      items: dropdownList.map((String item) {
-                        return DropdownMenuItem<String>(
-                          value: item,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Center(
-                                child: Text(
-                                  item,
-                                ),
-                              ),
-                            ],
-                          ),
-                        );
-                      }).toList(),
-                      onChanged: (dynamic value) {
-                        setState(() {
-                          selectedDropdown = value;
-                        });
-                      },
-                      isExpanded: true,
-                      borderRadius: BorderRadius.circular(30),
-                      underline: Container(
-                        decoration: const BoxDecoration(
-                          border: Border(
-                              bottom: BorderSide(
-                                  color: Colors.transparent, width: 0)),
-                        ),
-                      ),
-                      icon: const Icon(
-                        Icons.arrow_drop_down_sharp,
-                        size: 40,
-                      ),
-                    ),
-                  ),
 
                   // 회원가입 텍스트버튼
                   TextButton(
                     onPressed: () {
                       // 회원가입 페이지를 push
-                      context.go('/sign-in/certification');
+                      context.go('/sign-in/sign-up');
                     },
                     child: const Text(
                       '회원가입',
