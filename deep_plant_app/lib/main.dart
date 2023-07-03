@@ -1,10 +1,16 @@
 import 'package:deep_plant_app/models/meat_data_model.dart';
 import 'package:deep_plant_app/models/user_model.dart';
+import 'package:deep_plant_app/pages/deep_aging_page.dart';
+import 'package:deep_plant_app/pages/experiment_data_input_page.dart';
 import 'package:deep_plant_app/pages/maet-registration/complete_registration_page.dart';
+import 'package:deep_plant_app/pages/maet-registration/complete_registration_page_2.dart';
 import 'package:deep_plant_app/pages/maet-registration/freshmeat_evaluation_page.dart';
+import 'package:deep_plant_app/pages/maet-registration/hitted_meat_eveluation_page.dart';
 import 'package:deep_plant_app/pages/maet-registration/insertion_meat_image.dart';
 import 'package:deep_plant_app/pages/maet-registration/insertion_meat_info_page.dart';
+import 'package:deep_plant_app/pages/maet-registration/show_step_2_page.dart';
 import 'package:deep_plant_app/pages/maet-registration/show_step_page.dart';
+import 'package:deep_plant_app/pages/manage_data_page.dart';
 import 'package:deep_plant_app/pages/my-page/edit_user_info_page.dart';
 import 'package:deep_plant_app/pages/my-page/my_page.dart';
 import 'package:deep_plant_app/pages/my-page/reset_pw_page.dart';
@@ -14,6 +20,7 @@ import 'package:deep_plant_app/pages/sign-up/email_verification.dart';
 import 'package:deep_plant_app/pages/sign-up/id_pw_insertion_page.dart';
 import 'package:deep_plant_app/pages/sign_in_page.dart';
 import 'package:deep_plant_app/pages/sign-up/succeed_sign_up_page.dart';
+import 'package:deep_plant_app/pages/tongue_data_input_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -99,6 +106,7 @@ final _router = GoRouter(
         GoRoute(
           path: 'show-step',
           builder: (context, state) => ShowStep(
+            user: newUser,
             meat: newMeat,
           ),
           routes: [
@@ -129,11 +137,57 @@ final _router = GoRouter(
           ],
         ),
         GoRoute(
-          path: 'complete_register',
+          path: 'show-step-2',
+          builder: (context, state) => ShowStep2(
+            user: newUser,
+            meat: newMeat,
+          ),
+          routes: [
+            GoRoute(
+              path: 'deep-aging-data',
+              builder: (context, state) => DeepAging(
+                agingdata: deepAging,
+              ),
+            ),
+            GoRoute(
+              path: 'fresh-meat-data',
+              builder: (context, state) => FreshmeatEvaluation(
+                meatData: newMeat,
+              ),
+            ),
+            GoRoute(
+              path: 'hitted-meat-data',
+              builder: (context, state) => HittedMeatEvaluation(
+                meatData: newMeat,
+              ),
+            ),
+            GoRoute(
+              path: 'tongue-data',
+              builder: (context, state) => TongueDataInputPage(),
+            ),
+            GoRoute(
+              path: 'experiment-data',
+              builder: (context, state) => ExperimentDataInputPage(),
+            ),
+          ],
+        ),
+        GoRoute(
+          path: 'complete-register',
           builder: (context, state) => CompleteResgistration(
             meatData: newMeat,
             user: newUser,
           ),
+        ),
+        GoRoute(
+          path: 'complete-register-2',
+          builder: (context, state) => CompleteResgistration2(
+            meatData: newMeat,
+            user: newUser,
+          ),
+        ),
+        GoRoute(
+          path: 'add-data',
+          builder: (context, state) => ManageData(),
         ),
       ],
     ),
