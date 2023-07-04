@@ -112,7 +112,9 @@ class _ShowStepState extends State<ShowStep> {
   }
 
   void initialize() async {
-    await getData();
+    await getData().then((_) {
+      setState(() {});
+    });
 
     if (widget.meat.historyNumber != null) {
       if (!mounted) return;
@@ -124,7 +126,6 @@ class _ShowStepState extends State<ShowStep> {
         context.pop();
       }, () {
         context.pop();
-        setState(() {});
       });
     }
   }
