@@ -17,12 +17,6 @@ class _DeepAgingState extends State<DeepAging> {
   int totalMinute = 0;
   int totalHour = 0;
   List<Widget> widgets = [];
-  bool isexist = false;
-
-  Future<void> active() async {
-    context.go('/option/show-step-2/deep-aging-data/insert');
-    isexist = true;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -102,94 +96,93 @@ class _DeepAgingState extends State<DeepAging> {
                   height: 70.0,
                   child: OutlinedButton.icon(
                     onPressed: () async {
-                      await active();
-                      if (isexist == true) {
-                        setState(() {
-                          // 이로 인해 버튼이 추가되어 표현된다.
-                          widgets.add(
-                            Container(
-                              padding: EdgeInsets.only(
-                                top: 5.0,
-                                bottom: 5.0,
-                                left: 30.0,
-                                right: 30.0,
-                              ),
-                              height: 70.0,
-                              child: OutlinedButton(
-                                onPressed: () {
-                                  context.go('/option/show-step-2/deep-aging-data/insert');
-                                },
-                                child: Row(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.all(2.0),
-                                      child: RichText(
-                                        maxLines: 2,
-                                        text: TextSpan(
-                                          children: <TextSpan>[
-                                            TextSpan(
-                                              text: '  ${widgets.length + 1}차\n',
-                                              style: TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 20.sp,
-                                                fontWeight: FontWeight.bold,
-                                              ),
+                      context.go('/option/show-step-2/deep-aging-data/insert');
+                      if (widget.agingdata.selectedYear != null) {
+                        // 이로 인해 버튼이 추가되어 표현된다.
+                        widgets.add(
+                          Container(
+                            padding: EdgeInsets.only(
+                              top: 5.0,
+                              bottom: 5.0,
+                              left: 30.0,
+                              right: 30.0,
+                            ),
+                            height: 70.0,
+                            child: OutlinedButton(
+                              onPressed: () {
+                                context.go('/option/show-step-2/deep-aging-data/insert');
+                              },
+                              child: Row(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(2.0),
+                                    child: RichText(
+                                      maxLines: 2,
+                                      text: TextSpan(
+                                        children: <TextSpan>[
+                                          TextSpan(
+                                            text: '  ${widgets.length + 1}차\n',
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 20.sp,
+                                              fontWeight: FontWeight.bold,
                                             ),
-                                            TextSpan(
-                                              text: '처리일',
-                                              style: TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 20.sp,
-                                                fontWeight: FontWeight.bold,
-                                              ),
+                                          ),
+                                          TextSpan(
+                                            text: '처리일',
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 20.sp,
+                                              fontWeight: FontWeight.bold,
                                             ),
-                                          ],
-                                        ),
+                                          ),
+                                        ],
                                       ),
                                     ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: VerticalDivider(
-                                        thickness: 2,
-                                        width: 1,
-                                        color: Colors.grey[300],
-                                      ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: VerticalDivider(
+                                      thickness: 2,
+                                      width: 1,
+                                      color: Colors.grey[300],
                                     ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Text(
-                                        '${widget.agingdata.insertedHour}시간 ${widget.agingdata.insertedMinute}분',
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 32.sp,
-                                        ),
-                                      ),
-                                    ),
-                                    Spacer(flex: 2),
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Text(
-                                        '${widget.agingdata.selectedYear}.${widget.agingdata.selectedMonth}.${widget.agingdata.selectedDay}',
-                                        style: TextStyle(
-                                          color: Colors.grey[400],
-                                          fontSize: 12.0,
-                                        ),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(4.0),
-                                      child: Icon(
-                                        Icons.arrow_forward_ios_outlined,
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text(
+                                      '${widget.agingdata.insertedHour}시간 ${widget.agingdata.insertedMinute}분',
+                                      style: TextStyle(
                                         color: Colors.black,
-                                        size: 20.0,
+                                        fontSize: 32.sp,
                                       ),
-                                    )
-                                  ],
-                                ),
+                                    ),
+                                  ),
+                                  Spacer(flex: 2),
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text(
+                                      '${widget.agingdata.selectedYear}.${widget.agingdata.selectedMonth}.${widget.agingdata.selectedDay}',
+                                      style: TextStyle(
+                                        color: Colors.grey[400],
+                                        fontSize: 12.0,
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(4.0),
+                                    child: Icon(
+                                      Icons.arrow_forward_ios_outlined,
+                                      color: Colors.black,
+                                      size: 20.0,
+                                    ),
+                                  )
+                                ],
                               ),
                             ),
-                          );
-                        });
+                          ),
+                        );
+                        setState(() {});
                       }
                     },
                     // 이 아래는 추가하는 버튼에 대한 내용이며, 위는 setState를 통해 버튼이 만들어진다.

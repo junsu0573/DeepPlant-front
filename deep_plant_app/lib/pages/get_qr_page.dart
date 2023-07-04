@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
-import 'package:deep_plant_app/source/widget_source.dart';
 
 class GetQrPage extends StatefulWidget {
   const GetQrPage({super.key});
@@ -10,18 +9,18 @@ class GetQrPage extends StatefulWidget {
 }
 
 class _GetQrPageState extends State<GetQrPage> {
-  // 이는 최종적인 결과를 저장한다. Barcode 클래스는 code와 format으로 이루어진다.
-  // 당연히 format은 QR or barcode로 구분되며, code에는 결과, 즉 담긴 정보가 지정된다. (우리는 String, 일반적으로 url)
+  // 아래의 두 변수는 최종적인 결과를 저장한다. Barcode 클래스는 code와 format으로 이루어진다.
+  // format은 QR or barcode의 구분을 결정하며, code에는 정보가 담긴다. result는 클래스의 모든 정보를 담으며, result.code가 data에 저장된다.
   Barcode? result;
   String? data;
-  // 이는 카메라 작동을 제어한다.
+  // 카메라 작동 컨트롤러.
   QRViewController? controller;
 
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
 
   @override
   void reassemble() {
-    // 이는 페이지가 시작될 때 기본적으로 카메라를 멈춘다. 이후 재시작한다.
+    // 페이지가 작동할 때, 카메라를 초기화 한다.
     super.reassemble();
     controller!.pauseCamera();
     controller!.resumeCamera();
@@ -37,7 +36,6 @@ class _GetQrPageState extends State<GetQrPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             AppBar(
-              leadingWidth: 170,
               title: Text(
                 'QR 스캔',
                 style: TextStyle(fontWeight: FontWeight.bold),
@@ -46,35 +44,18 @@ class _GetQrPageState extends State<GetQrPage> {
               centerTitle: true,
               elevation: 0.0,
               actions: [
-                // ElevatedButton(
-                //     style: ElevatedButton.styleFrom(
-                //       backgroundColor: Colors.black,
-                //     ),
-                //     onPressed: () async {
-                //       await controller?.pauseCamera();
-                //     },
-                //     child: Icon(
-                //       Icons.last_page,
-                //       color: Colors.white,
-                //       size: 40.0,
-                //     )),
-                // ElevatedButton(
-                //     style: ElevatedButton.styleFrom(
-                //       backgroundColor: Colors.black,
-                //     ),
-                //     onPressed: () async {
-                //       await controller?.resumeCamera();
-                //     },
-                //     child: Icon(
-                //       Icons.start,
-                //       color: Colors.white,
-                //       size: 40.0,
-                //     )),
-                elevated(
-                  icon: Icons.close,
-                  colorb: Colors.black,
-                  colori: Colors.white,
-                  size: 40.0,
+                ElevatedButton(
+                  onPressed: () {
+                    controller!.pauseCamera();
+                  },
+                  style: ElevatedButton.styleFrom(
+                    foregroundColor: Colors.white,
+                    backgroundColor: Colors.black,
+                  ),
+                  child: Icon(
+                    Icons.close,
+                    size: 40.0,
+                  ),
                 ),
               ],
             ),
@@ -82,65 +63,64 @@ class _GetQrPageState extends State<GetQrPage> {
         ),
       ),
       body: Stack(children: [
+        // 화면에 텍스트를 표현하기 위해 사용되었다.
         Column(
           children: <Widget>[
             Expanded(flex: 5, child: _buildQrView(context)),
             Expanded(
-              flex: 1,
-              child: FittedBox(
-                fit: BoxFit.contain,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: <Widget>[
-                    // 'Barcode Type: ${describeEnum(result!.format)} -> 이는 enum 클래스 고유 기능으로,
-                    // enum 클래스를 통해 얻은 정보는 클래스 명 까지 나오기에, 이를 제거해준다. 우린 필요없는 기능이다.
-                    if (result != null) Text('Data: ${result!.code}') else Container(),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        Container(
-                          margin: const EdgeInsets.all(4),
-                          height: 25.0,
-                          width: 50.0,
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.white,
-                            ),
-                            onPressed: () async {
-                              await controller?.pauseCamera();
-                            },
-                            child: const Text('pause',
-                                style: TextStyle(
-                                  fontSize: 5,
-                                  color: Colors.black,
-                                )),
+                flex: 1,
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Container(
+                        padding: EdgeInsets.all(5.0),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(15.0),
+                        ),
+                        child: Container(
+                          margin: EdgeInsets.only(left: 10.0, right: 5.0),
+                          child: Row(
+                            children: [
+                              (result != null)
+                                  ? Text('${result!.code}')
+                                  : Text(
+                                      'waiting to QRcode',
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 15.0,
+                                      ),
+                                    ),
+                              Spacer(
+                                flex: 1,
+                              ),
+                              ElevatedButton.icon(
+                                onPressed: (data != null) ? () {} : null,
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.grey,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(25.0),
+                                  ),
+                                ),
+                                icon: Icon(Icons.add),
+                                label: Center(
+                                  child: Text(
+                                    '추가',
+                                    style: TextStyle(
+                                      fontSize: 11.0,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                        Container(
-                          margin: const EdgeInsets.all(4),
-                          height: 25.0,
-                          width: 50.0,
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.white,
-                            ),
-                            onPressed: () async {
-                              await controller?.resumeCamera();
-                            },
-                            child: const Text('resume',
-                                style: TextStyle(
-                                  fontSize: 5,
-                                  color: Colors.black,
-                                )),
-                          ),
-                        )
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            )
+                      ),
+                    ],
+                  ),
+                ))
           ],
         ),
         // 카메라 위에 내용을 올리기 위해 사용
@@ -175,7 +155,7 @@ class _GetQrPageState extends State<GetQrPage> {
     // var scanArea = (MediaQuery.of(context).size.width < 400 ||
     // MediaQuery.of(context).size.height < 400) ? 150.0 : 300.0;
     return QRView(
-      // 이는 qr 화면을 구성한다.
+      // qr 화면 구성.
       key: qrKey,
       onQRViewCreated: _onQRViewCreated,
       overlay: QrScannerOverlayShape(

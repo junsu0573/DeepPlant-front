@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:deep_plant_app/models/meat_data_model.dart';
+import 'package:deep_plant_app/source/camera_page_dialog_custom.dart';
 import 'package:deep_plant_app/widgets/custom_appbar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -24,6 +25,7 @@ class _InsertionMeatImageState extends State<InsertionMeatImage> {
   User? loggedUser;
   File? pickedImage;
   String? imagePath;
+  String? userName;
   bool isLoading = false;
   bool isFinal = false;
   bool isImageAssigned = false;
@@ -38,6 +40,7 @@ class _InsertionMeatImageState extends State<InsertionMeatImage> {
       final user = _authentication.currentUser;
       if (user != null) {
         loggedUser = user;
+        userName = loggedUser!.displayName;
       }
     } catch (e) {
       print(e);
@@ -47,6 +50,7 @@ class _InsertionMeatImageState extends State<InsertionMeatImage> {
   // 이미지 촬영을 위한 메소드
   void _pickImage() async {
     final imagePicker = ImagePicker();
+
     final pickedImageFile = await imagePicker.pickImage(
       source: ImageSource.camera,
       imageQuality: 100,
@@ -98,8 +102,7 @@ class _InsertionMeatImageState extends State<InsertionMeatImage> {
     });
   }
 
-  void saveData(MeatData meatData, String? imagePath, String year, String month,
-      String day) {
+  void saveData(MeatData meatData, String? imagePath, String year, String month, String day) {
     meatData.imageFile = imagePath;
     meatData.date = '{$year}-{$month}-{$day}';
   }
@@ -128,13 +131,17 @@ class _InsertionMeatImageState extends State<InsertionMeatImage> {
             ),
           ),
           Container(
-            height: 20.0,
-            padding: const EdgeInsets.only(right: 10.0),
+            padding: EdgeInsets.only(right: 15.0),
+            height: 15.0,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    setState(() {
+                      showFirst(context);
+                    });
+                  },
                   icon: Icon(
                     Icons.info_outline,
                     color: Colors.grey[600],
@@ -171,8 +178,7 @@ class _InsertionMeatImageState extends State<InsertionMeatImage> {
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10.0),
-                      color:
-                          isImageAssigned ? Colors.grey[800] : Colors.grey[400],
+                      color: isImageAssigned ? Colors.grey[800] : Colors.grey[400],
                       border: Border.all(
                         color: Colors.grey,
                         width: 0.5,
@@ -198,8 +204,7 @@ class _InsertionMeatImageState extends State<InsertionMeatImage> {
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10.0),
-                      color:
-                          isImageAssigned ? Colors.grey[800] : Colors.grey[400],
+                      color: isImageAssigned ? Colors.grey[800] : Colors.grey[400],
                       border: Border.all(
                         color: Colors.grey,
                         width: 0.5,
@@ -225,8 +230,7 @@ class _InsertionMeatImageState extends State<InsertionMeatImage> {
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10.0),
-                      color:
-                          isImageAssigned ? Colors.grey[800] : Colors.grey[400],
+                      color: isImageAssigned ? Colors.grey[800] : Colors.grey[400],
                       border: Border.all(
                         color: Colors.grey,
                         width: 0.5,
@@ -264,11 +268,9 @@ class _InsertionMeatImageState extends State<InsertionMeatImage> {
                   width: 15.0,
                 ),
                 SizedBox(
-                  width: isImageAssigned
-                      ? (MediaQuery.of(context).size.width - 150.0)
-                      : 5.0,
+                  width: isImageAssigned ? (MediaQuery.of(context).size.width - 150.0) : 5.0,
                   child: isImageAssigned
-                      ? Text('홍길동(HKD***@naver.com)')
+                      ? Text('$loggedUser!.displayName')
                       : Divider(
                           color: Colors.black,
                           thickness: 1.5,
@@ -347,8 +349,7 @@ class _InsertionMeatImageState extends State<InsertionMeatImage> {
                   onPressed: pickedImage != null
                       ? () async {
                           await saveImage();
-                          saveData(
-                              widget.meatData, imagePath, year, month, day);
+                          saveData(widget.meatData, imagePath, year, month, day);
                           if (!mounted) return;
                           context.go('/option/show-step');
                         }
