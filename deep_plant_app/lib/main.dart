@@ -1,5 +1,6 @@
 import 'package:deep_plant_app/models/meat_data_model.dart';
 import 'package:deep_plant_app/models/user_model.dart';
+import 'package:deep_plant_app/pages/get_qr_page.dart';
 import 'package:deep_plant_app/pages/maet-registration/additional-data/deep_aging_page.dart';
 import 'package:deep_plant_app/pages/maet-registration/additional-data/experiment_data_input_page.dart';
 import 'package:deep_plant_app/pages/maet-registration/additional-data/insert_deep_aging_data_page.dart';
@@ -29,6 +30,8 @@ import 'package:go_router/go_router.dart';
 import 'package:deep_plant_app/pages/maet-registration/basic-data/get_history_page.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:deep_plant_app/models/deep_aging_data_model.dart';
+import 'package:deep_plant_app/widgets/create_qrcode.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

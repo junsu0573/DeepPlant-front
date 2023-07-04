@@ -47,6 +47,9 @@ dependencies:
   intl: ^0.18.1
   table_calendar: ^3.0.6
   email_validator: ^2.1.17
+  qr_flutter: ^4.1.0
+  render: ^0.1.3
+  path_provider: ^2.0.15
 
 dev_dependencies:
   flutter_test:
