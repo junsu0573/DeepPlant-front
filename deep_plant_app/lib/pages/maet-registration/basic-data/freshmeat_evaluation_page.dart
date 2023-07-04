@@ -52,11 +52,11 @@ class _FreshmeatEvaluationState extends State<FreshmeatEvaluation> {
 
     Map<String, double> freshData = {
       //데이터를 Map 형식으로 지정
-      'Mabling': mablingIndex,
-      'Color': colorIndex,
-      'Texture': textureIndex,
-      'SurfaceMoisture': surfaceMoistureIndex,
-      'Overall': overallIndex,
+      'marbling': mablingIndex,
+      'color': colorIndex,
+      'texture': textureIndex,
+      'surfaceMoisture': surfaceMoistureIndex,
+      'total': overallIndex,
     };
 
     // 데이터를 객체에 저장
@@ -114,7 +114,7 @@ class _FreshmeatEvaluationState extends State<FreshmeatEvaluation> {
           //customDialog (context);
         },
         closeButtonOnPressed: () {
-          ShowExitDialog(context);
+          showExitDialog(context);
         },
       ),
       body: SingleChildScrollView(

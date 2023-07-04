@@ -31,8 +31,14 @@ class _CompleteResgistrationState extends State<CompleteResgistration> {
   @override
   void initState() {
     super.initState();
-    managementNumber =
-        '${widget.meatData.historyNumber!}-${widget.meatData.species!}-${widget.meatData.lDivision!}-${widget.meatData.sDivision!}';
+    if (widget.meatData.historyNumber != null &&
+        widget.meatData.species != null &&
+        widget.meatData.lDivision != null &&
+        widget.meatData.sDivision != null) {
+      managementNumber =
+          '${widget.meatData.historyNumber!}-${widget.meatData.species!}-${widget.meatData.lDivision!}-${widget.meatData.sDivision!}';
+    }
+
     sendDataToFirebase();
   }
 
@@ -54,7 +60,7 @@ class _CompleteResgistrationState extends State<CompleteResgistration> {
         'l_division': widget.meatData.lDivision,
         's_division': widget.meatData.sDivision,
         'fresh': widget.meatData.freshData,
-        'email': widget.meatData.userEmail,
+        'email': widget.user.email,
         'saveTime': saveDate,
         'gradeNm': widget.meatData.gradeNm,
         'farmAddr': widget.meatData.butcheryPlaceNm,
@@ -101,7 +107,7 @@ class _CompleteResgistrationState extends State<CompleteResgistration> {
         SettableMetadata(contentType: 'image/jpeg'),
       );
     } catch (e) {
-      print('error');
+      print(e);
     }
     setState(() {
       isLoading = false;

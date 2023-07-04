@@ -104,7 +104,7 @@ class _InsertionMeatImageState extends State<InsertionMeatImage> {
 
   void saveData(MeatData meatData, String? imagePath, String year, String month, String day) {
     meatData.imageFile = imagePath;
-    meatData.date = '{$year}-{$month}-{$day}';
+    meatData.saveTime = '{$year}-{$month}-{$day}';
   }
 
   @override

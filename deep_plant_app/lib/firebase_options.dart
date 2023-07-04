@@ -44,40 +44,40 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyDNsubJqlp51Y6BUVRm1YlCF6YtK12T-mM',
-    appId: '1:125931086830:web:072f76835ce83a14f4a4ff',
-    messagingSenderId: '125931086830',
-    projectId: 'deepplant-5c85a',
-    authDomain: 'deepplant-5c85a.firebaseapp.com',
-    storageBucket: 'deepplant-5c85a.appspot.com',
-    measurementId: 'G-8E01LSBPD3',
+    apiKey: 'AIzaSyC5jW9_1rq1VlBapU4kZqLf1OG40autdRo',
+    appId: '1:214163390785:web:635f7ebc63fa7b4c66e1c0',
+    messagingSenderId: '214163390785',
+    projectId: 'deepplant-e0416',
+    authDomain: 'deepplant-e0416.firebaseapp.com',
+    storageBucket: 'deepplant-e0416.appspot.com',
+    measurementId: 'G-RFHBPXMFMV',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyByyirdnbInZm3Qwd_v770SLeSfUL8XI-0',
-    appId: '1:125931086830:android:0a5970a1f9eeea9cf4a4ff',
-    messagingSenderId: '125931086830',
-    projectId: 'deepplant-5c85a',
-    storageBucket: 'deepplant-5c85a.appspot.com',
+    apiKey: 'AIzaSyCxgTWcwRrgX8LUe3C7iMfurKcWdPwjdb0',
+    appId: '1:214163390785:android:86838087df6d6a8b66e1c0',
+    messagingSenderId: '214163390785',
+    projectId: 'deepplant-e0416',
+    storageBucket: 'deepplant-e0416.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyCHjuMJ9kgRVDaKDIibPm8arkMyHX346RI',
-    appId: '1:125931086830:ios:713dafbbf54912cff4a4ff',
-    messagingSenderId: '125931086830',
-    projectId: 'deepplant-5c85a',
-    storageBucket: 'deepplant-5c85a.appspot.com',
-    iosClientId: '125931086830-vnmf8ftakmn9f8av8lbedl4h8sdsbcgj.apps.googleusercontent.com',
+    apiKey: 'AIzaSyDNieA2Un-o6r8NvpJaMzlKyYLVk6fgX18',
+    appId: '1:214163390785:ios:a1319a06a52db67b66e1c0',
+    messagingSenderId: '214163390785',
+    projectId: 'deepplant-e0416',
+    storageBucket: 'deepplant-e0416.appspot.com',
+    iosClientId: '214163390785-lktcqg2vdqo25ukvetvqest69s275roq.apps.googleusercontent.com',
     iosBundleId: 'com.example.deepPlantApp',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyCHjuMJ9kgRVDaKDIibPm8arkMyHX346RI',
-    appId: '1:125931086830:ios:e4382de3fb876766f4a4ff',
-    messagingSenderId: '125931086830',
-    projectId: 'deepplant-5c85a',
-    storageBucket: 'deepplant-5c85a.appspot.com',
-    iosClientId: '125931086830-fsqqrv305jg6ck34mol4vv8ni3iseulo.apps.googleusercontent.com',
+    apiKey: 'AIzaSyDNieA2Un-o6r8NvpJaMzlKyYLVk6fgX18',
+    appId: '1:214163390785:ios:484c283bf12e770a66e1c0',
+    messagingSenderId: '214163390785',
+    projectId: 'deepplant-e0416',
+    storageBucket: 'deepplant-e0416.appspot.com',
+    iosClientId: '214163390785-kuh80ek953o9jspl39p2h4glihqhbotm.apps.googleusercontent.com',
     iosBundleId: 'com.example.deepPlantApp.RunnerTests',
   );
 }

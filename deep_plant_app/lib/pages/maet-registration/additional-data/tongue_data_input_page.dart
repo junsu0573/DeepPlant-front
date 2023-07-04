@@ -42,10 +42,10 @@ class _TongueDataInputPageState extends State<TongueDataInputPage> {
         backButton: true,
         closeButton: true,
         backButtonOnPressed: () {
-          ShowExitDialog(context);
+          showExitDialog(context);
         },
         closeButtonOnPressed: () {
-          ShowExitDialog(context); // CustomDialog
+          showExitDialog(context); // CustomDialog
         },
       ),
       body: GestureDetector(
