@@ -3,16 +3,16 @@ import 'package:deep_plant_app/models/user_model.dart';
 import 'package:deep_plant_app/pages/sign-up/certification_bottom_sheet.dart';
 import 'package:deep_plant_app/widgets/common_button.dart';
 import 'package:deep_plant_app/widgets/custom_appbar.dart';
-import 'package:deep_plant_app/widgets/level_dropdown_button.dart';
 import 'package:deep_plant_app/widgets/save_button.dart';
 import 'package:deep_plant_app/widgets/show_custom_popup.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+//ignore: must_be_immutable
 class IdPwInsertion extends StatefulWidget {
-  final UserModel user;
-  const IdPwInsertion({
+  UserModel user;
+  IdPwInsertion({
     super.key,
     required this.user,
   });
@@ -170,6 +170,17 @@ class _IdPwInsertionState extends State<IdPwInsertion> {
       return true;
     }
     return false;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    // user 정보 초기화
+    widget.user.userAddress = null;
+    widget.user.company = null;
+    widget.user.companyAdress = null;
+    widget.user.position = null;
+    widget.user.level = 'users_1';
   }
 
   @override
@@ -331,23 +342,16 @@ class _IdPwInsertionState extends State<IdPwInsertion> {
                       SizedBox(
                         height: 30.h,
                       ),
-                      Text(
-                        '권한',
-                        style: TextStyle(fontSize: 30.sp),
-                      ),
-                      // 사용자 권한 dropdown 버튼
-                      LevelDropdownButton(
-                        user: widget.user,
-                      ),
                     ],
                   ),
                 ),
                 SizedBox(
-                  height: 180.h,
+                  height: 300.h,
                 ),
                 SaveButton(
                   onPressed: isAllChecked()
                       ? () {
+                          // user의 이메일, 이름, 패스워드를 객체에 저장
                           widget.user.email = userEmail;
                           widget.user.name = userName;
                           widget.user.password = userPassword;

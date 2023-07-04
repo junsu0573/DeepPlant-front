@@ -114,7 +114,7 @@ class HittedMeatEvaluationState extends State<HittedMeatEvaluation> {
           //customDialog (context);
         },
         closeButtonOnPressed: () {
-          ShowExitDialog(context);
+          showExitDialog(context);
         },
       ),
       body: SingleChildScrollView(

@@ -74,7 +74,7 @@ class _SignInState extends State<SignIn> {
       final bool isValid = await getUserValid();
       if (!isValid) {
         _authentication.signOut();
-        print('here');
+
         throw Error();
       }
 
@@ -98,7 +98,6 @@ class _SignInState extends State<SignIn> {
       widget.user.name = userName;
       widget.user.email = _userId;
       widget.user.level = userLevel;
-      widget.meatData.userEmail = _userId;
 
       // 유저의 로그 정보를 fire store에 저장
       DateTime now = DateTime.now();
@@ -106,7 +105,7 @@ class _SignInState extends State<SignIn> {
       String userLog = DateFormat('yyyy-MM-ddTHH:mm:ssZ').format(now);
 
       Map<String, dynamic> updateData = {
-        'lastLog': userLog,
+        'lastLogin': userLog,
       };
       await _firestore.collection(userLevel).doc(_userId).update(updateData);
     } catch (e) {
