@@ -1,10 +1,10 @@
 import 'package:deep_plant_app/models/meat_data_model.dart';
+import 'package:deep_plant_app/widgets/tongue_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:deep_plant_app/widgets/custom_appbar.dart';
 import 'package:deep_plant_app/widgets/show_custom_dialog.dart';
 import 'package:deep_plant_app/widgets/save_button.dart';
-import 'package:deep_plant_app/widgets/textfield_with_title.dart';
 
 class TongueDataInputPage extends StatefulWidget {
   final MeatData meatData;
@@ -59,50 +59,49 @@ class _TongueDataInputPageState extends State<TongueDataInputPage> {
         onTap: () {
           FocusScope.of(context).unfocus(); // 키보드 unfocus
         },
-        child: Column(
-          children: [
-            SingleChildScrollView(
-              child: Column(
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  Text(
-                    '전자혀 데이터',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Color(0xFF000000),
-                      fontSize: 36.sp,
-                      fontFamily: 'Inter',
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 90.h,
-                  ),
-                  TextFieldWithTitle(
-                      firstText: 'Sourness',
-                      secondText: '신맛',
-                      controller: sourness),
-                  TextFieldWithTitle(
-                      firstText: 'Bitterness',
-                      secondText: '진한맛',
-                      controller: bitterness),
-                  TextFieldWithTitle(
-                      firstText: 'Umami', secondText: '감칠맛', controller: umami),
-                  TextFieldWithTitle(
-                      firstText: 'Richness',
-                      secondText: '후미',
-                      controller: richness),
-                ],
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              SizedBox(
+                height: 38.h,
               ),
-            ),
-            SaveButton(
-              onPressed: _sendEvaluation,
-              text: '저장',
-              width: 658.w,
-              heigh: 104.h,
-              isWhite: false,
-            ),
-          ],
+              Text(
+                '전자혀 데이터',
+                style: TextStyle(
+                  color: Color(0xFF000000),
+                  fontSize: 36.sp,
+                  fontFamily: 'Inter',
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              SizedBox(
+                height: 90.h,
+              ),
+              TongueFiled(mainText: 'Sourness', subText: '신맛'),
+              SizedBox(
+                height: 112.h,
+              ),
+              TongueFiled(mainText: 'Bitterness', subText: '진한맛'),
+              SizedBox(
+                height: 112.h,
+              ),
+              TongueFiled(mainText: 'Umami', subText: '감칠맛'),
+              SizedBox(
+                height: 112.h,
+              ),
+              TongueFiled(mainText: 'Richness', subText: '후미'),
+              SizedBox(
+                height: 260.h,
+              ),
+              SaveButton(
+                onPressed: _sendEvaluation,
+                text: '저장',
+                width: 658.w,
+                heigh: 104.h,
+                isWhite: false,
+              ),
+            ],
+          ),
         ),
       ),
     );

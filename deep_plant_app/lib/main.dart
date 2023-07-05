@@ -1,5 +1,6 @@
 import 'package:deep_plant_app/models/meat_data_model.dart';
 import 'package:deep_plant_app/models/user_model.dart';
+import 'package:deep_plant_app/pages/home_page.dart';
 import 'package:deep_plant_app/pages/maet-registration/additional-data/deep_aging_page.dart';
 import 'package:deep_plant_app/pages/maet-registration/additional-data/experiment_data_input_page.dart';
 import 'package:deep_plant_app/pages/maet-registration/additional-data/insert_deep_aging_data_page.dart';
@@ -50,9 +51,7 @@ final _router = GoRouter(
   routes: [
     GoRoute(
       path: '/',
-      builder: (context, state) => TongueDataInputPage(
-        meatData: newMeat,
-      ),
+      builder: (context, state) => HomePage(),
       routes: [
         GoRoute(
           path: 'sign-in',
@@ -182,7 +181,9 @@ final _router = GoRouter(
             ),
             GoRoute(
               path: 'experiment-data',
-              builder: (context, state) => ExperimentDataInputPage(),
+              builder: (context, state) => ExperimentDataInputPage(
+                meatData: newMeat,
+              ),
             ),
           ],
         ),
