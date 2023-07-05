@@ -19,6 +19,9 @@ class CreateQrcode extends StatefulWidget {
 
 class _CreateQrcodeState extends State<CreateQrcode> {
   final globalKey = GlobalKey();
+
+  final String _managementNumber = '';
+
   @override
   void initState() {
     super.initState();
@@ -72,7 +75,7 @@ class _CreateQrcodeState extends State<CreateQrcode> {
               ),
             ),
             Text(
-              '000189843795-cattle-chuck-chuck',
+              _managementNumber,
               style: TextStyle(
                 fontSize: 20,
               ),

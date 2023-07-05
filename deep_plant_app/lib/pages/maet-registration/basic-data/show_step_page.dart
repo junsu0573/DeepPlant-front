@@ -122,12 +122,13 @@ class _ShowStepState extends State<ShowStep> {
     if (widget.meat.historyNumber != null) {
       if (!mounted) return;
       // 임시저장 데이터가 null값이 아닐 때 다이얼로그 호출
-      showDataRegisterDialog(context, () {
+      showDataRegisterDialog(context, () async {
         // 처음부터
         initTempData();
-        getData().then((_) {
+        await getData().then((_) {
           setState(() {});
         });
+        if (!mounted) return;
         context.pop();
       }, () {
         // 이어서

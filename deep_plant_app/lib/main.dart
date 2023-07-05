@@ -1,5 +1,6 @@
 import 'package:deep_plant_app/models/meat_data_model.dart';
 import 'package:deep_plant_app/models/user_model.dart';
+import 'package:deep_plant_app/pages/maet-registration/additional-data/complete_registration_page_3.dart';
 import 'package:deep_plant_app/pages/maet-registration/additional-data/deep_aging_page.dart';
 import 'package:deep_plant_app/pages/maet-registration/additional-data/experiment_data_input_page.dart';
 import 'package:deep_plant_app/pages/maet-registration/additional-data/insert_deep_aging_data_page.dart';
@@ -16,7 +17,6 @@ import 'package:deep_plant_app/pages/my-page/edit_user_info_page.dart';
 import 'package:deep_plant_app/pages/my-page/my_page.dart';
 import 'package:deep_plant_app/pages/my-page/reset_pw_page.dart';
 import 'package:deep_plant_app/pages/option_page.dart';
-import 'package:deep_plant_app/pages/home_page.dart';
 import 'package:deep_plant_app/pages/sign-up/email_verification.dart';
 import 'package:deep_plant_app/pages/sign-up/id_pw_insertion_page.dart';
 import 'package:deep_plant_app/pages/sign_in_page.dart';
@@ -51,7 +51,7 @@ final _router = GoRouter(
   routes: [
     GoRoute(
       path: '/',
-      builder: (context, state) => const HomePage(),
+      builder: (context, state) => CompleteRegistration3(),
       routes: [
         GoRoute(
           path: 'sign-in',
@@ -83,11 +83,12 @@ final _router = GoRouter(
       path: ('/succeed-sign-up'),
       builder: (context, state) => const SucceedSignUp(),
     ),
-    // 사용자 1을 위한 라우팅
+    // Home
     GoRoute(
       path: '/option',
       builder: (context, state) => OptionPage(),
       routes: [
+        // 마이페이지
         GoRoute(
           path: 'my-page',
           builder: (context, state) => MyPage(),
@@ -104,6 +105,7 @@ final _router = GoRouter(
             ),
           ],
         ),
+        // step-1
         GoRoute(
           path: 'show-step',
           builder: (context, state) => ShowStep(
@@ -138,6 +140,7 @@ final _router = GoRouter(
             ),
           ],
         ),
+        // step 2
         GoRoute(
           path: 'show-step-2',
           builder: (context, state) => ShowStep2(

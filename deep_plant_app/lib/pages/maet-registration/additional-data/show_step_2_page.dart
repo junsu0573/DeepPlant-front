@@ -22,9 +22,10 @@ class ShowStep2 extends StatefulWidget {
 
 class _ShowStep2State extends State<ShowStep2> {
   bool _isAllCompleted() {
-    if (widget.meat.species != null &&
-        widget.meat.imageFile != null &&
-        widget.meat.freshData != null) {
+    if (widget.meat.deepAging != null &&
+        widget.meat.heatedMeat != null &&
+        widget.meat.tongueData != null &&
+        widget.meat.labData != null) {
       return true;
     }
     return false;
@@ -51,60 +52,64 @@ class _ShowStep2State extends State<ShowStep2> {
                 mainText: '딥에이징 데이터',
                 subText: '데이터를 입력해 주세요.',
                 step: '1',
-                isCompleted: widget.meat.species != null ? true : false,
+                isCompleted: widget.meat.deepAging != null ? true : false,
               ),
             ),
             GestureDetector(
               onTap: () => context.go('/option/show-step-2/fresh-meat-data'),
               child: StepCard(
-                mainText: '신선육 관능평가',
+                mainText: '가열육 관능평가',
                 subText: '데이터를 입력해 주세요.',
                 step: '2',
-                isCompleted: widget.meat.species != null ? true : false,
+                isCompleted: widget.meat.heatedMeat != null ? true : false,
               ),
             ),
             GestureDetector(
               onTap: () => context.go('/option/show-step-2/hitted-meat-data'),
               child: StepCard(
-                mainText: '가열육 관능평가 데이터',
+                mainText: '전자혀 데이터',
                 subText: '데이터를 입력해 주세요.',
                 step: '3',
-                isCompleted: widget.meat.imageFile != null ? true : false,
+                isCompleted: widget.meat.tongueData != null ? true : false,
               ),
             ),
             GestureDetector(
               onTap: () => context.go('/option/show-step-2/tongue-data'),
               child: StepCard(
-                mainText: '전자혀 데이터',
-                subText: '데이터를 입력해 주세요.',
-                step: '4',
-                isCompleted: widget.meat.freshData != null ? true : false,
-              ),
-            ),
-            GestureDetector(
-              onTap: () => context.go('/option/show-step-2/experiment-data'),
-              child: StepCard(
                 mainText: '실험 데이터',
                 subText: '데이터를 입력해 주세요.',
-                step: '5',
-                isCompleted: widget.meat.freshData != null ? true : false,
+                step: '4',
+                isCompleted: widget.meat.labData != null ? true : false,
               ),
             ),
             Spacer(),
             Container(
               margin: EdgeInsets.only(bottom: 10),
-              child: SaveButton(
-                onPressed: _isAllCompleted()
-                    ? () {
-                        // widget.user.level == 'users_2'
-                        //     ? context.go('/option/complete-register-2')
-                        //     : context.go('/option/complete-register');
-                      }
-                    : null,
-                text: '저장',
-                width: 310.w,
-                heigh: 104.h,
-                isWhite: false,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SaveButton(
+                    onPressed: () {},
+                    text: '임시저장',
+                    width: 310.w,
+                    heigh: 104.h,
+                    isWhite: true,
+                  ),
+                  SizedBox(
+                    width: 41.w,
+                  ),
+                  SaveButton(
+                    onPressed: _isAllCompleted()
+                        ? () {
+                            // 등록 완료 페이지로
+                          }
+                        : null,
+                    text: '다음',
+                    width: 310.w,
+                    heigh: 104.h,
+                    isWhite: false,
+                  ),
+                ],
               ),
             ),
           ],

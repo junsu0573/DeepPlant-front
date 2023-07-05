@@ -76,6 +76,7 @@ flutter:
   assets:
     - assets/images/logo.png
     - assets/images/data.png
+    - assets/images/qr.png
     - assets/images/meat_add.png
     - assets/images/person.png
     - assets/images/Close.png

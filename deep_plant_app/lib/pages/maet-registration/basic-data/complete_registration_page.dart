@@ -1,14 +1,17 @@
 import 'dart:io';
+import 'dart:ui';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:deep_plant_app/models/meat_data_model.dart';
 import 'package:deep_plant_app/models/user_model.dart';
+import 'package:deep_plant_app/source/pallete.dart';
 import 'package:deep_plant_app/widgets/save_button.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
 class CompleteResgistration extends StatefulWidget {
   final MeatData meatData;
@@ -98,20 +101,42 @@ class _CompleteResgistrationState extends State<CompleteResgistration> {
       List<dynamic> newNum = [managementNumber];
       await refNum.update({'meatList': FieldValue.arrayUnion(newNum)});
 
-      // fire storage에 이미지 저장
-      final refImage =
-          FirebaseStorage.instance.ref().child('$managementNumber.png');
+      // fire storage에 육류 이미지 저장
+      final refMeatImage =
+          FirebaseStorage.instance.ref().child('meats/$managementNumber.png');
 
-      await refImage.putFile(
+      await refMeatImage.putFile(
         File(widget.meatData.imageFile!),
         SettableMetadata(contentType: 'image/jpeg'),
       );
+
+      // QR 생성 후 firestore에 업로드
+      uploadQRCodeImageToStorage(managementNumber);
     } catch (e) {
       print(e);
     }
     setState(() {
       isLoading = false;
     });
+  }
+
+  // QR생성 및 전송
+  Future<void> uploadQRCodeImageToStorage(String data) async {
+    // QR코드 생성
+    final qrPainter = QrPainter(
+      data: data,
+      version: QrVersions.auto,
+      gapless: true,
+    );
+    // image 파일로 변환
+    final image = await qrPainter.toImage(200);
+    final byteData = await image.toByteData(format: ImageByteFormat.png);
+    final bytes = byteData!.buffer.asUint8List();
+
+    // fire storage에 저장
+    final storageRef =
+        FirebaseStorage.instance.ref().child('qr_codes/$data.png');
+    await storageRef.putData(bytes);
   }
 
   @override
@@ -125,6 +150,13 @@ class _CompleteResgistrationState extends State<CompleteResgistration> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Spacer(),
+                  Icon(
+                    Icons.check_circle_outline,
+                    size: 50,
+                  ),
+                  SizedBox(
+                    height: 30.sp,
+                  ),
                   Text(
                     '관리번호',
                     style: TextStyle(
@@ -133,6 +165,7 @@ class _CompleteResgistrationState extends State<CompleteResgistration> {
                   ),
                   Text(
                     managementNumber,
+                    textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 20,
                     ),
@@ -157,9 +190,48 @@ class _CompleteResgistrationState extends State<CompleteResgistration> {
                   SizedBox(
                     height: 25,
                   ),
-                  Icon(
-                    Icons.check_circle_outline,
-                    size: 50,
+                  GestureDetector(
+                    onTap: () {
+                      print('인쇄');
+                    },
+                    child: Stack(
+                      children: [
+                        Container(
+                          width: 494.w,
+                          height: 259.h,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20.sp),
+                            color: Palette.lightOptionColor,
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text(
+                                'QR코드 인쇄',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 36.sp,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                              SizedBox(
+                                height: 34.h,
+                              ),
+                            ],
+                          ),
+                        ),
+                        Positioned(
+                          top: 30.h,
+                          left: 178.w,
+                          child: Image.asset(
+                            'assets/images/qr.png',
+                            width: 137.w,
+                            height: 137.h,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                   Spacer(),
                   Container(

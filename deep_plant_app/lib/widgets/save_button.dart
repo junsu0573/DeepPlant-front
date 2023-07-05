@@ -7,6 +7,7 @@ class SaveButton extends StatelessWidget {
   final double width;
   final double heigh;
   final bool isWhite;
+  final Color? color;
 
   const SaveButton({
     super.key,
@@ -15,6 +16,7 @@ class SaveButton extends StatelessWidget {
     required this.width,
     required this.heigh,
     required this.isWhite,
+    this.color,
   });
 
   @override
@@ -30,7 +32,7 @@ class SaveButton extends StatelessWidget {
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
           disabledBackgroundColor: Color(0xFFC4C4C4),
-          backgroundColor: isWhite ? Colors.white : Color(0xFF515151),
+          backgroundColor: isWhite ? Colors.white : color ?? Color(0xFF515151),
           minimumSize: Size(width, heigh),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(19.sp),
