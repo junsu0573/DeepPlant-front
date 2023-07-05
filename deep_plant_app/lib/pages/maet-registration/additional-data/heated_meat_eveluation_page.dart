@@ -21,19 +21,19 @@ class HeatedMeatEvaluation extends StatefulWidget {
 
 class HeatedMeatEvaluationState extends State<HeatedMeatEvaluation> {
   // 5개 평가 항목을 모두 false로 설정(기본값)
-  final List<bool> _selectedMabling = List.filled(5, false);
-  final List<bool> _selectedColor = List.filled(5, false);
-  final List<bool> _selectedTexture = List.filled(5, false);
-  final List<bool> _selectedSurfaceMoisture = List.filled(5, false);
-  final List<bool> _selectedOverall = List.filled(5, false);
+  final List<bool> _selectedFlavor = List.filled(5, false);
+  final List<bool> _selectedJuiciness = List.filled(5, false);
+  final List<bool> _selectedTenderness = List.filled(5, false);
+  final List<bool> _selectedUmami = List.filled(5, false);
+  final List<bool> _selectedPalatability = List.filled(5, false);
   final ScrollController _scrollController = ScrollController(); //화면 오른쪽에 스크롤러
 
   bool _isAllselected() {
-    if (_selectedMabling.contains(true) &&
-        _selectedColor.contains(true) &&
-        _selectedTexture.contains(true) &&
-        _selectedSurfaceMoisture.contains(true) &&
-        _selectedOverall.contains(true)) {
+    if (_selectedFlavor.contains(true) &&
+        _selectedJuiciness.contains(true) &&
+        _selectedTenderness.contains(true) &&
+        _selectedUmami.contains(true) &&
+        _selectedPalatability.contains(true)) {
       return true;
     }
     return false;
@@ -44,23 +44,23 @@ class HeatedMeatEvaluationState extends State<HeatedMeatEvaluation> {
 
     // 사용자가 선택한 값(true)의 index에 1을 더한다.
     // ex) (없음:1,약간있음:2, 보통:3, 약간많음:4, 많음:5)
-    double mablingIndex = _selectedMabling.indexOf(true) + 1;
-    double colorIndex = _selectedColor.indexOf(true) + 1;
-    double textureIndex = _selectedTexture.indexOf(true) + 1;
-    double surfaceMoistureIndex = _selectedSurfaceMoisture.indexOf(true) + 1;
-    double overallIndex = _selectedOverall.indexOf(true) + 1;
+    double flavorIndex = _selectedFlavor.indexOf(true) + 1;
+    double juicinessIndex = _selectedJuiciness.indexOf(true) + 1;
+    double tendernessIndex = _selectedTenderness.indexOf(true) + 1;
+    double umamiIndex = _selectedUmami.indexOf(true) + 1;
+    double palatabilityIndex = _selectedPalatability.indexOf(true) + 1;
 
-    Map<String, double> freshData = {
+    Map<String, double> heatedData = {
       //데이터를 Map 형식으로 지정
-      'Mabling': mablingIndex,
-      'Color': colorIndex,
-      'Texture': textureIndex,
-      'SurfaceMoisture': surfaceMoistureIndex,
-      'Overall': overallIndex,
+      'flavor': flavorIndex,
+      'juiciness': juicinessIndex,
+      'tenderness': tendernessIndex,
+      'umami': umamiIndex,
+      'palability': palatabilityIndex,
     };
 
     // 데이터를 객체에 저장
-    meatData.freshData = freshData;
+    meatData.heatedMeat = heatedData;
   }
 
   @override
@@ -74,38 +74,39 @@ class HeatedMeatEvaluationState extends State<HeatedMeatEvaluation> {
     //////////////// data list
     List<EvalData> evalDataList = [
       EvalData(
-        title: 'Mabling',
-        desc: '마블링 정도',
-        isSelected: _selectedMabling,
-        text: ['없음', '', '보통', '', '많음'],
+        title: 'Flavor',
+        desc: '풍미',
+        isSelected: _selectedFlavor,
+        text: ['약간', '', '약간 풍부함', '', '풍부함'],
       ),
       EvalData(
-        title: 'Color',
-        desc: '육색',
-        isSelected: _selectedColor,
-        text: ['없음', '', '보통', '', '어둡고 진함'],
+        title: 'Juiciness',
+        desc: '다즙성',
+        isSelected: _selectedJuiciness,
+        text: ['퍽퍽함', '', '보통', '', '다즙합'],
       ),
       EvalData(
-        title: 'Texture',
-        desc: '조직감',
-        isSelected: _selectedTexture,
-        text: ['흐물함', '', '보통', '', '단단함'],
+        title: 'Tenderness',
+        desc: '연도',
+        isSelected: _selectedTenderness,
+        text: ['질김', '', '보통', '', '연함'],
       ),
       EvalData(
-        title: 'SurfaceMoisture',
+        title: 'Umami',
         desc: '표면육즙',
-        isSelected: _selectedSurfaceMoisture,
-        text: ['없음', '', '보통', '', '많음'],
+        isSelected: _selectedUmami,
+        text: ['약함', '', '보통', '', '좋음'],
       ),
       EvalData(
-        title: 'Overall',
-        desc: '종합기호도',
-        isSelected: _selectedOverall,
+        title: 'Palatability',
+        desc: '기호도',
+        isSelected: _selectedPalatability,
         text: ['나쁨', '', '보통', '', '좋음'],
       ),
     ];
     ///////////  data list
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: CustomAppBar(
         title: '',
         backButton: false,
@@ -159,17 +160,20 @@ class HeatedMeatEvaluationState extends State<HeatedMeatEvaluation> {
                 ],
               ),
             ),
-            SaveButton(
-              onPressed: _isAllselected()
-                  ? () {
-                      _sendEvaluation(widget.meatData);
-                      context.go('/option/show-step');
-                    }
-                  : null,
-              text: '저장',
-              width: 658.w,
-              heigh: 104.h,
-              isWhite: false,
+            Container(
+              margin: EdgeInsets.only(bottom: 28.h),
+              child: SaveButton(
+                onPressed: _isAllselected()
+                    ? () {
+                        _sendEvaluation(widget.meatData);
+                        context.go('/option/show-step');
+                      }
+                    : null,
+                text: '저장',
+                width: 658.w,
+                heigh: 104.h,
+                isWhite: false,
+              ),
             ),
           ],
         ),

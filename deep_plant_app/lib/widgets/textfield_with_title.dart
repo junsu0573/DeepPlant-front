@@ -6,11 +6,14 @@ class TextFieldWithTitle extends StatelessWidget {
   late final String secondText;
   final String? unit;
   final TextEditingController controller;
-  TextFieldWithTitle(
-      {required this.firstText,
-      required this.secondText,
-      this.unit,
-      required this.controller});
+
+  TextFieldWithTitle({
+    super.key,
+    required this.firstText,
+    required this.secondText,
+    this.unit,
+    required this.controller,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +36,6 @@ class TextFieldWithTitle extends StatelessWidget {
                 ),
               ),
             ),
-            Text(secondText),
             SizedBox(
               width: 259.w,
               child: TextField(

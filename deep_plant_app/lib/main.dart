@@ -50,7 +50,7 @@ final _router = GoRouter(
   routes: [
     GoRoute(
       path: '/',
-      builder: (context, state) => HeatedMeatEvaluation(
+      builder: (context, state) => TongueDataInputPage(
         meatData: newMeat,
       ),
       routes: [
@@ -176,7 +176,9 @@ final _router = GoRouter(
             ),
             GoRoute(
               path: 'tongue-data',
-              builder: (context, state) => TongueDataInputPage(),
+              builder: (context, state) => TongueDataInputPage(
+                meatData: newMeat,
+              ),
             ),
             GoRoute(
               path: 'experiment-data',

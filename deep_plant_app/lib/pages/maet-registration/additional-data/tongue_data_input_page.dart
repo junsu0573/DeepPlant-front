@@ -1,4 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:deep_plant_app/models/meat_data_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:deep_plant_app/widgets/custom_appbar.dart';
@@ -7,36 +7,43 @@ import 'package:deep_plant_app/widgets/save_button.dart';
 import 'package:deep_plant_app/widgets/textfield_with_title.dart';
 
 class TongueDataInputPage extends StatefulWidget {
-  const TongueDataInputPage({super.key});
+  final MeatData meatData;
+  const TongueDataInputPage({
+    super.key,
+    required this.meatData,
+  });
 
   @override
   State<TongueDataInputPage> createState() => _TongueDataInputPageState();
 }
 
 class _TongueDataInputPageState extends State<TongueDataInputPage> {
-  TextEditingController Sourness = TextEditingController();
-  TextEditingController Bitterness = TextEditingController();
-  TextEditingController Umami = TextEditingController();
-  TextEditingController Richness = TextEditingController();
+  TextEditingController sourness = TextEditingController();
+  TextEditingController bitterness = TextEditingController();
+  TextEditingController umami = TextEditingController();
+  TextEditingController richness = TextEditingController();
   void _sendEvaluation() async {
-    final Sournessdata = Sourness.text;
-    final Bitternessdata = Bitterness.text;
-    final Umamidata = Umami.text;
-    final Richnessdata = Richness.text;
+    final sournessData = double.parse(sourness.text);
+    final bitternessData = double.parse(bitterness.text);
+    final umamiData = double.parse(umami.text);
+    final richnessData = double.parse(richness.text);
 
-    //경로  수정
-    //firebase 전송
-    await FirebaseFirestore.instance.collection('evaluations').doc().set({
-      'Sourness': Sournessdata,
-      'Bitterness': Bitternessdata,
-      'Umami': Umamidata,
-      'Richness': Richnessdata,
-    });
+    Map<String, double> tongueData = {
+      //데이터를 Map 형식으로 지정
+      'sourness': sournessData,
+      'bitterness': bitternessData,
+      'umami': umamiData,
+      'richness': richnessData,
+    };
+
+    // 데이터를 객체에 저장
+    widget.meatData.tongueData = tongueData;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: CustomAppBar(
         title: '추가정보 입력',
         backButton: true,
@@ -54,7 +61,7 @@ class _TongueDataInputPageState extends State<TongueDataInputPage> {
         },
         child: Column(
           children: [
-            Expanded(
+            SingleChildScrollView(
               child: Column(
                 mainAxisSize: MainAxisSize.max,
                 children: [
@@ -74,20 +81,17 @@ class _TongueDataInputPageState extends State<TongueDataInputPage> {
                   TextFieldWithTitle(
                       firstText: 'Sourness',
                       secondText: '신맛',
-                      controller: Sourness),
+                      controller: sourness),
                   TextFieldWithTitle(
                       firstText: 'Bitterness',
                       secondText: '진한맛',
-                      controller: Bitterness),
+                      controller: bitterness),
                   TextFieldWithTitle(
-                      firstText: 'Umami', secondText: '감칠맛', controller: Umami),
+                      firstText: 'Umami', secondText: '감칠맛', controller: umami),
                   TextFieldWithTitle(
                       firstText: 'Richness',
                       secondText: '후미',
-                      controller: Richness),
-                  SizedBox(
-                    height: 16.h,
-                  ),
+                      controller: richness),
                 ],
               ),
             ),
