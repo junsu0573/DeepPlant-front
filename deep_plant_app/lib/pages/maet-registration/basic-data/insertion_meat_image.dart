@@ -4,8 +4,10 @@ import 'package:deep_plant_app/models/meat_data_model.dart';
 import 'package:deep_plant_app/models/user_model.dart';
 import 'package:deep_plant_app/source/camera_page_dialog_custom.dart';
 import 'package:deep_plant_app/widgets/custom_appbar.dart';
+import 'package:deep_plant_app/widgets/save_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -120,6 +122,7 @@ class _InsertionMeatImageState extends State<InsertionMeatImage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: CustomAppBar(
         title: '',
         backButton: false,
@@ -130,8 +133,8 @@ class _InsertionMeatImageState extends State<InsertionMeatImage> {
           Text(
             '육류 단면 촬영',
             style: TextStyle(
-              fontSize: 20.0,
-              fontWeight: FontWeight.bold,
+              fontSize: 36.sp,
+              fontWeight: FontWeight.w600,
             ),
           ),
           Container(
@@ -156,14 +159,15 @@ class _InsertionMeatImageState extends State<InsertionMeatImage> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(left: 30.0, right: 30.0),
+            padding: EdgeInsets.only(left: 69.w),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Text(
                   '촬영날짜',
                   style: TextStyle(
-                    color: Colors.grey[600],
+                    fontSize: 24.sp,
+                    color: Color.fromRGBO(131, 131, 131, 1),
                   ),
                 ),
               ],
@@ -173,84 +177,67 @@ class _InsertionMeatImageState extends State<InsertionMeatImage> {
             height: 5.0,
           ),
           Padding(
-            padding: const EdgeInsets.only(left: 30.0, right: 30.0),
+            padding: EdgeInsets.symmetric(horizontal: 0),
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Expanded(
-                  flex: 1,
-                  child: Container(
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10.0),
-                      color:
-                          isImageAssigned ? Colors.grey[800] : Colors.grey[400],
-                      border: Border.all(
-                        color: Colors.grey,
-                        width: 0.5,
-                      ),
-                    ),
-                    height: 40.0,
-                    child: Text(
-                      isImageAssigned ? '$month월' : '월',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20.0,
-                      ),
+                Container(
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10.0),
+                    color:
+                        isImageAssigned ? Colors.grey[800] : Colors.grey[400],
+                  ),
+                  width: 158.w,
+                  height: 73.h,
+                  child: Text(
+                    isImageAssigned ? '$month월' : '월',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 20.0,
                     ),
                   ),
                 ),
                 SizedBox(
-                  width: 10.0,
+                  width: 17.w,
                 ),
-                Expanded(
-                  flex: 1,
-                  child: Container(
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10.0),
-                      color:
-                          isImageAssigned ? Colors.grey[800] : Colors.grey[400],
-                      border: Border.all(
-                        color: Colors.grey,
-                        width: 0.5,
-                      ),
-                    ),
-                    height: 40.0,
-                    child: Text(
-                      isImageAssigned ? '$day일' : '일',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20.0,
-                      ),
+                Container(
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10.0),
+                    color:
+                        isImageAssigned ? Colors.grey[800] : Colors.grey[400],
+                  ),
+                  width: 158.w,
+                  height: 73.h,
+                  child: Text(
+                    isImageAssigned ? '$day일' : '일',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 20.0,
                     ),
                   ),
                 ),
                 SizedBox(
-                  width: 10.0,
+                  width: 17.w,
                 ),
-                Expanded(
-                  flex: 2,
-                  child: Container(
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10.0),
-                      color:
-                          isImageAssigned ? Colors.grey[800] : Colors.grey[400],
-                      border: Border.all(
-                        color: Colors.grey,
-                        width: 0.5,
-                      ),
-                    ),
-                    height: 40.0,
-                    child: Text(
-                      isImageAssigned ? year : '년도',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20.0,
-                      ),
+                Container(
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10.0),
+                    color:
+                        isImageAssigned ? Colors.grey[800] : Colors.grey[400],
+                  ),
+                  width: 238.w,
+                  height: 73.h,
+                  child: Text(
+                    isImageAssigned ? year : '년도',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 20.0,
                     ),
                   ),
                 ),
@@ -261,14 +248,15 @@ class _InsertionMeatImageState extends State<InsertionMeatImage> {
             height: 10.0,
           ),
           Padding(
-            padding: const EdgeInsets.only(left: 30.0, right: 30.0),
+            padding: EdgeInsets.only(left: 69.w),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Text(
                   '촬영자',
                   style: TextStyle(
-                    color: Colors.grey[600],
+                    color: Color.fromRGBO(131, 131, 131, 1),
+                    fontSize: 24.sp,
                   ),
                 ),
                 SizedBox(
@@ -291,25 +279,27 @@ class _InsertionMeatImageState extends State<InsertionMeatImage> {
           SizedBox(
             height: 10.0,
           ),
-          Expanded(
-            child: Stack(
-              fit: StackFit.expand,
-              children: [
-                Container(
-                  width: MediaQuery.of(context).size.width * 0.8 - 100,
-                  margin: EdgeInsets.symmetric(horizontal: 30),
-                  child: pickedImage != null
-                      ? Image.file(
-                          pickedImage!,
-                          fit: BoxFit.cover,
-                        )
-                      : ElevatedButton(
+          Stack(
+            //fit: StackFit.expand,
+            children: [
+              Container(
+                width: 585.w,
+                height: 585.h,
+                margin: EdgeInsets.symmetric(horizontal: 30),
+                child: pickedImage != null
+                    ? Image.file(
+                        pickedImage!,
+                        fit: BoxFit.cover,
+                      )
+                    : SizedBox(
+                        width: 585.w,
+                        height: 585.h,
+                        child: ElevatedButton(
                           onPressed: () {
                             _pickImage();
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.grey[200],
-                            foregroundColor: Colors.grey,
                           ),
                           child: Icon(
                             Icons.camera_alt_outlined,
@@ -317,70 +307,52 @@ class _InsertionMeatImageState extends State<InsertionMeatImage> {
                             color: Colors.grey,
                           ),
                         ),
-                ),
-                if (pickedImage != null)
-                  Positioned(
-                    top: 10,
-                    right: 40,
-                    child: GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          pickedImage = null;
-                          isImageAssigned = false;
-                        });
-                      },
-                      child: Container(
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Colors.white,
-                        ),
-                        padding: EdgeInsets.all(6.0),
-                        child: Icon(
-                          Icons.delete_outline_rounded,
-                          color: Colors.black87,
-                          size: 28.0,
-                        ),
+                      ),
+              ),
+              if (pickedImage != null)
+                Positioned(
+                  top: 10,
+                  right: 40,
+                  child: GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        pickedImage = null;
+                        isImageAssigned = false;
+                      });
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Colors.white,
+                      ),
+                      padding: EdgeInsets.all(6.0),
+                      child: Icon(
+                        Icons.delete_outline_rounded,
+                        color: Colors.black87,
+                        size: 28.0,
                       ),
                     ),
                   ),
-              ],
-            ),
+                ),
+            ],
           ),
           isLoading ? const CircularProgressIndicator() : Container(),
-          Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Transform.translate(
-              offset: Offset(0, 0),
-              child: SizedBox(
-                height: 55,
-                width: 350,
-                child: ElevatedButton(
-                  onPressed: pickedImage != null
-                      ? () async {
-                          await saveImage();
-                          saveData(
-                              widget.meatData, imagePath, year, month, day);
-                          if (!mounted) return;
-                          context.go('/option/show-step');
-                        }
-                      : null,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.grey[800],
-                    disabledBackgroundColor: Colors.grey[400],
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                  ),
-                  child: Text(
-                    '저장',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 17.0,
-                    ),
-                  ),
-                ),
-              ),
-            ),
+          Spacer(),
+          Container(
+            margin: EdgeInsets.only(bottom: 28.h),
+            child: SaveButton(
+                onPressed: pickedImage != null
+                    ? () async {
+                        await saveImage();
+                        saveData(widget.meatData, imagePath, year, month, day);
+                        if (!mounted) return;
+                        context.go('/option/show-step');
+                      }
+                    : null,
+                text: '다음',
+                width: 658.w,
+                heigh: 104.h,
+                isWhite: false),
           )
         ],
       ),

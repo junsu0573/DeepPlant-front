@@ -150,7 +150,7 @@ class _ShowStepState extends State<ShowStep> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: CustomAppBar(
-        title: '육류 등록',
+        title: '',
         backButton: false,
         closeButton: true,
         closeButtonOnPressed: () {
@@ -163,8 +163,15 @@ class _ShowStepState extends State<ShowStep> {
       body: Center(
         child: Column(
           children: [
+            Text(
+              '육류 등록',
+              style: TextStyle(
+                fontSize: 36.sp,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
             SizedBox(
-              height: 50,
+              height: 105.h,
             ),
             GestureDetector(
               onTap: () async {
@@ -197,12 +204,12 @@ class _ShowStepState extends State<ShowStep> {
               ),
             ),
             Spacer(),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  margin: EdgeInsets.only(bottom: 10),
-                  child: SaveButton(
+            Container(
+              margin: EdgeInsets.only(bottom: 28.h),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SaveButton(
                     onPressed: () {
                       showTemporarySaveDialog(
                         context,
@@ -217,13 +224,10 @@ class _ShowStepState extends State<ShowStep> {
                     heigh: 104.h,
                     isWhite: true,
                   ),
-                ),
-                SizedBox(
-                  width: 32.w,
-                ),
-                Container(
-                  margin: EdgeInsets.only(bottom: 10),
-                  child: SaveButton(
+                  SizedBox(
+                    width: 32.w,
+                  ),
+                  SaveButton(
                     onPressed: _isAllCompleted()
                         ? () {
                             widget.user.level == 'users_2'
@@ -238,8 +242,8 @@ class _ShowStepState extends State<ShowStep> {
                     heigh: 104.h,
                     isWhite: false,
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ],
         ),
