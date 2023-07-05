@@ -104,6 +104,7 @@ class _ShowStep2State extends State<ShowStep2> {
                 text: '저장',
                 width: 310.w,
                 heigh: 104.h,
+                isWhite: false,
               ),
             ),
           ],

@@ -114,7 +114,7 @@ class HittedMeatEvaluationState extends State<HittedMeatEvaluation> {
           //customDialog (context);
         },
         closeButtonOnPressed: () {
-          showExitDialog(context);
+          showExitDialog(context, null);
         },
       ),
       body: SingleChildScrollView(
@@ -169,6 +169,7 @@ class HittedMeatEvaluationState extends State<HittedMeatEvaluation> {
               text: '저장',
               width: 658.w,
               heigh: 104.h,
+              isWhite: false,
             ),
           ],
         ),

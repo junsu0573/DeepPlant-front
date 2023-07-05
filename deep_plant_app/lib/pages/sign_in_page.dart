@@ -95,6 +95,7 @@ class _SignInState extends State<SignIn> {
           await _firestore.collection(userLevel).doc(_userId).get();
       String userName = userDocSnapshot.get('name');
 
+      // 로그인 시 이름, 이메일, 등급을 객체에 저장
       widget.user.name = userName;
       widget.user.email = _userId;
       widget.user.level = userLevel;

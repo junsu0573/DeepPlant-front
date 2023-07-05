@@ -42,10 +42,10 @@ class _TongueDataInputPageState extends State<TongueDataInputPage> {
         backButton: true,
         closeButton: true,
         backButtonOnPressed: () {
-          showExitDialog(context);
+          showExitDialog(context, null);
         },
         closeButtonOnPressed: () {
-          showExitDialog(context); // CustomDialog
+          showExitDialog(context, null); // CustomDialog
         },
       ),
       body: GestureDetector(
@@ -96,6 +96,7 @@ class _TongueDataInputPageState extends State<TongueDataInputPage> {
               text: '저장',
               width: 658.w,
               heigh: 104.h,
+              isWhite: false,
             ),
           ],
         ),

@@ -169,6 +169,7 @@ class _CompleteResgistrationState extends State<CompleteResgistration> {
                       text: '홈으로 이동',
                       width: 658.w,
                       heigh: 104.h,
+                      isWhite: false,
                     ),
                   ),
                 ],

@@ -6,6 +6,7 @@ class SaveButton extends StatelessWidget {
   final String text;
   final double width;
   final double heigh;
+  final bool isWhite;
 
   const SaveButton({
     super.key,
@@ -13,17 +14,23 @@ class SaveButton extends StatelessWidget {
     required this.text,
     required this.width,
     required this.heigh,
+    required this.isWhite,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(bottom: 28.sp),
+      decoration: isWhite
+          ? BoxDecoration(
+              border: Border.all(color: Colors.black38),
+              borderRadius: BorderRadius.circular(19.sp),
+            )
+          : null,
       child: ElevatedButton(
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
           disabledBackgroundColor: Color(0xFFC4C4C4),
-          backgroundColor: Color(0xFF515151),
+          backgroundColor: isWhite ? Colors.white : Color(0xFF515151),
           minimumSize: Size(width, heigh),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(19.sp),
@@ -32,7 +39,7 @@ class SaveButton extends StatelessWidget {
         child: Text(
           text,
           style: TextStyle(
-            color: Colors.white,
+            color: isWhite ? Color.fromRGBO(55, 55, 55, 1) : Colors.white,
             fontSize: 30.sp,
             fontFamily: 'Inter',
             height: (50 / 30).h,
