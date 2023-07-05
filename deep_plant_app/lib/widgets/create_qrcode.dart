@@ -28,7 +28,8 @@ class _CreateQrcodeState extends State<CreateQrcode> {
     // https://tkayyoo.tistory.com/85
 
     // globalkey를 이용하여, Render 대상의 객체를 찾게 된다. 이를 'RenderRepaintBoundary' 형식으로 지정한다.
-    var boundary = globalKey.currentContext!.findRenderObject() as RenderRepaintBoundary;
+    var boundary =
+        globalKey.currentContext!.findRenderObject() as RenderRepaintBoundary;
     // boundary.toImage()를 이용하여 RenderRepaintBoundary로 지정된 위젯을 이미지로 캡쳐하게 된다. 이때 pixelRatio는 해상도의 정도이다.
     // pixelRatio는 픽셀 전환 비율로서, 현재 기기의 픽셀에 수치를 곱한 값으로 이미지의 픽셀이 결정된다.
     var image = await boundary.toImage(pixelRatio: 3);
@@ -152,6 +153,7 @@ class _CreateQrcodeState extends State<CreateQrcode> {
                     text: '홈으로 이동',
                     width: 305.w,
                     heigh: 104.h,
+                    isWhite: false,
                   ),
                 ),
                 SizedBox(
@@ -164,6 +166,7 @@ class _CreateQrcodeState extends State<CreateQrcode> {
                     text: '추가정보 입력',
                     width: 305.w,
                     heigh: 104.h,
+                    isWhite: false,
                   ),
                 ),
               ],

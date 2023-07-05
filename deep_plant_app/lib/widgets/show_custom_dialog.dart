@@ -6,9 +6,10 @@ void showDeletePhotoDialog(BuildContext context) {
       '삭제된 사진은 복구할 수 없습니다.', '취소', '삭제', null, () {/*   삭제 기능  */});
 }
 
-void showExitDialog(BuildContext context) {
+void showExitDialog(BuildContext context, VoidCallback? rightFunc) {
   showCustomDialog(context, 'assets/images/exit.png', '데이터가 저장되지 않았습니다',
       '창을 닫을 시 정보가 모두 삭제됩니다.', '취소', '나가기', null, () {
+    rightFunc;
     Navigator.pop(context);
     Navigator.pop(context);
   });
@@ -43,12 +44,20 @@ void showFreshmeatEvaluationDialog(BuildContext context) {
   });
 }
 
-void showTemporarySaveDialog(BuildContext context) {
+void showTemporarySaveDialog(
+  BuildContext context,
+  VoidCallback? rightFunc,
+) {
   showCustomDialog(
-      context, 'assets/images/exit.png', '임시저장하시겠습니까?', '', '아니요', '네', null,
-      () {
-    /* 임시 저장 기능  */
-  });
+    context,
+    'assets/images/exit.png',
+    '임시저장하시겠습니까?',
+    '',
+    '아니요',
+    '네',
+    null,
+    rightFunc,
+  );
 }
 
 // 다이얼로그 형식입니다.

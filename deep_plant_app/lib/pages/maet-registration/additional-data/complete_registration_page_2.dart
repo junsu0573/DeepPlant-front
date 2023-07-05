@@ -165,6 +165,7 @@ class _CompleteResgistration2State extends State<CompleteResgistration2> {
                           text: '홈으로 이동',
                           width: 305.w,
                           heigh: 104.h,
+                          isWhite: false,
                         ),
                       ),
                       SizedBox(
@@ -177,6 +178,7 @@ class _CompleteResgistration2State extends State<CompleteResgistration2> {
                           text: '추가정보 입력',
                           width: 305.w,
                           heigh: 104.h,
+                          isWhite: false,
                         ),
                       ),
                     ],

@@ -35,6 +35,7 @@ class _ShowStepState extends State<ShowStep> {
     return false;
   }
 
+  // 임시저장 데이터로 fetch
   Future<void> getData() async {
     DocumentSnapshot docSnapshot =
         await _firestore.collection('user_emails').doc(widget.user.email).get();
@@ -65,7 +66,7 @@ class _ShowStepState extends State<ShowStep> {
     DateTime now = DateTime.now();
 
     String saveDate = DateFormat('yyyy-MM-ddTHH:mm:ssZ').format(now);
-// 데이터 생성
+    // 데이터 생성
     Map<String, dynamic> tempBasicData = {
       'historyNumber': widget.meat.historyNumber,
       'species': widget.meat.species,
@@ -88,6 +89,7 @@ class _ShowStepState extends State<ShowStep> {
     });
   }
 
+  // 임시저장 데이터 초기화
   Future<void> initTempData() async {
     // 데이터 생성
     Map<String, dynamic> tempBasicData = {
@@ -112,19 +114,23 @@ class _ShowStepState extends State<ShowStep> {
   }
 
   void initialize() async {
+    // 임시저장 데이터를 가져와 객체에 저장
     await getData().then((_) {
       setState(() {});
     });
 
     if (widget.meat.historyNumber != null) {
       if (!mounted) return;
+      // 임시저장 데이터가 null값이 아닐 때 다이얼로그 호출
       showDataRegisterDialog(context, () {
+        // 처음부터
         initTempData();
         getData().then((_) {
           setState(() {});
         });
         context.pop();
       }, () {
+        // 이어서
         context.pop();
       });
     }
@@ -146,6 +152,12 @@ class _ShowStepState extends State<ShowStep> {
         title: '육류 등록',
         backButton: false,
         closeButton: true,
+        closeButtonOnPressed: () {
+          showExitDialog(
+            context,
+            () => getData(),
+          );
+        },
       ),
       body: Center(
         child: Column(
@@ -190,10 +202,19 @@ class _ShowStepState extends State<ShowStep> {
                 Container(
                   margin: EdgeInsets.only(bottom: 10),
                   child: SaveButton(
-                    onPressed: () => saveTempData(),
+                    onPressed: () {
+                      showTemporarySaveDialog(
+                        context,
+                        () {
+                          saveTempData();
+                          context.pop();
+                        },
+                      );
+                    },
                     text: '임시저장',
                     width: 310.w,
                     heigh: 104.h,
+                    isWhite: true,
                   ),
                 ),
                 SizedBox(
@@ -214,6 +235,7 @@ class _ShowStepState extends State<ShowStep> {
                     text: '저장',
                     width: 310.w,
                     heigh: 104.h,
+                    isWhite: false,
                   ),
                 ),
               ],

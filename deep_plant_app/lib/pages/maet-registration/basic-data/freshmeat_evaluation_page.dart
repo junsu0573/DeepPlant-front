@@ -114,7 +114,7 @@ class _FreshmeatEvaluationState extends State<FreshmeatEvaluation> {
           //customDialog (context);
         },
         closeButtonOnPressed: () {
-          showExitDialog(context);
+          showExitDialog(context, null);
         },
       ),
       body: SingleChildScrollView(
@@ -169,6 +169,7 @@ class _FreshmeatEvaluationState extends State<FreshmeatEvaluation> {
               text: '저장',
               width: 658.w,
               heigh: 104.h,
+              isWhite: false,
             ),
           ],
         ),

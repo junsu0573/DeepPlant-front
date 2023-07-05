@@ -368,6 +368,7 @@ class _IdPwInsertionState extends State<IdPwInsertion> {
                   text: '다음',
                   width: 658.w,
                   heigh: 104.h,
+                  isWhite: false,
                 ),
               ],
             ),

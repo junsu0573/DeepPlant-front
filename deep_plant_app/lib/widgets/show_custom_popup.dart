@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 //////////////////////////////////////////////////////////////////////////////////////
 String unselectedText = '선택되지 않은 항목이 있습니다.';
 String fileUploadFailedText = '파일 업로드 실패';
-String tempSaveText = '데이터 등록을 실패했습니다.';
+String tempSaveText = '임시저장이 완료되었습니다.';
 String duplicateEmailText = '중복된 이메일입니다.';
 
 void showUnselectedPopup(BuildContext context) {
