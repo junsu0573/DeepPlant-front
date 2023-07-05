@@ -41,6 +41,9 @@ class TextFieldWithTitle extends StatelessWidget {
               child: TextField(
                 controller: controller,
                 decoration: InputDecoration(
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.black, width: 5.w),
+                  ),
                   enabledBorder: UnderlineInputBorder(
                     borderSide:
                         BorderSide(color: Color(0xFFDFDFDF), width: 5.w),

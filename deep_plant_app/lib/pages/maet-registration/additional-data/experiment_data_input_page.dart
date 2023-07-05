@@ -1,4 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:deep_plant_app/models/meat_data_model.dart';
 import 'package:deep_plant_app/widgets/custom_appbar.dart';
 import 'package:deep_plant_app/widgets/save_button.dart';
 import 'package:deep_plant_app/widgets/textfield_with_title.dart';
@@ -6,7 +6,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ExperimentDataInputPage extends StatefulWidget {
-  const ExperimentDataInputPage({super.key});
+  final MeatData meatData;
+  const ExperimentDataInputPage({
+    super.key,
+    required this.meatData,
+  });
 
   @override
   State<ExperimentDataInputPage> createState() =>
@@ -14,35 +18,39 @@ class ExperimentDataInputPage extends StatefulWidget {
 }
 
 class _ExperimentDataInputPageState extends State<ExperimentDataInputPage> {
-  TextEditingController DL = TextEditingController();
-  TextEditingController CL = TextEditingController();
-  TextEditingController PH = TextEditingController();
-  TextEditingController WBSF = TextEditingController();
-  TextEditingController CT = TextEditingController();
-  TextEditingController MFI = TextEditingController();
-  void _sendEvaluation() async {
-    final DLdata = DL.text;
-    final CLdata = CL.text;
-    final PHdata = PH.text;
-    final WBSFdata = WBSF.text;
-    final CTdata = CT.text;
-    final MFIdata = MFI.text;
+  TextEditingController dl = TextEditingController();
+  TextEditingController cl = TextEditingController();
+  TextEditingController ph = TextEditingController();
+  TextEditingController wbsf = TextEditingController();
+  TextEditingController ct = TextEditingController();
+  TextEditingController mfi = TextEditingController();
 
-    //경로 수정
-    //firebase 전송
-    await FirebaseFirestore.instance.collection('evaluations').doc().set({
-      'DL': DLdata,
-      'CL': CLdata,
-      'PH': PHdata,
-      'WBSF': WBSFdata,
-      'CT': CTdata,
-      'MFI': MFIdata
-    });
+  void _saveEvaluation() async {
+    final dldata = double.parse(dl.text);
+    final cldata = double.parse(cl.text);
+    final phdata = double.parse(ph.text);
+    final wbsfdata = double.parse(wbsf.text);
+    final ctdata = double.parse(ct.text);
+    final mfidata = double.parse(mfi.text);
+
+    Map<String, double> labData = {
+      //데이터를 Map 형식으로 지정
+      'DL': dldata,
+      'CL': cldata,
+      'ph': phdata,
+      'WBSF': wbsfdata,
+      'cardepsin_activity': ctdata,
+      'MFI': mfidata
+    };
+
+    // 데이터를 객체에 저장
+    widget.meatData.labData = labData;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar:
           CustomAppBar(title: '추가정보 입력', backButton: true, closeButton: true),
       body: GestureDetector(
@@ -70,32 +78,35 @@ class _ExperimentDataInputPageState extends State<ExperimentDataInputPage> {
                   firstText: 'DL육즙감량',
                   secondText: '',
                   unit: '%',
-                  controller: DL),
+                  controller: dl),
               TextFieldWithTitle(
                   firstText: 'CL가열감량',
                   secondText: '',
                   unit: '%',
-                  controller: CL),
+                  controller: cl),
               TextFieldWithTitle(
-                  firstText: 'PH', secondText: '', controller: PH),
+                  firstText: 'PH', secondText: '', controller: ph),
               TextFieldWithTitle(
                   firstText: 'WBSF전단가',
                   secondText: '',
                   unit: 'kgf',
-                  controller: WBSF),
+                  controller: wbsf),
               TextFieldWithTitle(
-                  firstText: '카텝신활성도', secondText: '', controller: CT),
+                  firstText: '카텝신활성도', secondText: '', controller: ct),
               TextFieldWithTitle(
-                  firstText: 'MFI근소편화지수', secondText: '', controller: MFI),
+                  firstText: 'MFI근소편화지수', secondText: '', controller: mfi),
               SizedBox(
                 height: 16.h,
               ),
               SaveButton(
-                onPressed: _sendEvaluation,
+                onPressed: _saveEvaluation,
                 text: '저장',
                 width: 658.w,
                 heigh: 104.h,
                 isWhite: false,
+              ),
+              SizedBox(
+                height: 30.h,
               ),
             ],
           ),
