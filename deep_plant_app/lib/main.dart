@@ -1,13 +1,12 @@
 import 'package:deep_plant_app/models/meat_data_model.dart';
 import 'package:deep_plant_app/models/user_model.dart';
-import 'package:deep_plant_app/pages/maet-registration/additional-data/complete_registration_page_3.dart';
 import 'package:deep_plant_app/pages/maet-registration/additional-data/deep_aging_page.dart';
 import 'package:deep_plant_app/pages/maet-registration/additional-data/experiment_data_input_page.dart';
 import 'package:deep_plant_app/pages/maet-registration/additional-data/insert_deep_aging_data_page.dart';
 import 'package:deep_plant_app/pages/maet-registration/basic-data/complete_registration_page.dart';
 import 'package:deep_plant_app/pages/maet-registration/additional-data/complete_registration_page_2.dart';
 import 'package:deep_plant_app/pages/maet-registration/basic-data/freshmeat_evaluation_page.dart';
-import 'package:deep_plant_app/pages/maet-registration/additional-data/hitted_meat_eveluation_page.dart';
+import 'package:deep_plant_app/pages/maet-registration/additional-data/heated_meat_eveluation_page.dart';
 import 'package:deep_plant_app/pages/maet-registration/basic-data/insertion_meat_image.dart';
 import 'package:deep_plant_app/pages/maet-registration/basic-data/insertion_meat_info_page.dart';
 import 'package:deep_plant_app/pages/maet-registration/additional-data/show_step_2_page.dart';
@@ -51,7 +50,9 @@ final _router = GoRouter(
   routes: [
     GoRoute(
       path: '/',
-      builder: (context, state) => CompleteRegistration3(),
+      builder: (context, state) => HeatedMeatEvaluation(
+        meatData: newMeat,
+      ),
       routes: [
         GoRoute(
           path: 'sign-in',
@@ -169,7 +170,7 @@ final _router = GoRouter(
             ),
             GoRoute(
               path: 'hitted-meat-data',
-              builder: (context, state) => HittedMeatEvaluation(
+              builder: (context, state) => HeatedMeatEvaluation(
                 meatData: newMeat,
               ),
             ),

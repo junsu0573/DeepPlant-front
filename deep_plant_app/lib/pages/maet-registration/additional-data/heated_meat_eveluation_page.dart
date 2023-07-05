@@ -8,18 +8,18 @@ import 'package:deep_plant_app/widgets/custom_appbar.dart';
 import 'package:deep_plant_app/widgets/eval_buttonnrow.dart';
 import 'package:go_router/go_router.dart';
 
-class HittedMeatEvaluation extends StatefulWidget {
+class HeatedMeatEvaluation extends StatefulWidget {
   final MeatData meatData;
-  const HittedMeatEvaluation({
+  const HeatedMeatEvaluation({
     super.key,
     required this.meatData,
   });
 
   @override
-  State<HittedMeatEvaluation> createState() => HittedMeatEvaluationState();
+  State<HeatedMeatEvaluation> createState() => HeatedMeatEvaluationState();
 }
 
-class HittedMeatEvaluationState extends State<HittedMeatEvaluation> {
+class HeatedMeatEvaluationState extends State<HeatedMeatEvaluation> {
   // 5개 평가 항목을 모두 false로 설정(기본값)
   final List<bool> _selectedMabling = List.filled(5, false);
   final List<bool> _selectedColor = List.filled(5, false);
