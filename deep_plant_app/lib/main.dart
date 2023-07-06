@@ -79,6 +79,7 @@ final _router = GoRouter(
         ),
       ],
     ),
+    // 회원가입 성공 창
     GoRoute(
       path: ('/succeed-sign-up'),
       builder: (context, state) => const SucceedSignUp(),
@@ -86,7 +87,9 @@ final _router = GoRouter(
     // Home
     GoRoute(
       path: '/option',
-      builder: (context, state) => OptionPage(),
+      builder: (context, state) => OptionPage(
+        user: newUser,
+      ),
       routes: [
         // 마이페이지
         GoRoute(
@@ -168,7 +171,7 @@ final _router = GoRouter(
               ),
             ),
             GoRoute(
-              path: 'hitted-meat-data',
+              path: 'heated-meat-data',
               builder: (context, state) => HeatedMeatEvaluation(
                 meatData: newMeat,
               ),
@@ -187,6 +190,7 @@ final _router = GoRouter(
             ),
           ],
         ),
+        // 육류 등록 성공
         GoRoute(
           path: 'complete-register',
           builder: (context, state) => CompleteResgistration(
@@ -201,6 +205,7 @@ final _router = GoRouter(
             user: newUser,
           ),
         ),
+        // 데이터 관리 페이지
         GoRoute(
           path: 'add-data',
           builder: (context, state) => ManageData(),

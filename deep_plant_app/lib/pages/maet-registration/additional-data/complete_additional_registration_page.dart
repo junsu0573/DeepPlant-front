@@ -4,15 +4,33 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
-class CompleteRegistration3 extends StatefulWidget {
-  const CompleteRegistration3({super.key});
+class CompleteAdditionalRegistration extends StatefulWidget {
+  const CompleteAdditionalRegistration({super.key});
 
   @override
-  State<CompleteRegistration3> createState() => _CompleteRegistration3State();
+  State<CompleteAdditionalRegistration> createState() =>
+      _CompleteAdditionalRegistrationState();
 }
 
-class _CompleteRegistration3State extends State<CompleteRegistration3> {
-  final bool isLoading = false;
+class _CompleteAdditionalRegistrationState
+    extends State<CompleteAdditionalRegistration> {
+  bool isLoading = false;
+
+  Future<void> sendDataToFirebase() async {
+    setState(() {
+      isLoading = true;
+    });
+    setState(() {
+      isLoading = false;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    sendDataToFirebase();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +38,7 @@ class _CompleteRegistration3State extends State<CompleteRegistration3> {
       backgroundColor: Colors.white,
       body: Center(
         child: isLoading
-            ? Text('관리번호 생성중')
+            ? Text('데이터 등록중')
             : Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [

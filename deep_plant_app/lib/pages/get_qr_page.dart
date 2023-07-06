@@ -125,7 +125,9 @@ class _GetQrPageState extends State<GetQrPage> {
         ),
         // 카메라 위에 내용을 올리기 위해 사용
         Positioned(
-          bottom: (MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top) * 0.24,
+          bottom: (MediaQuery.of(context).size.height -
+                  MediaQuery.of(context).padding.top) *
+              0.24,
           right: (MediaQuery.of(context).size.width) * 0.29,
           child: Text(
             '저장된 데이터 불러오기',
@@ -136,7 +138,9 @@ class _GetQrPageState extends State<GetQrPage> {
           ),
         ),
         Positioned(
-          bottom: (MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top) * 0.19,
+          bottom: (MediaQuery.of(context).size.height -
+                  MediaQuery.of(context).padding.top) *
+              0.19,
           right: (MediaQuery.of(context).size.width) * 0.22,
           child: Text(
             'QR코드를 스캔하세요.',

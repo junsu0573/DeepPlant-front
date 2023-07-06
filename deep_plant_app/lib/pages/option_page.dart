@@ -1,3 +1,4 @@
+import 'package:deep_plant_app/models/user_model.dart';
 import 'package:deep_plant_app/source/pallete.dart';
 import 'package:deep_plant_app/widgets/custom_icon_button.dart';
 import 'package:flutter/material.dart';
@@ -5,7 +6,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
 class OptionPage extends StatelessWidget {
-  const OptionPage({super.key});
+  final UserModel user;
+  const OptionPage({
+    super.key,
+    required this.user,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +26,9 @@ class OptionPage extends StatelessWidget {
               CustomIconButton(
                 image: AssetImage('assets/images/person.png'),
                 onTap: () {
-                  context.go('/option/my-page');
+                  user.level == 'users_1'
+                      ? context.go('/option/my-page')
+                      : null;
                 },
               ),
               SizedBox(
