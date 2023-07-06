@@ -27,7 +27,7 @@ void showDataRegisterDialog(
 ) {
   showCustomDialog(
     context,
-    'assets/data_register.png',
+    'assets/images/data_register.png',
     '진행중인 데이터 등록이 있습니다.',
     '이어서 등록하시겠습니까 ?',
     '처음부터',

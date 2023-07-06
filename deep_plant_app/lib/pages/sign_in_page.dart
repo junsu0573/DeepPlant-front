@@ -109,6 +109,13 @@ class _SignInState extends State<SignIn> {
         'lastLogin': userLog,
       };
       await _firestore.collection(userLevel).doc(_userId).update(updateData);
+
+      // 유저 이메일 0-0-0-0-0 에 추가
+      DocumentReference ref = _firestore.collection('meat').doc('0-0-0-0-0');
+
+      await ref.update({
+        'fix_data.$userLevel': FieldValue.arrayUnion([_userId]),
+      });
     } catch (e) {
       // 로딩 상태를 비활성화
       setState(() {

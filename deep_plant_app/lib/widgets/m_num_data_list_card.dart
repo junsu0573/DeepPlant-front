@@ -6,11 +6,13 @@ class MNumDataListCard extends StatelessWidget {
   final int idx;
   final String mNum;
   final bool? noButton;
+  final VoidCallback? buttonAction;
   const MNumDataListCard({
     super.key,
     required this.idx,
     required this.mNum,
     this.noButton,
+    this.buttonAction,
   });
 
   @override
@@ -42,6 +44,7 @@ class MNumDataListCard extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 30.sp,
                       fontWeight: FontWeight.w400,
+                      decoration: TextDecoration.underline,
                     ),
                   ),
                 ),
@@ -62,7 +65,7 @@ class MNumDataListCard extends StatelessWidget {
                           ),
                         ],
                       ),
-                      onPress: () {},
+                      onPress: buttonAction,
                       width: 141.w,
                       height: 63.h,
                       bgColor: Color.fromRGBO(178, 178, 178, 1),

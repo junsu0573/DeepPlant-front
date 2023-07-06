@@ -32,19 +32,32 @@ class _ShowStep2State extends State<ShowStep2> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    setState(() {});
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: CustomAppBar(
-        title: '육류 등록',
+        title: '',
         backButton: false,
         closeButton: true,
       ),
       body: Center(
         child: Column(
           children: [
+            Text(
+              '추가정보 입력',
+              style: TextStyle(
+                fontSize: 36.sp,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
             SizedBox(
-              height: 50,
+              height: 48.h,
             ),
             GestureDetector(
               onTap: () => context.go('/option/show-step-2/deep-aging-data'),
@@ -58,9 +71,18 @@ class _ShowStep2State extends State<ShowStep2> {
             GestureDetector(
               onTap: () => context.go('/option/show-step-2/fresh-meat-data'),
               child: StepCard(
-                mainText: '가열육 관능평가',
+                mainText: '신선육 관능평가',
                 subText: '데이터를 입력해 주세요.',
                 step: '2',
+                isCompleted: widget.meat.freshData != null ? true : false,
+              ),
+            ),
+            GestureDetector(
+              onTap: () => context.go('/option/show-step-2/heated-meat-data'),
+              child: StepCard(
+                mainText: '가열육 관능평가',
+                subText: '데이터를 입력해 주세요.',
+                step: '3',
                 isCompleted: widget.meat.heatedMeat != null ? true : false,
               ),
             ),
@@ -69,7 +91,7 @@ class _ShowStep2State extends State<ShowStep2> {
               child: StepCard(
                 mainText: '전자혀 데이터',
                 subText: '데이터를 입력해 주세요.',
-                step: '3',
+                step: '4',
                 isCompleted: widget.meat.tongueData != null ? true : false,
               ),
             ),
@@ -78,7 +100,7 @@ class _ShowStep2State extends State<ShowStep2> {
               child: StepCard(
                 mainText: '실험 데이터',
                 subText: '데이터를 입력해 주세요.',
-                step: '4',
+                step: '5',
                 isCompleted: widget.meat.labData != null ? true : false,
               ),
             ),

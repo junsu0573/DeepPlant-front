@@ -213,7 +213,9 @@ final _router = GoRouter(
         ),
         GoRoute(
           path: 'add-data-2',
-          builder: (context, state) => DataManagement2(),
+          builder: (context, state) => DataManagement2(
+            meat: newMeat,
+          ),
         ),
       ],
     ),
