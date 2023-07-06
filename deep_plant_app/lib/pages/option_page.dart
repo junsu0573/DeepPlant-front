@@ -26,9 +26,7 @@ class OptionPage extends StatelessWidget {
               CustomIconButton(
                 image: AssetImage('assets/images/person.png'),
                 onTap: () {
-                  user.level == 'users_1'
-                      ? context.go('/option/my-page')
-                      : null;
+                  context.go('/option/my-page');
                 },
               ),
               SizedBox(
@@ -142,7 +140,9 @@ class OptionPage extends StatelessWidget {
                   padding: const EdgeInsets.all(5.0),
                   child: GestureDetector(
                     onTap: () {
-                      context.go('/option/add-data');
+                      user.level == 'users_1'
+                          ? context.go('/option/add-data')
+                          : context.go('/option/add-data-2');
                     },
                     child: Stack(
                       children: [
