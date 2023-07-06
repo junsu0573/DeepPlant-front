@@ -1,8 +1,10 @@
 import 'package:deep_plant_app/models/meat_data_model.dart';
 import 'package:deep_plant_app/widgets/custom_appbar.dart';
+import 'package:deep_plant_app/widgets/save_button.dart';
 import 'package:flutter/material.dart';
 
 import 'package:deep_plant_app/source/api_source.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:intl/intl.dart';
 import 'package:go_router/go_router.dart';
@@ -19,37 +21,55 @@ class GetHistoryPage extends StatefulWidget {
 }
 
 class _GetHistoryPageState extends State<GetHistoryPage> {
-  var apikey =
-      "58%2FAb40DJd41UCVYmCZM89EUoOWqT0vuObbReDQCI6ufjHIJbhZOUtQnftZErMQf6%2FgEflZVctg97VfdvvtmQw%3D%3D";
+  var apikey = "%2FuEP%2BvIjYfPTyaHNlxRx2Ry5cVUer92wa6lHcxnXEEekVjUCZ1N41traj3s8sGhHpKS54SVDbg9m4sHOEuMNuw%3D%3D";
 
   final formkey = GlobalKey<FormState>();
   final TextEditingController textEditingController = TextEditingController();
 
+  RegExp input = RegExp(r'^[0-9L]+$');
+
   bool isFinal = false;
   bool isValue = false;
-  String? historyNum;
+  String? traceNo;
+  String? birthYmd;
+  String? lsType;
+  String? sexNm;
+  String? farmerNmfarmNo;
+  String? farmAddr;
+  String? butcheryYmd;
+  String? insfat;
+  String? gradeNm;
 
-  String? farmAdd;
-  String? basetime;
-  String? houseName;
-  String? grade;
-
-  final List<String> tableData = [];
+  final List<String?> tableData = [];
 
   final List<String> baseData = [
     '이력번호',
-    '농장',
-    '도축장',
-    '도축일자',
+    '출생년월일',
     '육종/축종',
     '성별',
+    '경영자',
+    '사육지',
+    '도축일자',
+    '근내지방도',
     '등급',
-    '출생년월일',
   ];
 
   @override
   void initState() {
     super.initState();
+  }
+
+  void reset() {
+    tableData.clear();
+    traceNo = null;
+    birthYmd = null;
+    lsType = null;
+    sexNm = null;
+    farmerNmfarmNo = null;
+    farmAddr = null;
+    butcheryYmd = null;
+    insfat = null;
+    gradeNm = null;
   }
 
   void _tryValidation() {
@@ -64,59 +84,82 @@ class _GetHistoryPageState extends State<GetHistoryPage> {
     }
   }
 
-  Future<void> fetchData(String historyNum) async {
-    var traceNo = historyNum;
-    tableData.clear();
+  Future<void> fetchData(String historyNo) async {
+    historyNo = historyNo.replaceAll(RegExp('\\s'), "");
+    reset();
 
-    try {
-      ApiSource source = ApiSource(
-          baseUrl:
-              "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?serviceKey=$apikey&traceNo=$traceNo");
+    if (historyNo.startsWith('L1')) {
+      try {
+        ApiSource source =
+            ApiSource(baseUrl: "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?serviceKey=$apikey&traceNo=$historyNo&optionNo=9");
 
-      final meatAPIData = await source.getJsonData();
+        final pigAPIData = await source.getJsonData();
 
-      farmAdd = meatAPIData['response']['body']['items']['item'][1]['farmAddr'];
-      houseName = meatAPIData['response']['body']['items']['item'][4]
-          ['butcheryPlaceNm'];
-      basetime =
-          meatAPIData['response']['body']['items']['item'][4]['butcheryYmd'];
-      String basetimeResolve =
-          DateFormat('yyyy-MM-dd').format(DateTime.parse(basetime!)).toString();
-      String breeding =
-          meatAPIData['response']['body']['items']['item'][0]['lsTypeNm'];
-      String gender =
-          meatAPIData['response']['body']['items']['item'][0]['sexNm'];
-      grade = meatAPIData['response']['body']['items']['item'][4]['gradeNm'];
-      String birth =
-          meatAPIData['response']['body']['items']['item'][0]['birthYmd'];
-      String birthResolve =
-          DateFormat('yyyy-MM-dd').format(DateTime.parse(birth)).toString();
-
-      tableData.addAll([
-        traceNo,
-        farmAdd!,
-        houseName!,
-        basetimeResolve,
-        breeding,
-        gender,
-        grade!,
-        birthResolve
-      ]);
-
-      isFinal = true;
-    } catch (e) {
-      tableData.clear();
-      isFinal = false;
-      // 여기에 다이얼로그로 수정!!
+        traceNo = pigAPIData['response']['body']['items']['item'][0]['pigNo'];
+      } catch (e) {
+        tableData.clear();
+        isFinal = false;
+      }
+    } else {
+      traceNo = historyNo;
     }
+
+    if (traceNo!.startsWith('0')) {
+      try {
+        ApiSource source1 =
+            ApiSource(baseUrl: "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?serviceKey=$apikey&traceNo=$traceNo&optionNo=1");
+        ApiSource source2 =
+            ApiSource(baseUrl: "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?serviceKey=$apikey&traceNo=$traceNo&optionNo=2");
+        ApiSource source3 =
+            ApiSource(baseUrl: "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?serviceKey=$apikey&traceNo=$traceNo&optionNo=3");
+
+        final meatAPIData1 = await source1.getJsonData();
+        final meatAPIData2 = await source2.getJsonData();
+        final meatAPIData3 = await source3.getJsonData();
+
+        String date = meatAPIData1['response']['body']['items']['item']['birthYmd'];
+        birthYmd = DateFormat('yyyy-MM-dd').format(DateTime.parse(date)).toString();
+        lsType = meatAPIData1['response']['body']['items']['item']['lsTypeNm'] ?? "";
+        sexNm = meatAPIData1['response']['body']['items']['item']['sexNm'] ?? "";
+        String? farmerNm = meatAPIData2['response']['body']['items']['item'][0]['farmerNm'] ?? "";
+        String? farmNo = meatAPIData2['response']['body']['items']['item'][0]['farmNo'] ?? "";
+        farmerNmfarmNo = '$farmerNm($farmNo)';
+        farmAddr = meatAPIData2['response']['body']['items']['item'][0]['farmAddr'] ?? "";
+        String butDate = meatAPIData3['response']['body']['items']['item']['butcheryYmd'] ?? "";
+        butcheryYmd = DateFormat('yyyy-MM-dd').format(DateTime.parse(butDate)).toString();
+        insfat = meatAPIData3['response']['body']['items']['item']['insfat'] ?? "";
+        gradeNm = meatAPIData3['response']['body']['items']['item']['gradeNm'] ?? "";
+      } catch (e) {
+        tableData.clear();
+        isFinal = false;
+        // 여기에 다이얼로그로 수정!!
+      }
+    } else {
+      try {
+        ApiSource source4 =
+            ApiSource(baseUrl: "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?serviceKey=$apikey&traceNo=$traceNo&optionNo=4");
+        ApiSource source3 =
+            ApiSource(baseUrl: "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?serviceKey=$apikey&traceNo=$traceNo&optionNo=3");
+
+        final meatAPIData4 = await source4.getJsonData();
+        final meatAPIData3 = await source3.getJsonData();
+
+        gradeNm = meatAPIData4['response']['body']['items']['item']['gradeNm'] ?? "";
+        String time = meatAPIData3['response']['body']['items']['item']['butcheryYmd'];
+        butcheryYmd = DateFormat('yyyy-MM-dd').format(DateTime.parse(time)).toString();
+        lsType = '돼지';
+      } catch (e) {
+        tableData.clear();
+        isFinal = false;
+        // 여기에 다이얼로그로 수정!!
+      }
+    }
+    tableData.addAll([traceNo, birthYmd, lsType, sexNm, farmerNmfarmNo, farmAddr, butcheryYmd, insfat, gradeNm]);
+    isFinal = true;
   }
 
   void saveData() {
-    widget.meatData.historyNumber = historyNum;
-    widget.meatData.gradeNm = grade;
-    widget.meatData.farmAddr = farmAdd;
-    widget.meatData.butcheryPlaceNm = houseName;
-    widget.meatData.butcheryYmd = basetime;
+    // 여기에서 tableData 요소를 담아서 넘기셈.
   }
 
   @override
@@ -129,12 +172,30 @@ class _GetHistoryPageState extends State<GetHistoryPage> {
         onTap: () => FocusScope.of(context).unfocus(),
         child: Column(
           children: [
-            Text(
-              '이력번호 입력',
-              style: TextStyle(
-                fontSize: 20.0,
-                fontWeight: FontWeight.bold,
-              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 15.0),
+                  child: IconButton(
+                      onPressed: () {},
+                      icon: Icon(
+                        Icons.barcode_reader,
+                        size: 30.0,
+                      )),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(right: 10.0, bottom: 5.0),
+                  child: Text(
+                    '이력번호 입력',
+                    style: TextStyle(
+                      fontSize: 20.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                Opacity(opacity: 0, child: IconButton(onPressed: null, icon: Icon(Icons.barcode_reader))),
+              ],
             ),
             SizedBox(height: 5.0),
             Row(
@@ -146,7 +207,7 @@ class _GetHistoryPageState extends State<GetHistoryPage> {
                       key: formkey,
                       child: TextFormField(
                         controller: textEditingController,
-                        maxLength: 12,
+                        maxLength: 15,
                         validator: (value) {
                           if (value!.isEmpty || value.length < 12) {
                             // 임시 지정!!
@@ -156,41 +217,37 @@ class _GetHistoryPageState extends State<GetHistoryPage> {
                           }
                         },
                         onSaved: (value) {
-                          historyNum = value!;
+                          traceNo = value!;
                         },
                         onChanged: (value) {
-                          historyNum = value;
+                          traceNo = value;
                         },
                         decoration: InputDecoration(
                             enabledBorder: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(width: 0.5, color: Colors.grey),
+                                borderSide: BorderSide(width: 0.5, color: Colors.grey),
                                 borderRadius: BorderRadius.all(
                                   Radius.circular(25.0),
                                 )),
                             focusedBorder: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(width: 0.5, color: Colors.grey),
+                                borderSide: BorderSide(width: 0.5, color: Colors.grey),
                                 borderRadius: BorderRadius.all(
                                   Radius.circular(25.0),
                                 )),
                             errorBorder: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(width: 0.5, color: Colors.grey),
+                                borderSide: BorderSide(width: 0.5, color: Colors.grey),
                                 borderRadius: BorderRadius.all(
                                   Radius.circular(25.0),
                                 )),
                             focusedErrorBorder: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(width: 0.5, color: Colors.grey),
+                                borderSide: BorderSide(width: 0.5, color: Colors.grey),
                                 borderRadius: BorderRadius.all(
                                   Radius.circular(25.0),
                                 )),
-                            hintText: '이력번호 입력',
+                            hintText: '이력번호나 묶음번호 입력',
                             contentPadding: EdgeInsets.all(12.0),
                             fillColor: Colors.grey[200],
                             filled: true),
-                        keyboardType: TextInputType.number,
+                        keyboardType: TextInputType.text,
                       ),
                     ),
                   ),
@@ -206,7 +263,7 @@ class _GetHistoryPageState extends State<GetHistoryPage> {
                           tableData.clear();
                           _tryValidation();
                           if (isValue) {
-                            await fetchData(historyNum!);
+                            await fetchData(traceNo!);
                           }
                           setState(() {
                             FocusScope.of(context).unfocus();
@@ -239,30 +296,17 @@ class _GetHistoryPageState extends State<GetHistoryPage> {
               Spacer(
                 flex: 2,
               ),
-            Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: Transform.translate(
-                offset: Offset(0, 0),
-                child: SizedBox(
-                  height: 55,
-                  width: 350,
-                  child: ElevatedButton(
-                    onPressed: isFinal
-                        ? () {
-                            saveData();
-                            context.go('/option/show-step/insert-meat-info');
-                          }
-                        : null,
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.grey[800],
-                        disabledBackgroundColor: Colors.grey[400],
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                        )),
-                    child: Text('다음'),
-                  ),
-                ),
-              ),
+            SaveButton(
+              isWhite: false,
+              text: '다음',
+              width: 658.w,
+              heigh: 104.h,
+              onPressed: isFinal
+                  ? () {
+                      saveData();
+                      context.go('/option/show-step/insert-meat-info');
+                    }
+                  : null,
             ),
           ],
         ),
@@ -274,7 +318,7 @@ class _GetHistoryPageState extends State<GetHistoryPage> {
 class View extends StatelessWidget {
   const View({super.key, required this.tableData, required this.baseData});
 
-  final List<String> tableData;
+  final List<String?> tableData;
   final List<String> baseData;
 
   @override

@@ -133,7 +133,6 @@ final _router = GoRouter(
               path: 'insert-meat-image',
               builder: (context, state) => InsertionMeatImage(
                 meatData: newMeat,
-                user: newUser,
               ),
             ),
             GoRoute(
@@ -152,19 +151,7 @@ final _router = GoRouter(
             meat: newMeat,
           ),
           routes: [
-            GoRoute(
-                path: 'deep-aging-data',
-                builder: (context, state) => DeepAging(
-                      agingdata: deepAging,
-                    ),
-                routes: [
-                  GoRoute(
-                    path: 'insert',
-                    builder: (context, state) => InsertDeepAgingData(
-                      agingdata: deepAging,
-                    ),
-                  )
-                ]),
+            GoRoute(path: 'deep-aging-data', builder: (context, state) => DeepAging()),
             GoRoute(
               path: 'fresh-meat-data',
               builder: (context, state) => FreshmeatEvaluation(
@@ -233,8 +220,7 @@ class MyApp extends StatelessWidget {
       // 기본 색상
       theme: ThemeData(
         primaryColor: const Color.fromRGBO(51, 51, 51, 1),
-        buttonTheme:
-            const ButtonThemeData(buttonColor: Color.fromRGBO(51, 51, 51, 1)),
+        buttonTheme: const ButtonThemeData(buttonColor: Color.fromRGBO(51, 51, 51, 1)),
       ),
       routerConfig: _router,
       builder: (context, child) {

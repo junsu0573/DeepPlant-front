@@ -1,10 +1,13 @@
 import 'package:deep_plant_app/models/deep_aging_data_model.dart';
 import 'package:deep_plant_app/widgets/month_selection_button.dart';
+import 'package:deep_plant_app/widgets/save_button.dart';
 import 'package:flutter/material.dart';
 import 'package:deep_plant_app/widgets/custom_appbar.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:table_calendar/table_calendar.dart';
-import 'package:go_router/go_router.dart';
+import 'dart:core';
 
 class InsertDeepAgingData extends StatefulWidget {
   final DeepAgingData agingdata;
@@ -39,26 +42,48 @@ class _InsertDeepAgingDataState extends State<InsertDeepAgingData> {
 
   bool isFinal = false;
 
-  int? insertedHour;
-  int? insertedMinute;
+  int? selectedHour;
+  int? selectedMinute;
 
   List<String> monthData = ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'];
-  List<int> yearData = List<int>.generate(2023 - 2003 + 1, (int index) => 2003 + index);
-  int initialValue = DateTime.now().year;
+  List<int> yearData = List<int>.generate(2023 - 2003 + 1, (int index) => 2023 - index);
+  int initialValue = 0;
 
-  void saveData(DeepAgingData deepData, String month, String day, String year, int hour, int minute) {
-    deepData.selectedMonth = month;
-    deepData.selectedDay = day;
-    deepData.selectedYear = year;
-    deepData.insertedHour = hour;
-    deepData.insertedMinute = minute;
+  RegExp num = RegExp(r'^[0-9]+$');
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.agingdata.insertedHour != null) {
+      selectedMonth = widget.agingdata.selectedMonth;
+      selectedDay = widget.agingdata.selectedDay;
+      selectedYear = widget.agingdata.selectedYear;
+      selectedHour = int.parse(widget.agingdata.insertedHour!);
+      textEditingController1.text = widget.agingdata.insertedHour!;
+      selectedMinute = int.parse(widget.agingdata.insertedMinute!);
+      textEditingController2.text = widget.agingdata.insertedMinute!;
+      isInsertedDay = true;
+      isInsertedHour = true;
+      isInsertedMinute = true;
+      isInsertedMonth = true;
+      isInsertedYear = true;
+      successAssign();
+    }
+  }
+
+  void saveData(DeepAgingData deepData) {
+    deepData.selectedMonth = selectedMonth;
+    deepData.selectedDay = selectedDay;
+    deepData.selectedYear = selectedYear;
+    deepData.insertedHour = selectedHour.toString();
+    deepData.insertedMinute = selectedMinute.toString();
   }
 
   void setting() {
-    if (int.parse(selectedMonth!) < 10) {
+    if (int.parse(selectedMonth!) < 10 && !selectedMonth!.startsWith('0')) {
       selectedMonth = '0$selectedMonth';
     }
-    if (int.parse(selectedDay!) < 10) {
+    if (int.parse(selectedDay!) < 10 && !selectedDay!.startsWith('0')) {
       selectedDay = '0$selectedDay';
     }
   }
@@ -376,8 +401,8 @@ class _InsertDeepAgingDataState extends State<InsertDeepAgingData> {
                             child: TextField(
                               onChanged: (value) {
                                 setState(() {
-                                  if (value != '') {
-                                    insertedHour = int.parse(value);
+                                  if (num.hasMatch(value)) {
+                                    selectedHour = int.parse(value);
                                     isInsertedHour = true;
                                     successAssign();
                                   }
@@ -385,6 +410,7 @@ class _InsertDeepAgingDataState extends State<InsertDeepAgingData> {
                               },
                               style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.bold),
                               textAlign: TextAlign.end,
+                              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                               controller: textEditingController1,
                               showCursor: false,
                               keyboardType: TextInputType.number,
@@ -418,8 +444,8 @@ class _InsertDeepAgingDataState extends State<InsertDeepAgingData> {
                             child: TextField(
                               onChanged: (value) {
                                 setState(() {
-                                  if (value != '') {
-                                    insertedMinute = int.parse(value);
+                                  if (num.hasMatch(value)) {
+                                    selectedMinute = int.parse(value);
                                     isInsertedMinute = true;
                                     successAssign();
                                   }
@@ -427,6 +453,7 @@ class _InsertDeepAgingDataState extends State<InsertDeepAgingData> {
                               },
                               textAlign: TextAlign.end,
                               style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.bold),
+                              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                               controller: textEditingController2,
                               showCursor: false,
                               keyboardType: TextInputType.number,
@@ -470,35 +497,18 @@ class _InsertDeepAgingDataState extends State<InsertDeepAgingData> {
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: SizedBox(
-                height: 55,
-                width: 350,
-                child: ElevatedButton(
-                  onPressed: isFinal
-                      ? () {
-                          setting();
-                          saveData(widget.agingdata, '$selectedMonth', '$selectedDay', selectedYear!, insertedHour!, insertedMinute!);
-                          context.go('/option/show-step-2/deep-aging-data/');
-                        }
-                      : null,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.grey[800],
-                    disabledBackgroundColor: Colors.grey[400],
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                  ),
-                  child: Text(
-                    '저장',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 17.0,
-                    ),
-                  ),
-                ),
-              ),
+            SaveButton(
+              isWhite: false,
+              text: '저장',
+              width: 658.w,
+              heigh: 104.h,
+              onPressed: isFinal
+                  ? () {
+                      setting();
+                      saveData(widget.agingdata);
+                      Navigator.pop(context, widget.agingdata);
+                    }
+                  : null,
             ),
           ],
         ),

@@ -2,8 +2,8 @@ class DeepAgingData {
   String? selectedMonth;
   String? selectedDay;
   String? selectedYear;
-  int? insertedHour;
-  int? insertedMinute;
+  String? insertedHour;
+  String? insertedMinute;
 
   DeepAgingData({
     this.selectedMonth,

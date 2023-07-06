@@ -1,8 +1,9 @@
 import 'package:deep_plant_app/widgets/custom_appbar.dart';
 import 'package:flutter/material.dart';
-import 'package:deep_plant_app/source/user_info_data_source.dart';
-import 'package:deep_plant_app/source/data_page_toggle_button.dart';
+import 'package:deep_plant_app/widgets/data_page_toggle_button.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 class ManageData extends StatefulWidget {
   const ManageData({super.key});
@@ -16,8 +17,6 @@ class _ManageDataState extends State<ManageData> {
   FocusNode focusNode = FocusNode();
   String text = '';
   final List<String> label = ['관리번호', '등록자', '관리'];
-  final List<String> focusData = [];
-  final UserInfoData infoData = UserInfoData();
   final List<bool> _selections1 = [false, true, false, false];
   final List<bool> _selections2 = [true, false];
   String option1 = '1개월';
@@ -32,12 +31,55 @@ class _ManageDataState extends State<ManageData> {
 
   DateTime focusedDay = DateTime.now();
 
+  final List<String> userData = [
+    '2022091911501022,박수현, ',
+    '2022091911501022,박수현, ',
+  ];
+
   _ManageDataState() {
     search.addListener(() {
       setState(() {
         text = search.text;
       });
     });
+  }
+
+  List<String> extractIds(List<dynamic> jsonData) {
+    List<String> ids = [];
+    for (var item in jsonData) {
+      if (item is Map<String, dynamic> && item.containsKey('id')) {
+        ids.add(item['id']);
+      }
+    }
+    return ids;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    fetchJsonData();
+  }
+
+  Future<void> fetchJsonData() async {
+    var apiUrl = 'http://172.30.1.17:8080/user?id=junsu0573@naver.com';
+
+    try {
+      var response = await http.get(Uri.parse(apiUrl));
+
+      if (response.statusCode == 200) {
+        var jsonData = jsonDecode(response.body)['meatList'] as List<dynamic>;
+        var ids = extractIds(jsonData);
+        for (int i = 0; i < ids.length; i++) {
+          userData.add('${ids[i]},전수현, ');
+        }
+      } else {
+        // Error handling
+        print('Request failed with status: ${response.statusCode}.');
+      }
+    } catch (e) {
+      // Exception handling
+      print('Error: $e');
+    }
   }
 
   void insertOption1(String option) {
@@ -93,38 +135,62 @@ class _ManageDataState extends State<ManageData> {
   }
 
   List<DataRow> getRows() {
-    List<String> source = infoData.userData;
+    List<String> source = userData;
     List<DataRow> dataRow = [];
 
     // 이 과정은 기존 source에 담긴 데이터를 textfield를 통해 입력받는 'text' 변수와 비교하게 된다.
     // source에 담긴 data 값을 text의 시작과 비교하고, controller를 통해 실시간적으로 정보를 교류하게 된다.
     // contains는 중간 아무 요소나 비교, startwith는 시작부터, endwith는 끝부터 비교하는 기능임을 기억해두자.
-    List<String> filteredData =
-        source.where((data) => data.contains(text)).toList();
+    List<String> filteredData = source.where((data) => data.contains(text)).toList();
 
     for (var i = 0; i < filteredData.length; i++) {
       var csvDataCells = filteredData[i].split(',');
       List<DataCell> cells = [];
-      for (var j = 0; j < csvDataCells.length - 1; j++) {
-        cells.add(DataCell(Text(
-          csvDataCells[j],
-          style: TextStyle(
-            fontSize: 15.0,
+      cells.add(DataCell(
+        Container(
+          width: 100,
+          padding: EdgeInsets.only(right: 20.0),
+          constraints: BoxConstraints(maxWidth: 100.0),
+          child: OverflowBox(
+            maxWidth: double.infinity,
+            alignment: Alignment.center,
+            child: RichText(
+              overflow: TextOverflow.ellipsis,
+              maxLines: 2,
+              text: TextSpan(
+                text: csvDataCells[0],
+                style: TextStyle(
+                  fontSize: 15.0,
+                  color: Colors.black,
+                ),
+              ),
+            ),
           ),
-        )));
-      }
-      cells.add(DataCell(ElevatedButton(
-        onPressed: () {},
-        style: ElevatedButton.styleFrom(
-            foregroundColor: Colors.black,
-            backgroundColor: Colors.grey[300],
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(35.0),
-            )),
-        child: Text(
-          '수정',
+        ),
+      ));
+      cells.add(DataCell(Text(
+        csvDataCells[1],
+        style: TextStyle(
+          fontSize: 15.0,
         ),
       )));
+      if (csvDataCells[1] == '전수현') {
+        cells.add(DataCell(ElevatedButton(
+          onPressed: () {},
+          style: ElevatedButton.styleFrom(
+              foregroundColor: Colors.black,
+              backgroundColor: Colors.grey[300],
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(35.0),
+              )),
+          child: Text(
+            '수정',
+          ),
+        )));
+      } else {
+        cells.add(DataCell.empty);
+      }
+
       dataRow.add(DataRow(cells: cells));
     }
     return dataRow;
@@ -170,7 +236,7 @@ class _ManageDataState extends State<ManageData> {
                             ),
                             controller: search,
                             cursorColor: Colors.grey[400],
-                            keyboardType: TextInputType.number,
+                            keyboardType: TextInputType.text,
                             decoration: InputDecoration(
                               contentPadding: EdgeInsets.only(top: 10.0),
                               hintText: '관리번호검색',
@@ -195,20 +261,17 @@ class _ManageDataState extends State<ManageData> {
                                       icon: Icon(Icons.search),
                                     ),
                               focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      width: 0.2, color: Colors.grey),
+                                  borderSide: BorderSide(width: 0.2, color: Colors.grey),
                                   borderRadius: BorderRadius.all(
                                     Radius.circular(25.0),
                                   )),
                               enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      width: 0.2, color: Colors.grey),
+                                  borderSide: BorderSide(width: 0.2, color: Colors.grey),
                                   borderRadius: BorderRadius.all(
                                     Radius.circular(25.0),
                                   )),
                               border: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      width: 0.2, color: Colors.grey),
+                                  borderSide: BorderSide(width: 0.2, color: Colors.grey),
                                   borderRadius: BorderRadius.all(
                                     Radius.circular(25.0),
                                   )),
@@ -231,8 +294,7 @@ class _ManageDataState extends State<ManageData> {
                                       height: 300,
                                       child: Center(
                                         child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
+                                          mainAxisAlignment: MainAxisAlignment.center,
                                           mainAxisSize: MainAxisSize.min,
                                           children: <Widget>[
                                             Text(
@@ -277,20 +339,14 @@ class _ManageDataState extends State<ManageData> {
                                                 setState(() {});
                                               },
                                               style: ElevatedButton.styleFrom(
-                                                backgroundColor:
-                                                    Colors.grey[800],
-                                                disabledBackgroundColor:
-                                                    Colors.grey[400],
+                                                backgroundColor: Colors.grey[800],
+                                                disabledBackgroundColor: Colors.grey[400],
                                                 shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          10.0),
+                                                  borderRadius: BorderRadius.circular(10.0),
                                                 ),
                                               ),
                                               child: SizedBox(
-                                                width: MediaQuery.of(context)
-                                                    .size
-                                                    .width,
+                                                width: MediaQuery.of(context).size.width,
                                                 height: 55.0,
                                                 child: Center(
                                                   child: Text(
@@ -319,10 +375,8 @@ class _ManageDataState extends State<ManageData> {
                                           fontSize: 17.0,
                                           fontWeight: FontWeight.bold,
                                         ),
-                                        leftChevronMargin: EdgeInsets.only(
-                                            left: 85.0, top: 5.0),
-                                        rightChevronMargin: EdgeInsets.only(
-                                            right: 85.0, top: 5.0),
+                                        leftChevronMargin: EdgeInsets.only(left: 85.0, top: 5.0),
+                                        rightChevronMargin: EdgeInsets.only(right: 85.0, top: 5.0),
                                       ),
                                       calendarStyle: CalendarStyle(
                                         outsideDaysVisible: false,
@@ -337,8 +391,7 @@ class _ManageDataState extends State<ManageData> {
                                         ),
                                       ),
                                       focusedDay: focusedDay,
-                                      onDaySelected: (DateTime selectedDay,
-                                          DateTime focusedDay) {
+                                      onDaySelected: (DateTime selectedDay, DateTime focusedDay) {
                                         // 선택된 날짜의 상태를 갱신합니다.
                                         setState(() {
                                           this.selectedDay = selectedDay;
