@@ -5,12 +5,16 @@ class CommonButton extends StatelessWidget {
   final void Function()? onPress;
   final double width;
   final double height;
+  final Color? bgColor;
+  final Color? fgColor;
   CommonButton({
     super.key,
     required this.text,
     required this.onPress,
     required this.width,
     required this.height,
+    this.bgColor,
+    this.fgColor,
   });
 
   @override
@@ -21,9 +25,13 @@ class CommonButton extends StatelessWidget {
       child: ElevatedButton(
         onPressed: onPress,
         style: ElevatedButton.styleFrom(
-          backgroundColor: Theme.of(context).primaryColor,
+          foregroundColor: fgColor,
+          backgroundColor: bgColor ?? Theme.of(context).primaryColor,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(30),
+            side: fgColor != null
+                ? BorderSide(color: Colors.black)
+                : BorderSide.none,
           ),
         ),
         child: text,

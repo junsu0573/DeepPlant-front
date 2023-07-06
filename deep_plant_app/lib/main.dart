@@ -1,5 +1,6 @@
 import 'package:deep_plant_app/models/meat_data_model.dart';
 import 'package:deep_plant_app/models/user_model.dart';
+import 'package:deep_plant_app/pages/data_management_page_2.dart';
 import 'package:deep_plant_app/pages/home_page.dart';
 import 'package:deep_plant_app/pages/maet-registration/additional-data/deep_aging_page.dart';
 import 'package:deep_plant_app/pages/maet-registration/additional-data/experiment_data_input_page.dart';
@@ -209,6 +210,10 @@ final _router = GoRouter(
         GoRoute(
           path: 'add-data',
           builder: (context, state) => ManageData(),
+        ),
+        GoRoute(
+          path: 'add-data-2',
+          builder: (context, state) => DataManagement2(),
         ),
       ],
     ),
