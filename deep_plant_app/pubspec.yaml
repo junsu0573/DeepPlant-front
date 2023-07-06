@@ -41,7 +41,7 @@ dependencies:
   firebase_storage: ^11.2.3
   image_picker: ^0.8.9
   xml2json: ^6.1.0
-  http: ^0.13.6
+  http: ^1.1.0
   qr_code_scanner: ^1.0.1
   flutter_screenutil: ^5.7.0
   intl: ^0.18.1

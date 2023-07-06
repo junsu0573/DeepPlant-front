@@ -1,4 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:deep_plant_app/models/meat_data_model.dart';
 import 'package:deep_plant_app/models/user_model.dart';
 import 'package:deep_plant_app/widgets/custom_appbar.dart';
@@ -9,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
+import 'package:path_provider/path_provider.dart';
 
 class ShowStep extends StatefulWidget {
   final UserModel user;
@@ -24,8 +27,6 @@ class ShowStep extends StatefulWidget {
 }
 
 class _ShowStepState extends State<ShowStep> {
-  final _firestore = FirebaseFirestore.instance;
-
   bool _isAllCompleted() {
     if (widget.meat.species != null &&
         widget.meat.imageFile != null &&
@@ -35,30 +36,37 @@ class _ShowStepState extends State<ShowStep> {
     return false;
   }
 
-  // 임시저장 데이터로 fetch
-  Future<void> getData() async {
-    DocumentSnapshot docSnapshot =
-        await _firestore.collection('user_emails').doc(widget.user.email).get();
-    Map<String, dynamic> data = docSnapshot.get('temp_basic_data');
-    initMeatdata(data);
+  // 임시 데이터를 로컬 임시 파일로 저장
+  Future<void> saveDataToLocal(Map<String, dynamic> data) async {
+    final directory = await getTemporaryDirectory();
+    final file = File('${directory.path}/temp_data.json');
+
+    await file.writeAsString(jsonEncode(data));
   }
 
-  // 임시 저장 데이터로 초기화
-  void initMeatdata(Map<String, dynamic> data) {
-    widget.meat.historyNumber = data['historyNumber'];
-    widget.meat.species = data['species'];
-    widget.meat.lDivision = data['lDivision'];
-    widget.meat.sDivision = data['sDivision'];
-    if (data['freshData'] != null) {
-      widget.meat.freshData = data['freshData']?.cast<String, double>();
-    } else {
-      widget.meat.freshData = null;
+  // 객체 데이터를 임시 저장 데이터로 초기화
+  Future<void> initMeatdata() async {
+    final directory = await getTemporaryDirectory();
+    final file = File('${directory.path}/temp_data.json');
+    if (await file.exists()) {
+      final jsonData = await file.readAsString();
+      final data = jsonDecode(jsonData);
+
+      widget.meat.historyNumber = data['historyNumber'];
+      widget.meat.species = data['species'];
+      widget.meat.lDivision = data['lDivision'];
+      widget.meat.sDivision = data['sDivision'];
+      if (data['freshData'] != null) {
+        widget.meat.freshData = data['freshData']?.cast<String, double>();
+      } else {
+        widget.meat.freshData = null;
+      }
+      widget.meat.gradeNm = data['gradeNm'];
+      widget.meat.farmAddr = data['farmAddr'];
+      widget.meat.butcheryPlaceNm = data['butcheryPlaceNm'];
+      widget.meat.butcheryYmd = data['butcheryYmd'];
+      widget.meat.imageFile = data['imageFile'];
     }
-    widget.meat.gradeNm = data['gradeNm'];
-    widget.meat.farmAddr = data['farmAddr'];
-    widget.meat.butcheryPlaceNm = data['butcheryPlaceNm'];
-    widget.meat.butcheryYmd = data['butcheryYmd'];
-    widget.meat.imageFile = data['imageFile'];
   }
 
   // 임시저장 데이터 저장
@@ -80,17 +88,11 @@ class _ShowStepState extends State<ShowStep> {
       'freshData': widget.meat.freshData,
       'imageFile': widget.meat.imageFile,
     };
-
-    DocumentReference refData =
-        _firestore.collection('user_emails').doc(widget.user.email);
-
-    await refData.update({
-      'temp_basic_data': tempBasicData,
-    });
+    await saveDataToLocal(tempBasicData);
   }
 
-  // 임시저장 데이터 초기화
-  Future<void> initTempData() async {
+  // 임시저장 데이터 리셋
+  Future<void> resetTempData() async {
     // 데이터 생성
     Map<String, dynamic> tempBasicData = {
       'historyNumber': null,
@@ -105,17 +107,12 @@ class _ShowStepState extends State<ShowStep> {
       'imageFile': null,
     };
 
-    DocumentReference refData =
-        _firestore.collection('user_emails').doc(widget.user.email);
-
-    await refData.update({
-      'temp_basic_data': tempBasicData,
-    });
+    saveDataToLocal(tempBasicData);
   }
 
   void initialize() async {
     // 임시저장 데이터를 가져와 객체에 저장
-    await getData().then((_) {
+    await initMeatdata().then((_) {
       setState(() {});
     });
 
@@ -124,8 +121,8 @@ class _ShowStepState extends State<ShowStep> {
       // 임시저장 데이터가 null값이 아닐 때 다이얼로그 호출
       showDataRegisterDialog(context, () async {
         // 처음부터
-        initTempData();
-        await getData().then((_) {
+        resetTempData();
+        await initMeatdata().then((_) {
           setState(() {});
         });
         if (!mounted) return;
@@ -156,7 +153,7 @@ class _ShowStepState extends State<ShowStep> {
         closeButtonOnPressed: () {
           showExitDialog(
             context,
-            () => getData(),
+            () => initMeatdata(),
           );
         },
       ),
@@ -230,10 +227,9 @@ class _ShowStepState extends State<ShowStep> {
                   SaveButton(
                     onPressed: _isAllCompleted()
                         ? () {
+                            resetTempData();
                             widget.user.level == 'users_2'
-                                ? () {
-                                    context.go('/option/complete-register-2');
-                                  }
+                                ? context.go('/option/complete-register-2')
                                 : context.go('/option/complete-register');
                           }
                         : null,

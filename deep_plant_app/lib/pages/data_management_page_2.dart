@@ -1,10 +1,15 @@
+import 'package:deep_plant_app/models/meat_data_model.dart';
 import 'package:deep_plant_app/widgets/custom_appbar.dart';
 import 'package:deep_plant_app/widgets/data_add.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class DataManagement2 extends StatefulWidget {
-  const DataManagement2({super.key});
+  final MeatData meat;
+  const DataManagement2({
+    super.key,
+    required this.meat,
+  });
 
   @override
   State<DataManagement2> createState() => _DataManagement2State();
@@ -46,7 +51,9 @@ class _DataManagement2State extends State<DataManagement2>
                   controller: _tabController,
                   children: [
                     // Tab1의 내용
-                    DataAdd(),
+                    DataAdd(
+                      meat: widget.meat,
+                    ),
                     // Tab2의 내용
                     Container(
                       color: Colors.green,
