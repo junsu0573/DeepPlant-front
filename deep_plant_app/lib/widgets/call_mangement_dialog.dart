@@ -119,7 +119,9 @@ class _NumCallDialogState extends State<NumCallDialog> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => GetQrPage(),
+                                  builder: (context) => GetQrPage(
+                                    data: widget.data,
+                                  ),
                                 ),
                               );
                             },

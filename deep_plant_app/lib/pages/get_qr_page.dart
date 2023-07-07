@@ -2,7 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 class GetQrPage extends StatefulWidget {
-  const GetQrPage({super.key});
+  final List data;
+  const GetQrPage({
+    super.key,
+    required this.data,
+  });
 
   @override
   State<GetQrPage> createState() => _GetQrPageState();
@@ -97,7 +101,11 @@ class _GetQrPageState extends State<GetQrPage> {
                                 flex: 1,
                               ),
                               ElevatedButton.icon(
-                                onPressed: (data != null) ? () {} : null,
+                                onPressed: (result != null)
+                                    ? () {
+                                        widget.data.add(result!.code);
+                                      }
+                                    : null,
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: Colors.grey,
                                   shape: RoundedRectangleBorder(
