@@ -123,7 +123,9 @@ class _NumCallDialogState extends State<NumCallDialog> {
                                     data: widget.data,
                                   ),
                                 ),
-                              );
+                              ).then((value) {
+                                setState(() {});
+                              });
                             },
                             width: 245.w,
                             height: 64.h,
