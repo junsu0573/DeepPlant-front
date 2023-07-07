@@ -26,6 +26,7 @@ class TextInsertionField extends StatelessWidget {
   final bool isObscure;
   final bool isCenter;
   final TextEditingController? controller;
+  final bool? readOnly;
 
   const TextInsertionField({
     super.key,
@@ -38,6 +39,7 @@ class TextInsertionField extends StatelessWidget {
     required this.isObscure,
     required this.isCenter,
     this.controller,
+    this.readOnly,
   });
 
   @override
@@ -47,6 +49,7 @@ class TextInsertionField extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: width),
       margin: const EdgeInsets.symmetric(vertical: 3),
       child: TextFormField(
+        readOnly: readOnly ?? false,
         controller: controller,
         // 유효성 검사
         validator: validateFunc,

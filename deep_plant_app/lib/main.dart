@@ -95,11 +95,15 @@ final _router = GoRouter(
         // 마이페이지
         GoRoute(
           path: 'my-page',
-          builder: (context, state) => MyPage(),
+          builder: (context, state) => MyPage(
+            user: newUser,
+          ),
           routes: [
             GoRoute(
               path: 'edit-info',
-              builder: (context, state) => EditUserInfo(),
+              builder: (context, state) => EditUserInfo(
+                user: newUser,
+              ),
               routes: [
                 GoRoute(
                   path: 'reset-pw',
