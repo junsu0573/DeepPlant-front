@@ -42,7 +42,7 @@ class _TongueDataInputPageState extends State<TongueDataInputPage> {
     widget.meatData.tongueData = tongueData;
   }
 
-  bool _isAllInseted() {
+  bool _isAllInserted() {
     if (sourness.text.isNotEmpty &&
         bitterness.text.isNotEmpty &&
         umami.text.isNotEmpty &&
@@ -86,26 +86,42 @@ class _TongueDataInputPageState extends State<TongueDataInputPage> {
               SizedBox(
                 height: 90.h,
               ),
-              TongueFiled(mainText: 'Sourness', subText: '신맛'),
+              TongueFiled(
+                mainText: 'Sourness',
+                subText: '신맛',
+                controller: sourness,
+              ),
               SizedBox(
                 height: 112.h,
               ),
-              TongueFiled(mainText: 'Bitterness', subText: '진한맛'),
+              TongueFiled(
+                mainText: 'Bitterness',
+                subText: '진한맛',
+                controller: bitterness,
+              ),
               SizedBox(
                 height: 112.h,
               ),
-              TongueFiled(mainText: 'Umami', subText: '감칠맛'),
+              TongueFiled(
+                mainText: 'Umami',
+                subText: '감칠맛',
+                controller: umami,
+              ),
               SizedBox(
                 height: 112.h,
               ),
-              TongueFiled(mainText: 'Richness', subText: '후미'),
+              TongueFiled(
+                mainText: 'Richness',
+                subText: '후미',
+                controller: richness,
+              ),
               SizedBox(
                 height: 260.h,
               ),
               SaveButton(
-                onPressed: _isAllInseted()
+                onPressed: _isAllInserted()
                     ? () {
-                        _sendEvaluation;
+                        _sendEvaluation();
                         context.pop();
                       }
                     : null,

@@ -222,7 +222,7 @@ class _ShowStep2State extends State<ShowStep2> {
                   SaveButton(
                     onPressed: _isAllCompleted()
                         ? () {
-                            // 등록 완료 페이지로
+                            context.go('/option/complete-add-register');
                           }
                         : null,
                     text: '다음',

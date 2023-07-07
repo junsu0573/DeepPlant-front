@@ -26,7 +26,7 @@ class _ExperimentDataInputPageState extends State<ExperimentDataInputPage> {
   TextEditingController ct = TextEditingController();
   TextEditingController mfi = TextEditingController();
 
-  void _saveEvaluation() async {
+  void saveEvaluation() {
     final dldata = double.parse(dl.text);
     final cldata = double.parse(cl.text);
     final phdata = double.parse(ph.text);
@@ -117,7 +117,7 @@ class _ExperimentDataInputPageState extends State<ExperimentDataInputPage> {
               SaveButton(
                 onPressed: _isAllInseted()
                     ? () {
-                        _saveEvaluation;
+                        saveEvaluation();
                         context.pop();
                       }
                     : null,

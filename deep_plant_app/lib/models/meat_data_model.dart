@@ -1,5 +1,6 @@
 class MeatData {
   String? imageFile;
+  String? mNum;
 
   // 관리 번호 생성 시 firebase firestore 에 저장하는 데이터
   String? userEmail;
@@ -22,6 +23,7 @@ class MeatData {
 
   MeatData({
     this.imageFile,
+    this.mNum,
 
     // 관리 번호 생성 시 firebase firestore 에 저장하는 데이터
     this.userEmail,

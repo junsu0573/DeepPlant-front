@@ -4,6 +4,7 @@ import 'package:deep_plant_app/pages/maet-registration/additional-data/insert_de
 import 'package:deep_plant_app/widgets/custom_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 
 class DeepAging extends StatefulWidget {
   const DeepAging({super.key, required this.meat});
@@ -318,6 +319,7 @@ class _DeepAgingState extends State<DeepAging> {
                   onPressed: (objects.isNotEmpty)
                       ? () {
                           intoString();
+                          context.pop();
                         }
                       : null,
                   style: ElevatedButton.styleFrom(

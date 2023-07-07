@@ -24,7 +24,7 @@ class _DataAddState extends State<DataAdd> {
   List<String> dataList = [];
 
   Future<void> getMeatData(String text) async {
-    var url = Uri.parse('http://192.168.45.113:8080/meat?id=$text');
+    var url = Uri.parse('http://10.221.72.45:8080/meat?id=$text');
     var response = await http.get(url);
 
     if (response.statusCode == 200) {
@@ -37,6 +37,7 @@ class _DataAddState extends State<DataAdd> {
 
   // step-1 데이터로 객체 초기화
   void meatDataFetch(Map data) {
+    widget.meat.mNum = data['id'];
     widget.meat.userEmail = data['email'];
     widget.meat.historyNumber = data['traceNumber'];
     widget.meat.species = data['species'];

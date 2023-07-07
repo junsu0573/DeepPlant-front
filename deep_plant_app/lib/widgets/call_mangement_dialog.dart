@@ -29,7 +29,7 @@ class _NumCallDialogState extends State<NumCallDialog> {
   }
 
   Future<void> fetchData(String text) async {
-    var url = Uri.parse('http://192.168.45.113:8080/meat?part_id=$text');
+    var url = Uri.parse('http://10.221.72.45:8080/meat?part_id=$text');
     var response = await http.get(url);
 
     if (response.statusCode == 200) {

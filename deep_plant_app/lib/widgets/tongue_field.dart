@@ -4,11 +4,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class TongueFiled extends StatelessWidget {
   final String mainText;
   final String subText;
+  final TextEditingController controller;
   @override
   const TongueFiled({
     super.key,
     required this.mainText,
     required this.subText,
+    required this.controller,
   });
 
   @override
@@ -38,6 +40,7 @@ class TongueFiled extends StatelessWidget {
             width: 318.w,
             height: 50.h,
             child: TextField(
+              controller: controller,
               textAlign: TextAlign.center,
               decoration: InputDecoration(
                 focusedBorder: UnderlineInputBorder(
