@@ -1,12 +1,15 @@
+import 'package:deep_plant_app/models/user_model.dart';
 import 'package:deep_plant_app/widgets/custom_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:deep_plant_app/widgets/data_page_toggle_button.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class ManageData extends StatefulWidget {
-  const ManageData({super.key});
+  ManageData({super.key, required this.user});
+  final UserModel user;
 
   @override
   State<ManageData> createState() => _ManageDataState();
@@ -34,6 +37,8 @@ class _ManageDataState extends State<ManageData> {
   final List<String> userData = [
     '2022091911501022,박수현, ',
     '2022091911501022,박수현, ',
+    '000189843795-cattle-sirloin-ribeye_roll,전수현, ',
+    '2022091911501022,박수현, ',
   ];
 
   _ManageDataState() {
@@ -57,11 +62,11 @@ class _ManageDataState extends State<ManageData> {
   @override
   void initState() {
     super.initState();
-    fetchJsonData();
+    //fetchJsonData();
   }
 
   Future<void> fetchJsonData() async {
-    var apiUrl = 'http://172.30.1.17:8080/user?id=junsu0573@naver.com';
+    var apiUrl = 'http://10.221.71.228:8080/user?id=junsu0573@naver.com';
 
     try {
       var response = await http.get(Uri.parse(apiUrl));
@@ -71,6 +76,7 @@ class _ManageDataState extends State<ManageData> {
         var ids = extractIds(jsonData);
         for (int i = 0; i < ids.length; i++) {
           userData.add('${ids[i]},전수현, ');
+          // userData.add('${ids[i]},${widget.user.name}, ');
         }
       } else {
         // Error handling
@@ -98,37 +104,35 @@ class _ManageDataState extends State<ManageData> {
       if (i == '관리번호') {
         dataColumn.add(
           DataColumn(
-            label: Padding(
-                padding: EdgeInsets.only(right: 40.0),
-                child: Text(
-                  i,
-                  style: TextStyle(
-                    fontSize: 15.0,
-                  ),
-                )),
+            label: Text(
+              i,
+              style: TextStyle(
+                fontSize: 15.0,
+              ),
+            ),
             numeric: true,
             onSort: _dataColumnSort,
           ),
         );
       } else if (i == '관리') {
         dataColumn.add(DataColumn(
-            label: Padding(
-                padding: EdgeInsets.only(left: 17.0),
-                child: Text(
-                  i,
-                  style: TextStyle(
-                    fontSize: 15.0,
-                  ),
-                ))));
-      } else {
-        dataColumn.add(DataColumn(
-            label: Expanded(
-                child: Text(
+            label: Text(
           i,
           style: TextStyle(
             fontSize: 15.0,
           ),
-        ))));
+        )));
+      } else {
+        dataColumn.add(
+          DataColumn(
+            label: Text(
+              i,
+              style: TextStyle(
+                fontSize: 15.0,
+              ),
+            ),
+          ),
+        );
       }
     }
     return dataColumn;
@@ -146,19 +150,14 @@ class _ManageDataState extends State<ManageData> {
     for (var i = 0; i < filteredData.length; i++) {
       var csvDataCells = filteredData[i].split(',');
       List<DataCell> cells = [];
-      cells.add(DataCell(
-        Container(
-          width: 100,
-          padding: EdgeInsets.only(right: 20.0),
-          constraints: BoxConstraints(maxWidth: 100.0),
-          child: OverflowBox(
-            maxWidth: double.infinity,
-            alignment: Alignment.center,
-            child: RichText(
-              overflow: TextOverflow.ellipsis,
-              maxLines: 2,
-              text: TextSpan(
-                text: csvDataCells[0],
+      cells.add(
+        DataCell(
+          SizedBox(
+            width: 292.w,
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Text(
+                csvDataCells[0],
                 style: TextStyle(
                   fontSize: 15.0,
                   color: Colors.black,
@@ -167,26 +166,35 @@ class _ManageDataState extends State<ManageData> {
             ),
           ),
         ),
-      ));
-      cells.add(DataCell(Text(
-        csvDataCells[1],
-        style: TextStyle(
-          fontSize: 15.0,
-        ),
-      )));
-      if (csvDataCells[1] == '전수현') {
-        cells.add(DataCell(ElevatedButton(
-          onPressed: () {},
-          style: ElevatedButton.styleFrom(
-              foregroundColor: Colors.black,
-              backgroundColor: Colors.grey[300],
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(35.0),
-              )),
-          child: Text(
-            '수정',
+      );
+      cells.add(
+        DataCell(
+          Text(
+            csvDataCells[1],
+            style: TextStyle(
+              fontSize: 15.0,
+            ),
           ),
-        )));
+        ),
+      );
+      // if (csvDataCells[1] == '${widget.user.name}') {
+      if (csvDataCells[1] == '전수현') {
+        cells.add(
+          DataCell(
+            ElevatedButton(
+              onPressed: () {},
+              style: ElevatedButton.styleFrom(
+                  foregroundColor: Colors.black,
+                  backgroundColor: Colors.grey[300],
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(35.0),
+                  )),
+              child: Text(
+                '수정',
+              ),
+            ),
+          ),
+        );
       } else {
         cells.add(DataCell.empty);
       }

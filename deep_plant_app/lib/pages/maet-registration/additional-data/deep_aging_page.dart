@@ -1,11 +1,13 @@
 import 'package:deep_plant_app/models/deep_aging_data_model.dart';
+import 'package:deep_plant_app/models/meat_data_model.dart';
 import 'package:deep_plant_app/pages/maet-registration/additional-data/insert_deep_aging_data_page.dart';
 import 'package:deep_plant_app/widgets/custom_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class DeepAging extends StatefulWidget {
-  const DeepAging({super.key});
+  const DeepAging({super.key, required this.meat});
+  final MeatData meat;
 
   @override
   State<DeepAging> createState() => _DeepAgingState();
@@ -18,6 +20,8 @@ class _DeepAgingState extends State<DeepAging> {
   // 이곳에 최종적인 deepagingdata 객체가 모인다.
   final List<DeepAgingData> objects = [];
 
+  final List<String> deepAgingModel = [];
+
   // 아래는 페이지 진행 중 지정되는 임시 변수들이다.
   int totalMinute = 0;
   int totalHour = 0;
@@ -25,6 +29,15 @@ class _DeepAgingState extends State<DeepAging> {
   List<Widget> widgets = [];
   List<int> hour = List<int>.filled(4, 0);
   List<int> minute = List<int>.filled(4, 0);
+
+  void intoString() {
+    for (int i = 0; i < objects.length; i++) {
+      String timeTemp = ((int.parse(objects[i].insertedHour!) * 60) + (int.parse(objects[i].insertedMinute!))).toString();
+      String temp = '${objects[i].selectedYear}/${objects[i].selectedMonth}/${objects[i].selectedDay}/$timeTemp';
+      deepAgingModel.add(temp);
+    }
+    widget.meat.deepAging = deepAgingModel;
+  }
 
   void calTime(DeepAgingData data, int index, bool edit) {
     if (edit == true) {
@@ -295,7 +308,11 @@ class _DeepAgingState extends State<DeepAging> {
                 height: 55,
                 width: 350,
                 child: ElevatedButton(
-                  onPressed: (objects.isNotEmpty) ? () {} : null,
+                  onPressed: (objects.isNotEmpty)
+                      ? () {
+                          intoString();
+                        }
+                      : null,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.grey[800],
                     disabledBackgroundColor: Colors.grey[400],
