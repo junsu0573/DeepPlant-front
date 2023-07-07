@@ -58,13 +58,12 @@ class _SignInState extends State<SignIn> {
     }
   }
 
-  // 데이터를 가져오는 비동기 함수
+  // 데이터 호출 및 저장
   void fetchData() async {
     setState(() {
       isLoading = true; // 로딩 상태를 활성화
     });
 
-    // 데이터를 가져오는 비동기 작업
     try {
       // 유저의 이메일이 valid 해야 로그인 진행
       await _authentication.signInWithEmailAndPassword(

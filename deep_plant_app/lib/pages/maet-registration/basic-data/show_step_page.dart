@@ -228,9 +228,9 @@ class _ShowStepState extends State<ShowStep> {
                     onPressed: _isAllCompleted()
                         ? () {
                             resetTempData();
-                            widget.user.level == 'users_2'
-                                ? context.go('/option/complete-register-2')
-                                : context.go('/option/complete-register');
+                            widget.user.level == 'users_1'
+                                ? context.go('/option/complete-register')
+                                : context.go('/option/complete-register-2');
                           }
                         : null,
                     text: '저장',

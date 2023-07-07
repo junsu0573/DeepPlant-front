@@ -42,7 +42,7 @@ class _CompleteResgistration2State extends State<CompleteResgistration2> {
           '${widget.meatData.historyNumber!}-${widget.meatData.species!}-${widget.meatData.lDivision!}-${widget.meatData.sDivision!}';
     }
 
-    //sendDataToFirebase();
+    sendDataToFirebase();
   }
 
   Future<void> sendDataToFirebase() async {
@@ -74,26 +74,15 @@ class _CompleteResgistration2State extends State<CompleteResgistration2> {
       // 0-0-0-0-0 에 관리번호 저장
       DocumentReference documentRef =
           firestore.collection('meat').doc('0-0-0-0-0');
-      DocumentSnapshot documentSnapshot = await documentRef.get();
+      await documentRef.update({
+        'fix_data.meat': FieldValue.arrayUnion([managementNumber]),
+      });
 
-      if (documentSnapshot.exists) {
-        Map<String, dynamic>? data =
-            documentSnapshot.data() as Map<String, dynamic>?;
-
-        if (data != null) {
-          Map<String, dynamic>? fixField =
-              data['fix_data'] as Map<String, dynamic>?;
-
-          if (fixField != null) {
-            List<dynamic>? meatArray = fixField['meat'] as List<dynamic>?;
-
-            if (meatArray != null) {
-              meatArray.add(managementNumber);
-              await documentRef.update({'fix_data.meat': meatArray});
-            }
-          }
-        }
-      }
+      // 0-0-0-0-0 에 유저 이메일 추가
+      await documentRef.update({
+        'fix_data.${widget.user.level}':
+            FieldValue.arrayUnion([widget.user.email]),
+      });
 
       // user의 meatList에 관리번호 추가
       DocumentReference refNum =
