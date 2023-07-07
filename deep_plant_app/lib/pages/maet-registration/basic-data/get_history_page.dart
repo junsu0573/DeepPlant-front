@@ -144,25 +144,29 @@ class _GetHistoryPageState extends State<GetHistoryPage> {
                         },
                         decoration: InputDecoration(
                             enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(width: 0.5, color: Colors.grey),
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(25.0),
-                                )),
+                              borderSide: BorderSide(width: 0.5, color: Colors.grey),
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(25.0),
+                              ),
+                            ),
                             focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(width: 0.5, color: Colors.grey),
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(25.0),
-                                )),
+                              borderSide: BorderSide(width: 0.5, color: Colors.grey),
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(25.0),
+                              ),
+                            ),
                             errorBorder: OutlineInputBorder(
-                                borderSide: BorderSide(width: 0.5, color: Colors.grey),
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(25.0),
-                                )),
+                              borderSide: BorderSide(width: 0.5, color: Colors.grey),
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(25.0),
+                              ),
+                            ),
                             focusedErrorBorder: OutlineInputBorder(
-                                borderSide: BorderSide(width: 0.5, color: Colors.grey),
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(25.0),
-                                )),
+                              borderSide: BorderSide(width: 0.5, color: Colors.grey),
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(25.0),
+                              ),
+                            ),
                             hintText: '이력번호 입력',
                             contentPadding: EdgeInsets.all(12.0),
                             fillColor: Colors.grey[200],
@@ -172,38 +176,42 @@ class _GetHistoryPageState extends State<GetHistoryPage> {
                     ),
                   ),
                 ),
-                Column(children: [
-                  Padding(
-                    padding: EdgeInsets.only(right: 15.0),
-                    child: SizedBox(
-                      height: 45,
-                      width: 85,
-                      child: ElevatedButton(
-                        onPressed: () async {
-                          tableData.clear();
-                          _tryValidation();
-                          if (isValue) {
-                            await fetchData(historyNum!);
-                          }
-                          setState(() {
-                            FocusScope.of(context).unfocus();
-                            textEditingController.clear();
-                          });
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.grey[800],
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(25.0),
+                Column(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(right: 15.0),
+                      child: SizedBox(
+                        height: 45,
+                        width: 85,
+                        child: ElevatedButton(
+                          onPressed: () async {
+                            tableData.clear();
+                            _tryValidation();
+                            if (isValue) {
+                              await fetchData(historyNum!);
+                            }
+                            setState(
+                              () {
+                                FocusScope.of(context).unfocus();
+                                textEditingController.clear();
+                              },
+                            );
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.grey[800],
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(25.0),
+                            ),
                           ),
+                          child: Text('검색'),
                         ),
-                        child: Text('검색'),
                       ),
                     ),
-                  ),
-                  SizedBox(
-                    height: 25.0,
-                  )
-                ]),
+                    SizedBox(
+                      height: 25.0,
+                    )
+                  ],
+                ),
               ],
             ),
             SizedBox(
@@ -231,11 +239,12 @@ class _GetHistoryPageState extends State<GetHistoryPage> {
                           }
                         : null,
                     style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.grey[800],
-                        disabledBackgroundColor: Colors.grey[400],
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                        )),
+                      backgroundColor: Colors.grey[800],
+                      disabledBackgroundColor: Colors.grey[400],
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                    ),
                     child: Text('다음'),
                   ),
                 ),
@@ -279,20 +288,22 @@ class View extends StatelessWidget {
                   child: Row(
                     children: [
                       RichText(
-                        text: TextSpan(children: [
-                          WidgetSpan(
-                            child: SizedBox(
-                              width: 10,
+                        text: TextSpan(
+                          children: [
+                            WidgetSpan(
+                              child: SizedBox(
+                                width: 10,
+                              ),
                             ),
-                          ),
-                          TextSpan(
-                            text: baseData[index],
-                            style: TextStyle(
-                              fontSize: 18.0,
-                              color: Colors.black,
+                            TextSpan(
+                              text: baseData[index],
+                              style: TextStyle(
+                                fontSize: 18.0,
+                                color: Colors.black,
+                              ),
                             ),
-                          ),
-                        ]),
+                          ],
+                        ),
                       ),
                     ],
                   ),
@@ -313,20 +324,22 @@ class View extends StatelessWidget {
                   child: Row(
                     children: [
                       RichText(
-                        text: TextSpan(children: [
-                          WidgetSpan(
-                            child: SizedBox(
-                              width: 15,
+                        text: TextSpan(
+                          children: [
+                            WidgetSpan(
+                              child: SizedBox(
+                                width: 15,
+                              ),
                             ),
-                          ),
-                          TextSpan(
-                            text: tableData[index],
-                            style: TextStyle(
-                              fontSize: 18.0,
-                              color: Colors.black,
+                            TextSpan(
+                              text: tableData[index],
+                              style: TextStyle(
+                                fontSize: 18.0,
+                                color: Colors.black,
+                              ),
                             ),
-                          ),
-                        ]),
+                          ],
+                        ),
                       ),
                     ],
                   ),

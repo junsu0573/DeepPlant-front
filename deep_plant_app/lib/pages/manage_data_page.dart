@@ -79,14 +79,6 @@ class _ManageDataState extends State<ManageData> {
         // for (int i = 0; i < ids.length; i++) {
         //   userData.add('${ids[i]},${widget.user.name}, ');
         // }
-
-        List<String> jsonData = jsonDecode(response.body)['meatList'];
-        print(jsonData);
-
-        for (int i = 0; i < jsonData.length; i++) {
-          userData.add('${jsonData[i]},전수현, ');
-          print(jsonData[i]);
-        }
       } else {
         // Error handling
         print('Request failed with status: ${response.statusCode}.');
@@ -267,56 +259,61 @@ class _ManageDataState extends State<ManageData> {
                 child: Row(
                   children: [
                     Expanded(
-                        flex: 7,
-                        child: TextField(
-                            textAlign: TextAlign.end,
-                            focusNode: focusNode,
-                            autofocus: false,
-                            style: TextStyle(
-                              fontSize: 13.5,
+                      flex: 7,
+                      child: TextField(
+                        textAlign: TextAlign.end,
+                        focusNode: focusNode,
+                        autofocus: false,
+                        style: TextStyle(
+                          fontSize: 13.5,
+                        ),
+                        controller: search,
+                        cursorColor: Colors.grey[400],
+                        keyboardType: TextInputType.text,
+                        decoration: InputDecoration(
+                          contentPadding: EdgeInsets.only(top: 10.0),
+                          hintText: '관리번호검색',
+                          labelStyle: TextStyle(
+                            color: Colors.white,
+                          ),
+                          filled: true,
+                          fillColor: Colors.grey[100],
+                          suffixIcon: focusNode.hasFocus
+                              ? IconButton(
+                                  onPressed: () {
+                                    search.clear();
+                                    text = '';
+                                  },
+                                  icon: Icon(
+                                    Icons.cancel,
+                                    color: Colors.grey[400],
+                                  ),
+                                )
+                              : IconButton(
+                                  onPressed: () {},
+                                  icon: Icon(Icons.search),
+                                ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(width: 0.2, color: Colors.grey),
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(25.0),
                             ),
-                            controller: search,
-                            cursorColor: Colors.grey[400],
-                            keyboardType: TextInputType.text,
-                            decoration: InputDecoration(
-                              contentPadding: EdgeInsets.only(top: 10.0),
-                              hintText: '관리번호검색',
-                              labelStyle: TextStyle(
-                                color: Colors.white,
-                              ),
-                              filled: true,
-                              fillColor: Colors.grey[100],
-                              suffixIcon: focusNode.hasFocus
-                                  ? IconButton(
-                                      onPressed: () {
-                                        search.clear();
-                                        text = '';
-                                      },
-                                      icon: Icon(
-                                        Icons.cancel,
-                                        color: Colors.grey[400],
-                                      ),
-                                    )
-                                  : IconButton(
-                                      onPressed: () {},
-                                      icon: Icon(Icons.search),
-                                    ),
-                              focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(width: 0.2, color: Colors.grey),
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(25.0),
-                                  )),
-                              enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(width: 0.2, color: Colors.grey),
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(25.0),
-                                  )),
-                              border: OutlineInputBorder(
-                                  borderSide: BorderSide(width: 0.2, color: Colors.grey),
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(25.0),
-                                  )),
-                            ))),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(width: 0.2, color: Colors.grey),
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(25.0),
+                            ),
+                          ),
+                          border: OutlineInputBorder(
+                            borderSide: BorderSide(width: 0.2, color: Colors.grey),
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(25.0),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
                     Expanded(
                       flex: 3,
                       child: TextButton(
@@ -324,10 +321,11 @@ class _ManageDataState extends State<ManageData> {
                           showModalBottomSheet(
                             context: context,
                             shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(15.0),
-                              topRight: Radius.circular(15.0),
-                            )),
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(15.0),
+                                topRight: Radius.circular(15.0),
+                              ),
+                            ),
                             builder: (BuildContext context) {
                               return !isSelectedTable
                                   ? Container(
@@ -377,15 +375,17 @@ class _ManageDataState extends State<ManageData> {
                                             ElevatedButton(
                                               onPressed: () {
                                                 Navigator.pop(context);
-                                                setState(() {
-                                                  if (option2 == '최신순') {
-                                                    sortDscending = true;
-                                                    sortAscending = false;
-                                                  } else if (option2 == '과거순') {
-                                                    sortDscending = false;
-                                                    sortAscending = true;
-                                                  }
-                                                });
+                                                setState(
+                                                  () {
+                                                    if (option2 == '최신순') {
+                                                      sortDscending = true;
+                                                      sortAscending = false;
+                                                    } else if (option2 == '과거순') {
+                                                      sortDscending = false;
+                                                      sortAscending = true;
+                                                    }
+                                                  },
+                                                );
                                               },
                                               style: ElevatedButton.styleFrom(
                                                 backgroundColor: Colors.grey[800],
@@ -442,10 +442,12 @@ class _ManageDataState extends State<ManageData> {
                                       focusedDay: focusedDay,
                                       onDaySelected: (DateTime selectedDay, DateTime focusedDay) {
                                         // 선택된 날짜의 상태를 갱신합니다.
-                                        setState(() {
-                                          this.selectedDay = selectedDay;
-                                          this.focusedDay = focusedDay;
-                                        });
+                                        setState(
+                                          () {
+                                            this.selectedDay = selectedDay;
+                                            this.focusedDay = focusedDay;
+                                          },
+                                        );
                                       },
                                       selectedDayPredicate: (DateTime day) {
                                         // selectedDay 와 동일한 날짜의 모양을 바꿔줍니다.
