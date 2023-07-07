@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:deep_plant_app/widgets/custom_appbar.dart';
 import 'package:deep_plant_app/widgets/show_custom_dialog.dart';
 import 'package:deep_plant_app/widgets/save_button.dart';
+import 'package:go_router/go_router.dart';
 
 class TongueDataInputPage extends StatefulWidget {
   final MeatData meatData;
@@ -22,7 +23,8 @@ class _TongueDataInputPageState extends State<TongueDataInputPage> {
   TextEditingController bitterness = TextEditingController();
   TextEditingController umami = TextEditingController();
   TextEditingController richness = TextEditingController();
-  void _sendEvaluation() async {
+
+  void _sendEvaluation() {
     final sournessData = double.parse(sourness.text);
     final bitternessData = double.parse(bitterness.text);
     final umamiData = double.parse(umami.text);
@@ -40,17 +42,24 @@ class _TongueDataInputPageState extends State<TongueDataInputPage> {
     widget.meatData.tongueData = tongueData;
   }
 
+  bool _isAllInseted() {
+    if (sourness.text.isNotEmpty &&
+        bitterness.text.isNotEmpty &&
+        umami.text.isNotEmpty &&
+        richness.text.isNotEmpty) {
+      return true;
+    }
+    return false;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: CustomAppBar(
         title: '추가정보 입력',
-        backButton: true,
+        backButton: false,
         closeButton: true,
-        backButtonOnPressed: () {
-          showExitDialog(context, null);
-        },
         closeButtonOnPressed: () {
           showExitDialog(context, null); // CustomDialog
         },
@@ -94,7 +103,12 @@ class _TongueDataInputPageState extends State<TongueDataInputPage> {
                 height: 260.h,
               ),
               SaveButton(
-                onPressed: _sendEvaluation,
+                onPressed: _isAllInseted()
+                    ? () {
+                        _sendEvaluation;
+                        context.pop();
+                      }
+                    : null,
                 text: '저장',
                 width: 658.w,
                 heigh: 104.h,

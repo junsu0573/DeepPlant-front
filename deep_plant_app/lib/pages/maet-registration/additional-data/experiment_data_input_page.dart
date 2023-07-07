@@ -4,6 +4,7 @@ import 'package:deep_plant_app/widgets/save_button.dart';
 import 'package:deep_plant_app/widgets/textfield_with_title.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 
 class ExperimentDataInputPage extends StatefulWidget {
   final MeatData meatData;
@@ -47,12 +48,27 @@ class _ExperimentDataInputPageState extends State<ExperimentDataInputPage> {
     widget.meatData.labData = labData;
   }
 
+  bool _isAllInseted() {
+    if (dl.text.isNotEmpty &&
+        cl.text.isNotEmpty &&
+        ph.text.isNotEmpty &&
+        wbsf.text.isNotEmpty &&
+        ct.text.isNotEmpty &&
+        mfi.text.isNotEmpty) {
+      return true;
+    }
+    return false;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar:
-          CustomAppBar(title: '추가정보 입력', backButton: true, closeButton: true),
+      appBar: CustomAppBar(
+        title: '추가정보 입력',
+        backButton: false,
+        closeButton: true,
+      ),
       body: GestureDetector(
         onTap: () {
           FocusScope.of(context).unfocus(); // 키보드 unfocus
@@ -99,7 +115,12 @@ class _ExperimentDataInputPageState extends State<ExperimentDataInputPage> {
                 height: 16.h,
               ),
               SaveButton(
-                onPressed: _saveEvaluation,
+                onPressed: _isAllInseted()
+                    ? () {
+                        _saveEvaluation;
+                        context.pop();
+                      }
+                    : null,
                 text: '저장',
                 width: 658.w,
                 heigh: 104.h,

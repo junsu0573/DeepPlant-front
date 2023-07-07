@@ -166,7 +166,7 @@ class _FreshmeatEvaluationState extends State<FreshmeatEvaluation> {
                 onPressed: _isAllselected()
                     ? () {
                         _sendEvaluation(widget.meatData);
-                        context.go('/option/show-step');
+                        context.pop();
                       }
                     : null,
                 text: '저장',

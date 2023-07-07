@@ -39,6 +39,7 @@ class TextFieldWithTitle extends StatelessWidget {
             SizedBox(
               width: 259.w,
               child: TextField(
+                textAlign: TextAlign.center,
                 controller: controller,
                 decoration: InputDecoration(
                   focusedBorder: UnderlineInputBorder(
