@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:deep_plant_app/models/meat_data_model.dart';
 import 'package:deep_plant_app/models/user_model.dart';
-import 'package:deep_plant_app/source/camera_page_dialog_custom.dart';
+import 'package:deep_plant_app/widgets/camera_page_dialog_custom.dart';
 import 'package:deep_plant_app/widgets/custom_appbar.dart';
 import 'package:deep_plant_app/widgets/save_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -107,8 +107,7 @@ class _InsertionMeatImageState extends State<InsertionMeatImage> {
     });
   }
 
-  void saveData(MeatData meatData, String? imagePath, String year, String month,
-      String day) {
+  void saveData(MeatData meatData, String? imagePath, String year, String month, String day) {
     meatData.imageFile = imagePath;
     meatData.saveTime = '{$year}-{$month}-{$day}';
   }
@@ -185,8 +184,7 @@ class _InsertionMeatImageState extends State<InsertionMeatImage> {
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10.0),
-                    color:
-                        isImageAssigned ? Colors.grey[800] : Colors.grey[400],
+                    color: isImageAssigned ? Colors.grey[800] : Colors.grey[400],
                   ),
                   width: 158.w,
                   height: 73.h,
@@ -206,8 +204,7 @@ class _InsertionMeatImageState extends State<InsertionMeatImage> {
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10.0),
-                    color:
-                        isImageAssigned ? Colors.grey[800] : Colors.grey[400],
+                    color: isImageAssigned ? Colors.grey[800] : Colors.grey[400],
                   ),
                   width: 158.w,
                   height: 73.h,
@@ -227,8 +224,7 @@ class _InsertionMeatImageState extends State<InsertionMeatImage> {
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10.0),
-                    color:
-                        isImageAssigned ? Colors.grey[800] : Colors.grey[400],
+                    color: isImageAssigned ? Colors.grey[800] : Colors.grey[400],
                   ),
                   width: 238.w,
                   height: 73.h,
@@ -263,9 +259,7 @@ class _InsertionMeatImageState extends State<InsertionMeatImage> {
                   width: 15.0,
                 ),
                 SizedBox(
-                  width: isImageAssigned
-                      ? (MediaQuery.of(context).size.width - 150.0)
-                      : 5.0,
+                  width: isImageAssigned ? (MediaQuery.of(context).size.width - 150.0) : 5.0,
                   child: isImageAssigned
                       ? Text('${widget.user.name}(${widget.user.email})')
                       : Divider(

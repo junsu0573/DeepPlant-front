@@ -19,8 +19,7 @@ class GetHistoryPage extends StatefulWidget {
 }
 
 class _GetHistoryPageState extends State<GetHistoryPage> {
-  var apikey =
-      "58%2FAb40DJd41UCVYmCZM89EUoOWqT0vuObbReDQCI6ufjHIJbhZOUtQnftZErMQf6%2FgEflZVctg97VfdvvtmQw%3D%3D";
+  var apikey = "58%2FAb40DJd41UCVYmCZM89EUoOWqT0vuObbReDQCI6ufjHIJbhZOUtQnftZErMQf6%2FgEflZVctg97VfdvvtmQw%3D%3D";
 
   final formkey = GlobalKey<FormState>();
   final TextEditingController textEditingController = TextEditingController();
@@ -69,39 +68,21 @@ class _GetHistoryPageState extends State<GetHistoryPage> {
     tableData.clear();
 
     try {
-      ApiSource source = ApiSource(
-          baseUrl:
-              "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?serviceKey=$apikey&traceNo=$traceNo");
+      ApiSource source = ApiSource(baseUrl: "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?serviceKey=$apikey&traceNo=$traceNo");
 
       final meatAPIData = await source.getJsonData();
 
       farmAdd = meatAPIData['response']['body']['items']['item'][1]['farmAddr'];
-      houseName = meatAPIData['response']['body']['items']['item'][4]
-          ['butcheryPlaceNm'];
-      basetime =
-          meatAPIData['response']['body']['items']['item'][4]['butcheryYmd'];
-      String basetimeResolve =
-          DateFormat('yyyy-MM-dd').format(DateTime.parse(basetime!)).toString();
-      String breeding =
-          meatAPIData['response']['body']['items']['item'][0]['lsTypeNm'];
-      String gender =
-          meatAPIData['response']['body']['items']['item'][0]['sexNm'];
+      houseName = meatAPIData['response']['body']['items']['item'][4]['butcheryPlaceNm'];
+      basetime = meatAPIData['response']['body']['items']['item'][4]['butcheryYmd'];
+      String basetimeResolve = DateFormat('yyyy-MM-dd').format(DateTime.parse(basetime!)).toString();
+      String breeding = meatAPIData['response']['body']['items']['item'][0]['lsTypeNm'];
+      String gender = meatAPIData['response']['body']['items']['item'][0]['sexNm'];
       grade = meatAPIData['response']['body']['items']['item'][4]['gradeNm'];
-      String birth =
-          meatAPIData['response']['body']['items']['item'][0]['birthYmd'];
-      String birthResolve =
-          DateFormat('yyyy-MM-dd').format(DateTime.parse(birth)).toString();
+      String birth = meatAPIData['response']['body']['items']['item'][0]['birthYmd'];
+      String birthResolve = DateFormat('yyyy-MM-dd').format(DateTime.parse(birth)).toString();
 
-      tableData.addAll([
-        traceNo,
-        farmAdd!,
-        houseName!,
-        basetimeResolve,
-        breeding,
-        gender,
-        grade!,
-        birthResolve
-      ]);
+      tableData.addAll([traceNo, farmAdd!, houseName!, basetimeResolve, breeding, gender, grade!, birthResolve]);
 
       isFinal = true;
     } catch (e) {
@@ -163,26 +144,22 @@ class _GetHistoryPageState extends State<GetHistoryPage> {
                         },
                         decoration: InputDecoration(
                             enabledBorder: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(width: 0.5, color: Colors.grey),
+                                borderSide: BorderSide(width: 0.5, color: Colors.grey),
                                 borderRadius: BorderRadius.all(
                                   Radius.circular(25.0),
                                 )),
                             focusedBorder: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(width: 0.5, color: Colors.grey),
+                                borderSide: BorderSide(width: 0.5, color: Colors.grey),
                                 borderRadius: BorderRadius.all(
                                   Radius.circular(25.0),
                                 )),
                             errorBorder: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(width: 0.5, color: Colors.grey),
+                                borderSide: BorderSide(width: 0.5, color: Colors.grey),
                                 borderRadius: BorderRadius.all(
                                   Radius.circular(25.0),
                                 )),
                             focusedErrorBorder: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(width: 0.5, color: Colors.grey),
+                                borderSide: BorderSide(width: 0.5, color: Colors.grey),
                                 borderRadius: BorderRadius.all(
                                   Radius.circular(25.0),
                                 )),
