@@ -1,5 +1,6 @@
 import 'package:deep_plant_app/models/user_model.dart';
 import 'package:deep_plant_app/widgets/custom_appbar.dart';
+import 'package:deep_plant_app/widgets/save_button.dart';
 import 'package:flutter/material.dart';
 import 'package:deep_plant_app/widgets/data_page_toggle_button.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -372,7 +373,11 @@ class _ManageDataState extends State<ManageData> {
                                               minHeight: 30.0,
                                               minWidth: 160.0,
                                             ),
-                                            ElevatedButton(
+                                            SaveButton(
+                                              text: '확인',
+                                              width: 658.w,
+                                              heigh: 104.h,
+                                              isWhite: false,
                                               onPressed: () {
                                                 Navigator.pop(context);
                                                 setState(
@@ -387,28 +392,7 @@ class _ManageDataState extends State<ManageData> {
                                                   },
                                                 );
                                               },
-                                              style: ElevatedButton.styleFrom(
-                                                backgroundColor: Colors.grey[800],
-                                                disabledBackgroundColor: Colors.grey[400],
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius: BorderRadius.circular(10.0),
-                                                ),
-                                              ),
-                                              child: SizedBox(
-                                                width: MediaQuery.of(context).size.width,
-                                                height: 55.0,
-                                                child: Center(
-                                                  child: Text(
-                                                    '확인',
-                                                    style: TextStyle(
-                                                      color: Colors.white,
-                                                      fontSize: 17.0,
-                                                    ),
-                                                    textAlign: TextAlign.center,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
+                                            )
                                           ],
                                         ),
                                       ),

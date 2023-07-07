@@ -45,22 +45,8 @@ class _InsertDeepAgingDataState extends State<InsertDeepAgingData> {
   int? selectedHour;
   int? selectedMinute;
 
-  List<String> monthData = [
-    '1월',
-    '2월',
-    '3월',
-    '4월',
-    '5월',
-    '6월',
-    '7월',
-    '8월',
-    '9월',
-    '10월',
-    '11월',
-    '12월'
-  ];
-  List<int> yearData =
-      List<int>.generate(2023 - 2003 + 1, (int index) => 2023 - index);
+  List<String> monthData = ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'];
+  List<int> yearData = List<int>.generate(2023 - 2003 + 1, (int index) => 2023 - index);
   int initialValue = 0;
 
   RegExp num = RegExp(r'^[0-9]+$');
@@ -103,11 +89,7 @@ class _InsertDeepAgingDataState extends State<InsertDeepAgingData> {
   }
 
   void successAssign() {
-    if (isInsertedDay &&
-        isInsertedHour &&
-        isInsertedMinute &&
-        isInsertedYear &&
-        isInsertedMonth) {
+    if (isInsertedDay && isInsertedHour && isInsertedMinute && isInsertedYear && isInsertedMonth) {
       setState(() {
         isFinal = true;
       });
@@ -133,16 +115,16 @@ class _InsertDeepAgingDataState extends State<InsertDeepAgingData> {
         child: Column(
           children: [
             Expanded(
-              child: GestureDetector(
-                onTap: () {
-                  setState(() {
-                    month = false;
-                    day = false;
-                    year = false;
-                    FocusScope.of(context).unfocus();
-                  });
-                },
-                child: SingleChildScrollView(
+              child: SingleChildScrollView(
+                child: GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      month = false;
+                      day = false;
+                      year = false;
+                      FocusScope.of(context).unfocus();
+                    });
+                  },
                   child: Column(
                     children: [
                       Row(
@@ -178,17 +160,13 @@ class _InsertDeepAgingDataState extends State<InsertDeepAgingData> {
                                   });
                                 },
                                 style: ElevatedButton.styleFrom(
-                                  backgroundColor: (selectedMonth == null)
-                                      ? Colors.grey[400]
-                                      : Colors.grey[800],
+                                  backgroundColor: (selectedMonth == null) ? Colors.grey[400] : Colors.grey[800],
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(10.0),
                                   ),
                                 ),
                                 child: Text(
-                                  (selectedMonth != null)
-                                      ? '$selectedMonth월'
-                                      : '월',
+                                  (selectedMonth != null) ? '$selectedMonth월' : '월',
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                     color: Colors.white,
@@ -213,9 +191,7 @@ class _InsertDeepAgingDataState extends State<InsertDeepAgingData> {
                                   });
                                 },
                                 style: ElevatedButton.styleFrom(
-                                  backgroundColor: (selectedDay == null)
-                                      ? Colors.grey[400]
-                                      : Colors.grey[800],
+                                  backgroundColor: (selectedDay == null) ? Colors.grey[400] : Colors.grey[800],
                                   disabledBackgroundColor: Colors.grey[400],
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(10.0),
@@ -247,18 +223,14 @@ class _InsertDeepAgingDataState extends State<InsertDeepAgingData> {
                                   });
                                 },
                                 style: ElevatedButton.styleFrom(
-                                  backgroundColor: (selectedYear == null)
-                                      ? Colors.grey[400]
-                                      : Colors.grey[800],
+                                  backgroundColor: (selectedYear == null) ? Colors.grey[400] : Colors.grey[800],
                                   disabledBackgroundColor: Colors.grey[400],
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(10.0),
                                   ),
                                 ),
                                 child: Text(
-                                  (selectedYear != null)
-                                      ? '$selectedYear'
-                                      : '년도',
+                                  (selectedYear != null) ? '$selectedYear' : '년도',
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                     color: Colors.white,
@@ -369,8 +341,7 @@ class _InsertDeepAgingDataState extends State<InsertDeepAgingData> {
                               rowHeight: 35.0,
                               headerVisible: false,
                               daysOfWeekVisible: false,
-                              onDaySelected:
-                                  (DateTime selected, DateTime focusedDay) {
+                              onDaySelected: (DateTime selected, DateTime focusedDay) {
                                 setState(() {
                                   this.selected = selected;
                                   this.focusedDay = focusedDay;
@@ -438,25 +409,19 @@ class _InsertDeepAgingDataState extends State<InsertDeepAgingData> {
                                   }
                                 });
                               },
-                              style: TextStyle(
-                                  fontSize: 25.0, fontWeight: FontWeight.bold),
+                              style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.bold),
                               textAlign: TextAlign.end,
-                              inputFormatters: [
-                                FilteringTextInputFormatter.digitsOnly
-                              ],
+                              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                               controller: textEditingController1,
                               showCursor: false,
                               keyboardType: TextInputType.number,
                               decoration: InputDecoration(
-                                contentPadding:
-                                    EdgeInsets.only(right: 5.0, top: 10.0),
+                                contentPadding: EdgeInsets.only(right: 5.0, top: 10.0),
                                 enabledBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: Colors.grey.shade300, width: 2.5),
+                                  borderSide: BorderSide(color: Colors.grey.shade300, width: 2.5),
                                 ),
                                 focusedBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: Colors.grey.shade300, width: 2.5),
+                                  borderSide: BorderSide(color: Colors.grey.shade300, width: 2.5),
                                 ),
                                 filled: false,
                               ),
@@ -488,24 +453,18 @@ class _InsertDeepAgingDataState extends State<InsertDeepAgingData> {
                                 });
                               },
                               textAlign: TextAlign.end,
-                              style: TextStyle(
-                                  fontSize: 25.0, fontWeight: FontWeight.bold),
-                              inputFormatters: [
-                                FilteringTextInputFormatter.digitsOnly
-                              ],
+                              style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.bold),
+                              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                               controller: textEditingController2,
                               showCursor: false,
                               keyboardType: TextInputType.number,
                               decoration: InputDecoration(
-                                contentPadding:
-                                    EdgeInsets.only(right: 5.0, top: 10.0),
+                                contentPadding: EdgeInsets.only(right: 5.0, top: 10.0),
                                 enabledBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: Colors.grey.shade300, width: 2.5),
+                                  borderSide: BorderSide(color: Colors.grey.shade300, width: 2.5),
                                 ),
                                 focusedBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: Colors.grey.shade300, width: 2.5),
+                                  borderSide: BorderSide(color: Colors.grey.shade300, width: 2.5),
                                 ),
                                 filled: false,
                               ),

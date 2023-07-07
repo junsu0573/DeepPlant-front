@@ -52,7 +52,9 @@ final _router = GoRouter(
   routes: [
     GoRoute(
       path: '/',
-      builder: (context, state) => HomePage(),
+      builder: (context, state) => ManageData(
+        user: newUser,
+      ),
       routes: [
         GoRoute(
           path: 'sign-in',
@@ -238,8 +240,7 @@ class MyApp extends StatelessWidget {
       // 기본 색상
       theme: ThemeData(
         primaryColor: const Color.fromRGBO(51, 51, 51, 1),
-        buttonTheme:
-            const ButtonThemeData(buttonColor: Color.fromRGBO(51, 51, 51, 1)),
+        buttonTheme: const ButtonThemeData(buttonColor: Color.fromRGBO(51, 51, 51, 1)),
       ),
       routerConfig: _router,
       builder: (context, child) {
