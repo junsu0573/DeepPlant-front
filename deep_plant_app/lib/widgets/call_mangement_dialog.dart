@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:deep_plant_app/pages/get_qr_page.dart';
 import 'package:deep_plant_app/widgets/common_button.dart';
 import 'package:deep_plant_app/widgets/m_num_data_list_card.dart';
 import 'package:deep_plant_app/widgets/save_button.dart';
@@ -114,7 +115,18 @@ class _NumCallDialogState extends State<NumCallDialog> {
                               'QR 스캔',
                               style: TextStyle(fontSize: 28.sp),
                             ),
-                            onPress: () {},
+                            onPress: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => GetQrPage(
+                                    data: widget.data,
+                                  ),
+                                ),
+                              ).then((value) {
+                                setState(() {});
+                              });
+                            },
                             width: 245.w,
                             height: 64.h,
                             bgColor: Colors.white,
