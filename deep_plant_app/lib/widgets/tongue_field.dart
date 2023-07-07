@@ -38,6 +38,7 @@ class TongueFiled extends StatelessWidget {
             width: 318.w,
             height: 50.h,
             child: TextField(
+              textAlign: TextAlign.center,
               decoration: InputDecoration(
                 focusedBorder: UnderlineInputBorder(
                   borderSide: BorderSide(color: Colors.black, width: 5.w),

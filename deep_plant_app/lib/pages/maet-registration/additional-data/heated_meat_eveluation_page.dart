@@ -166,7 +166,7 @@ class HeatedMeatEvaluationState extends State<HeatedMeatEvaluation> {
                 onPressed: _isAllselected()
                     ? () {
                         _sendEvaluation(widget.meatData);
-                        context.go('/option/show-step');
+                        context.pop();
                       }
                     : null,
                 text: '저장',

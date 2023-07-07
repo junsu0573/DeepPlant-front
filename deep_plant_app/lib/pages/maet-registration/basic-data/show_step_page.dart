@@ -107,7 +107,7 @@ class _ShowStepState extends State<ShowStep> {
       'imageFile': null,
     };
 
-    saveDataToLocal(tempBasicData);
+    await saveDataToLocal(tempBasicData);
   }
 
   void initialize() async {

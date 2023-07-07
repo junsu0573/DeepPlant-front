@@ -106,6 +106,7 @@ class _FreshmeatEvaluationState extends State<FreshmeatEvaluation> {
     ];
     ///////////  data list
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: CustomAppBar(
         title: '',
         backButton: false,
@@ -159,17 +160,20 @@ class _FreshmeatEvaluationState extends State<FreshmeatEvaluation> {
                 ],
               ),
             ),
-            SaveButton(
-              onPressed: _isAllselected()
-                  ? () {
-                      _sendEvaluation(widget.meatData);
-                      context.go('/option/show-step');
-                    }
-                  : null,
-              text: '저장',
-              width: 658.w,
-              heigh: 104.h,
-              isWhite: false,
+            Container(
+              margin: EdgeInsets.only(bottom: 18.h),
+              child: SaveButton(
+                onPressed: _isAllselected()
+                    ? () {
+                        _sendEvaluation(widget.meatData);
+                        context.pop();
+                      }
+                    : null,
+                text: '저장',
+                width: 658.w,
+                heigh: 104.h,
+                isWhite: false,
+              ),
             ),
           ],
         ),
