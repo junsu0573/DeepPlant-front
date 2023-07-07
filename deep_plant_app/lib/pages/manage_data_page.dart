@@ -35,10 +35,12 @@ class _ManageDataState extends State<ManageData> {
   DateTime focusedDay = DateTime.now();
 
   final List<String> userData = [
-    '2022091911501022,박수현, ',
-    '2022091911501022,박수현, ',
-    '000189843795-cattle-sirloin-ribeye_roll,전수현, ',
-    '2022091911501022,박수현, ',
+    '000189843795,test, ',
+    '000189843895,test, ',
+    '000189843995-cattle-tenderloin-ribeye_roll,전수현, ',
+    '000189843595-cattle-sirloin-boneless_short_rib,전수현, ',
+    '000189843495-cattle-blade-tirmmed_rib,전수현, ',
+    '000189843695,test, ',
   ];
 
   _ManageDataState() {
@@ -62,21 +64,28 @@ class _ManageDataState extends State<ManageData> {
   @override
   void initState() {
     super.initState();
-    //fetchJsonData();
+    // fetchJsonData();
   }
 
   Future<void> fetchJsonData() async {
-    var apiUrl = 'http://10.221.71.228:8080/user?id=junsu0573@naver.com';
+    var apiUrl = 'http://10.221.71.228:8080/user?id=junsu030401@gmail.com';
 
     try {
       var response = await http.get(Uri.parse(apiUrl));
 
       if (response.statusCode == 200) {
-        var jsonData = jsonDecode(response.body)['meatList'] as List<dynamic>;
-        var ids = extractIds(jsonData);
-        for (int i = 0; i < ids.length; i++) {
-          userData.add('${ids[i]},전수현, ');
-          // userData.add('${ids[i]},${widget.user.name}, ');
+        // var jsonData = jsonDecode(response.body)['meatList'] as List<String>;
+        // var ids = extractIds(jsonData);
+        // for (int i = 0; i < ids.length; i++) {
+        //   userData.add('${ids[i]},${widget.user.name}, ');
+        // }
+
+        List<String> jsonData = jsonDecode(response.body)['meatList'];
+        print(jsonData);
+
+        for (int i = 0; i < jsonData.length; i++) {
+          userData.add('${jsonData[i]},전수현, ');
+          print(jsonData[i]);
         }
       } else {
         // Error handling
@@ -96,7 +105,8 @@ class _ManageDataState extends State<ManageData> {
     option2 = option;
   }
 
-  void _dataColumnSort(int columnIndex, bool ascending) {}
+  bool sortAscending = false;
+  bool sortDscending = true;
 
   List<DataColumn> getColumns() {
     List<DataColumn> dataColumn = [];
@@ -104,22 +114,32 @@ class _ManageDataState extends State<ManageData> {
       if (i == '관리번호') {
         dataColumn.add(
           DataColumn(
-            label: Text(
+            label: SizedBox(
+              width: 155,
+              child: Align(
+                alignment: Alignment.center,
+                child: Text(
+                  i,
+                  style: TextStyle(
+                    fontSize: 15.0,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        );
+      } else if (i == '관리') {
+        dataColumn.add(DataColumn(
+            label: SizedBox(
+          width: 64,
+          child: Align(
+            alignment: Alignment.center,
+            child: Text(
               i,
               style: TextStyle(
                 fontSize: 15.0,
               ),
             ),
-            numeric: true,
-            onSort: _dataColumnSort,
-          ),
-        );
-      } else if (i == '관리') {
-        dataColumn.add(DataColumn(
-            label: Text(
-          i,
-          style: TextStyle(
-            fontSize: 15.0,
           ),
         )));
       } else {
@@ -140,6 +160,13 @@ class _ManageDataState extends State<ManageData> {
 
   List<DataRow> getRows() {
     List<String> source = userData;
+
+    if (sortAscending) {
+      source.sort((a, b) => a.split(',')[0].compareTo(b.split(',')[0]));
+    } else if (sortDscending) {
+      source.sort((a, b) => b.split(',')[0].compareTo(a.split(',')[0]));
+    }
+
     List<DataRow> dataRow = [];
 
     // 이 과정은 기존 source에 담긴 데이터를 textfield를 통해 입력받는 'text' 변수와 비교하게 된다.
@@ -209,6 +236,7 @@ class _ManageDataState extends State<ManageData> {
       showBottomBorder: true,
       headingRowColor: MaterialStateProperty.all(Colors.grey[200]),
       headingRowHeight: 40.0,
+      columnSpacing: 40.0,
       columns: getColumns(),
       rows: getRows(),
     );
@@ -228,7 +256,12 @@ class _ManageDataState extends State<ManageData> {
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.all(15.0),
+              padding: const EdgeInsets.only(
+                left: 10.0,
+                right: 10.0,
+                top: 15.0,
+                bottom: 15.0,
+              ),
               child: SizedBox(
                 height: 35.0,
                 child: Row(
@@ -344,7 +377,15 @@ class _ManageDataState extends State<ManageData> {
                                             ElevatedButton(
                                               onPressed: () {
                                                 Navigator.pop(context);
-                                                setState(() {});
+                                                setState(() {
+                                                  if (option2 == '최신순') {
+                                                    sortDscending = true;
+                                                    sortAscending = false;
+                                                  } else if (option2 == '과거순') {
+                                                    sortDscending = false;
+                                                    sortAscending = true;
+                                                  }
+                                                });
                                               },
                                               style: ElevatedButton.styleFrom(
                                                 backgroundColor: Colors.grey[800],
