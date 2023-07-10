@@ -28,8 +28,6 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
-  barcode_scanner_plugin:
-    path: ./barcode_scanner_plugin
   flutter:
     sdk: flutter
 
@@ -53,6 +51,7 @@ dependencies:
   qr_flutter: ^4.1.0
   render: ^0.1.3
   path_provider: ^2.0.15
+  flutter_zxing: ^1.1.1
 
 dev_dependencies:
   flutter_test:
