@@ -1,7 +1,5 @@
 package com.example.deep_plant_app
 
-import io.flutter.embedding.android.FlutterActivity
-
 import android.content.Intent
 import android.os.Bundle
 import androidx.annotation.NonNull

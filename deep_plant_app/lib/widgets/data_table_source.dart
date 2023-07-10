@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-bool sortAscending = false;
-bool sortDscending = true;
-
 final List<String> label = ['관리번호', '등록자', '관리'];
 
 List<DataColumn> getColumns() {
@@ -56,7 +53,7 @@ List<DataColumn> getColumns() {
   return dataColumn;
 }
 
-List<DataRow> getRows(List<String> userData, String text, Function data) {
+List<DataRow> getRows(List<String> userData, String text, Function data, bool sortAscending, bool sortDscending) {
   data();
   List<String> source = userData;
 
@@ -136,13 +133,13 @@ List<DataRow> getRows(List<String> userData, String text, Function data) {
   return dataRow;
 }
 
-Widget getDataTable(List<String> userData, String text, Function data) {
+Widget getDataTable(List<String> userData, String text, Function data, bool sortAscending, bool sortDscending) {
   return DataTable(
     showBottomBorder: true,
     headingRowColor: MaterialStateProperty.all(Colors.grey[200]),
     headingRowHeight: 40.0,
     columnSpacing: 40.0,
     columns: getColumns(),
-    rows: getRows(userData, text, data),
+    rows: getRows(userData, text, data, sortAscending, sortDscending),
   );
 }
