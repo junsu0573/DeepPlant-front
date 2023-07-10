@@ -5,16 +5,16 @@
 // platforms in the `pubspec.yaml` at
 // https://flutter.dev/docs/development/packages-and-plugins/developing-packages#plugin-platforms.
 
-// barcode_scanner_plugin.dart
 import 'package:flutter/services.dart';
 
 class BarcodeScannerPlugin {
-  static const EventChannel _barcodeEventChannel =
+  static const EventChannel _eventChannel =
       EventChannel('app.dsic.barcodetray.BARCODE_BR_DECODING_DATA');
 
   static Stream<String> get barcodeDataStream {
-    return _barcodeEventChannel
-        .receiveBroadcastStream()
-        .map<String>((dynamic event) => event.toString());
+    return _eventChannel.receiveBroadcastStream().map<String>((event) {
+      final barcodeData = event['EXTRA_BARCODE_DECODED_DATA'] as String?;
+      return barcodeData ?? '';
+    });
   }
 }

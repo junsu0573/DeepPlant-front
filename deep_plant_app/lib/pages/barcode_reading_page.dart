@@ -1,14 +1,14 @@
-import 'package:flutter/material.dart';
 import 'package:barcode_scanner_plugin/barcode_scanner_plugin.dart';
+import 'package:flutter/material.dart';
 
-class BarcodeReaderPage extends StatefulWidget {
-  const BarcodeReaderPage({super.key});
+class BarcodeReading extends StatefulWidget {
+  const BarcodeReading({super.key});
 
   @override
-  _BarcodeReaderPageState createState() => _BarcodeReaderPageState();
+  State<BarcodeReading> createState() => _BarcodeReadingState();
 }
 
-class _BarcodeReaderPageState extends State<BarcodeReaderPage> {
+class _BarcodeReadingState extends State<BarcodeReading> {
   final Stream<String> _barcodeDataStream =
       BarcodeScannerPlugin.barcodeDataStream;
 
