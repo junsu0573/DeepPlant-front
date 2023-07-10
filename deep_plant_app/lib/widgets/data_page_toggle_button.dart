@@ -7,7 +7,7 @@ class ToggleButton extends StatefulWidget {
   final bool isRadius;
   final double minHeight;
   final double minWidth;
-  final Function(String option) insertOptionFunc;
+  final Function(int index) onPressed;
 
   ToggleButton({
     Key? key,
@@ -17,7 +17,7 @@ class ToggleButton extends StatefulWidget {
     this.isRadius = true,
     double? minHeight,
     double? minWidth,
-    required this.insertOptionFunc,
+    required this.onPressed,
   })  : minHeight = minHeight ?? 50.0,
         minWidth = minWidth ?? 65.0,
         super(key: key);
@@ -36,18 +36,7 @@ class _ToggleButtonState extends State<ToggleButton> {
         ),
         ToggleButtons(
           direction: widget.vertical ? Axis.vertical : Axis.horizontal,
-          onPressed: (int index) {
-            setState(() {
-              for (int i = 0; i < widget.isSelected.length; i++) {
-                if (i == index) {
-                  widget.isSelected[i] = true;
-                  widget.insertOptionFunc((widget.options[i] as Text).data.toString());
-                } else {
-                  widget.isSelected[i] = false;
-                }
-              }
-            });
-          },
+          onPressed: widget.onPressed,
           borderRadius: widget.isRadius ? const BorderRadius.all(Radius.circular(8)) : null,
           borderWidth: 1.5,
           // 전체적인 경계 색
