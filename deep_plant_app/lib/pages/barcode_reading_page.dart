@@ -1,12 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:event_bus/event_bus.dart';
-
-class BarcodeDecodingEvent {
-  final int symbology;
-  final String decodedData;
-
-  BarcodeDecodingEvent(this.symbology, this.decodedData);
-}
+import 'package:flutter/services.dart';
 
 class BarcodeDisplayPage extends StatefulWidget {
   const BarcodeDisplayPage({super.key});
@@ -17,19 +10,21 @@ class BarcodeDisplayPage extends StatefulWidget {
 
 class _BarcodeDisplayPageState extends State<BarcodeDisplayPage> {
   String barcodeData = 'NOT READ';
-  EventBus eventBus = EventBus();
 
   @override
   void initState() {
     super.initState();
-    eventBus.on<BarcodeDecodingEvent>().listen((event) {
-      setState(() {
-        if (event.symbology != -1) {
-          barcodeData = "[${event.symbology}] ${event.decodedData}";
-        } else {
-          barcodeData = 'NOT READ';
-        }
-      });
+    handleBarcodeDecoded();
+  }
+
+  Future<void> handleBarcodeDecoded() async {
+    const platform = MethodChannel('barcode_intent_channel');
+    platform.setMethodCallHandler((call) async {
+      if (call.method == 'onBarcodeDecoded') {
+        setState(() {
+          barcodeData = call.arguments;
+        });
+      }
     });
   }
 
@@ -47,4 +42,10 @@ class _BarcodeDisplayPageState extends State<BarcodeDisplayPage> {
       ),
     );
   }
+}
+
+void main() {
+  runApp(MaterialApp(
+    home: BarcodeDisplayPage(),
+  ));
 }
