@@ -1,21 +1,15 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
   package="com.example.barcode_scanner_plugin">
-  
+
   <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
 
   <application
-        android:label="My App"
+        android:label="deep_plant_app"
         android:icon="@mipmap/ic_launcher">
 
         <!-- 다른 요소들 -->
 
-        <service
-            android:name=".MyAidlService"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="app.dsic.barcodetray.IBarcodeInterface"/>
-            </intent-filter>
-        </service>
+        
 
         <receiver
             android:name=".MyBroadcastReceiver"
