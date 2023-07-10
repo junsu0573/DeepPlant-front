@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:deep_plant_app/widgets/data_page_toggle_button.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:table_calendar/table_calendar.dart';
-import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class ManageData extends StatefulWidget {
@@ -165,7 +164,8 @@ class _ManageDataState extends State<ManageData> {
     // 이 과정은 기존 source에 담긴 데이터를 textfield를 통해 입력받는 'text' 변수와 비교하게 된다.
     // source에 담긴 data 값을 text의 시작과 비교하고, controller를 통해 실시간적으로 정보를 교류하게 된다.
     // contains는 중간 아무 요소나 비교, startwith는 시작부터, endwith는 끝부터 비교하는 기능임을 기억해두자.
-    List<String> filteredData = source.where((data) => data.contains(text)).toList();
+    List<String> filteredData =
+        source.where((data) => data.contains(text)).toList();
 
     for (var i = 0; i < filteredData.length; i++) {
       var csvDataCells = filteredData[i].split(',');
@@ -295,19 +295,22 @@ class _ManageDataState extends State<ManageData> {
                                   icon: Icon(Icons.search),
                                 ),
                           focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(width: 0.2, color: Colors.grey),
+                            borderSide:
+                                BorderSide(width: 0.2, color: Colors.grey),
                             borderRadius: BorderRadius.all(
                               Radius.circular(25.0),
                             ),
                           ),
                           enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(width: 0.2, color: Colors.grey),
+                            borderSide:
+                                BorderSide(width: 0.2, color: Colors.grey),
                             borderRadius: BorderRadius.all(
                               Radius.circular(25.0),
                             ),
                           ),
                           border: OutlineInputBorder(
-                            borderSide: BorderSide(width: 0.2, color: Colors.grey),
+                            borderSide:
+                                BorderSide(width: 0.2, color: Colors.grey),
                             borderRadius: BorderRadius.all(
                               Radius.circular(25.0),
                             ),
@@ -334,7 +337,8 @@ class _ManageDataState extends State<ManageData> {
                                       height: 300,
                                       child: Center(
                                         child: Column(
-                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
                                           mainAxisSize: MainAxisSize.min,
                                           children: <Widget>[
                                             Text(
@@ -385,7 +389,8 @@ class _ManageDataState extends State<ManageData> {
                                                     if (option2 == '최신순') {
                                                       sortDscending = true;
                                                       sortAscending = false;
-                                                    } else if (option2 == '과거순') {
+                                                    } else if (option2 ==
+                                                        '과거순') {
                                                       sortDscending = false;
                                                       sortAscending = true;
                                                     }
@@ -408,8 +413,10 @@ class _ManageDataState extends State<ManageData> {
                                           fontSize: 17.0,
                                           fontWeight: FontWeight.bold,
                                         ),
-                                        leftChevronMargin: EdgeInsets.only(left: 85.0, top: 5.0),
-                                        rightChevronMargin: EdgeInsets.only(right: 85.0, top: 5.0),
+                                        leftChevronMargin: EdgeInsets.only(
+                                            left: 85.0, top: 5.0),
+                                        rightChevronMargin: EdgeInsets.only(
+                                            right: 85.0, top: 5.0),
                                       ),
                                       calendarStyle: CalendarStyle(
                                         outsideDaysVisible: false,
@@ -424,7 +431,8 @@ class _ManageDataState extends State<ManageData> {
                                         ),
                                       ),
                                       focusedDay: focusedDay,
-                                      onDaySelected: (DateTime selectedDay, DateTime focusedDay) {
+                                      onDaySelected: (DateTime selectedDay,
+                                          DateTime focusedDay) {
                                         // 선택된 날짜의 상태를 갱신합니다.
                                         setState(
                                           () {
