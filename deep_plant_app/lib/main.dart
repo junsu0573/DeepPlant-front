@@ -1,6 +1,7 @@
 import 'package:deep_plant_app/models/meat_data_model.dart';
 import 'package:deep_plant_app/models/user_model.dart';
-import 'package:deep_plant_app/pages/data_management_page_2.dart';
+import 'package:deep_plant_app/pages/data-management/data_management_page_2.dart';
+import 'package:deep_plant_app/pages/data-management/reading_data_page.dart';
 import 'package:deep_plant_app/pages/home_page.dart';
 import 'package:deep_plant_app/pages/maet-registration/additional-data/complete_additional_registration_page.dart';
 import 'package:deep_plant_app/pages/maet-registration/additional-data/deep_aging_page.dart';
@@ -13,7 +14,6 @@ import 'package:deep_plant_app/pages/maet-registration/basic-data/insertion_meat
 import 'package:deep_plant_app/pages/maet-registration/basic-data/insertion_meat_info_page.dart';
 import 'package:deep_plant_app/pages/maet-registration/additional-data/show_step_2_page.dart';
 import 'package:deep_plant_app/pages/maet-registration/basic-data/show_step_page.dart';
-import 'package:deep_plant_app/pages/manage_data_page.dart';
 import 'package:deep_plant_app/pages/my-page/edit_user_info_page.dart';
 import 'package:deep_plant_app/pages/my-page/my_page.dart';
 import 'package:deep_plant_app/pages/my-page/reset_pw_page.dart';
@@ -216,14 +216,15 @@ final _router = GoRouter(
         ),
         // 데이터 관리 페이지
         GoRoute(
-          path: 'add-data',
-          builder: (context, state) => ManageData(
+          path: 'reading-data',
+          builder: (context, state) => ReadingData(
             user: newUser,
           ),
         ),
         GoRoute(
-          path: 'add-data-2',
+          path: 'data-management',
           builder: (context, state) => DataManagement2(
+            user: newUser,
             meat: newMeat,
           ),
         ),

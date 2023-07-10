@@ -7,15 +7,15 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:http/http.dart' as http;
 
-class ManageData extends StatefulWidget {
-  ManageData({super.key, required this.user});
+class ReadingData extends StatefulWidget {
+  ReadingData({super.key, required this.user});
   final UserModel user;
 
   @override
-  State<ManageData> createState() => _ManageDataState();
+  State<ReadingData> createState() => ReadingDataState();
 }
 
-class _ManageDataState extends State<ManageData> {
+class ReadingDataState extends State<ReadingData> {
   final TextEditingController search = TextEditingController();
   FocusNode focusNode = FocusNode();
   String text = '';
