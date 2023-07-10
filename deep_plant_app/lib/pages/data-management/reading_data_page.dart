@@ -4,8 +4,10 @@ import 'package:deep_plant_app/widgets/save_button.dart';
 import 'package:flutter/material.dart';
 import 'package:deep_plant_app/widgets/data_page_toggle_button.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:http/http.dart' as http;
+import 'package:deep_plant_app/widgets/data_table_source.dart';
 
 class ReadingData extends StatefulWidget {
   ReadingData({super.key, required this.user});
@@ -18,22 +20,28 @@ class ReadingData extends StatefulWidget {
 class ReadingDataState extends State<ReadingData> {
   final TextEditingController search = TextEditingController();
   FocusNode focusNode = FocusNode();
-  String text = '';
-  final List<String> label = ['관리번호', '등록자', '관리'];
+
+  // 필터에 이용되는 변수들
   final List<bool> _selections1 = [false, true, false, false];
   final List<bool> _selections2 = [true, false];
   String option1 = '1개월';
   String option2 = '최신순';
-  bool isSelectedTable = false;
 
+  bool isSelectedTable = false;
+  String text = '';
+
+  // 아래의 두 변수는 중간 계산을 위함이니 수정 금지!!
   DateTime selectedDay = DateTime(
     DateTime.now().year,
     DateTime.now().month,
     DateTime.now().day,
   );
-
   DateTime focusedDay = DateTime.now();
 
+  // 이건 단순히 오늘 날짜를 얻어오는 변수
+  DateTime toDay = DateTime.now();
+
+  // 여기서 table을 만들 값이 들어오게 된다.
   final List<String> userData = [
     '000189843795,test, ',
     '000189843895,test, ',
@@ -43,7 +51,8 @@ class ReadingDataState extends State<ReadingData> {
     '000189843695,test, ',
   ];
 
-  _ManageDataState() {
+  // 이는 검색 기능을 관리한다.
+  manageDataState() {
     search.addListener(() {
       setState(() {
         text = search.text;
@@ -89,150 +98,13 @@ class ReadingDataState extends State<ReadingData> {
     }
   }
 
+  // 아래의 두 함수는 현재 표시되는 필터 text를 결정짓는다.
   void insertOption1(String option) {
     option1 = option;
   }
 
   void insertOption2(String option) {
     option2 = option;
-  }
-
-  bool sortAscending = false;
-  bool sortDscending = true;
-
-  List<DataColumn> getColumns() {
-    List<DataColumn> dataColumn = [];
-    for (var i in label) {
-      if (i == '관리번호') {
-        dataColumn.add(
-          DataColumn(
-            label: SizedBox(
-              width: 155,
-              child: Align(
-                alignment: Alignment.center,
-                child: Text(
-                  i,
-                  style: TextStyle(
-                    fontSize: 15.0,
-                  ),
-                ),
-              ),
-            ),
-          ),
-        );
-      } else if (i == '관리') {
-        dataColumn.add(DataColumn(
-            label: SizedBox(
-          width: 64,
-          child: Align(
-            alignment: Alignment.center,
-            child: Text(
-              i,
-              style: TextStyle(
-                fontSize: 15.0,
-              ),
-            ),
-          ),
-        )));
-      } else {
-        dataColumn.add(
-          DataColumn(
-            label: Text(
-              i,
-              style: TextStyle(
-                fontSize: 15.0,
-              ),
-            ),
-          ),
-        );
-      }
-    }
-    return dataColumn;
-  }
-
-  List<DataRow> getRows() {
-    List<String> source = userData;
-
-    if (sortAscending) {
-      source.sort((a, b) => a.split(',')[0].compareTo(b.split(',')[0]));
-    } else if (sortDscending) {
-      source.sort((a, b) => b.split(',')[0].compareTo(a.split(',')[0]));
-    }
-
-    List<DataRow> dataRow = [];
-
-    // 이 과정은 기존 source에 담긴 데이터를 textfield를 통해 입력받는 'text' 변수와 비교하게 된다.
-    // source에 담긴 data 값을 text의 시작과 비교하고, controller를 통해 실시간적으로 정보를 교류하게 된다.
-    // contains는 중간 아무 요소나 비교, startwith는 시작부터, endwith는 끝부터 비교하는 기능임을 기억해두자.
-    List<String> filteredData =
-        source.where((data) => data.contains(text)).toList();
-
-    for (var i = 0; i < filteredData.length; i++) {
-      var csvDataCells = filteredData[i].split(',');
-      List<DataCell> cells = [];
-      cells.add(
-        DataCell(
-          SizedBox(
-            width: 292.w,
-            child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Text(
-                csvDataCells[0],
-                style: TextStyle(
-                  fontSize: 15.0,
-                  color: Colors.black,
-                ),
-              ),
-            ),
-          ),
-        ),
-      );
-      cells.add(
-        DataCell(
-          Text(
-            csvDataCells[1],
-            style: TextStyle(
-              fontSize: 15.0,
-            ),
-          ),
-        ),
-      );
-      // if (csvDataCells[1] == '${widget.user.name}') {
-      if (csvDataCells[1] == '전수현') {
-        cells.add(
-          DataCell(
-            ElevatedButton(
-              onPressed: () {},
-              style: ElevatedButton.styleFrom(
-                  foregroundColor: Colors.black,
-                  backgroundColor: Colors.grey[300],
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(35.0),
-                  )),
-              child: Text(
-                '수정',
-              ),
-            ),
-          ),
-        );
-      } else {
-        cells.add(DataCell.empty);
-      }
-
-      dataRow.add(DataRow(cells: cells));
-    }
-    return dataRow;
-  }
-
-  Widget getDataTable() {
-    return DataTable(
-      showBottomBorder: true,
-      headingRowColor: MaterialStateProperty.all(Colors.grey[200]),
-      headingRowHeight: 40.0,
-      columnSpacing: 40.0,
-      columns: getColumns(),
-      rows: getRows(),
-    );
   }
 
   @override
@@ -295,22 +167,19 @@ class ReadingDataState extends State<ReadingData> {
                                   icon: Icon(Icons.search),
                                 ),
                           focusedBorder: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(width: 0.2, color: Colors.grey),
+                            borderSide: BorderSide(width: 0.2, color: Colors.grey),
                             borderRadius: BorderRadius.all(
                               Radius.circular(25.0),
                             ),
                           ),
                           enabledBorder: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(width: 0.2, color: Colors.grey),
+                            borderSide: BorderSide(width: 0.2, color: Colors.grey),
                             borderRadius: BorderRadius.all(
                               Radius.circular(25.0),
                             ),
                           ),
                           border: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(width: 0.2, color: Colors.grey),
+                            borderSide: BorderSide(width: 0.2, color: Colors.grey),
                             borderRadius: BorderRadius.all(
                               Radius.circular(25.0),
                             ),
@@ -331,121 +200,116 @@ class ReadingDataState extends State<ReadingData> {
                               ),
                             ),
                             builder: (BuildContext context) {
-                              return !isSelectedTable
-                                  ? Container(
-                                      margin: EdgeInsets.all(18.0),
-                                      height: 300,
-                                      child: Center(
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: <Widget>[
-                                            Text(
-                                              '조회기간',
-                                              style: TextStyle(
-                                                fontSize: 18.0,
-                                              ),
-                                            ),
-                                            ToggleButton(
-                                              insertOptionFunc: insertOption1,
-                                              options: [
-                                                Text('3일'),
-                                                Text('1개월'),
-                                                Text('3개월'),
-                                                Text('직접설정'),
-                                              ],
-                                              isSelected: _selections1,
-                                              isRadius: false,
-                                              minHeight: 30.0,
-                                              minWidth: 80.0,
-                                            ),
-                                            Text(
-                                              '정렬',
-                                              style: TextStyle(
-                                                fontSize: 18.0,
-                                              ),
-                                            ),
-                                            ToggleButton(
-                                              insertOptionFunc: insertOption2,
-                                              options: [
-                                                Text('최신순'),
-                                                Text('과거순'),
-                                              ],
-                                              isSelected: _selections2,
-                                              isRadius: false,
-                                              minHeight: 30.0,
-                                              minWidth: 160.0,
-                                            ),
-                                            SaveButton(
-                                              text: '확인',
-                                              width: 658.w,
-                                              heigh: 104.h,
-                                              isWhite: false,
-                                              onPressed: () {
-                                                Navigator.pop(context);
-                                                setState(
-                                                  () {
-                                                    if (option2 == '최신순') {
-                                                      sortDscending = true;
-                                                      sortAscending = false;
-                                                    } else if (option2 ==
-                                                        '과거순') {
-                                                      sortDscending = false;
-                                                      sortAscending = true;
-                                                    }
-                                                  },
-                                                );
-                                              },
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                    )
-                                  : TableCalendar(
-                                      locale: 'ko_KR',
-                                      firstDay: DateTime.utc(2022, 1, 1),
-                                      lastDay: DateTime.utc(2023, 12, 31),
-                                      headerStyle: HeaderStyle(
-                                        formatButtonVisible: false,
-                                        titleCentered: true,
-                                        titleTextStyle: TextStyle(
-                                          fontSize: 17.0,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                        leftChevronMargin: EdgeInsets.only(
-                                            left: 85.0, top: 5.0),
-                                        rightChevronMargin: EdgeInsets.only(
-                                            right: 85.0, top: 5.0),
-                                      ),
-                                      calendarStyle: CalendarStyle(
-                                        outsideDaysVisible: false,
-                                        cellMargin: EdgeInsets.all(0),
-                                        todayDecoration: const BoxDecoration(
-                                          color: Colors.grey,
-                                          shape: BoxShape.circle,
-                                        ),
-                                        selectedDecoration: const BoxDecoration(
-                                          color: Colors.black,
-                                          shape: BoxShape.circle,
-                                        ),
-                                      ),
-                                      focusedDay: focusedDay,
-                                      onDaySelected: (DateTime selectedDay,
-                                          DateTime focusedDay) {
-                                        // 선택된 날짜의 상태를 갱신합니다.
-                                        setState(
-                                          () {
-                                            this.selectedDay = selectedDay;
-                                            this.focusedDay = focusedDay;
-                                          },
-                                        );
-                                      },
-                                      selectedDayPredicate: (DateTime day) {
-                                        // selectedDay 와 동일한 날짜의 모양을 바꿔줍니다.
-                                        return isSameDay(selectedDay, day);
-                                      },
-                                    );
+                              return TableCalendar(
+                                locale: 'ko_KR',
+                                firstDay: DateTime.utc(2022, 1, 1),
+                                lastDay: DateTime.utc(2023, 12, 31),
+                                headerStyle: HeaderStyle(
+                                  formatButtonVisible: false,
+                                  titleCentered: true,
+                                  titleTextStyle: TextStyle(
+                                    fontSize: 17.0,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                  leftChevronMargin: EdgeInsets.only(left: 85.0, top: 5.0),
+                                  rightChevronMargin: EdgeInsets.only(right: 85.0, top: 5.0),
+                                ),
+                                calendarStyle: CalendarStyle(
+                                  outsideDaysVisible: false,
+                                  cellMargin: EdgeInsets.all(0),
+                                  todayDecoration: const BoxDecoration(
+                                    color: Colors.grey,
+                                    shape: BoxShape.circle,
+                                  ),
+                                  selectedDecoration: const BoxDecoration(
+                                    color: Colors.black,
+                                    shape: BoxShape.circle,
+                                  ),
+                                ),
+                                focusedDay: focusedDay,
+                                onDaySelected: (DateTime selectedDay, DateTime focusedDay) {
+                                  // 선택된 날짜의 상태를 갱신합니다.
+                                  setState(
+                                    () {
+                                      this.selectedDay = selectedDay;
+                                      this.focusedDay = focusedDay;
+                                      context.pop();
+                                    },
+                                  );
+                                },
+                                selectedDayPredicate: (DateTime day) {
+                                  // selectedDay 와 동일한 날짜의 모양을 바꿔줍니다.
+                                  return isSameDay(selectedDay, day);
+                                },
+                              );
+                              // return Container(
+                              //   margin: EdgeInsets.all(18.0),
+                              //   height: 300,
+                              //   child: Center(
+                              //     child: Column(
+                              //       mainAxisAlignment: MainAxisAlignment.center,
+                              //       mainAxisSize: MainAxisSize.min,
+                              //       children: <Widget>[
+                              //         Text(
+                              //           '조회기간',
+                              //           style: TextStyle(
+                              //             fontSize: 18.0,
+                              //           ),
+                              //         ),
+                              //         ToggleButton(
+                              //           insertOptionFunc: insertOption1,
+                              //           options: [
+                              //             Text('3일'),
+                              //             Text('1개월'),
+                              //             Text('3개월'),
+                              //             Text('직접설정'),
+                              //           ],
+                              //           isSelected: _selections1,
+                              //           isRadius: false,
+                              //           minHeight: 30.0,
+                              //           minWidth: 80.0,
+                              //         ),
+                              //         Text(
+                              //           '정렬',
+                              //           style: TextStyle(
+                              //             fontSize: 18.0,
+                              //           ),
+                              //         ),
+                              //         ToggleButton(
+                              //           insertOptionFunc: insertOption2,
+                              //           options: [
+                              //             Text('최신순'),
+                              //             Text('과거순'),
+                              //           ],
+                              //           isSelected: _selections2,
+                              //           isRadius: false,
+                              //           minHeight: 30.0,
+                              //           minWidth: 160.0,
+                              //         ),
+                              //         SaveButton(
+                              //           text: '확인',
+                              //           width: 658.w,
+                              //           heigh: 104.h,
+                              //           isWhite: false,
+                              //           onPressed: () {
+                              //             Navigator.pop(context);
+                              //             setState(
+                              //               () {
+                              //                 if (option2 == '최신순') {
+                              //                   sortDscending = true;
+                              //                   sortAscending = false;
+                              //                 } else if (option2 == '과거순') {
+                              //                   sortDscending = false;
+                              //                   sortAscending = true;
+                              //                 }
+                              //               },
+                              //             );
+                              //           },
+                              //         )
+                              //       ],
+                              //     ),
+                              //   ),
+                              // );
                             },
                           );
                         },
@@ -459,10 +323,54 @@ class ReadingDataState extends State<ReadingData> {
                 ),
               ),
             ),
-            Expanded(child: SingleChildScrollView(child: getDataTable())),
+            Expanded(child: SingleChildScrollView(child: getDataTable(userData, text, manageDataState))),
           ],
         ),
       ),
+    );
+  }
+
+  TableCalendar<dynamic> newMethod() {
+    return TableCalendar(
+      locale: 'ko_KR',
+      firstDay: DateTime.utc(2022, 1, 1),
+      lastDay: DateTime.utc(2023, 12, 31),
+      headerStyle: HeaderStyle(
+        formatButtonVisible: false,
+        titleCentered: true,
+        titleTextStyle: TextStyle(
+          fontSize: 17.0,
+          fontWeight: FontWeight.bold,
+        ),
+        leftChevronMargin: EdgeInsets.only(left: 85.0, top: 5.0),
+        rightChevronMargin: EdgeInsets.only(right: 85.0, top: 5.0),
+      ),
+      calendarStyle: CalendarStyle(
+        outsideDaysVisible: false,
+        cellMargin: EdgeInsets.all(0),
+        todayDecoration: const BoxDecoration(
+          color: Colors.grey,
+          shape: BoxShape.circle,
+        ),
+        selectedDecoration: const BoxDecoration(
+          color: Colors.black,
+          shape: BoxShape.circle,
+        ),
+      ),
+      focusedDay: focusedDay,
+      onDaySelected: (DateTime selectedDay, DateTime focusedDay) {
+        // 선택된 날짜의 상태를 갱신합니다.
+        setState(
+          () {
+            this.selectedDay = selectedDay;
+            this.focusedDay = focusedDay;
+          },
+        );
+      },
+      selectedDayPredicate: (DateTime day) {
+        // selectedDay 와 동일한 날짜의 모양을 바꿔줍니다.
+        return isSameDay(selectedDay, day);
+      },
     );
   }
 }
