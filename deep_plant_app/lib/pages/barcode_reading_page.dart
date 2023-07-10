@@ -17,6 +17,13 @@ class _BarcodeReadingState extends State<BarcodeReading> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Barcode Reader'),
+        actions: [
+          IconButton(
+              onPressed: () {
+                setState(() {});
+              },
+              icon: Icon(Icons.restore))
+        ],
       ),
       body: Center(
         child: StreamBuilder<String>(
