@@ -13,7 +13,8 @@ class BarcodeScannerPlugin {
 
   static Stream<String> get barcodeDataStream {
     return _eventChannel.receiveBroadcastStream().map<String>((event) {
-      final barcodeData = event['EXTRA_BARCODE_DECODED_DATA'] as String?;
+      final Map<String, dynamic> eventData = event as Map<String, dynamic>;
+      final barcodeData = eventData['EXTRA_BARCODE_DECODED_DATA'] as String?;
       return barcodeData ?? '';
     });
   }
