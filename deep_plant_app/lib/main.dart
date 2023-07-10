@@ -111,6 +111,9 @@ final _router = GoRouter(
                 ),
               ],
             ),
+            GoRoute(
+              path: 'success-pw-change',
+            ),
           ],
         ),
         // step-1
