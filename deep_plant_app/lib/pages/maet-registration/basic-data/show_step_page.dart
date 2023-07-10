@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:deep_plant_app/models/meat_data_model.dart';
 import 'package:deep_plant_app/models/user_model.dart';
 import 'package:deep_plant_app/widgets/custom_appbar.dart';
@@ -38,15 +37,15 @@ class _ShowStepState extends State<ShowStep> {
 
   // 임시 데이터를 로컬 임시 파일로 저장
   Future<void> saveDataToLocal(Map<String, dynamic> data) async {
-    final directory = await getTemporaryDirectory();
-    final file = File('${directory.path}/temp_data.json');
+    final directory = await getApplicationDocumentsDirectory();
+    final file = File('${directory.path}/basic_temp_data.json');
 
     await file.writeAsString(jsonEncode(data));
   }
 
   // 객체 데이터를 임시 저장 데이터로 초기화
   Future<void> initMeatdata() async {
-    final directory = await getTemporaryDirectory();
+    final directory = await getApplicationDocumentsDirectory();
     final file = File('${directory.path}/temp_data.json');
     if (await file.exists()) {
       final jsonData = await file.readAsString();

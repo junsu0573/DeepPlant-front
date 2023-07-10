@@ -39,7 +39,7 @@ class _ShowStep2State extends State<ShowStep2> {
 
   // 임시 데이터를 로컬 임시 파일로 저장
   Future<void> saveDataToLocal(Map<String, dynamic> data) async {
-    final directory = await getTemporaryDirectory();
+    final directory = await getApplicationDocumentsDirectory();
     final file = File('${directory.path}/temp_data_2.json');
 
     await file.writeAsString(jsonEncode(data));
@@ -47,7 +47,7 @@ class _ShowStep2State extends State<ShowStep2> {
 
   // 객체 데이터를 임시 저장 데이터로 초기화
   Future<void> initMeatdata() async {
-    final directory = await getTemporaryDirectory();
+    final directory = await getApplicationDocumentsDirectory();
     final file = File('${directory.path}/temp_data.json');
     if (await file.exists()) {
       final jsonData = await file.readAsString();
