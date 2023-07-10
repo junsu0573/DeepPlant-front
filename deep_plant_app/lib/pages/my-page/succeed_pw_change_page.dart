@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
-class SuccessPwChange extends StatelessWidget {
-  const SuccessPwChange({super.key});
+class SucceedPwChange extends StatelessWidget {
+  const SucceedPwChange({super.key});
 
   @override
   Widget build(BuildContext context) {

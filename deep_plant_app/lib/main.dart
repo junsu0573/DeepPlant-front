@@ -17,6 +17,7 @@ import 'package:deep_plant_app/pages/manage_data_page.dart';
 import 'package:deep_plant_app/pages/my-page/edit_user_info_page.dart';
 import 'package:deep_plant_app/pages/my-page/my_page.dart';
 import 'package:deep_plant_app/pages/my-page/reset_pw_page.dart';
+import 'package:deep_plant_app/pages/my-page/succeed_pw_change_page.dart';
 import 'package:deep_plant_app/pages/option_page.dart';
 import 'package:deep_plant_app/pages/sign-up/email_verification.dart';
 import 'package:deep_plant_app/pages/sign-up/id_pw_insertion_page.dart';
@@ -113,6 +114,7 @@ final _router = GoRouter(
             ),
             GoRoute(
               path: 'success-pw-change',
+              builder: (context, state) => SucceedPwChange(),
             ),
           ],
         ),
