@@ -1,19 +1,21 @@
 package com.example.barcode_scanner_plugin;
 
-import 'BarcodeScannerPlugin.java'androidx.annotation.NonNull;
+import androidx.annotation.NonNull;
 
-import 'BarcodeScannerPlugin.java'io.flutter.embedding.engine.plugins.FlutterPlugin;
-import 'BarcodeScannerPlugin.java'io.flutter.embedding.engine.plugins.activity.ActivityAware;
-import 'BarcodeScannerPlugin.java'io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding;
-import 'BarcodeScannerPlugin.java'io.flutter.plugin.common.EventChannel;
-import 'BarcodeScannerPlugin.java'io.flutter.plugin.common.EventChannel.EventSink;
-import 'BarcodeScannerPlugin.java'io.flutter.plugin.common.EventChannel.StreamHandler;
-import 'BarcodeScannerPlugin.java'io.flutter.plugin.common.MethodChannel;
-import 'BarcodeScannerPlugin.java'io.flutter.plugin.common.MethodCall;
-import 'BarcodeScannerPlugin.java'io.flutter.plugin.common.MethodChannel.MethodCallHandler;
-import 'BarcodeScannerPlugin.java'io.flutter.plugin.common.MethodChannel.Result;
+import io.flutter.embedding.engine.plugins.FlutterPlugin;
+import io.flutter.embedding.engine.plugins.activity.ActivityAware;
+import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding;
+import io.flutter.plugin.common.EventChannel;
+import io.flutter.plugin.common.EventChannel.EventSink;
+import io.flutter.plugin.common.EventChannel.StreamHandler;
+import io.flutter.plugin.common.MethodChannel;
+import io.flutter.plugin.common.MethodCall;
+import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
+import io.flutter.plugin.common.MethodChannel.Result;
 
-import 'BarcodeScannerPlugin.java'app.dsic.barcodetray.IBarcodeInterface;
+import com.example.barcodescannerplugin.BarcodeScannerPlugin;
+import app.dsic.barcodetray.IBarcodeInterface;
+
 
 public class BarcodeScannerPlugin implements FlutterPlugin, MethodCallHandler, StreamHandler, ActivityAware {
     private static final String BARCODE_EVENT_CHANNEL = "app.dsic.barcodetray.BARCODE_BR_DECODING_DATA";
