@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:android_intent/android_intent.dart';
 
 class BarcodeDisplayPage extends StatefulWidget {
-  const BarcodeDisplayPage({super.key});
+  const BarcodeDisplayPage({Key? key}) : super(key: key);
 
   @override
   _BarcodeDisplayPageState createState() => _BarcodeDisplayPageState();
@@ -28,10 +28,10 @@ class _BarcodeDisplayPageState extends State<BarcodeDisplayPage> {
       }
     });
 
-    // Android의 Broadcast Intent 수신
-    AndroidIntent intent =
-        AndroidIntent(action: 'app.dsic.barcodetray.BARCODE_BR_DECODING_DATA');
-    intent.launch();
+    final intent = AndroidIntent(
+      action: 'app.dsic.barcodetray.BARCODE_BR_DECODING_DATA',
+    );
+    await intent.launch();
   }
 
   @override
