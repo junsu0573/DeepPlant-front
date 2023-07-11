@@ -53,15 +53,23 @@ List<DataColumn> getColumns() {
   return dataColumn;
 }
 
-List<DataRow> getRows(List<String> userData, String text, Function data, bool sortAscending, bool sortDscending) {
+void sortUserData(List<String> userData, bool sortDecending) {
+  userData.sort((a, b) {
+    DateTime dateA = DateTime.parse(a.split(',')[2]);
+    DateTime dateB = DateTime.parse(b.split(',')[2]);
+    if (!sortDecending) {
+      return dateA.compareTo(dateB);
+    } else {
+      return dateB.compareTo(dateA);
+    }
+  });
+}
+
+List<DataRow> getRows(List<String> userData, String text, Function data, bool sortDscending) {
   data();
   List<String> source = userData;
 
-  if (sortAscending) {
-    source.sort((a, b) => a.split(',')[0].compareTo(b.split(',')[0]));
-  } else if (sortDscending) {
-    source.sort((a, b) => b.split(',')[0].compareTo(a.split(',')[0]));
-  }
+  sortUserData(userData, sortDscending);
 
   List<DataRow> dataRow = [];
 
@@ -133,13 +141,13 @@ List<DataRow> getRows(List<String> userData, String text, Function data, bool so
   return dataRow;
 }
 
-Widget getDataTable(List<String> userData, String text, Function data, bool sortAscending, bool sortDscending) {
+Widget getDataTable(List<String> userData, String text, Function data, bool sortDscending) {
   return DataTable(
     showBottomBorder: true,
     headingRowColor: MaterialStateProperty.all(Colors.grey[200]),
     headingRowHeight: 40.0,
     columnSpacing: 40.0,
     columns: getColumns(),
-    rows: getRows(userData, text, data, sortAscending, sortDscending),
+    rows: getRows(userData, text, data, sortDscending),
   );
 }
