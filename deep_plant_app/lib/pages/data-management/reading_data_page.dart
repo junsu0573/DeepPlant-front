@@ -46,12 +46,12 @@ class ReadingDataState extends State<ReadingData> {
   DateTime focusedDay = DateTime.now();
 
   final List<String> userData = [
-    '000189843795,test,2023-04-22 20:44:25',
-    '000189843895,test,2023-06-11 14:23:32',
-    '000189843995-cattle-tenderloin-ribeye_roll,전수현,2023-07-08 14:22:23',
+    '000189843795,test,2023-01-22 20:44:25',
+    '000189843895,test,2023-05-11 14:23:32',
+    '000189843995-cattle-tenderloin-ribeye_roll,전수현,2023-07-01 14:22:23',
     '000189843595-cattle-sirloin-boneless_short_rib,전수현,2023-07-09 15:54:25',
     '000189843495-cattle-blade-tirmmed_rib,전수현,2023-07-10 02:23:32',
-    '000189843695,test,2023-07-11 20:20:20',
+    '000189843695,test,2023-07-11 01:20:20',
   ];
 
   manageDataState() {
@@ -76,19 +76,7 @@ class ReadingDataState extends State<ReadingData> {
   void initState() {
     super.initState();
     // fetchJsonData();
-    DateTime toDay = DateTime.now();
-    String formattedDate = DateFormat('yyyy-MM-dd HH:mm:ss').format(toDay);
   }
-
-  void sortUserData() {
-    userData.sort((a, b) {
-      DateTime dateA = DateTime.parse(a.split(',')[2]);
-      DateTime dateB = DateTime.parse(b.split(',')[2]);
-      return dateA.compareTo(dateB);
-    });
-  }
-
-  void setDay() {}
 
   Future<void> fetchJsonData() async {
     var apiUrl = 'http://10.221.71.228:8080/user?id=junsu030401@gmail.com';
@@ -312,7 +300,7 @@ class ReadingDataState extends State<ReadingData> {
             ),
             Expanded(
               child: SingleChildScrollView(
-                child: getDataTable(userData, text, manageDataState, sortDscending),
+                child: getDataTable(userData, text, manageDataState, sortDscending, option1),
               ),
             ),
           ],
