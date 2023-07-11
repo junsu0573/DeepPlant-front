@@ -10,6 +10,7 @@ class BarcodeDisplayPage extends StatefulWidget {
 
 class _BarcodeDisplayPageState extends State<BarcodeDisplayPage> {
   String barcodeData = 'NOT READ';
+  List<String> scannedBarcodes = []; // 바코드 데이터를 저장할 리스트
 
   @override
   void initState() {
@@ -23,6 +24,7 @@ class _BarcodeDisplayPageState extends State<BarcodeDisplayPage> {
       if (call.method == 'onBarcodeDecoded') {
         setState(() {
           barcodeData = call.arguments;
+          scannedBarcodes.add(barcodeData); // 바코드 데이터를 리스트에 추가
         });
       }
     });
@@ -34,11 +36,14 @@ class _BarcodeDisplayPageState extends State<BarcodeDisplayPage> {
       appBar: AppBar(
         title: Text('Barcode Display'),
       ),
-      body: Center(
-        child: Text(
-          barcodeData,
-          style: TextStyle(fontSize: 18),
-        ),
+      body: ListView.builder(
+        itemCount: scannedBarcodes.length,
+        itemBuilder: (context, index) {
+          final barcode = scannedBarcodes[index];
+          return ListTile(
+            title: Text(barcode),
+          );
+        },
       ),
     );
   }
