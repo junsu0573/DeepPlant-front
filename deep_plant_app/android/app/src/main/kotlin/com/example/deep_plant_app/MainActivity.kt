@@ -1,7 +1,7 @@
 // android/app/src/main/kotlin/com/example/deep_plant_app/MainActivity.kt
 package com.example.deep_plant_app
 
-import android.app.Activity
+import io.flutter.embedding.android.FlutterActivity
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -24,7 +24,7 @@ class BarcodeBroadcastReceiver : BroadcastReceiver() {
     }
 }
 
-class MainActivity : Activity() {
+class MainActivity : FlutterActivity() {
     // MainActivity의 나머지 코드
     // ...
 }
