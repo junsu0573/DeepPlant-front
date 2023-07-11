@@ -1,4 +1,3 @@
-// android/app/src/main/kotlin/com/example/deep_plant_app/MainActivity.kt
 package com.example.deep_plant_app
 
 import io.flutter.embedding.android.FlutterActivity
