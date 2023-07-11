@@ -1,4 +1,4 @@
-<!-- android/app/src/main/AndroidManifest.xml -->
+<!-- android/app/src/main/AndroidManifest.xml-->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application
         android:label="deep_plant_app"
@@ -22,9 +22,8 @@
               />
             <intent-filter>
                 <action android:name="app.dsic.barcodetray.BARCODE_BR_DECODING_DATA"/>
-                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
-
         </activity>
         <!-- Don't delete the meta-data below.
              This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->

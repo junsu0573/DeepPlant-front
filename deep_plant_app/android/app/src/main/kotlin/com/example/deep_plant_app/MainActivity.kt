@@ -21,11 +21,9 @@ class BarcodeBroadcastReceiver : BroadcastReceiver() {
             context?.sendBroadcast(flutterIntent)
         }
     }
-
 }
 
 class MainActivity : FlutterActivity() {
     // MainActivity의 나머지 코드
     // ...
 }
-
