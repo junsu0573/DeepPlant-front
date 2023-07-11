@@ -1,10 +1,12 @@
 // android/app/src/main/kotlin/com/example/deep_plant_app/MainActivity.kt
 package com.example.deep_plant_app
+
+import android.app.Activity
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 
-class MainActivity : BroadcastReceiver() {
+class BarcodeBroadcastReceiver : BroadcastReceiver() {
     companion object {
         private const val BARCODE_ACTION = "app.dsic.barcodetray.BARCODE_BR_DECODING_DATA"
     }
@@ -21,3 +23,9 @@ class MainActivity : BroadcastReceiver() {
         }
     }
 }
+
+class MainActivity : Activity() {
+    // MainActivity의 나머지 코드
+    // ...
+}
+
