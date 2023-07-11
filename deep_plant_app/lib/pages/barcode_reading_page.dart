@@ -11,23 +11,23 @@ class BarcodeDisplayPage extends StatefulWidget {
 
 class _BarcodeDisplayPageState extends State<BarcodeDisplayPage> {
   String barcodeData = 'NOT READ';
+  late MethodChannel _methodChannel;
 
   @override
   void initState() {
     super.initState();
+    _methodChannel = const MethodChannel('barcode_intent_channel');
+    _methodChannel.setMethodCallHandler((call) async {
+      if (call.method == 'onBarcodeDecoded') {
+        setState(() {
+          barcodeData = call.arguments as String;
+        });
+      }
+    });
     handleBarcodeDecoded();
   }
 
   Future<void> handleBarcodeDecoded() async {
-    const platform = MethodChannel('barcode_intent_channel');
-    platform.setMethodCallHandler((call) async {
-      if (call.method == 'onBarcodeDecoded') {
-        setState(() {
-          barcodeData = call.arguments;
-        });
-      }
-    });
-
     final intent = AndroidIntent(
       action: 'app.dsic.barcodetray.BARCODE_BR_DECODING_DATA',
     );
@@ -38,12 +38,12 @@ class _BarcodeDisplayPageState extends State<BarcodeDisplayPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Barcode Display'),
+        title: const Text('Barcode Display'),
       ),
       body: Center(
         child: Text(
           barcodeData,
-          style: TextStyle(fontSize: 18),
+          style: const TextStyle(fontSize: 18),
         ),
       ),
     );
