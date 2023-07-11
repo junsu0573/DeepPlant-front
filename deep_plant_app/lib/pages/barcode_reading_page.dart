@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:android_intent/android_intent.dart';
@@ -11,25 +13,37 @@ class BarcodeDisplayPage extends StatefulWidget {
 
 class _BarcodeDisplayPageState extends State<BarcodeDisplayPage> {
   String barcodeData = 'NOT READ';
-  late MethodChannel _methodChannel;
+  late StreamSubscription<dynamic> _streamSubscription;
 
   @override
   void initState() {
     super.initState();
-    _methodChannel = const MethodChannel('barcode_intent_channel');
-    _methodChannel.setMethodCallHandler((call) async {
-      if (call.method == 'onBarcodeDecoded') {
-        setState(() {
-          barcodeData = call.arguments as String;
-        });
-      }
-    });
-    handleBarcodeDecoded();
+    _registerBroadcastReceiver();
+    _startListeningForBarcodeData();
   }
 
-  Future<void> handleBarcodeDecoded() async {
+  @override
+  void dispose() {
+    _streamSubscription.cancel();
+    super.dispose();
+  }
+
+  void _registerBroadcastReceiver() {
+    final stream =
+        const EventChannel('app.dsic.barcodetray.BARCODE_BR_DECODING_DATA')
+            .receiveBroadcastStream();
+
+    _streamSubscription = stream.listen((event) {
+      setState(() {
+        final decodedData = event['EXTRA_BARCODE_DECODED_DATA'] as String;
+        barcodeData = decodedData.isNotEmpty ? decodedData : 'NOT READ';
+      });
+    });
+  }
+
+  Future<void> _startListeningForBarcodeData() async {
     final intent = AndroidIntent(
-      action: 'app.dsic.barcodetray.BARCODE_BR_DECODING_DATA',
+      action: 'app.dsic.barcodetray.START_LISTENING_FOR_BARCODE_DATA',
     );
     await intent.launch();
   }
