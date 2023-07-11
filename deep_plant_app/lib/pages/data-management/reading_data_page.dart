@@ -5,6 +5,7 @@ import 'package:deep_plant_app/widgets/save_button.dart';
 import 'package:flutter/material.dart';
 import 'package:deep_plant_app/widgets/data_page_toggle_button.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:http/http.dart' as http;
 
@@ -44,15 +45,13 @@ class ReadingDataState extends State<ReadingData> {
 
   DateTime focusedDay = DateTime.now();
 
-  DateTime toDay = DateTime.now();
-
   final List<String> userData = [
-    '000189843795,test, ',
-    '000189843895,test, ',
-    '000189843995-cattle-tenderloin-ribeye_roll,전수현, ',
-    '000189843595-cattle-sirloin-boneless_short_rib,전수현, ',
-    '000189843495-cattle-blade-tirmmed_rib,전수현, ',
-    '000189843695,test, ',
+    '000189843795,test,2023-04-22 20:44:25',
+    '000189843895,test,2023-06-11 14:23:32',
+    '000189843995-cattle-tenderloin-ribeye_roll,전수현,2023-07-08 14:22:23',
+    '000189843595-cattle-sirloin-boneless_short_rib,전수현,2023-07-09 15:54:25',
+    '000189843495-cattle-blade-tirmmed_rib,전수현,2023-07-10 02:23:32',
+    '000189843695,test,2023-07-11 20:20:20',
   ];
 
   manageDataState() {
@@ -77,7 +76,19 @@ class ReadingDataState extends State<ReadingData> {
   void initState() {
     super.initState();
     // fetchJsonData();
+    DateTime toDay = DateTime.now();
+    String formattedDate = DateFormat('yyyy-MM-dd HH:mm:ss').format(toDay);
   }
+
+  void sortUserData() {
+    userData.sort((a, b) {
+      DateTime dateA = DateTime.parse(a.split(',')[2]);
+      DateTime dateB = DateTime.parse(b.split(',')[2]);
+      return dateA.compareTo(dateB);
+    });
+  }
+
+  void setDay() {}
 
   Future<void> fetchJsonData() async {
     var apiUrl = 'http://10.221.71.228:8080/user?id=junsu030401@gmail.com';
@@ -109,7 +120,6 @@ class ReadingDataState extends State<ReadingData> {
     option2 = option;
   }
 
-  bool sortAscending = false;
   bool sortDscending = true;
 
   @override
@@ -275,10 +285,8 @@ class ReadingDataState extends State<ReadingData> {
                                               setState(() {
                                                 if (option2 == '최신순') {
                                                   sortDscending = true;
-                                                  sortAscending = false;
                                                 } else if (option2 == '과거순') {
                                                   sortDscending = false;
-                                                  sortAscending = true;
                                                 }
                                               });
                                             },
@@ -304,7 +312,7 @@ class ReadingDataState extends State<ReadingData> {
             ),
             Expanded(
               child: SingleChildScrollView(
-                child: getDataTable(userData, text, manageDataState, sortAscending, sortDscending),
+                child: getDataTable(userData, text, manageDataState, sortDscending),
               ),
             ),
           ],
