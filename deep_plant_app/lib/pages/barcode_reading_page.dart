@@ -43,9 +43,3 @@ class _BarcodeDisplayPageState extends State<BarcodeDisplayPage> {
     );
   }
 }
-
-void main() {
-  runApp(MaterialApp(
-    home: BarcodeDisplayPage(),
-  ));
-}
