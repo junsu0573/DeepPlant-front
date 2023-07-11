@@ -1,9 +1,10 @@
+// android/app/src/main/kotlin/com/example/deep_plant_app/MainActivity.kt
 package com.example.deep_plant_app
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 
-class BarcodeBroadcastReceiver : BroadcastReceiver() {
+class MainActivity : BroadcastReceiver() {
     companion object {
         private const val BARCODE_ACTION = "app.dsic.barcodetray.BARCODE_BR_DECODING_DATA"
     }
