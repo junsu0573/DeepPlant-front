@@ -5,7 +5,7 @@ class MeatData {
   String? createdAt;
   String? traceNum;
   String? farmAddr;
-  String? farmerNum;
+  String? farmerNm;
   String? butcheryYmd;
   String? birthYmd;
   String? sexType;
@@ -30,7 +30,7 @@ class MeatData {
     this.createdAt,
     this.traceNum,
     this.farmAddr,
-    this.farmerNum,
+    this.farmerNm,
     this.butcheryYmd,
     this.birthYmd,
     this.sexType,

@@ -3,7 +3,7 @@ import 'package:deep_plant_app/models/meat_data_model.dart';
 
 import 'package:deep_plant_app/source/pallete.dart';
 import 'package:deep_plant_app/widgets/common_button.dart';
-
+import 'package:deep_plant_app/models/user_data_model.dart';
 import 'package:deep_plant_app/widgets/text_insertion_field.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -12,10 +12,10 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 class SignIn extends StatefulWidget {
-  final UserModel user;
+  final UserData userData;
   final MeatData meatData;
   const SignIn({
-    required this.user,
+    required this.userData,
     required this.meatData,
     super.key,
   });
@@ -63,8 +63,9 @@ class _SignInState extends State<SignIn> {
 
   // 데이터 호출 및 저장
   void fetchData() async {
+    // 로딩 상태를 활성화
     setState(() {
-      isLoading = true; // 로딩 상태를 활성화
+      isLoading = true;
     });
 
     try {
@@ -73,8 +74,8 @@ class _SignInState extends State<SignIn> {
         email: _userId,
         password: _userPw,
       );
-      final bool isValid = await getUserValid();
-      if (!isValid) {
+      final bool isValidEmail = await getUserValid();
+      if (!isValidEmail) {
         _authentication.signOut();
 
         throw Error();
@@ -97,10 +98,11 @@ class _SignInState extends State<SignIn> {
           await _firestore.collection(userLevel).doc(_userId).get();
       String userName = userDocSnapshot.get('name');
 
-      // 로그인 시 이름, 이메일, 등급을 객체에 저장
-      widget.user.name = userName;
-      widget.user.email = _userId;
-      widget.user.level = userLevel;
+      // 로그인 시 유저의 정보를 API 호출을 통해 객체에 저장
+      ////////////////////////////////
+      // 코드 수정 필요함
+      ////////////////////////////////
+      saveUserInfo();
 
       // 유저의 로그 정보를 fire store에 저장
       DateTime now = DateTime.now();
@@ -154,6 +156,9 @@ class _SignInState extends State<SignIn> {
     }
     return false;
   }
+
+  // 유저의 정보를 가져와 객체에 저장
+  Future<void> saveUserInfo() async {}
 
   @override
   Widget build(BuildContext context) {
