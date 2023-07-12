@@ -9,15 +9,15 @@ import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:http/http.dart' as http;
 
-class ReadingData extends StatefulWidget {
-  ReadingData({super.key, required this.user});
+class ReadingDataAdvanced extends StatefulWidget {
+  ReadingDataAdvanced({super.key, required this.user});
   final UserModel user;
 
   @override
-  State<ReadingData> createState() => ReadingDataState();
+  State<ReadingDataAdvanced> createState() => ReadingDataAdvancedState();
 }
 
-class ReadingDataState extends State<ReadingData> {
+class ReadingDataAdvancedState extends State<ReadingDataAdvanced> {
   final TextEditingController search = TextEditingController();
   RangeSelectionMode _rangeSelectionMode = RangeSelectionMode.toggledOn;
   FocusNode focusNode = FocusNode();
@@ -26,15 +26,15 @@ class ReadingDataState extends State<ReadingData> {
   List<bool> tempSelections1 = [false, true, false, false];
   List<bool> selections2 = [true, false];
   List<bool> tempSelections2 = [true, false];
-  String option1 = '06/06-06/07';
-  String tempOption1 = '06/06-06/07';
+  String option1 = '1개월';
+  String tempOption1 = '1개월';
   String option2 = '최신순';
   String tempOption2 = '최신순';
   final List<Widget> options1 = [
     Text('3일'),
     Text('1개월'),
     Text('3개월'),
-    Text('06/06-06/07'),
+    Text('직접설정'),
   ];
   final List<Widget> options2 = [
     Text('최신순'),
@@ -129,7 +129,7 @@ class ReadingDataState extends State<ReadingData> {
                 child: Row(
                   children: [
                     Expanded(
-                      flex: 6,
+                      flex: 7,
                       child: TextField(
                         textAlign: TextAlign.end,
                         focusNode: focusNode,
@@ -185,7 +185,7 @@ class ReadingDataState extends State<ReadingData> {
                       ),
                     ),
                     Expanded(
-                      flex: 4,
+                      flex: 3,
                       child: TextButton(
                         onPressed: () {
                           tempSelections1 = List<bool>.from(selections1);
@@ -202,7 +202,7 @@ class ReadingDataState extends State<ReadingData> {
                               return StatefulBuilder(
                                 builder: (BuildContext context, StateSetter bottomState) {
                                   return Container(
-                                    margin: EdgeInsets.all(10.0),
+                                    margin: EdgeInsets.all(18.0),
                                     height: 300,
                                     child: Center(
                                       child: Column(

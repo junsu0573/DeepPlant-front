@@ -179,7 +179,7 @@ Widget getDataTable(List<String> userData, String text, Function data, bool sort
     showBottomBorder: true,
     headingRowColor: MaterialStateProperty.all(Colors.grey[200]),
     headingRowHeight: 40.0,
-    columnSpacing: 40.0,
+    columnSpacing: 35.0,
     columns: getColumns(),
     rows: getRows(userData, text, data, sortDscending, option1),
   );
