@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
 
 final List<String> label = ['관리번호', '등록자', '관리'];
 
@@ -53,8 +54,13 @@ List<DataColumn> getColumns() {
   return dataColumn;
 }
 
-void sortUserData(List<String> userData, bool sortDecending) {
-  userData.sort((a, b) {
+DateTime toDay = DateTime.now();
+DateTime threeDaysAgo = toDay.subtract(Duration(days: 3));
+DateTime monthsAgo = toDay.subtract(Duration(days: 30));
+DateTime threeMonthsAgo = toDay.subtract(Duration(days: 30 * 3));
+
+void sortUserData(List<String> source, bool sortDecending) {
+  source.sort((a, b) {
     DateTime dateA = DateTime.parse(a.split(',')[2]);
     DateTime dateB = DateTime.parse(b.split(',')[2]);
     if (!sortDecending) {
@@ -65,11 +71,38 @@ void sortUserData(List<String> userData, bool sortDecending) {
   });
 }
 
-List<DataRow> getRows(List<String> userData, String text, Function data, bool sortDscending) {
+List<String> setDay(List<String> source, String option1) {
+  if (option1 == '3일') {
+    source = source.where((data) {
+      List<String> parts = data.split(',');
+      String dateTimeString = parts[2];
+      DateTime dateTime = DateTime.parse(dateTimeString);
+      return dateTime.isAfter(threeDaysAgo) && dateTime.isBefore(toDay);
+    }).toList();
+  } else if (option1 == '1개월') {
+    source = source.where((data) {
+      List<String> parts = data.split(',');
+      String dateTimeString = parts[2];
+      DateTime dateTime = DateTime.parse(dateTimeString);
+      return dateTime.isAfter(monthsAgo) && dateTime.isBefore(toDay);
+    }).toList();
+  } else if (option1 == '3개월') {
+    source = source.where((data) {
+      List<String> parts = data.split(',');
+      String dateTimeString = parts[2];
+      DateTime dateTime = DateTime.parse(dateTimeString);
+      return dateTime.isAfter(threeMonthsAgo) && dateTime.isBefore(toDay);
+    }).toList();
+  } else {}
+  return source;
+}
+
+List<DataRow> getRows(List<String> userData, String text, Function data, bool sortDscending, String option) {
   data();
   List<String> source = userData;
 
-  sortUserData(userData, sortDscending);
+  sortUserData(source, sortDscending);
+  source = setDay(source, option);
 
   List<DataRow> dataRow = [];
 
@@ -141,13 +174,13 @@ List<DataRow> getRows(List<String> userData, String text, Function data, bool so
   return dataRow;
 }
 
-Widget getDataTable(List<String> userData, String text, Function data, bool sortDscending) {
+Widget getDataTable(List<String> userData, String text, Function data, bool sortDscending, String option1) {
   return DataTable(
     showBottomBorder: true,
     headingRowColor: MaterialStateProperty.all(Colors.grey[200]),
     headingRowHeight: 40.0,
-    columnSpacing: 40.0,
+    columnSpacing: 35.0,
     columns: getColumns(),
-    rows: getRows(userData, text, data, sortDscending),
+    rows: getRows(userData, text, data, sortDscending, option1),
   );
 }

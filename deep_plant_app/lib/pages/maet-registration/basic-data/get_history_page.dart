@@ -36,10 +36,9 @@ class _GetHistoryPageState extends State<GetHistoryPage> {
   String? birthYmd;
   String? lsType;
   String? sexNm;
-  String? farmerNmfarmNo;
+  String? farmerNm;
   String? farmAddr;
   String? butcheryYmd;
-  String? insfat;
   String? gradeNm;
 
   final List<String?> tableData = [];
@@ -52,7 +51,6 @@ class _GetHistoryPageState extends State<GetHistoryPage> {
     '경영자',
     '사육지',
     '도축일자',
-    '근내지방도',
     '등급',
   ];
 
@@ -67,10 +65,9 @@ class _GetHistoryPageState extends State<GetHistoryPage> {
     birthYmd = null;
     lsType = null;
     sexNm = null;
-    farmerNmfarmNo = null;
+    farmerNm = null;
     farmAddr = null;
     butcheryYmd = null;
-    insfat = null;
     gradeNm = null;
   }
 
@@ -122,20 +119,17 @@ class _GetHistoryPageState extends State<GetHistoryPage> {
         final meatAPIData3 = await source3.getJsonData();
 
         String? date = meatAPIData1['response']['body']['items']['item']['birthYmd'] ?? "";
-        birthYmd = DateFormat('yyyy-MM-dd').format(DateTime.parse(date!)).toString();
+        birthYmd = DateFormat('yyyyMMdd').format(DateTime.parse(date!)).toString(); // 여기 형식을 yyyyMMdd로 변경
 
         lsType = meatAPIData1['response']['body']['items']['item']['lsTypeNm'] ?? "";
-        sexNm = meatAPIData1['response']['body']['items']['item']['sexNm'] ?? "";
+        sexNm = meatAPIData1['response']['body']['items']['item']['sexNm'] ?? ""; // 이건 그대로 string으로 주면 됨
 
-        String? farmerNm = meatAPIData2['response']['body']['items']['item'][0]['farmerNm'] ?? "";
-        String? farmNo = meatAPIData2['response']['body']['items']['item'][0]['farmNo'] ?? "";
-        farmerNmfarmNo = '$farmerNm($farmNo)';
+        farmerNm = meatAPIData2['response']['body']['items']['item'][0]['farmerNm'] ?? "";
         farmAddr = meatAPIData2['response']['body']['items']['item'][0]['farmAddr'] ?? "";
 
         String? butDate = meatAPIData3['response']['body']['items']['item']['butcheryYmd'] ?? "";
-        butcheryYmd = DateFormat('yyyy-MM-dd').format(DateTime.parse(butDate!)).toString();
+        butcheryYmd = DateFormat('yyyyMMdd').format(DateTime.parse(butDate!)).toString(); // 여기 형식을 yyyyMMdd로 변경
 
-        insfat = meatAPIData3['response']['body']['items']['item']['insfat'] ?? "";
         gradeNm = meatAPIData3['response']['body']['items']['item']['gradeNm'] ?? "";
       } catch (e) {
         tableData.clear();
@@ -155,7 +149,7 @@ class _GetHistoryPageState extends State<GetHistoryPage> {
         gradeNm = meatAPIData4['response']['body']['items']['item']['gradeNm'] ?? "";
 
         String? time = meatAPIData3['response']['body']['items']['item']['butcheryYmd'] ?? "";
-        butcheryYmd = DateFormat('yyyy-MM-dd').format(DateTime.parse(time!)).toString();
+        butcheryYmd = DateFormat('yyyyMMdd').format(DateTime.parse(time!)).toString(); // 여기 형식을 yyyyMMdd로 변경
 
         lsType = '돼지';
       } catch (e) {
@@ -165,7 +159,7 @@ class _GetHistoryPageState extends State<GetHistoryPage> {
       }
     }
     if (butcheryYmd != null) {
-      tableData.addAll([traceNo, birthYmd, lsType, sexNm, farmerNmfarmNo, farmAddr, butcheryYmd, insfat, gradeNm]);
+      tableData.addAll([traceNo, birthYmd, lsType, sexNm, farmerNm, farmAddr, butcheryYmd, gradeNm]);
       isFinal = true;
       isNull = false;
     } else {
