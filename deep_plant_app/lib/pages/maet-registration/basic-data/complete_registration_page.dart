@@ -1,8 +1,8 @@
 import 'dart:io';
 import 'dart:ui';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:deep_plant_app/models/meat_data_model.dart';
+import 'package:deep_plant_app/models/user_data_model.dart';
 import 'package:deep_plant_app/source/pallete.dart';
 import 'package:deep_plant_app/widgets/save_button.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -13,12 +13,12 @@ import 'package:intl/intl.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 class CompleteResgistration extends StatefulWidget {
+  final UserData userData;
   final MeatData meatData;
-  final UserModel user;
   const CompleteResgistration({
     super.key,
+    required this.userData,
     required this.meatData,
-    required this.user,
   });
 
   @override
@@ -33,12 +33,12 @@ class _CompleteResgistrationState extends State<CompleteResgistration> {
   @override
   void initState() {
     super.initState();
-    if (widget.meatData.historyNumber != null &&
-        widget.meatData.species != null &&
-        widget.meatData.lDivision != null &&
-        widget.meatData.sDivision != null) {
+    if (widget.meatData.traceNum != null &&
+        widget.meatData.speciesValue != null &&
+        widget.meatData.primalValue != null &&
+        widget.meatData.secondaryValue != null) {
       managementNumber =
-          '${widget.meatData.historyNumber!}-${widget.meatData.species!}-${widget.meatData.lDivision!}-${widget.meatData.sDivision!}';
+          '${widget.meatData.traceNum!}-${widget.meatData.!}-${widget.meatData.lDivision!}-${widget.meatData.sDivision!}';
     }
 
     sendDataToFirebase();

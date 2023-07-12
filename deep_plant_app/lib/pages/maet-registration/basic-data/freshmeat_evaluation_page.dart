@@ -57,7 +57,7 @@ class _FreshmeatEvaluationState extends State<FreshmeatEvaluation> {
     };
 
     // 데이터를 객체에 저장
-    meatData.freshData = freshData;
+    meatData.freshmeat = freshData;
   }
 
   @override
@@ -125,6 +125,7 @@ class _FreshmeatEvaluationState extends State<FreshmeatEvaluation> {
                   fontWeight: FontWeight.w600,
                 ),
               ),
+<<<<<<< HEAD
               SizedBox(height: 46.h),
               for (var evalData in evalDataList)
                 Column(
@@ -164,6 +165,22 @@ class _FreshmeatEvaluationState extends State<FreshmeatEvaluation> {
                   heigh: 104.h,
                   isWhite: false,
                 ),
+=======
+            ),
+            Container(
+              margin: EdgeInsets.only(bottom: 18.h),
+              child: SaveButton(
+                onPressed: _isAllselected()
+                    ? () {
+                        saveMeatData(widget.meatData);
+                        context.pop();
+                      }
+                    : null,
+                text: '저장',
+                width: 658.w,
+                heigh: 104.h,
+                isWhite: false,
+>>>>>>> 7ca8f21 (edit data)
               ),
             ],
           ),

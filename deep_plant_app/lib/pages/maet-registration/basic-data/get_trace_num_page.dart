@@ -206,8 +206,16 @@ class _GetTraceNumState extends State<GetTraceNum> {
     }
   }
 
-  void saveData() {
-    // 여기에서 tableData 요소를 담아서 넘기셈.
+  // 육류 정보 저장
+  void saveMeatData() {
+    widget.meatData.traceNum = traceNum;
+    widget.meatData.farmAddr = farmAddr;
+    widget.meatData.farmerNm = farmerNm;
+    widget.meatData.butcheryYmd = butcheryYmd;
+    widget.meatData.birthYmd = birthYmd;
+    widget.meatData.sexType = sexType;
+    widget.meatData.lsType = lsType;
+    widget.meatData.gradeNum = gradeNum;
   }
 
   @override
@@ -322,7 +330,7 @@ class _GetTraceNumState extends State<GetTraceNum> {
                 heigh: 104.h,
                 onPressed: (isFinal && !isNull)
                     ? () {
-                        saveData();
+                        saveMeatData();
                         context.go('/option/show-step/insert-meat-info');
                       }
                     : null,
