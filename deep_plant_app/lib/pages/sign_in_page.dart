@@ -1,8 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:deep_plant_app/models/meat_data_model.dart';
-import 'package:deep_plant_app/models/user_model.dart';
+
 import 'package:deep_plant_app/source/pallete.dart';
 import 'package:deep_plant_app/widgets/common_button.dart';
+
 import 'package:deep_plant_app/widgets/text_insertion_field.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';

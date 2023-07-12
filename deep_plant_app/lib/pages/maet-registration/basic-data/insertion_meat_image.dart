@@ -1,8 +1,11 @@
 import 'dart:io';
 
 import 'package:deep_plant_app/models/meat_data_model.dart';
+<<<<<<< HEAD
 import 'package:deep_plant_app/models/user_model.dart';
 import 'package:deep_plant_app/source/pallete.dart';
+=======
+>>>>>>> 28e37de (object data edit)
 import 'package:deep_plant_app/widgets/camera_page_dialog_custom.dart';
 import 'package:deep_plant_app/widgets/custom_appbar.dart';
 import 'package:deep_plant_app/widgets/save_button.dart';

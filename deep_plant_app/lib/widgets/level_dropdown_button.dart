@@ -1,4 +1,3 @@
-import 'package:deep_plant_app/models/user_model.dart';
 import 'package:flutter/material.dart';
 
 class LevelDropdownButton extends StatefulWidget {

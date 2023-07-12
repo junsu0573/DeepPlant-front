@@ -1,7 +1,10 @@
 import 'package:deep_plant_app/models/meat_data_model.dart';
-import 'package:deep_plant_app/models/user_model.dart';
+
 import 'package:deep_plant_app/pages/data-management/data_confirm_page.dart';
 import 'package:deep_plant_app/pages/data-management/data_view_page.dart';
+
+import 'package:deep_plant_app/pages/data-management/reading_data_advanced_page.dart';
+
 import 'package:deep_plant_app/widgets/custom_appbar.dart';
 import 'package:deep_plant_app/pages/data-management/data_add_page.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +23,8 @@ class DataManagement2 extends StatefulWidget {
   State<DataManagement2> createState() => _DataManagement2State();
 }
 
-class _DataManagement2State extends State<DataManagement2> with SingleTickerProviderStateMixin {
+class _DataManagement2State extends State<DataManagement2>
+    with SingleTickerProviderStateMixin {
   late TabController _tabController;
   @override
   void initState() {

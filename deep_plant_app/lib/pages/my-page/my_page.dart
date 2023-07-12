@@ -1,4 +1,3 @@
-import 'package:deep_plant_app/models/user_model.dart';
 import 'package:deep_plant_app/widgets/common_button.dart';
 import 'package:deep_plant_app/widgets/custom_appbar.dart';
 import 'package:flutter/material.dart';

@@ -1,15 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:deep_plant_app/models/user_model.dart';
+import 'package:deep_plant_app/models/user_data_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 class EmailVerification extends StatefulWidget {
-  final UserModel user;
+  final UserData userData;
   const EmailVerification({
     super.key,
-    required this.user,
+    required this.userData,
   });
 
   @override
@@ -26,7 +26,8 @@ class _EmailVerificationState extends State<EmailVerification> {
       // 새로운 유저 생성
       UserCredential credential =
           await _authentication.createUserWithEmailAndPassword(
-              email: widget.user.email!, password: widget.user.password!);
+              email: widget.userData.userId!,
+              password: widget.userData.password!);
       // 이메일 인증 보내기
       if (credential.user != null) {
         await credential.user!.sendEmailVerification();
@@ -54,6 +55,10 @@ class _EmailVerificationState extends State<EmailVerification> {
 
   // user의 정보를 저장하는 함수
   void saveUserData() async {
+    // user의 정보를 저장하는 API 호출
+    /////////////////////////////
+    // 코드 수정 필요함
+    /////////////////////////////
     CollectionReference users = _firestore.collection('users_1');
 
     // 데이터 생성

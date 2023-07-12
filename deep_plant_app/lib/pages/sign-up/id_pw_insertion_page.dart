@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:deep_plant_app/models/user_model.dart';
+import 'package:deep_plant_app/models/user_data_model.dart';
 import 'package:deep_plant_app/pages/sign-up/certification_bottom_sheet.dart';
 import 'package:deep_plant_app/widgets/common_button.dart';
 import 'package:deep_plant_app/widgets/custom_appbar.dart';
@@ -11,10 +11,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 //ignore: must_be_immutable
 class IdPwInsertion extends StatefulWidget {
-  UserModel user;
+  UserData userData;
   IdPwInsertion({
     super.key,
-    required this.user,
+    required this.userData,
   });
 
   @override
@@ -137,7 +137,10 @@ class _IdPwInsertionState extends State<IdPwInsertion> {
 
   Future<void> dupliCheck(String userEmail) async {
     try {
-      // 유저가 입력한 ID가 해당 컬렉션에 존재하는지 확인
+      // 유저가 입력한 ID가 존재하는지 API 호출
+      /////////////////////////////////
+      // 코드 수정 필요함
+      /////////////////////////////////
       DocumentSnapshot docSnapshot =
           await _firestore.collection('user_emails').doc(userEmail).get();
 
@@ -176,11 +179,13 @@ class _IdPwInsertionState extends State<IdPwInsertion> {
   void initState() {
     super.initState();
     // user 정보 초기화
-    widget.user.userAddress = null;
-    widget.user.company = null;
-    widget.user.companyAdress = null;
-    widget.user.position = null;
-    widget.user.level = 'users_1';
+    widget.userData.userId = null;
+    widget.userData.password = null;
+    widget.userData.name = null;
+    widget.userData.homeAdress = null;
+    widget.userData.company = null;
+    widget.userData.jobTitle = null;
+    widget.userData.type = 'Normal';
   }
 
   @override
@@ -351,16 +356,17 @@ class _IdPwInsertionState extends State<IdPwInsertion> {
                 SaveButton(
                   onPressed: isAllChecked()
                       ? () {
-                          // user의 이메일, 이름, 패스워드를 객체에 저장
-                          widget.user.email = userEmail;
-                          widget.user.name = userName;
-                          widget.user.password = userPassword;
+                          // user의 이메일, 패스워드, 이름을 객체에 저장
+                          widget.userData.userId = userEmail;
+                          widget.userData.password = userPassword;
+                          widget.userData.name = userName;
+
                           showModalBottomSheet(
                             isScrollControlled: true,
                             backgroundColor: Colors.transparent,
                             context: context,
                             builder: (context) => CertificationBottomSheet(
-                              user: widget.user,
+                              userData: widget.userData,
                             ),
                           );
                         }
