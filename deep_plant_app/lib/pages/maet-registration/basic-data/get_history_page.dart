@@ -21,7 +21,8 @@ class GetHistoryPage extends StatefulWidget {
 }
 
 class _GetHistoryPageState extends State<GetHistoryPage> {
-  var apikey = "%2FuEP%2BvIjYfPTyaHNlxRx2Ry5cVUer92wa6lHcxnXEEekVjUCZ1N41traj3s8sGhHpKS54SVDbg9m4sHOEuMNuw%3D%3D";
+  var apikey =
+      "%2FuEP%2BvIjYfPTyaHNlxRx2Ry5cVUer92wa6lHcxnXEEekVjUCZ1N41traj3s8sGhHpKS54SVDbg9m4sHOEuMNuw%3D%3D";
 
   final formkey = GlobalKey<FormState>();
   final TextEditingController textEditingController = TextEditingController();
@@ -32,14 +33,14 @@ class _GetHistoryPageState extends State<GetHistoryPage> {
 
   bool isFinal = false;
   bool isValue = false;
-  String? traceNo;
+  String? traceNum;
   String? birthYmd;
   String? lsType;
-  String? sexNm;
+  String? sexType;
   String? farmerNm;
   String? farmAddr;
   String? butcheryYmd;
-  String? gradeNm;
+  String? gradeNum;
 
   final List<String?> tableData = [];
 
@@ -61,14 +62,14 @@ class _GetHistoryPageState extends State<GetHistoryPage> {
 
   void reset() {
     tableData.clear();
-    traceNo = null;
+    traceNum = null;
     birthYmd = null;
     lsType = null;
-    sexNm = null;
+    sexType = null;
     farmerNm = null;
     farmAddr = null;
     butcheryYmd = null;
-    gradeNm = null;
+    gradeNum = null;
   }
 
   void _tryValidation() {
@@ -91,46 +92,64 @@ class _GetHistoryPageState extends State<GetHistoryPage> {
 
     if (historyNo.startsWith('L1')) {
       try {
-        ApiSource source =
-            ApiSource(baseUrl: "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?serviceKey=$apikey&traceNo=$historyNo&optionNo=9");
+        ApiSource source = ApiSource(
+            baseUrl:
+                "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?serviceKey=$apikey&traceNo=$historyNo&optionNo=9");
 
         final pigAPIData = await source.getJsonData();
 
-        traceNo = pigAPIData['response']['body']['items']['item'][0]['pigNo'];
+        traceNum = pigAPIData['response']['body']['items']['item'][0]['pigNo'];
       } catch (e) {
         tableData.clear();
         isFinal = false;
       }
     } else {
-      traceNo = historyNo;
+      traceNum = historyNo;
     }
 
-    if (traceNo!.startsWith('0')) {
+    if (traceNum!.startsWith('0')) {
       try {
-        ApiSource source1 =
-            ApiSource(baseUrl: "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?serviceKey=$apikey&traceNo=$traceNo&optionNo=1");
-        ApiSource source2 =
-            ApiSource(baseUrl: "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?serviceKey=$apikey&traceNo=$traceNo&optionNo=2");
-        ApiSource source3 =
-            ApiSource(baseUrl: "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?serviceKey=$apikey&traceNo=$traceNo&optionNo=3");
+        ApiSource source1 = ApiSource(
+            baseUrl:
+                "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?serviceKey=$apikey&traceNo=$traceNum&optionNo=1");
+        ApiSource source2 = ApiSource(
+            baseUrl:
+                "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?serviceKey=$apikey&traceNo=$traceNum&optionNo=2");
+        ApiSource source3 = ApiSource(
+            baseUrl:
+                "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?serviceKey=$apikey&traceNo=$traceNum&optionNo=3");
 
         final meatAPIData1 = await source1.getJsonData();
         final meatAPIData2 = await source2.getJsonData();
         final meatAPIData3 = await source3.getJsonData();
 
-        String? date = meatAPIData1['response']['body']['items']['item']['birthYmd'] ?? "";
-        birthYmd = DateFormat('yyyyMMdd').format(DateTime.parse(date!)).toString(); // 여기 형식을 yyyyMMdd로 변경
+        String? date =
+            meatAPIData1['response']['body']['items']['item']['birthYmd'] ?? "";
+        birthYmd = DateFormat('yyyyMMdd')
+            .format(DateTime.parse(date!))
+            .toString(); // 여기 형식을 yyyyMMdd로 변경
 
-        lsType = meatAPIData1['response']['body']['items']['item']['lsTypeNm'] ?? "";
-        sexNm = meatAPIData1['response']['body']['items']['item']['sexNm'] ?? ""; // 이건 그대로 string으로 주면 됨
+        lsType =
+            meatAPIData1['response']['body']['items']['item']['lsTypeNm'] ?? "";
+        sexType = meatAPIData1['response']['body']['items']['item']['sexNm'] ??
+            ""; // 이건 그대로 string으로 주면 됨
 
-        farmerNm = meatAPIData2['response']['body']['items']['item'][0]['farmerNm'] ?? "";
-        farmAddr = meatAPIData2['response']['body']['items']['item'][0]['farmAddr'] ?? "";
+        farmerNm = meatAPIData2['response']['body']['items']['item'][0]
+                ['farmerNm'] ??
+            "";
+        farmAddr = meatAPIData2['response']['body']['items']['item'][0]
+                ['farmAddr'] ??
+            "";
 
-        String? butDate = meatAPIData3['response']['body']['items']['item']['butcheryYmd'] ?? "";
-        butcheryYmd = DateFormat('yyyyMMdd').format(DateTime.parse(butDate!)).toString(); // 여기 형식을 yyyyMMdd로 변경
+        String? butDate = meatAPIData3['response']['body']['items']['item']
+                ['butcheryYmd'] ??
+            "";
+        butcheryYmd = DateFormat('yyyyMMdd')
+            .format(DateTime.parse(butDate!))
+            .toString(); // 여기 형식을 yyyyMMdd로 변경
 
-        gradeNm = meatAPIData3['response']['body']['items']['item']['gradeNm'] ?? "";
+        gradeNum =
+            meatAPIData3['response']['body']['items']['item']['gradeNm'] ?? "";
       } catch (e) {
         tableData.clear();
         isFinal = false;
@@ -138,18 +157,25 @@ class _GetHistoryPageState extends State<GetHistoryPage> {
       }
     } else {
       try {
-        ApiSource source4 =
-            ApiSource(baseUrl: "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?serviceKey=$apikey&traceNo=$traceNo&optionNo=4");
-        ApiSource source3 =
-            ApiSource(baseUrl: "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?serviceKey=$apikey&traceNo=$traceNo&optionNo=3");
+        ApiSource source4 = ApiSource(
+            baseUrl:
+                "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?serviceKey=$apikey&traceNo=$traceNum&optionNo=4");
+        ApiSource source3 = ApiSource(
+            baseUrl:
+                "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?serviceKey=$apikey&traceNo=$traceNum&optionNo=3");
 
         final meatAPIData4 = await source4.getJsonData();
         final meatAPIData3 = await source3.getJsonData();
 
-        gradeNm = meatAPIData4['response']['body']['items']['item']['gradeNm'] ?? "";
+        gradeNum =
+            meatAPIData4['response']['body']['items']['item']['gradeNm'] ?? "";
 
-        String? time = meatAPIData3['response']['body']['items']['item']['butcheryYmd'] ?? "";
-        butcheryYmd = DateFormat('yyyyMMdd').format(DateTime.parse(time!)).toString(); // 여기 형식을 yyyyMMdd로 변경
+        String? time = meatAPIData3['response']['body']['items']['item']
+                ['butcheryYmd'] ??
+            "";
+        butcheryYmd = DateFormat('yyyyMMdd')
+            .format(DateTime.parse(time!))
+            .toString(); // 여기 형식을 yyyyMMdd로 변경
 
         lsType = '돼지';
       } catch (e) {
@@ -159,7 +185,16 @@ class _GetHistoryPageState extends State<GetHistoryPage> {
       }
     }
     if (butcheryYmd != null) {
-      tableData.addAll([traceNo, birthYmd, lsType, sexNm, farmerNm, farmAddr, butcheryYmd, gradeNm]);
+      tableData.addAll([
+        traceNum,
+        birthYmd,
+        lsType,
+        sexType,
+        farmerNm,
+        farmAddr,
+        butcheryYmd,
+        gradeNum
+      ]);
       isFinal = true;
       isNull = false;
     } else {
@@ -204,7 +239,10 @@ class _GetHistoryPageState extends State<GetHistoryPage> {
                     ),
                   ),
                 ),
-                Opacity(opacity: 0, child: IconButton(onPressed: null, icon: Icon(Icons.barcode_reader))),
+                Opacity(
+                    opacity: 0,
+                    child: IconButton(
+                        onPressed: null, icon: Icon(Icons.barcode_reader))),
               ],
             ),
             SizedBox(height: 5.0),
@@ -227,29 +265,33 @@ class _GetHistoryPageState extends State<GetHistoryPage> {
                           }
                         },
                         onSaved: (value) {
-                          traceNo = value!;
+                          traceNum = value!;
                         },
                         onChanged: (value) {
-                          traceNo = value;
+                          traceNum = value;
                         },
                         decoration: InputDecoration(
                             enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(width: 0.5, color: Colors.grey),
+                                borderSide:
+                                    BorderSide(width: 0.5, color: Colors.grey),
                                 borderRadius: BorderRadius.all(
                                   Radius.circular(25.0),
                                 )),
                             focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(width: 0.5, color: Colors.grey),
+                                borderSide:
+                                    BorderSide(width: 0.5, color: Colors.grey),
                                 borderRadius: BorderRadius.all(
                                   Radius.circular(25.0),
                                 )),
                             errorBorder: OutlineInputBorder(
-                                borderSide: BorderSide(width: 0.5, color: Colors.grey),
+                                borderSide:
+                                    BorderSide(width: 0.5, color: Colors.grey),
                                 borderRadius: BorderRadius.all(
                                   Radius.circular(25.0),
                                 )),
                             focusedErrorBorder: OutlineInputBorder(
-                                borderSide: BorderSide(width: 0.5, color: Colors.grey),
+                                borderSide:
+                                    BorderSide(width: 0.5, color: Colors.grey),
                                 borderRadius: BorderRadius.all(
                                   Radius.circular(25.0),
                                 )),
@@ -273,7 +315,7 @@ class _GetHistoryPageState extends State<GetHistoryPage> {
                           tableData.clear();
                           _tryValidation();
                           if (isValue) {
-                            await fetchData(traceNo!);
+                            await fetchData(traceNum!);
                           }
                           setState(() {
                             FocusScope.of(context).unfocus();
