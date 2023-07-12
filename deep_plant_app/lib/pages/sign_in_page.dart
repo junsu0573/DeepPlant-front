@@ -81,7 +81,10 @@ class _SignInState extends State<SignIn> {
         throw Error();
       }
 
-      // 유저가 입력한 ID의 level 값을 가져온다
+      // 유저가 입력한 ID로 API 탐색 후 userType 값 저장
+      ////////////////////////////////
+      // 코드 수정 필요함
+      ////////////////////////////////
       String userLevel = '';
       DocumentSnapshot docSnapshot =
           await _firestore.collection('user_emails').doc(_userId).get();
@@ -140,7 +143,7 @@ class _SignInState extends State<SignIn> {
 
     // 데이터 fetch 성공시 다음 페이지를 push
     if (!mounted) return;
-    context.pushReplacement('/option');
+    context.go('/option');
   }
 
   // 유저의 이메일 valid 검사

@@ -1,4 +1,5 @@
 import 'package:deep_plant_app/models/meat_data_model.dart';
+import 'package:deep_plant_app/models/user_data_model.dart';
 import 'package:deep_plant_app/pages/data-management/data_management_page_2.dart';
 import 'package:deep_plant_app/pages/data-management/reading_data_page.dart';
 import 'package:deep_plant_app/pages/maet-registration/additional-data/complete_additional_registration_page.dart';
@@ -12,12 +13,12 @@ import 'package:deep_plant_app/pages/maet-registration/basic-data/insertion_meat
 import 'package:deep_plant_app/pages/maet-registration/basic-data/insertion_meat_info_page.dart';
 import 'package:deep_plant_app/pages/maet-registration/additional-data/show_step_2_page.dart';
 import 'package:deep_plant_app/pages/maet-registration/basic-data/show_step_page.dart';
-import 'package:deep_plant_app/pages/my-page/edit_user_info_page.dart';
+import 'package:deep_plant_app/pages/sign-up/add_user_info_page.dart';
 import 'package:deep_plant_app/pages/my-page/my_page.dart';
 import 'package:deep_plant_app/pages/my-page/reset_pw_page.dart';
 import 'package:deep_plant_app/pages/my-page/succeed_pw_change_page.dart';
 import 'package:deep_plant_app/pages/option_page.dart';
-import 'package:deep_plant_app/pages/sign-up/add_user_info_page.dart';
+import 'package:deep_plant_app/pages/my-page/edit_user_info_page.dart';
 import 'package:deep_plant_app/pages/sign-up/email_verification.dart';
 import 'package:deep_plant_app/pages/sign-up/id_pw_insertion_page.dart';
 import 'package:deep_plant_app/pages/sign_in_page.dart';
@@ -39,7 +40,7 @@ void main() async {
 }
 
 // 회원가입 및 로그인을 위한 유저 객체
-UserModel newUser = UserModel();
+UserData newUser = UserData();
 
 // 육류 입력 정보 저장을 위한 객체
 MeatData newMeat = MeatData();
@@ -59,7 +60,7 @@ final _router = GoRouter(
         GoRoute(
           path: 'sign-in',
           builder: (context, state) => SignIn(
-            user: newUser,
+            userData: newUser,
             meatData: newMeat,
           ),
           // 회원가입을 위한 라우팅
@@ -67,7 +68,7 @@ final _router = GoRouter(
             GoRoute(
               path: ('sign-up'),
               builder: (context, state) => IdPwInsertion(
-                user: newUser,
+                userData: newUser,
               ),
               routes: [
                 GoRoute(
@@ -81,7 +82,7 @@ final _router = GoRouter(
             GoRoute(
               path: ('succeed-sign-up'),
               builder: (context, state) => EmailVerification(
-                user: newUser,
+                userData: newUser,
               ),
             ),
           ],
@@ -97,7 +98,7 @@ final _router = GoRouter(
     GoRoute(
       path: '/option',
       builder: (context, state) => OptionPage(
-        user: newUser,
+        userData: newUser,
       ),
       routes: [
         // 마이페이지

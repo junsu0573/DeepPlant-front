@@ -1,3 +1,4 @@
+import 'package:deep_plant_app/models/user_data_model.dart';
 import 'package:deep_plant_app/source/pallete.dart';
 import 'package:deep_plant_app/widgets/custom_icon_button.dart';
 import 'package:flutter/material.dart';
@@ -5,10 +6,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
 class OptionPage extends StatelessWidget {
-  final UserModel user;
+  final UserData userData;
   const OptionPage({
     super.key,
-    required this.user,
+    required this.userData,
   });
 
   final String textForNormal1 = '육류 정보를 입력하고\n데이터를 전송합니다';
@@ -140,7 +141,7 @@ class OptionPage extends StatelessWidget {
                 // 데이어 관리 버튼
                 InkWell(
                   onTap: () {
-                    user.level == 'users_1'
+                    userData.type == 'Normal'
                         ? context.go('/option/add-data')
                         : context.go('/option/add-data-2');
                   },
