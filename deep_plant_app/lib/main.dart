@@ -19,6 +19,7 @@ import 'package:deep_plant_app/pages/my-page/my_page.dart';
 import 'package:deep_plant_app/pages/my-page/reset_pw_page.dart';
 import 'package:deep_plant_app/pages/my-page/succeed_pw_change_page.dart';
 import 'package:deep_plant_app/pages/option_page.dart';
+import 'package:deep_plant_app/pages/sign-up/add_user_info_page.dart';
 import 'package:deep_plant_app/pages/sign-up/email_verification.dart';
 import 'package:deep_plant_app/pages/sign-up/id_pw_insertion_page.dart';
 import 'package:deep_plant_app/pages/sign_in_page.dart';
@@ -70,12 +71,18 @@ final _router = GoRouter(
               ),
               routes: [
                 GoRoute(
-                  path: ('email-verify'),
-                  builder: (context, state) => EmailVerification(
+                  path: 'add-user-info',
+                  builder: (context, state) => AddUserInfo(
                     user: newUser,
                   ),
                 ),
               ],
+            ),
+            GoRoute(
+              path: ('succeed-sign-up'),
+              builder: (context, state) => EmailVerification(
+                user: newUser,
+              ),
             ),
           ],
         ),

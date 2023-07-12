@@ -6,29 +6,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
-class EditUserInfo extends StatefulWidget {
+class AddUserInfo extends StatelessWidget {
   final UserModel user;
-  const EditUserInfo({
+  const AddUserInfo({
     super.key,
     required this.user,
   });
 
   @override
-  State<EditUserInfo> createState() => _EditUserInfoState();
-}
-
-class _EditUserInfoState extends State<EditUserInfo> {
-  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar:
-          CustomAppBar(title: '아이디/비밀번호', backButton: true, closeButton: false),
-      body: GestureDetector(
-        onTap: () {
-          FocusScope.of(context).unfocus();
-        },
-        child: SingleChildScrollView(
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        appBar:
+            CustomAppBar(title: '상세정보', backButton: true, closeButton: false),
+        body: SingleChildScrollView(
           child: Column(
             children: [
               Container(
@@ -36,62 +29,8 @@ class _EditUserInfoState extends State<EditUserInfo> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      '아이디',
-                      style: TextStyle(
-                        fontSize: 30.sp,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
                     SizedBox(
-                      height: 10.h,
-                    ),
-                    Container(
-                      height: 85.h,
-                      decoration: BoxDecoration(
-                        color: Color.fromRGBO(232, 232, 232, 1),
-                        borderRadius: BorderRadius.circular(42.sp),
-                      ),
-                      child: Row(
-                        children: [
-                          SizedBox(
-                            width: 32.w,
-                          ),
-                          Text(
-                            '',
-                            style: TextStyle(
-                              fontSize: 30.sp,
-                              fontWeight: FontWeight.w400,
-                              color: Color.fromRGBO(153, 153, 153, 1),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(
-                      height: 36.h,
-                    ),
-                    Text(
-                      '비밀번호',
-                      style: TextStyle(
-                        fontSize: 30.sp,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 10.h,
-                    ),
-                    // 비밀번호 변경 버튼
-                    CommonButton(
-                      text: Text('비밀번호 변경하기'),
-                      onPress: () {
-                        context.go('/option/my-page/edit-info/reset-pw');
-                      },
-                      width: 500,
-                      height: 85.h,
-                    ),
-                    SizedBox(
-                      height: 36.h,
+                      height: 30.h,
                     ),
                     Text(
                       '주소',
@@ -231,19 +170,17 @@ class _EditUserInfoState extends State<EditUserInfo> {
                       ),
                     ),
                     SizedBox(
-                      height: 81.h,
+                      height: 265.h,
                     ),
                   ],
                 ),
               ),
               SaveButton(
+                onPressed: () => context.go('/sign-in/succeed-sign-up'),
                 text: '다음',
                 width: 658.w,
                 heigh: 106.h,
                 isWhite: false,
-              ),
-              SizedBox(
-                height: 45.h,
               ),
             ],
           ),

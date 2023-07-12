@@ -200,7 +200,7 @@ class _CertificationBottomSheetState extends State<CertificationBottomSheet> {
               onPressed: isRequiredChecked
                   ? () {
                       widget.user.isAlarmed = isChecked3;
-                      context.go('/sign-in/sign-up/email-verify');
+                      context.go('/sign-in/sign-up/add-user-info');
                     }
                   : null,
               text: '다음',
