@@ -19,16 +19,24 @@ class ExperimentDataInputPage extends StatefulWidget {
 }
 
 class _ExperimentDataInputPageState extends State<ExperimentDataInputPage> {
+  TextEditingController l = TextEditingController();
+  TextEditingController a = TextEditingController();
+  TextEditingController b = TextEditingController();
   TextEditingController dl = TextEditingController();
   TextEditingController cl = TextEditingController();
+  TextEditingController rw = TextEditingController();
   TextEditingController ph = TextEditingController();
   TextEditingController wbsf = TextEditingController();
   TextEditingController ct = TextEditingController();
   TextEditingController mfi = TextEditingController();
 
   void saveEvaluation() {
+    final ldata = double.parse(dl.text);
+    final adata = double.parse(dl.text);
+    final bdata = double.parse(dl.text);
     final dldata = double.parse(dl.text);
     final cldata = double.parse(cl.text);
+    final rwdata = double.parse(dl.text);
     final phdata = double.parse(ph.text);
     final wbsfdata = double.parse(wbsf.text);
     final ctdata = double.parse(ct.text);
@@ -36,8 +44,12 @@ class _ExperimentDataInputPageState extends State<ExperimentDataInputPage> {
 
     Map<String, double> labData = {
       //데이터를 Map 형식으로 지정
+      'L': ldata,
+      'a': adata,
+      'b': bdata,
       'DL': dldata,
       'CL': cldata,
+      'RW': rwdata,
       'ph': phdata,
       'WBSF': wbsfdata,
       'cardepsin_activity': ctdata,
@@ -91,6 +103,12 @@ class _ExperimentDataInputPageState extends State<ExperimentDataInputPage> {
                 height: 90.h,
               ),
               TextFieldWithTitle(
+                  firstText: 'L 명도', secondText: '', controller: l),
+              TextFieldWithTitle(
+                  firstText: 'a적색도', secondText: '', unit: '', controller: a),
+              TextFieldWithTitle(
+                  firstText: 'b황색도', secondText: '', unit: '', controller: b),
+              TextFieldWithTitle(
                   firstText: 'DL육즙감량',
                   secondText: '',
                   unit: '%',
@@ -100,6 +118,11 @@ class _ExperimentDataInputPageState extends State<ExperimentDataInputPage> {
                   secondText: '',
                   unit: '%',
                   controller: cl),
+              TextFieldWithTitle(
+                  firstText: 'RW압착감량',
+                  secondText: '',
+                  unit: '%',
+                  controller: rw),
               TextFieldWithTitle(
                   firstText: 'PH', secondText: '', controller: ph),
               TextFieldWithTitle(
