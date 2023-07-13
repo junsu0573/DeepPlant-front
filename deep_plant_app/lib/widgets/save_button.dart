@@ -22,6 +22,8 @@ class SaveButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      width: width,
+      height: heigh,
       decoration: isWhite
           ? BoxDecoration(
               border: Border.all(color: Color.fromRGBO(121, 121, 121, 1)),
@@ -33,7 +35,6 @@ class SaveButton extends StatelessWidget {
         style: ElevatedButton.styleFrom(
           disabledBackgroundColor: Color(0xFFC4C4C4),
           backgroundColor: isWhite ? Colors.white : color ?? Color(0xFF515151),
-          minimumSize: Size(width, heigh),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(19.sp),
           ),

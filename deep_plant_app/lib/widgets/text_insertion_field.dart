@@ -28,6 +28,7 @@ class TextInsertionField extends StatelessWidget {
   final bool? isObscure;
   final bool? isCenter;
   final TextEditingController? controller;
+  final int? maxLength;
 
   const TextInsertionField({
     super.key,
@@ -41,6 +42,7 @@ class TextInsertionField extends StatelessWidget {
     this.isObscure,
     this.isCenter,
     this.controller,
+    this.maxLength,
   });
 
   @override
@@ -50,6 +52,7 @@ class TextInsertionField extends StatelessWidget {
       width: width,
       child: TextFormField(
         controller: controller,
+        maxLength: maxLength,
         // 유효성 검사
         validator: validateFunc,
         onSaved: onSaveFunc,

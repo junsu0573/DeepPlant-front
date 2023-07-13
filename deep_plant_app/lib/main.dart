@@ -53,9 +53,8 @@ final _router = GoRouter(
   routes: [
     GoRoute(
       path: '/',
-      builder: (context, state) => ShowStep(
-        user: newUser,
-        meat: newMeat,
+      builder: (context, state) => GetTraceNum(
+        meatData: newMeat,
       ),
       routes: [
         GoRoute(

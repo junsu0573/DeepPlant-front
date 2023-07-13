@@ -1,6 +1,9 @@
 import 'package:deep_plant_app/models/meat_data_model.dart';
+import 'package:deep_plant_app/source/pallete.dart';
+import 'package:deep_plant_app/widgets/common_button.dart';
 import 'package:deep_plant_app/widgets/custom_appbar.dart';
 import 'package:deep_plant_app/widgets/save_button.dart';
+import 'package:deep_plant_app/widgets/text_insertion_field.dart';
 import 'package:flutter/material.dart';
 
 import 'package:deep_plant_app/source/api_source.dart';
@@ -209,138 +212,84 @@ class _GetTraceNumState extends State<GetTraceNum> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      resizeToAvoidBottomInset: false,
-      appBar: CustomAppBar(title: '', backButton: false, closeButton: true),
-      body: GestureDetector(
-        onTap: () => FocusScope.of(context).unfocus(),
-        child: Column(
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        resizeToAvoidBottomInset: false,
+        appBar: CustomAppBar(
+          title: '',
+          backButton: false,
+          closeButton: true,
+        ),
+        body: Column(
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 15.0),
-                  child: IconButton(
-                      onPressed: () {},
-                      icon: Icon(
-                        Icons.barcode_reader,
-                        size: 30.0,
-                      )),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(right: 10.0, bottom: 5.0),
-                  child: Text(
-                    '이력번호 입력',
-                    style: TextStyle(
-                      fontSize: 20.0,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-                Opacity(
-                    opacity: 0,
-                    child: IconButton(
-                        onPressed: null, icon: Icon(Icons.barcode_reader))),
-              ],
+            Text(
+              '이력번호 입력',
+              style: TextStyle(
+                fontSize: 36.sp,
+                fontWeight: FontWeight.w600,
+              ),
             ),
-            SizedBox(height: 5.0),
+            SizedBox(height: 49.h),
             Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(12.0),
-                    child: Form(
-                      key: formkey,
-                      child: TextFormField(
-                        controller: textEditingController,
-                        maxLength: 15,
-                        validator: (value) {
-                          if (value!.isEmpty || value.length < 12) {
-                            // 임시 지정!!
-                            return "유효하지 않습니다!";
-                          } else {
-                            return null;
-                          }
-                        },
-                        onSaved: (value) {
-                          traceNum = value!;
-                        },
-                        onChanged: (value) {
-                          traceNum = value;
-                        },
-                        decoration: InputDecoration(
-                            enabledBorder: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(width: 0.5, color: Colors.grey),
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(25.0),
-                                )),
-                            focusedBorder: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(width: 0.5, color: Colors.grey),
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(25.0),
-                                )),
-                            errorBorder: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(width: 0.5, color: Colors.grey),
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(25.0),
-                                )),
-                            focusedErrorBorder: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(width: 0.5, color: Colors.grey),
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(25.0),
-                                )),
-                            hintText: '이력번호나 묶음번호 입력',
-                            contentPadding: EdgeInsets.all(12.0),
-                            fillColor: Colors.grey[200],
-                            filled: true),
-                        keyboardType: TextInputType.text,
-                      ),
-                    ),
+                Form(
+                  key: formkey,
+                  child: TextInsertionField(
+                    controller: textEditingController,
+                    validateFunc: (value) {
+                      if (value!.isEmpty || value.length < 12) {
+                        // 임시 지정!!
+                        return "유효하지 않습니다!";
+                      } else {
+                        return null;
+                      }
+                    },
+                    onSaveFunc: (value) {
+                      traceNum = value!;
+                    },
+                    onChangeFunc: (value) {
+                      traceNum = value;
+                    },
+                    mainText: '이력번호/묶음번호 입력',
+                    width: 479.w,
+                    height: 85.h,
+                    maxLength: 15,
                   ),
                 ),
-                Column(children: [
-                  Padding(
-                    padding: EdgeInsets.only(right: 15.0),
-                    child: SizedBox(
-                      height: 45,
-                      width: 85,
-                      child: ElevatedButton(
-                        onPressed: () async {
-                          tableData.clear();
-                          _tryValidation();
-                          if (isValue) {
-                            await fetchData(traceNum!);
-                          }
-                          setState(() {
-                            FocusScope.of(context).unfocus();
-                            textEditingController.clear();
-                          });
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.grey[800],
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(25.0),
-                          ),
-                        ),
-                        child: Text('검색'),
-                      ),
+                SizedBox(
+                  width: 16.w,
+                ),
+                CommonButton(
+                  text: Text(
+                    '검색',
+                    style: TextStyle(
+                      fontSize: 30.sp,
+                      fontWeight: FontWeight.w400,
                     ),
                   ),
-                  SizedBox(
-                    height: 25.0,
-                  )
-                ]),
+                  onPress: () async {
+                    tableData.clear();
+                    _tryValidation();
+                    if (isValue) {
+                      await fetchData(traceNum!);
+                    }
+                    setState(() {
+                      FocusScope.of(context).unfocus();
+                      textEditingController.clear();
+                    });
+                  },
+                  width: 161.w,
+                  height: 85.h,
+                  bgColor: Palette.mainButtonColor,
+                ),
               ],
             ),
             SizedBox(
               height: 5.0,
-              width: 350.0,
             ),
             if (isFinal == true)
               Expanded(child: View(tableData: tableData, baseData: baseData))
@@ -364,8 +313,8 @@ class _GetTraceNumState extends State<GetTraceNum> {
               Spacer(
                 flex: 2,
               ),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 15.0),
+            Container(
+              margin: EdgeInsets.only(bottom: 28.h),
               child: SaveButton(
                 isWhite: false,
                 text: '다음',
