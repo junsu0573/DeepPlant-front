@@ -25,6 +25,7 @@ class CommonButton extends StatelessWidget {
       child: ElevatedButton(
         onPressed: onPress,
         style: ElevatedButton.styleFrom(
+          elevation: 0,
           foregroundColor: fgColor,
           backgroundColor: bgColor ?? Theme.of(context).primaryColor,
           shape: RoundedRectangleBorder(
