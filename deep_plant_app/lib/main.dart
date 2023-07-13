@@ -53,8 +53,9 @@ final _router = GoRouter(
   routes: [
     GoRoute(
       path: '/',
-      builder: (context, state) => OptionPage(
+      builder: (context, state) => ShowStep(
         user: newUser,
+        meat: newMeat,
       ),
       routes: [
         GoRoute(

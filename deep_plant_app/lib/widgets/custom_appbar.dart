@@ -31,21 +31,33 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         style: TextStyle(
           color: Colors.black,
           fontSize: 36.sp,
-          fontFamily: 'Inter',
           fontWeight: FontWeight.w600,
         ),
       ),
       actions: closeButton
           ? [
-              IconButton(
-                icon: Icon(
-                  Icons.close,
-                  color: Colors.black,
+              Container(
+                margin: EdgeInsets.only(
+                  right: 45.w,
+                  top: 39.h,
                 ),
-                onPressed: closeButtonOnPressed ??
-                    () {
-                      context.pop();
-                    },
+                child: Row(
+                  children: [
+                    InkWell(
+                      onTap: closeButtonOnPressed ??
+                          () {
+                            context.pop();
+                          },
+                      child: SizedBox(
+                        width: 48.w,
+                        height: 48.h,
+                        child: Image(
+                          image: AssetImage('assets/images/close.png'),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ]
           : null,

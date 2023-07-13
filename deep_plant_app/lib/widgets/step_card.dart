@@ -17,22 +17,21 @@ class StepCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(10),
-      margin: EdgeInsets.all(3),
+      padding: EdgeInsets.symmetric(horizontal: 24.w),
       width: 588.w,
       height: 159.h,
       decoration: BoxDecoration(
         color: isCompleted ? Color(0xFFE1E1E1) : Colors.white,
         border: Border.all(
           color: Color(0xFFE1E1E1),
-          width: 3,
+          width: 3.sp,
         ),
         boxShadow: [
           BoxShadow(
             color: Color.fromRGBO(0, 0, 0, 0.12),
             spreadRadius: 0,
-            blurRadius: 10,
-            offset: Offset(0, 2),
+            blurRadius: 10.sp,
+            offset: Offset(0, 2.sp),
           ),
         ],
       ),
@@ -40,30 +39,21 @@ class StepCard extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           CircleAvatar(
-            radius: 25,
+            radius: 32.w,
             backgroundColor: Color.fromRGBO(217, 217, 217, 1),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  'STEP',
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: Colors.black,
-                  ),
+            child: Center(
+              child: Text(
+                'STEP\n$step',
+                style: TextStyle(
+                  fontSize: 16.sp,
+                  color: Colors.black,
                 ),
-                Text(
-                  step,
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: Colors.black,
-                  ),
-                ),
-              ],
+                textAlign: TextAlign.center,
+              ),
             ),
           ),
           SizedBox(
-            width: 30,
+            width: 35.w,
           ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -72,19 +62,28 @@ class StepCard extends StatelessWidget {
               Text(
                 mainText,
                 style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
+                  fontSize: 32.sp,
+                  fontWeight: FontWeight.w500,
                 ),
               ),
               SizedBox(
-                height: 5,
+                height: 10.h,
               ),
-              isCompleted ? Text('완료') : Text(subText),
+              Text(
+                isCompleted ? '완료' : subText,
+                style: TextStyle(
+                  fontSize: 24.sp,
+                  fontWeight: FontWeight.w500,
+                  color: Color.fromRGBO(56, 56, 56, 1),
+                ),
+              ),
             ],
           ),
           Spacer(),
-          Icon(
-            Icons.arrow_forward_ios,
+          Image.asset(
+            'assets/images/arrow-r.png',
+            width: 48.w,
+            height: 48.h,
           ),
         ],
       ),

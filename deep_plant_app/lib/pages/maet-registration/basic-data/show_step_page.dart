@@ -169,7 +169,7 @@ class _ShowStepState extends State<ShowStep> {
             SizedBox(
               height: 105.h,
             ),
-            GestureDetector(
+            InkWell(
               onTap: () async {
                 context.go('/option/show-step/insert-his-num');
               },
@@ -180,7 +180,10 @@ class _ShowStepState extends State<ShowStep> {
                 isCompleted: widget.meat.species != null ? true : false,
               ),
             ),
-            GestureDetector(
+            SizedBox(
+              height: 18.h,
+            ),
+            InkWell(
               onTap: () => context.go('/option/show-step/insert-meat-image'),
               child: StepCard(
                 mainText: '육류 단면 촬영',
@@ -189,7 +192,10 @@ class _ShowStepState extends State<ShowStep> {
                 isCompleted: widget.meat.imageFile != null ? true : false,
               ),
             ),
-            GestureDetector(
+            SizedBox(
+              height: 18.h,
+            ),
+            InkWell(
               onTap: () =>
                   context.go('/option/show-step/insert-fresh-evaluation'),
               child: StepCard(
