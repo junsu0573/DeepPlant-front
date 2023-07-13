@@ -72,7 +72,7 @@ class _DataAddState extends State<DataAdd> {
               text: Text(
                 '불러오기',
                 style: TextStyle(
-                  fontSize: 29.sp,
+                  fontSize: 27.sp,
                   fontWeight: FontWeight.w400,
                 ),
               ),
@@ -88,7 +88,7 @@ class _DataAddState extends State<DataAdd> {
                   setState(() {});
                 });
               },
-              width: 163.w,
+              width: 165.w,
               height: 63.h,
               bgColor: Colors.white,
               fgColor: Colors.black,

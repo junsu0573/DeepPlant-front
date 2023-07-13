@@ -86,10 +86,10 @@ class _NumCallDialogState extends State<NumCallDialog> {
                           CommonButton(
                             text: Text(
                               '엑셀파일 업로드',
-                              style: TextStyle(fontSize: 28.sp),
+                              style: TextStyle(fontSize: 27.sp),
                             ),
                             onPress: () {},
-                            width: 245.w,
+                            width: 250.w,
                             height: 63.h,
                             bgColor: Colors.white,
                             fgColor: Colors.black,
@@ -170,8 +170,7 @@ class _NumCallDialogState extends State<NumCallDialog> {
                                   borderRadius: BorderRadius.circular(42.5.sp),
                                   borderSide: BorderSide.none,
                                 ),
-                                contentPadding:
-                                    EdgeInsets.only(bottom: 10, left: 10),
+                                contentPadding: EdgeInsets.only(bottom: 10, left: 10),
                               ),
                             ),
                           ),
