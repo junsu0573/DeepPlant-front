@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:deep_plant_app/models/meat_data_model.dart';
 
 import 'package:deep_plant_app/source/pallete.dart';
@@ -9,7 +8,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:intl/intl.dart';
 
 class SignIn extends StatefulWidget {
   final UserData userData;
@@ -34,8 +32,6 @@ class _SignInState extends State<SignIn> {
 
   // firbase authentic
   final _authentication = FirebaseAuth.instance;
-
-  final _firestore = FirebaseFirestore.instance;
 
   // 아이디 유효성 검사
   String? idValidate(String? value) {
@@ -85,22 +81,6 @@ class _SignInState extends State<SignIn> {
       ////////////////////////////////
       // 코드 수정 필요함
       ////////////////////////////////
-      String userLevel = '';
-      DocumentSnapshot docSnapshot =
-          await _firestore.collection('user_emails').doc(_userId).get();
-
-      if (!docSnapshot.exists) {
-        _authentication.signOut();
-        throw Error();
-      } else {
-        userLevel = docSnapshot.get('level');
-      }
-
-      // 유저의 데이터를 객체에 저장
-      DocumentSnapshot userDocSnapshot =
-          await _firestore.collection(userLevel).doc(_userId).get();
-      String userName = userDocSnapshot.get('name');
-
       // 로그인 시 유저의 정보를 API 호출을 통해 객체에 저장
       ////////////////////////////////
       // 코드 수정 필요함
@@ -108,21 +88,6 @@ class _SignInState extends State<SignIn> {
       saveUserInfo();
 
       // 유저의 로그 정보를 fire store에 저장
-      DateTime now = DateTime.now();
-
-      String userLog = DateFormat('yyyy-MM-ddTHH:mm:ssZ').format(now);
-
-      Map<String, dynamic> updateData = {
-        'lastLogin': userLog,
-      };
-      await _firestore.collection(userLevel).doc(_userId).update(updateData);
-
-      // 유저 이메일 0-0-0-0-0 에 추가
-      DocumentReference ref = _firestore.collection('meat').doc('0-0-0-0-0');
-
-      await ref.update({
-        'fix_data.$userLevel': FieldValue.arrayUnion([_userId]),
-      });
     } catch (e) {
       // 로딩 상태를 비활성화
       setState(() {

@@ -19,4 +19,15 @@ class UserData {
     this.type,
     this.alarm,
   });
+
+  void resetData() {
+    userId = null;
+    password = null;
+    name = null;
+    homeAdress = null;
+    company = null;
+    jobTitle = null;
+    type = null;
+    alarm = null;
+  }
 }
