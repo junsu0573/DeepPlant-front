@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:deep_plant_app/models/meat_data_model.dart';
 import 'package:deep_plant_app/models/user_model.dart';
+import 'package:deep_plant_app/source/pallete.dart';
+import 'package:deep_plant_app/widgets/common_button.dart';
 import 'package:deep_plant_app/widgets/text_insertion_field.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -154,138 +156,161 @@ class _SignInState extends State<SignIn> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: GestureDetector(
-        onTap: () {
-          FocusScope.of(context).unfocus(); // 키보드 unfocus
-        },
-        child: Center(
-          child: SingleChildScrollView(
-            child: Form(
-              key: _formKey,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Padding(
-                    // 딥플랜트 로고 이미지
-                    padding: const EdgeInsets.all(0),
-                    child: ColorFiltered(
-                      colorFilter: const ColorFilter.mode(
-                          Colors.black, BlendMode.modulate),
-                      child: Image.asset(
-                        'assets/images/logo.png',
-                        width: 111.w,
-                        height: 111.w,
-                      ),
-                    ),
-                  ),
-                  const Text(
-                    '딥에이징',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 48,
-                      fontFamily: 'Inter',
-                      fontWeight: FontWeight.w500,
-                      height: 1.0,
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 68,
-                  ),
-                  // 아이디 입력 필드
-                  TextInsertionField(
-                    validateFunc: idValidate,
-                    onSaveFunc: (value) {
-                      _userId = value!;
-                    },
-                    onChangeFunc: (value) {
-                      _userId = value!;
-                    },
-                    mainText: '아이디',
-                    hintText: '아이디를 확인하세요',
-                    width: 55,
-                    isObscure: false,
-                    isCenter: true,
-                  ),
-                  // 비밀번호 입력 필드
-                  TextInsertionField(
-                    validateFunc: pwValidate,
-                    mainText: '비밀번호',
-                    hintText: '비밀번호를 입력하세요.',
-                    width: 55,
-                    isObscure: true,
-                    onSaveFunc: (value) {
-                      _userPw = value!;
-                    },
-                    onChangeFunc: (value) {
-                      _userPw = value!;
-                    },
-                    isCenter: true,
-                  ),
-
-                  // 회원가입 텍스트버튼
-                  TextButton(
-                    onPressed: () {
-                      // 회원가입 페이지를 push
-                      context.go('/sign-in/sign-up');
-                    },
-                    child: const Text(
-                      '회원가입',
-                      style: TextStyle(
-                        color: Colors.black54,
-                      ),
-                    ),
-                  ),
-                  // 자동로그인 체크박스
-                  Row(
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).unfocus(); // 키보드 unfocus
+      },
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        body: Stack(
+          children: [
+            Center(
+              child: SingleChildScrollView(
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const SizedBox(
-                        width: 40,
+                      ColorFiltered(
+                        colorFilter: const ColorFilter.mode(
+                            Colors.black, BlendMode.modulate),
+                        child: Image.asset(
+                          'assets/images/logo.png',
+                          height: 111.w,
+                        ),
                       ),
-                      Checkbox(
-                        value: _isAutoLogin,
-                        onChanged: (value) {
-                          setState(() {
-                            _isAutoLogin = value;
-                          });
+                      Text(
+                        '딥에이징',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 48.sp,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 68.h,
+                      ),
+                      // 아이디 입력 필드
+                      TextInsertionField(
+                        validateFunc: idValidate,
+                        onSaveFunc: (value) {
+                          _userId = value!;
                         },
+                        onChangeFunc: (value) {
+                          _userId = value!;
+                        },
+                        mainText: '아이디',
+                        hintText: '아이디를 확인하세요',
+                        width: 540.w,
+                        height: 85.w,
+                        isCenter: true,
                       ),
-                      const Text('자동 로그인'),
+                      SizedBox(
+                        height: 26.h,
+                      ),
+                      // 비밀번호 입력 필드
+                      TextInsertionField(
+                        validateFunc: pwValidate,
+                        mainText: '비밀번호',
+                        hintText: '비밀번호를 입력하세요.',
+                        width: 540.w,
+                        height: 85.h,
+                        onSaveFunc: (value) {
+                          _userPw = value!;
+                        },
+                        onChangeFunc: (value) {
+                          _userPw = value!;
+                        },
+                        isCenter: true,
+                        isObscure: true,
+                      ),
+                      SizedBox(
+                        height: 38.h,
+                      ),
+                      // 로그인 버튼
+                      CommonButton(
+                        text: Text(
+                          '로그인',
+                          style: TextStyle(
+                            fontSize: 30.sp,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                        onPress: () {
+                          _tryValidation();
+                          fetchData();
+                        },
+                        width: 372.w,
+                        height: 85.h,
+                        bgColor: Palette.mainButtonColor,
+                      ),
+                      SizedBox(
+                        height: 36.h,
+                      ),
+                      // 자동로그인 체크박스
+                      Row(
+                        children: [
+                          SizedBox(
+                            width: 90.w,
+                          ),
+                          SizedBox(
+                            width: 32.w,
+                            height: 32.h,
+                            child: Checkbox(
+                              value: _isAutoLogin,
+                              onChanged: (value) {
+                                setState(() {
+                                  _isAutoLogin = value;
+                                });
+                              },
+                              side: BorderSide(
+                                color: Palette.greyTextColor,
+                                width: 1.sp,
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            width: 23.w,
+                          ),
+                          Text(
+                            '자동 로그인',
+                            style: TextStyle(
+                              fontSize: 30.sp,
+                              fontWeight: FontWeight.w400,
+                              color: Palette.greyTextColor,
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 28.h,
+                      ),
+                      // 회원가입 텍스트버튼
+                      TextButton(
+                        onPressed: () {
+                          // 회원가입 페이지를 push
+                          context.go('/sign-in/sign-up');
+                        },
+                        child: Text(
+                          '회원가입',
+                          style: TextStyle(
+                            fontSize: 30.sp,
+                            fontWeight: FontWeight.w400,
+                            color: Colors.black,
+                            decoration: TextDecoration.underline,
+                          ),
+                        ),
+                      ),
                     ],
                   ),
-                  const SizedBox(
-                    height: 45,
-                  ),
-                  // 확인 버튼
-                  SizedBox(
-                    width: 200,
-                    height: 50,
-                    child: ElevatedButton(
-                      onPressed: () async {
-                        _tryValidation();
-                        fetchData();
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Theme.of(context).primaryColor,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30),
-                        ),
-                      ),
-                      child: const Text(
-                        '확인',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
-                        ),
-                      ),
-                    ),
-                  ),
-                  // 데이터를 처리하는 동안 로딩 위젯 보여주기
-                  isLoading ? const CircularProgressIndicator() : Container(),
-                ],
+                ),
               ),
             ),
-          ),
+            Center(
+              child: // 데이터를 처리하는 동안 로딩 위젯 보여주기
+                  isLoading ? const CircularProgressIndicator() : Container(),
+            ),
+          ],
         ),
       ),
     );

@@ -13,6 +13,7 @@
 //
 //
 
+import 'package:deep_plant_app/source/pallete.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -21,12 +22,12 @@ class TextInsertionField extends StatelessWidget {
   final void Function(String?)? onSaveFunc;
   final void Function(String?)? onChangeFunc;
   final String mainText;
-  final String hintText;
+  final String? hintText;
   final double width;
-  final bool isObscure;
-  final bool isCenter;
+  final double height;
+  final bool? isObscure;
+  final bool? isCenter;
   final TextEditingController? controller;
-  final bool? readOnly;
 
   const TextInsertionField({
     super.key,
@@ -34,36 +35,34 @@ class TextInsertionField extends StatelessWidget {
     required this.onSaveFunc,
     required this.onChangeFunc,
     required this.mainText,
-    required this.hintText,
+    this.hintText,
     required this.width,
-    required this.isObscure,
-    required this.isCenter,
+    required this.height,
+    this.isObscure,
+    this.isCenter,
     this.controller,
-    this.readOnly,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       // 아이디 입력 필드
-      padding: EdgeInsets.symmetric(horizontal: width),
-      margin: const EdgeInsets.symmetric(vertical: 3),
+      width: width,
       child: TextFormField(
-        readOnly: readOnly ?? false,
         controller: controller,
         // 유효성 검사
         validator: validateFunc,
         onSaved: onSaveFunc,
         onChanged: onChangeFunc,
-        obscureText: isObscure,
+        obscureText: isObscure ?? false,
         decoration: InputDecoration(
-            label: isCenter
+            label: isCenter != null && isCenter == true
                 ? Center(
                     child: Text(mainText),
                   )
                 : Text(mainText),
             filled: true,
-            fillColor: Color(0xFFe8e8e8),
+            fillColor: Palette.textFieldColor,
             hintText: hintText, // 입력 필드에 힌트로 표시될 텍스트
 
             suffixIcon: null, // 입력 필드 오른쪽에 표시될 아이콘

@@ -8,4 +8,5 @@ class Palette {
   static const Color deepOptionColor = Color.fromRGBO(104, 104, 104, 1);
   static const Color textFieldColor = Color.fromRGBO(232, 232, 232, 1);
   static const Color inactiveButtonColor = Color.fromRGBO(196, 196, 196, 1);
+  static const Color greyTextColor = Color.fromRGBO(120, 120, 120, 1);
 }
