@@ -1,4 +1,5 @@
 import 'package:deep_plant_app/models/meat_data_model.dart';
+import 'package:deep_plant_app/models/user_data_model.dart';
 import 'package:deep_plant_app/widgets/save_button.dart';
 import 'package:deep_plant_app/widgets/show_custom_dialog.dart';
 import 'package:deep_plant_app/widgets/title_desc.dart';
@@ -7,11 +8,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:deep_plant_app/widgets/custom_appbar.dart';
 import 'package:deep_plant_app/widgets/eval_buttonnrow.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 
 class FreshmeatEvaluation extends StatefulWidget {
+  final UserData userData;
   final MeatData meatData;
   const FreshmeatEvaluation({
     super.key,
+    required this.userData,
     required this.meatData,
   });
 
@@ -47,8 +51,14 @@ class _FreshmeatEvaluationState extends State<FreshmeatEvaluation> {
     double surfaceMoistureIndex = _selectedSurfaceMoisture.indexOf(true) + 1;
     double overallIndex = _selectedOverall.indexOf(true) + 1;
 
+    DateTime now = DateTime.now();
+    String createdAt = DateFormat('yyyy-MM-ddTHH:mm:ssZ').format(now);
+
     //데이터를 Map 형식으로 저장
-    Map<String, double> freshData = {
+    Map<String, dynamic> freshData = {
+      'createdAt': createdAt,
+      'userId': widget.userData.userId,
+      'period': null,
       'marbling': mablingIndex,
       'color': colorIndex,
       'texture': textureIndex,

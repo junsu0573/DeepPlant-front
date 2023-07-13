@@ -6,7 +6,7 @@ import 'package:deep_plant_app/widgets/save_button.dart';
 import 'package:deep_plant_app/widgets/text_insertion_field.dart';
 import 'package:flutter/material.dart';
 
-import 'package:deep_plant_app/source/api_source.dart';
+import 'package:deep_plant_app/source/oepn_api_source.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:intl/intl.dart';
@@ -95,7 +95,7 @@ class _GetTraceNumState extends State<GetTraceNum> {
 
     if (historyNo.startsWith('L1')) {
       try {
-        ApiSource source = ApiSource(
+        OpenApiSource source = OpenApiSource(
             baseUrl:
                 "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?serviceKey=$apikey&traceNo=$historyNo&optionNo=9");
 
@@ -112,13 +112,13 @@ class _GetTraceNumState extends State<GetTraceNum> {
 
     if (traceNum!.startsWith('0')) {
       try {
-        ApiSource source1 = ApiSource(
+        OpenApiSource source1 = OpenApiSource(
             baseUrl:
                 "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?serviceKey=$apikey&traceNo=$traceNum&optionNo=1");
-        ApiSource source2 = ApiSource(
+        OpenApiSource source2 = OpenApiSource(
             baseUrl:
                 "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?serviceKey=$apikey&traceNo=$traceNum&optionNo=2");
-        ApiSource source3 = ApiSource(
+        OpenApiSource source3 = OpenApiSource(
             baseUrl:
                 "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?serviceKey=$apikey&traceNo=$traceNum&optionNo=3");
 
@@ -160,10 +160,10 @@ class _GetTraceNumState extends State<GetTraceNum> {
       }
     } else {
       try {
-        ApiSource source4 = ApiSource(
+        OpenApiSource source4 = OpenApiSource(
             baseUrl:
                 "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?serviceKey=$apikey&traceNo=$traceNum&optionNo=4");
-        ApiSource source3 = ApiSource(
+        OpenApiSource source3 = OpenApiSource(
             baseUrl:
                 "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?serviceKey=$apikey&traceNo=$traceNum&optionNo=3");
 
