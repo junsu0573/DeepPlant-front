@@ -9,18 +9,18 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:go_router/go_router.dart';
 
-class GetHistoryPage extends StatefulWidget {
+class GetTraceNum extends StatefulWidget {
   final MeatData meatData;
-  GetHistoryPage({
+  GetTraceNum({
     super.key,
     required this.meatData,
   });
 
   @override
-  State<GetHistoryPage> createState() => _GetHistoryPageState();
+  State<GetTraceNum> createState() => _GetTraceNumState();
 }
 
-class _GetHistoryPageState extends State<GetHistoryPage> {
+class _GetTraceNumState extends State<GetTraceNum> {
   var apikey =
       "%2FuEP%2BvIjYfPTyaHNlxRx2Ry5cVUer92wa6lHcxnXEEekVjUCZ1N41traj3s8sGhHpKS54SVDbg9m4sHOEuMNuw%3D%3D";
 

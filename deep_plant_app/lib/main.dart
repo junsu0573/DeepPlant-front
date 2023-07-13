@@ -28,7 +28,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:deep_plant_app/pages/maet-registration/basic-data/get_history_page.dart';
+import 'package:deep_plant_app/pages/maet-registration/basic-data/get_trace_num_page.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:deep_plant_app/models/deep_aging_data_model.dart';
 
@@ -137,7 +137,7 @@ final _router = GoRouter(
           routes: [
             GoRoute(
               path: 'insert-his-num',
-              builder: (context, state) => GetHistoryPage(
+              builder: (context, state) => GetTraceNum(
                 meatData: newMeat,
               ),
             ),
