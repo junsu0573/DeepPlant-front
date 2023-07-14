@@ -245,6 +245,7 @@ class MeatData {
       'birthYmd': birthYmd,
       'sexType': sexType,
       'freshmeat': freshmeat,
+      'gradeNum': gradeNum,
       'speciesValue': speciesValue,
       'primalValue': primalValue,
       'secondaryValue': secondaryValue,

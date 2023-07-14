@@ -7,6 +7,7 @@ class UserData {
   String? company;
   String? jobTitle;
   String? type;
+  String? createdAt;
   bool? alarm;
 
   UserData({
@@ -17,6 +18,7 @@ class UserData {
     this.company,
     this.jobTitle,
     this.type,
+    this.createdAt,
     this.alarm,
   });
 
@@ -28,6 +30,7 @@ class UserData {
     company = null;
     jobTitle = null;
     type = null;
+    createdAt = null;
     alarm = null;
   }
 }

@@ -67,9 +67,10 @@ class _CompleteResgistration2State extends State<CompleteResgistration2> {
       String originalString =
           '${widget.meatData.traceNum!}-$createdAt-${widget.meatData.speciesValue!}-${widget.meatData.primalValue!}-${widget.meatData.secondaryValue!}';
 
-      // 해시함수로 관리번호 생성 및 저장
+      // 해시함수로 관리번호 생성 및 데이터 저장
       managementNum = hashStringTo12Digits(originalString);
       widget.meatData.id = managementNum;
+      widget.meatData.createdAt = createdAt;
     } else {
       print('에러');
     }

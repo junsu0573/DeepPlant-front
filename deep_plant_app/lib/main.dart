@@ -4,8 +4,9 @@ import 'package:deep_plant_app/pages/data-management/data_management_page_2.dart
 import 'package:deep_plant_app/pages/data-management/reading_data_page.dart';
 import 'package:deep_plant_app/pages/maet-registration/additional-data/complete_additional_registration_page.dart';
 import 'package:deep_plant_app/pages/maet-registration/additional-data/deep_aging_page.dart';
+import 'package:deep_plant_app/pages/maet-registration/additional-data/lab_data_input_page.dart';
 import 'package:deep_plant_app/pages/maet-registration/basic-data/complete_registration_page.dart';
-import 'package:deep_plant_app/pages/maet-registration/additional-data/complete_registration_page_2.dart';
+import 'package:deep_plant_app/pages/maet-registration/basic-data/complete_registration_page_2.dart';
 import 'package:deep_plant_app/pages/maet-registration/basic-data/freshmeat_evaluation_page.dart';
 import 'package:deep_plant_app/pages/maet-registration/additional-data/heated_meat_eveluation_page.dart';
 import 'package:deep_plant_app/pages/maet-registration/basic-data/insertion_meat_image.dart';
@@ -104,7 +105,7 @@ final _router = GoRouter(
         GoRoute(
           path: 'my-page',
           builder: (context, state) => MyPage(
-            user: newUser,
+            userData: newUser,
           ),
           routes: [
             GoRoute(
@@ -129,8 +130,8 @@ final _router = GoRouter(
         GoRoute(
           path: 'show-step',
           builder: (context, state) => ShowStep(
-            user: newUser,
-            meat: newMeat,
+            userData: newUser,
+            meatData: newMeat,
           ),
           routes: [
             GoRoute(
@@ -148,7 +149,7 @@ final _router = GoRouter(
             GoRoute(
               path: 'insert-meat-image',
               builder: (context, state) => InsertionMeatImage(
-                user: newUser,
+                userData: newUser,
                 meatData: newMeat,
               ),
             ),
@@ -164,14 +165,14 @@ final _router = GoRouter(
         GoRoute(
           path: 'show-step-2',
           builder: (context, state) => ShowStep2(
-            user: newUser,
-            meat: newMeat,
+            userData: newUser,
+            meatData: newMeat,
           ),
           routes: [
             GoRoute(
                 path: 'deep-aging-data',
                 builder: (context, state) => DeepAging(
-                      meat: newMeat,
+                      meatData: newMeat,
                     )),
             GoRoute(
               path: 'fresh-meat-data',
@@ -193,7 +194,7 @@ final _router = GoRouter(
             ),
             GoRoute(
               path: 'experiment-data',
-              builder: (context, state) => ExperimentDataInputPage(
+              builder: (context, state) => LabDataInput(
                 meatData: newMeat,
               ),
             ),
@@ -204,21 +205,18 @@ final _router = GoRouter(
           path: 'complete-register',
           builder: (context, state) => CompleteResgistration(
             meatData: newMeat,
-            user: newUser,
           ),
         ),
         GoRoute(
           path: 'complete-register-2',
           builder: (context, state) => CompleteResgistration2(
             meatData: newMeat,
-            user: newUser,
           ),
         ),
         GoRoute(
           path: 'complete-add-register',
           builder: (context, state) => CompleteAdditionalRegistration(
             meatData: newMeat,
-            user: newUser,
           ),
         ),
         // 데이터 관리 페이지
