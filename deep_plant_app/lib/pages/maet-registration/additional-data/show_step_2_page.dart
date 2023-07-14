@@ -1,7 +1,5 @@
-import 'dart:convert';
-import 'dart:io';
-
 import 'package:deep_plant_app/models/meat_data_model.dart';
+import 'package:deep_plant_app/models/user_data_model.dart';
 import 'package:deep_plant_app/widgets/custom_appbar.dart';
 import 'package:deep_plant_app/widgets/save_button.dart';
 import 'package:deep_plant_app/widgets/show_custom_dialog.dart';
@@ -9,15 +7,14 @@ import 'package:deep_plant_app/widgets/step_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:path_provider/path_provider.dart';
 
 class ShowStep2 extends StatefulWidget {
-  final UserModel user;
-  final MeatData meat;
+  final UserData userData;
+  final MeatData meatData;
   ShowStep2({
     super.key,
-    required this.user,
-    required this.meat,
+    required this.userData,
+    required this.meatData,
   });
 
   @override
@@ -25,98 +22,48 @@ class ShowStep2 extends StatefulWidget {
 }
 
 class _ShowStep2State extends State<ShowStep2> {
+  String _userId = '';
+
+  @override
+  void initState() {
+    super.initState();
+    // 유저 아이디 저장
+    _userId = widget.userData.userId!;
+    widget.meatData.userId = _userId;
+
+    // 임시저장 처리
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      initialize();
+    });
+  }
+
   bool _isAllCompleted() {
-    if (widget.meat.deepAging != null &&
-        widget.meat.freshData != null &&
-        widget.meat.heatedMeat != null &&
-        widget.meat.tongueData != null &&
-        widget.meat.labData != null) {
+    if (widget.meatData.deepAging != null &&
+        widget.meatData.freshmeat != null &&
+        widget.meatData.heatedmeat != null &&
+        widget.meatData.tongueData != null &&
+        widget.meatData.labData != null) {
       return true;
     }
     return false;
   }
 
-  // 임시 데이터를 로컬 임시 파일로 저장
-  Future<void> saveDataToLocal(Map<String, dynamic> data) async {
-    final directory = await getApplicationDocumentsDirectory();
-    final file = File('${directory.path}/temp_data_2.json');
-
-    await file.writeAsString(jsonEncode(data));
-  }
-
-  // 객체 데이터를 임시 저장 데이터로 초기화
-  Future<void> initMeatdata() async {
-    final directory = await getApplicationDocumentsDirectory();
-    final file = File('${directory.path}/temp_data.json');
-    if (await file.exists()) {
-      final jsonData = await file.readAsString();
-      final data = jsonDecode(jsonData);
-
-      widget.meat.deepAging = data['deepAging'];
-      if (data['freshData'] != null) {
-        widget.meat.freshData = data['freshData']?.cast<String, double>();
-      } else {
-        widget.meat.freshData = null;
-      }
-      if (data['heatedMeat'] != null) {
-        widget.meat.heatedMeat = data['heatedMeat']?.cast<String, double>();
-      } else {
-        widget.meat.heatedMeat = null;
-      }
-      if (data['tongueData'] != null) {
-        widget.meat.tongueData = data['tongueData']?.cast<String, double>();
-      } else {
-        widget.meat.tongueData = null;
-      }
-      if (data['labData'] != null) {
-        widget.meat.labData = data['labData']?.cast<String, double>();
-      } else {
-        widget.meat.labData = null;
-      }
-    }
-  }
-
-  // 임시저장 데이터 저장
-  Future<void> saveTempData() async {
-    // 데이터 생성
-    Map<String, dynamic> tempBasicData = {
-      'deepAging': widget.meat.historyNumber,
-      'heatedMeat': widget.meat.species,
-      'tongueData': widget.meat.lDivision,
-      'labData': widget.meat.sDivision,
-    };
-    await saveDataToLocal(tempBasicData);
-  }
-
-  // 임시저장 데이터 리셋
-  Future<void> resetTempData() async {
-    // 데이터 생성
-    Map<String, dynamic> tempBasicData = {
-      'deepAging': null,
-      'heatedMeat': null,
-      'tongueData': null,
-      'labData': null,
-    };
-
-    await saveDataToLocal(tempBasicData);
-  }
-
+  // 임시저장 처리
   void initialize() async {
     // 임시저장 데이터를 가져와 객체에 저장
-    await initMeatdata().then((_) {
+    await widget.meatData.initMeatDataForStep2(_userId).then((_) {
       setState(() {});
     });
 
-    if (widget.meat.deepAging != null ||
-        widget.meat.freshData != null ||
-        widget.meat.heatedMeat != null ||
-        widget.meat.tongueData != null && widget.meat.labData != null) {
+    if (widget.meatData.speciesValue != null ||
+        widget.meatData.imagePath != null &&
+            widget.meatData.freshmeat != null) {
       if (!mounted) return;
       // 임시저장 데이터가 null값이 아닐 때 다이얼로그 호출
       showDataRegisterDialog(context, () async {
         // 처음부터
-        resetTempData();
-        await initMeatdata().then((_) {
+        widget.meatData.resetTempDataForStep2();
+        await widget.meatData.initMeatDataForStep2(_userId).then((_) {
           setState(() {});
         });
         if (!mounted) return;
@@ -126,13 +73,6 @@ class _ShowStep2State extends State<ShowStep2> {
         context.pop();
       });
     }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    setState(() {});
-    initialize();
   }
 
   @override
@@ -163,7 +103,7 @@ class _ShowStep2State extends State<ShowStep2> {
                 mainText: '딥에이징 데이터',
                 subText: '데이터를 입력해 주세요.',
                 step: '1',
-                isCompleted: widget.meat.deepAging != null ? true : false,
+                isCompleted: widget.meatData.deepAging != null ? true : false,
               ),
             ),
             GestureDetector(
@@ -172,7 +112,7 @@ class _ShowStep2State extends State<ShowStep2> {
                 mainText: '신선육 관능평가',
                 subText: '데이터를 입력해 주세요.',
                 step: '2',
-                isCompleted: widget.meat.freshData != null ? true : false,
+                isCompleted: widget.meatData.freshmeat != null ? true : false,
               ),
             ),
             GestureDetector(
@@ -181,7 +121,7 @@ class _ShowStep2State extends State<ShowStep2> {
                 mainText: '가열육 관능평가',
                 subText: '데이터를 입력해 주세요.',
                 step: '3',
-                isCompleted: widget.meat.heatedMeat != null ? true : false,
+                isCompleted: widget.meatData.heatedmeat != null ? true : false,
               ),
             ),
             GestureDetector(
@@ -190,7 +130,7 @@ class _ShowStep2State extends State<ShowStep2> {
                 mainText: '전자혀 데이터',
                 subText: '데이터를 입력해 주세요.',
                 step: '4',
-                isCompleted: widget.meat.tongueData != null ? true : false,
+                isCompleted: widget.meatData.tongueData != null ? true : false,
               ),
             ),
             GestureDetector(
@@ -199,7 +139,7 @@ class _ShowStep2State extends State<ShowStep2> {
                 mainText: '실험 데이터',
                 subText: '데이터를 입력해 주세요.',
                 step: '5',
-                isCompleted: widget.meat.labData != null ? true : false,
+                isCompleted: widget.meatData.labData != null ? true : false,
               ),
             ),
             Spacer(),
@@ -209,7 +149,10 @@ class _ShowStep2State extends State<ShowStep2> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SaveButton(
-                    onPressed: () {},
+                    onPressed: () async {
+                      // 육류 데이터 로컬에 저장
+                      await widget.meatData.saveTempDataForStep2();
+                    },
                     text: '임시저장',
                     width: 310.w,
                     heigh: 104.h,
@@ -220,7 +163,11 @@ class _ShowStep2State extends State<ShowStep2> {
                   ),
                   SaveButton(
                     onPressed: _isAllCompleted()
-                        ? () {
+                        ? () async {
+                            await widget.meatData.resetTempDataForStep2();
+                            if (!mounted) {
+                              return;
+                            }
                             context.go('/option/complete-add-register');
                           }
                         : null,

@@ -1,18 +1,15 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:deep_plant_app/models/meat_data_model.dart';
+import 'package:deep_plant_app/source/api_services.dart';
 import 'package:deep_plant_app/source/pallete.dart';
 import 'package:deep_plant_app/widgets/save_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:intl/intl.dart';
 
 class CompleteAdditionalRegistration extends StatefulWidget {
-  final UserModel user;
   final MeatData meatData;
   const CompleteAdditionalRegistration({
     super.key,
-    required this.user,
     required this.meatData,
   });
 
@@ -23,60 +20,35 @@ class CompleteAdditionalRegistration extends StatefulWidget {
 
 class _CompleteAdditionalRegistrationState
     extends State<CompleteAdditionalRegistration> {
-  FirebaseFirestore firestore = FirebaseFirestore.instance;
   bool isLoading = false;
 
-  Future<void> sendDataToFirebase() async {
+  @override
+  void initState() async {
+    super.initState();
     setState(() {
       isLoading = true;
     });
-    try {
-      // meat 컬렉션에 데이터 저장
-      final refData = firestore.collection('meat').doc(widget.meatData.mNum);
 
-      DateTime now = DateTime.now();
+    await sendMeatData(widget.meatData);
 
-      String saveDate = DateFormat('yyyy-MM-ddTHH:mm:ssZ').format(now);
-
-      await refData.update({
-        'deepAging': widget.meatData.deepAging,
-        'heated': widget.meatData.heatedMeat,
-        'tongue': widget.meatData.tongueData,
-        'labData': widget.meatData.labData,
-        'saveTime': saveDate,
-      });
-
-      // 0-0-0-0-0 에 관리번호 저장
-      DocumentReference documentRef =
-          firestore.collection('meat').doc('0-0-0-0-0');
-      await documentRef.update({
-        'fix_data.meat': FieldValue.arrayUnion([widget.meatData.mNum]),
-      });
-
-      // 0-0-0-0-0 에 유저 이메일 추가
-      await documentRef.update({
-        'fix_data.${widget.user.level}':
-            FieldValue.arrayUnion([widget.user.email]),
-      });
-
-      // user의 RevisionMeatList에 관리번호 추가
-      DocumentReference refNum =
-          firestore.collection(widget.user.level!).doc(widget.user.email);
-      List<dynamic> newNum = [widget.meatData.mNum];
-      await refNum.update({'revisionMeatList': FieldValue.arrayUnion(newNum)});
-    } catch (e) {
-      print(e);
-    }
     setState(() {
       isLoading = false;
     });
   }
 
-  @override
-  void initState() {
-    super.initState();
+  // 육류 정보를 서버로 전송
+  Future<void> sendMeatData(MeatData meatData) async {
+    // 육류 정보를 json 형식으로 변환
+    final deepAgingData = meatData.convertDeepAgingToJson();
+    final freshMeatData = meatData.convertNewMeatToJson();
+    final heatedMeatData = meatData.convertNewMeatToJson();
+    final probexptData = meatData.convertPorbexptToJson();
 
-    sendDataToFirebase();
+    // 데이터 전송
+    await ApiServices.postMeatData(deepAgingData);
+    await ApiServices.postMeatData(freshMeatData);
+    await ApiServices.postMeatData(heatedMeatData);
+    await ApiServices.postMeatData(probexptData);
   }
 
   @override

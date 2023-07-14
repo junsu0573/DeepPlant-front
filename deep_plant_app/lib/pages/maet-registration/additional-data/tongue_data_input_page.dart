@@ -24,14 +24,14 @@ class _TongueDataInputPageState extends State<TongueDataInputPage> {
   TextEditingController umami = TextEditingController();
   TextEditingController richness = TextEditingController();
 
-  void _sendEvaluation() {
+  void saveMeatData() {
     final sournessData = double.parse(sourness.text);
     final bitternessData = double.parse(bitterness.text);
     final umamiData = double.parse(umami.text);
     final richnessData = double.parse(richness.text);
 
-    Map<String, double> tongueData = {
-      //데이터를 Map 형식으로 지정
+    // 데이터 생성
+    Map<String, dynamic> tongueData = {
       'sourness': sournessData,
       'bitterness': bitternessData,
       'umami': umamiData,
@@ -121,7 +121,7 @@ class _TongueDataInputPageState extends State<TongueDataInputPage> {
               SaveButton(
                 onPressed: _isAllInserted()
                     ? () {
-                        _sendEvaluation();
+                        saveMeatData();
                         context.pop();
                       }
                     : null,

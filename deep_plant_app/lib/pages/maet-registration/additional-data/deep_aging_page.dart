@@ -7,8 +7,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
 class DeepAging extends StatefulWidget {
-  const DeepAging({super.key, required this.meat});
-  final MeatData meat;
+  final MeatData meatData;
+  const DeepAging({
+    super.key,
+    required this.meatData,
+  });
 
   @override
   State<DeepAging> createState() => _DeepAgingState();
@@ -40,8 +43,6 @@ class _DeepAgingState extends State<DeepAging> {
           '${objects[i].selectedYear}/${objects[i].selectedMonth}/${objects[i].selectedDay}/$timeTemp';
       deepAgingModel.add(temp);
     }
-    // 객체에 데이터 저장
-    widget.meat.deepAging = deepAgingModel;
   }
 
   void calTime(DeepAgingData data, int index, bool edit) {
@@ -59,6 +60,10 @@ class _DeepAgingState extends State<DeepAging> {
       totalHour += q;
       totalMinute = r;
     }
+  }
+
+  void saveMeatData() {
+    widget.meatData.deepAging = deepAgingModel;
   }
 
   void widgetCreate(int index) {
@@ -317,8 +322,9 @@ class _DeepAgingState extends State<DeepAging> {
                 width: 350,
                 child: ElevatedButton(
                   onPressed: (objects.isNotEmpty)
-                      ? () {
+                      ? () async {
                           intoString();
+                          saveMeatData();
                           context.pop();
                         }
                       : null,

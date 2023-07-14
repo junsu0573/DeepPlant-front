@@ -7,6 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:deep_plant_app/widgets/custom_appbar.dart';
 import 'package:deep_plant_app/widgets/eval_buttonnrow.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 
 class HeatedMeatEvaluation extends StatefulWidget {
   final MeatData meatData;
@@ -39,9 +40,7 @@ class HeatedMeatEvaluationState extends State<HeatedMeatEvaluation> {
     return false;
   }
 
-  void _sendEvaluation(MeatData meatData) {
-    //firebase에 데이터 전송하는 '저장' 버튼 기능
-
+  void saveMeatData() {
     // 사용자가 선택한 값(true)의 index에 1을 더한다.
     // ex) (없음:1,약간있음:2, 보통:3, 약간많음:4, 많음:5)
     double flavorIndex = _selectedFlavor.indexOf(true) + 1;
@@ -50,8 +49,14 @@ class HeatedMeatEvaluationState extends State<HeatedMeatEvaluation> {
     double umamiIndex = _selectedUmami.indexOf(true) + 1;
     double palatabilityIndex = _selectedPalatability.indexOf(true) + 1;
 
-    Map<String, double> heatedData = {
-      //데이터를 Map 형식으로 지정
+    DateTime now = DateTime.now();
+    String createdAt = DateFormat('yyyy-MM-ddTHH:mm:ssZ').format(now);
+
+    // 데이터 생성
+    Map<String, dynamic> heatedData = {
+      'createdAt': createdAt,
+      'userId': widget.meatData.userId,
+      'period': widget.meatData.getPeriod(),
       'flavor': flavorIndex,
       'juiciness': juicinessIndex,
       'tenderness': tendernessIndex,
@@ -60,7 +65,7 @@ class HeatedMeatEvaluationState extends State<HeatedMeatEvaluation> {
     };
 
     // 데이터를 객체에 저장
-    meatData.heatedMeat = heatedData;
+    widget.meatData.heatedmeat = heatedData;
   }
 
   @override
@@ -165,7 +170,7 @@ class HeatedMeatEvaluationState extends State<HeatedMeatEvaluation> {
               child: SaveButton(
                 onPressed: _isAllselected()
                     ? () {
-                        _sendEvaluation(widget.meatData);
+                        saveMeatData();
                         context.pop();
                       }
                     : null,

@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 class ApiServices {
   static String baseUrl = '';
 
+  // 육류 정보 전송
   static Future<void> postMeatData(String jsonData) async {
     String apiUrl = '$baseUrl/meat/set';
     Map<String, String> headers = {'Content-Type': 'application/json'};

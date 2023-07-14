@@ -4,7 +4,6 @@ import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crypto/crypto.dart';
 import 'package:deep_plant_app/models/meat_data_model.dart';
-import 'package:deep_plant_app/models/user_data_model.dart';
 import 'package:deep_plant_app/source/api_services.dart';
 import 'package:deep_plant_app/source/pallete.dart';
 import 'package:deep_plant_app/widgets/save_button.dart';
@@ -16,11 +15,9 @@ import 'package:intl/intl.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 class CompleteResgistration extends StatefulWidget {
-  final UserData userData;
   final MeatData meatData;
   const CompleteResgistration({
     super.key,
-    required this.userData,
     required this.meatData,
   });
 
@@ -29,22 +26,31 @@ class CompleteResgistration extends StatefulWidget {
 }
 
 class _CompleteResgistrationState extends State<CompleteResgistration> {
-  String originalString = '';
   String managementNum = '';
   FirebaseFirestore firestore = FirebaseFirestore.instance;
   bool isLoading = false;
 
   @override
-  void initState() {
+  void initState() async {
     super.initState();
+    // 로딩상태 활성화
+    setState(() {
+      isLoading = true;
+    });
+
     // 관리번호 생성
     createManagementNum();
 
     // 이미지 저장
-    sendImageToFirebase();
+    await sendImageToFirebase();
 
     // 데이터 전송
-    sendMeatData(widget.meatData);
+    await sendMeatData(widget.meatData);
+
+    // 로딩상태 비활성화
+    setState(() {
+      isLoading = false;
+    });
   }
 
   // 관리번호 생성
@@ -56,11 +62,12 @@ class _CompleteResgistrationState extends State<CompleteResgistration> {
       DateTime now = DateTime.now();
       String createdAt = DateFormat('yyyy-MM-ddTHH:mm:ssZ').format(now);
 
-      originalString =
+      String originalString =
           '${widget.meatData.traceNum!}-$createdAt-${widget.meatData.speciesValue!}-${widget.meatData.primalValue!}-${widget.meatData.secondaryValue!}';
 
-      // 해시함수로 관리번호 생성
+      // 해시함수로 관리번호 생성 및 저장
       managementNum = hashStringTo12Digits(originalString);
+      widget.meatData.id = managementNum;
     } else {
       print('에러');
     }
@@ -85,15 +92,7 @@ class _CompleteResgistrationState extends State<CompleteResgistration> {
 
   // 이미지를 파이어베이스에 저장
   Future<void> sendImageToFirebase() async {
-    setState(() {
-      isLoading = true;
-    });
     try {
-      // 육류 데이터 API 호출로 서버에 저장
-      /////////////////////////////
-      // 코드 추가 필요
-      /////////////////////////////
-
       // fire storage에 육류 이미지 저장
       final refMeatImage =
           FirebaseStorage.instance.ref().child('meats/$managementNum.png');
@@ -108,9 +107,6 @@ class _CompleteResgistrationState extends State<CompleteResgistration> {
     } catch (e) {
       print(e);
     }
-    setState(() {
-      isLoading = false;
-    });
   }
 
   // QR생성 및 전송

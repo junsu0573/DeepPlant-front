@@ -1,5 +1,4 @@
 import 'package:deep_plant_app/models/meat_data_model.dart';
-import 'package:deep_plant_app/models/user_data_model.dart';
 import 'package:deep_plant_app/widgets/save_button.dart';
 import 'package:deep_plant_app/widgets/show_custom_dialog.dart';
 import 'package:deep_plant_app/widgets/title_desc.dart';
@@ -11,11 +10,9 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 class FreshmeatEvaluation extends StatefulWidget {
-  final UserData userData;
   final MeatData meatData;
   const FreshmeatEvaluation({
     super.key,
-    required this.userData,
     required this.meatData,
   });
 
@@ -44,7 +41,7 @@ class _FreshmeatEvaluationState extends State<FreshmeatEvaluation> {
   }
 
   // 육류 정보 저장
-  void saveMeatData(MeatData meatData) {
+  void saveMeatData() {
     double mablingIndex = _selectedMabling.indexOf(true) + 1;
     double colorIndex = _selectedColor.indexOf(true) + 1;
     double textureIndex = _selectedTexture.indexOf(true) + 1;
@@ -57,8 +54,8 @@ class _FreshmeatEvaluationState extends State<FreshmeatEvaluation> {
     //데이터를 Map 형식으로 저장
     Map<String, dynamic> freshData = {
       'createdAt': createdAt,
-      'userId': widget.userData.userId,
-      'period': null,
+      'userId': widget.meatData.userId,
+      'period': widget.meatData.getPeriod(),
       'marbling': mablingIndex,
       'color': colorIndex,
       'texture': textureIndex,
@@ -67,7 +64,7 @@ class _FreshmeatEvaluationState extends State<FreshmeatEvaluation> {
     };
 
     // 데이터를 객체에 저장
-    meatData.freshmeat = freshData;
+    widget.meatData.freshmeat = freshData;
   }
 
   @override
@@ -182,7 +179,7 @@ class _FreshmeatEvaluationState extends State<FreshmeatEvaluation> {
               child: SaveButton(
                 onPressed: _isAllselected()
                     ? () {
-                        saveMeatData(widget.meatData);
+                        saveMeatData();
                         context.pop();
                       }
                     : null,

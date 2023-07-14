@@ -6,19 +6,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
-class ExperimentDataInputPage extends StatefulWidget {
+class LabDataInput extends StatefulWidget {
   final MeatData meatData;
-  const ExperimentDataInputPage({
+  const LabDataInput({
     super.key,
     required this.meatData,
   });
 
   @override
-  State<ExperimentDataInputPage> createState() =>
-      _ExperimentDataInputPageState();
+  State<LabDataInput> createState() => _LabDataInputState();
 }
 
-class _ExperimentDataInputPageState extends State<ExperimentDataInputPage> {
+class _LabDataInputState extends State<LabDataInput> {
   TextEditingController l = TextEditingController();
   TextEditingController a = TextEditingController();
   TextEditingController b = TextEditingController();
@@ -30,30 +29,30 @@ class _ExperimentDataInputPageState extends State<ExperimentDataInputPage> {
   TextEditingController ct = TextEditingController();
   TextEditingController mfi = TextEditingController();
 
-  void saveEvaluation() {
-    final ldata = double.parse(dl.text);
-    final adata = double.parse(dl.text);
-    final bdata = double.parse(dl.text);
-    final dldata = double.parse(dl.text);
-    final cldata = double.parse(cl.text);
-    final rwdata = double.parse(dl.text);
-    final phdata = double.parse(ph.text);
-    final wbsfdata = double.parse(wbsf.text);
-    final ctdata = double.parse(ct.text);
-    final mfidata = double.parse(mfi.text);
+  void saveMeatData() {
+    final lData = double.parse(l.text);
+    final aData = double.parse(a.text);
+    final bData = double.parse(b.text);
+    final dlData = double.parse(dl.text);
+    final clData = double.parse(cl.text);
+    final rwData = double.parse(rw.text);
+    final phData = double.parse(ph.text);
+    final wbsfData = double.parse(wbsf.text);
+    final ctData = double.parse(ct.text);
+    final mfiData = double.parse(mfi.text);
 
-    Map<String, double> labData = {
+    Map<String, dynamic> labData = {
       //데이터를 Map 형식으로 지정
-      'L': ldata,
-      'a': adata,
-      'b': bdata,
-      'DL': dldata,
-      'CL': cldata,
-      'RW': rwdata,
-      'ph': phdata,
-      'WBSF': wbsfdata,
-      'cardepsin_activity': ctdata,
-      'MFI': mfidata
+      'L': lData,
+      'a': aData,
+      'b': bData,
+      'DL': dlData,
+      'CL': clData,
+      'RW': rwData,
+      'ph': phData,
+      'WBSF': wbsfData,
+      'cardepsin_activity': ctData,
+      'MFI': mfiData
     };
 
     // 데이터를 객체에 저장
@@ -140,7 +139,7 @@ class _ExperimentDataInputPageState extends State<ExperimentDataInputPage> {
               SaveButton(
                 onPressed: _isAllInseted()
                     ? () {
-                        saveEvaluation();
+                        saveMeatData();
                         context.pop();
                       }
                     : null,

@@ -25,10 +25,10 @@ class _ShowStepState extends State<ShowStep> {
   String _userId = '';
 
   @override
-  void initState() async {
+  void initState() {
     super.initState();
     // 육류 정보 초기화
-    widget.meatData.resetData();
+    widget.meatData.resetDataForStep1();
 
     // 유저 아이디 저장
     _userId = widget.userData.userId!;
@@ -51,7 +51,7 @@ class _ShowStepState extends State<ShowStep> {
 
   void initialize() async {
     // 임시저장 데이터를 가져와 객체에 저장
-    await widget.meatData.initMeatData(_userId).then((_) {
+    await widget.meatData.initMeatDataForStep1(_userId).then((_) {
       setState(() {});
     });
 
@@ -62,8 +62,8 @@ class _ShowStepState extends State<ShowStep> {
       // 임시저장 데이터가 null값이 아닐 때 다이얼로그 호출
       showDataRegisterDialog(context, () async {
         // 처음부터
-        widget.meatData.resetTempData();
-        await widget.meatData.initMeatData(_userId).then((_) {
+        widget.meatData.resetTempDataForStep1();
+        await widget.meatData.initMeatDataForStep1(_userId).then((_) {
           setState(() {});
         });
         if (!mounted) return;
@@ -86,7 +86,7 @@ class _ShowStepState extends State<ShowStep> {
         closeButtonOnPressed: () {
           showExitDialog(
             context,
-            () => widget.meatData.initMeatData(_userId),
+            () => widget.meatData.initMeatDataForStep1(_userId),
           );
         },
       ),
@@ -151,7 +151,7 @@ class _ShowStepState extends State<ShowStep> {
                       showTemporarySaveDialog(
                         context,
                         () {
-                          widget.meatData.saveTempData();
+                          widget.meatData.saveTempDataForStep1();
                           context.pop();
                         },
                       );
@@ -166,8 +166,11 @@ class _ShowStepState extends State<ShowStep> {
                   ),
                   SaveButton(
                     onPressed: _isAllCompleted()
-                        ? () {
-                            widget.meatData.resetTempData();
+                        ? () async {
+                            await widget.meatData.resetTempDataForStep1();
+                            if (!mounted) {
+                              return;
+                            }
                             widget.userData.type == 'Normal'
                                 ? context.go('/option/complete-register')
                                 : context.go('/option/complete-register-2');
