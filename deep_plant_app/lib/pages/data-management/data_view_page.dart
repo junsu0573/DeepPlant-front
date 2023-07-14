@@ -417,6 +417,7 @@ class DataViewState extends State<DataView> {
                                                   option1 = tempOption1;
                                                   option2 = tempOption2;
                                                   option3 = tempOption3;
+                                                  selectedEtc = true;
                                                 });
                                               },
                                             ),
@@ -452,7 +453,7 @@ class DataViewState extends State<DataView> {
             ),
             Expanded(
               child: SingleChildScrollView(
-                child: getDataView(userData, text, manageDataState, option1, option2, option3),
+                child: getDataView(userData, text, manageDataState, option1, option2, option3, _rangeStart, _rangeEnd, selectedEtc),
               ),
             ),
           ],

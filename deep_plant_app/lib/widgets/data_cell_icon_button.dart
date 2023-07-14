@@ -32,7 +32,6 @@ class DataCellIconButton extends StatelessWidget {
           backgroundColor: bgColor,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(35.0),
-            side: BorderSide(color: Colors.black, width: 0.5),
           ),
         ),
         label: Text(
