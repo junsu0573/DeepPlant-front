@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:deep_plant_app/models/meat_data_model.dart';
 import 'package:deep_plant_app/models/user_model.dart';
+import 'package:deep_plant_app/source/pallete.dart';
 import 'package:deep_plant_app/widgets/camera_page_dialog_custom.dart';
 import 'package:deep_plant_app/widgets/custom_appbar.dart';
 import 'package:deep_plant_app/widgets/save_button.dart';
@@ -107,7 +108,8 @@ class _InsertionMeatImageState extends State<InsertionMeatImage> {
     });
   }
 
-  void saveData(MeatData meatData, String? imagePath, String year, String month, String day) {
+  void saveData(MeatData meatData, String? imagePath, String year, String month,
+      String day) {
     meatData.imageFile = imagePath;
     meatData.saveTime = '{$year}-{$month}-{$day}';
   }
@@ -136,150 +138,167 @@ class _InsertionMeatImageState extends State<InsertionMeatImage> {
               fontWeight: FontWeight.w600,
             ),
           ),
-          Container(
-            padding: EdgeInsets.only(right: 15.0),
-            height: 15.0,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                IconButton(
-                  onPressed: () {
-                    setState(() {
-                      showFirst(context);
-                    });
-                  },
-                  icon: Icon(
-                    Icons.info_outline,
-                    color: Colors.grey[600],
-                    size: 25.0,
-                  ),
-                ),
-              ],
-            ),
+          SizedBox(
+            height: 5.h,
           ),
-          Padding(
-            padding: EdgeInsets.only(left: 69.w),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Text(
-                  '촬영날짜',
-                  style: TextStyle(
-                    fontSize: 24.sp,
-                    color: Color.fromRGBO(131, 131, 131, 1),
-                  ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              IconButton(
+                onPressed: () {
+                  setState(() {
+                    showFirst(context);
+                  });
+                },
+                icon: Icon(
+                  Icons.info_outline,
+                  color: Colors.grey[600],
+                  size: 45.w,
                 ),
-              ],
-            ),
+              ),
+              SizedBox(
+                width: 40.w,
+              ),
+            ],
           ),
           SizedBox(
-            height: 5.0,
+            height: 6.h,
           ),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10.0),
-                    color: isImageAssigned ? Colors.grey[800] : Colors.grey[400],
-                  ),
-                  width: 158.w,
-                  height: 73.h,
-                  child: Text(
-                    isImageAssigned ? '$month월' : '월',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20.0,
-                    ),
-                  ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              SizedBox(
+                width: 69.w,
+              ),
+              Text(
+                '촬영날짜',
+                style: TextStyle(
+                  fontSize: 24.sp,
+                  fontWeight: FontWeight.w400,
+                  color: Palette.greyTextColor,
                 ),
-                SizedBox(
-                  width: 17.w,
-                ),
-                Container(
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10.0),
-                    color: isImageAssigned ? Colors.grey[800] : Colors.grey[400],
-                  ),
-                  width: 158.w,
-                  height: 73.h,
-                  child: Text(
-                    isImageAssigned ? '$day일' : '일',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20.0,
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  width: 17.w,
-                ),
-                Container(
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10.0),
-                    color: isImageAssigned ? Colors.grey[800] : Colors.grey[400],
-                  ),
-                  width: 238.w,
-                  height: 73.h,
-                  child: Text(
-                    isImageAssigned ? year : '년도',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20.0,
-                    ),
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
           SizedBox(
-            height: 10.0,
+            height: 10.w,
           ),
-          Padding(
-            padding: EdgeInsets.only(left: 69.w),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Text(
-                  '촬영자',
-                  style: TextStyle(
-                    color: Color.fromRGBO(131, 131, 131, 1),
-                    fontSize: 24.sp,
-                  ),
-                ),
-                SizedBox(
-                  width: 15.0,
-                ),
-                SizedBox(
-                  width: isImageAssigned ? (MediaQuery.of(context).size.width - 150.0) : 5.0,
-                  child: isImageAssigned
-                      ? Text('${widget.user.name}(${widget.user.email})')
-                      : Divider(
-                          color: Colors.black,
-                          thickness: 1.5,
-                        ),
-                ),
-              ],
-            ),
-          ),
-          SizedBox(
-            height: 10.0,
-          ),
-          Stack(
-            //fit: StackFit.expand,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15.sp),
+                  color: isImageAssigned
+                      ? Palette.deepOptionColor
+                      : Palette.lightOptionColor,
+                ),
+                width: 158.w,
+                height: 73.h,
+                child: Text(
+                  isImageAssigned ? '$month월' : '월',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 36.sp,
+                    fontWeight: FontWeight.w400,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+              SizedBox(
+                width: 17.w,
+              ),
+              Container(
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15.sp),
+                  color: isImageAssigned
+                      ? Palette.deepOptionColor
+                      : Palette.lightOptionColor,
+                ),
+                width: 158.w,
+                height: 73.h,
+                child: Text(
+                  isImageAssigned ? '$day일' : '일',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 36.sp,
+                    fontWeight: FontWeight.w400,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+              SizedBox(
+                width: 17.w,
+              ),
+              Container(
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15.sp),
+                  color: isImageAssigned
+                      ? Palette.deepOptionColor
+                      : Palette.lightOptionColor,
+                ),
+                width: 238.w,
+                height: 73.h,
+                child: Text(
+                  isImageAssigned ? year : '년도',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 36.sp,
+                    fontWeight: FontWeight.w400,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          SizedBox(
+            height: 20.sp,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              SizedBox(
+                width: 69.w,
+              ),
+              Text(
+                '촬영자',
+                style: TextStyle(
+                  color: Palette.greyTextColor,
+                  fontSize: 24.sp,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+              SizedBox(
+                width: 19.w,
+              ),
+              isImageAssigned
+                  ? Text(
+                      '${widget.user.name}(${widget.user.email})',
+                      style: TextStyle(
+                        fontSize: 26.sp,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    )
+                  : Text(
+                      '-',
+                      style: TextStyle(
+                        fontSize: 26.sp,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    )
+            ],
+          ),
+          SizedBox(
+            height: 27.h,
+          ),
+          Stack(
+            children: [
+              SizedBox(
                 width: 585.w,
                 height: 585.h,
-                margin: EdgeInsets.symmetric(horizontal: 30),
                 child: pickedImage != null
                     ? Image.file(
                         pickedImage!,
@@ -293,12 +312,13 @@ class _InsertionMeatImageState extends State<InsertionMeatImage> {
                             _pickImage();
                           },
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.grey[200],
+                            elevation: 0,
+                            backgroundColor: Palette.textFieldColor,
                           ),
                           child: Icon(
                             Icons.camera_alt_outlined,
                             size: 80.0,
-                            color: Colors.grey,
+                            color: Palette.lightOptionColor,
                           ),
                         ),
                       ),
@@ -347,7 +367,7 @@ class _InsertionMeatImageState extends State<InsertionMeatImage> {
                 width: 658.w,
                 heigh: 104.h,
                 isWhite: false),
-          )
+          ),
         ],
       ),
     );

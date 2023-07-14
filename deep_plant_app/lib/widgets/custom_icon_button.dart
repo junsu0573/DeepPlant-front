@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CustomIconButton extends StatelessWidget {
   final ImageProvider image;
   final VoidCallback onTap;
+  final double width;
+  final double height;
 
   CustomIconButton({
     super.key,
     required this.image,
     required this.onTap,
+    required this.width,
+    required this.height,
   });
 
   @override
@@ -22,8 +25,8 @@ class CustomIconButton extends StatelessWidget {
           color: Colors.transparent,
         ),
         child: SizedBox(
-          width: 63.w,
-          height: 63.h,
+          width: width,
+          height: height,
           child: Image(
             image: image,
           ),

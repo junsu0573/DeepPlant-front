@@ -33,6 +33,8 @@ class OptionPage extends StatelessWidget {
                 onTap: () {
                   context.go('/option/my-page');
                 },
+                width: 63.w,
+                height: 63.h,
               ),
               SizedBox(
                 width: 25.w,
