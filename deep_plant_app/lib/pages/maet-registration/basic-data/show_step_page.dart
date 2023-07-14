@@ -27,7 +27,14 @@ class _ShowStepState extends State<ShowStep> {
   @override
   void initState() async {
     super.initState();
+    // 육류 정보 초기화
+    widget.meatData.resetData();
+
+    // 유저 아이디 저장
     _userId = widget.userData.userId!;
+    widget.meatData.userId = _userId;
+
+    // 임시저장 처리
     WidgetsBinding.instance.addPostFrameCallback((_) {
       initialize();
     });
@@ -55,7 +62,7 @@ class _ShowStepState extends State<ShowStep> {
       // 임시저장 데이터가 null값이 아닐 때 다이얼로그 호출
       showDataRegisterDialog(context, () async {
         // 처음부터
-        widget.meatData.resetTempData(_userId);
+        widget.meatData.resetTempData();
         await widget.meatData.initMeatData(_userId).then((_) {
           setState(() {});
         });
@@ -144,7 +151,7 @@ class _ShowStepState extends State<ShowStep> {
                       showTemporarySaveDialog(
                         context,
                         () {
-                          widget.meatData.saveTempData(_userId);
+                          widget.meatData.saveTempData();
                           context.pop();
                         },
                       );
@@ -160,7 +167,7 @@ class _ShowStepState extends State<ShowStep> {
                   SaveButton(
                     onPressed: _isAllCompleted()
                         ? () {
-                            widget.meatData.resetTempData(_userId);
+                            widget.meatData.resetTempData();
                             widget.userData.type == 'Normal'
                                 ? context.go('/option/complete-register')
                                 : context.go('/option/complete-register-2');

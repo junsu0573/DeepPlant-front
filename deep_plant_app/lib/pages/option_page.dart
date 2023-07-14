@@ -111,7 +111,7 @@ class OptionPage extends StatelessWidget {
                                     ),
                                   ),
                                   Text(
-                                    user.level == 'users_1'
+                                    userData.type == 'Normal'
                                         ? textForNormal1
                                         : textForResearcher1,
                                     style: TextStyle(
@@ -173,7 +173,7 @@ class OptionPage extends StatelessWidget {
                                     ),
                                   ),
                                   Text(
-                                    user.level == 'users_1'
+                                    userData.type == 'users_1'
                                         ? textForNormal2
                                         : textForResearcher2,
                                     style: TextStyle(

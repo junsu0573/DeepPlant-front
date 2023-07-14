@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crypto/crypto.dart';
 import 'package:deep_plant_app/models/meat_data_model.dart';
 import 'package:deep_plant_app/models/user_data_model.dart';
+import 'package:deep_plant_app/source/api_services.dart';
 import 'package:deep_plant_app/source/pallete.dart';
 import 'package:deep_plant_app/widgets/save_button.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -36,8 +37,14 @@ class _CompleteResgistrationState extends State<CompleteResgistration> {
   @override
   void initState() {
     super.initState();
+    // 관리번호 생성
     createManagementNum();
-    sendDataToFirebase();
+
+    // 이미지 저장
+    sendImageToFirebase();
+
+    // 데이터 전송
+    sendMeatData(widget.meatData);
   }
 
   // 관리번호 생성
@@ -51,7 +58,8 @@ class _CompleteResgistrationState extends State<CompleteResgistration> {
 
       originalString =
           '${widget.meatData.traceNum!}-$createdAt-${widget.meatData.speciesValue!}-${widget.meatData.primalValue!}-${widget.meatData.secondaryValue!}';
-      // 관리번호 생성
+
+      // 해시함수로 관리번호 생성
       managementNum = hashStringTo12Digits(originalString);
     } else {
       print('에러');
@@ -75,7 +83,8 @@ class _CompleteResgistrationState extends State<CompleteResgistration> {
     return twelveDigits;
   }
 
-  Future<void> sendDataToFirebase() async {
+  // 이미지를 파이어베이스에 저장
+  Future<void> sendImageToFirebase() async {
     setState(() {
       isLoading = true;
     });
@@ -121,6 +130,15 @@ class _CompleteResgistrationState extends State<CompleteResgistration> {
     final storageRef =
         FirebaseStorage.instance.ref().child('qr_codes/$data.png');
     await storageRef.putData(bytes);
+  }
+
+  // 육류 정보를 서버로 전송
+  Future<void> sendMeatData(MeatData meatData) async {
+    // 육류 정보를 json 형삭으로 변환
+    final jsonData = meatData.convertNewMeatToJson();
+
+    // 데이터 전송
+    await ApiServices.postMeatData(jsonData);
   }
 
   @override

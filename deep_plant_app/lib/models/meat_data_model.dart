@@ -30,6 +30,7 @@ class MeatData {
   Map<String, dynamic>? freshmeat;
 
   // 연구 데이터 추가 입력 완료 시 저장
+  int? period;
   List<String>? deepAging;
   Map<String, dynamic>? heatedmeat;
   Map<String, dynamic>? tongueData;
@@ -55,6 +56,7 @@ class MeatData {
     this.freshmeat,
 
     // 연구 데이터 추가 입력 완료 시 저장
+    this.period,
     this.deepAging,
     this.heatedmeat,
     this.tongueData,
@@ -64,7 +66,7 @@ class MeatData {
   // 변수 초기화
   void resetData() {
     id = null;
-    userId = null;
+
     createdAt = null;
     traceNum = null;
     farmAddr = null;
@@ -80,6 +82,7 @@ class MeatData {
     imagePath = null;
     freshmeat = null;
 
+    period = null;
     deepAging = null;
     heatedmeat = null;
     tongueData = null;
@@ -132,7 +135,7 @@ class MeatData {
   }
 
   // 임시저장 데이터 저장
-  Future<void> saveTempData(String userId) async {
+  Future<void> saveTempData() async {
     // 데이터 생성
     Map<String, dynamic> tempData = {
       // 육류 오픈 API 데이터
@@ -162,11 +165,11 @@ class MeatData {
       'tongueData': tongueData,
       'labData': labData,
     };
-    await saveDataToLocal(tempData, userId);
+    await saveDataToLocal(tempData, userId!);
   }
 
   // 임시저장 데이터 리셋
-  Future<void> resetTempData(String userId) async {
+  Future<void> resetTempData() async {
     // 데이터 생성
     Map<String, dynamic> tempData = {
       // 육류 오픈 API 데이터
@@ -197,11 +200,11 @@ class MeatData {
       'labData': null,
     };
 
-    await saveDataToLocal(tempData, userId);
+    await saveDataToLocal(tempData, userId!);
   }
 
-  // 저장된 데이터를 json 형식으로 변환
-  String convertToJson() {
+  // 신규 육류 데이터를 json 형식으로 변환
+  String convertNewMeatToJson() {
     Map<String, dynamic> jsonData = {
       'id': id,
       'userId': userId,
@@ -212,16 +215,59 @@ class MeatData {
       'butcheryYmd': butcheryYmd,
       'birthYmd': birthYmd,
       'sexType': sexType,
+      'freshmeat': freshmeat,
       'speciesValue': speciesValue,
       'primalValue': primalValue,
       'secondaryValue': secondaryValue,
-      'freshmeat': freshmeat,
-      'deepAging': deepAging,
-      'heatedmeat': heatedmeat,
-      'tongueData': tongueData,
-      'labData': labData,
     };
 
     return jsonEncode(jsonData);
+  }
+
+  // 가열육 데이터를 json 형식으로 변환
+  String convertHeatedMeatToJson() {
+    Map<String, dynamic> jsonData = {
+      'id': id,
+      'heatedmeat': heatedmeat,
+    };
+
+    return jsonEncode(jsonData);
+  }
+
+  // 실험 데이터를 json 형식으로 변환
+  String convertPorbexptToJson() {
+    Map<String, dynamic> jsonData = {
+      'id': id,
+      'probexpt': _getProbexpt(),
+    };
+
+    return jsonEncode(jsonData);
+  }
+
+  Map<String, dynamic> _getProbexpt() {
+    Map<String, dynamic> probexpt = {};
+
+    if (tongueData != null && labData != null) {
+      probexpt['createdAt'] = createdAt;
+      probexpt['userId'] = userId;
+      probexpt['period'] = period;
+      probexpt['L'] = labData!['L'];
+      probexpt['a'] = labData!['a'];
+      probexpt['b'] = labData!['b'];
+      probexpt['DL'] = labData!['DL'];
+      probexpt['CL'] = labData!['CL'];
+      probexpt['RW'] = labData!['RW'];
+      probexpt['ph'] = labData!['ph'];
+      probexpt['WBSF'] = labData!['WBSF'];
+      probexpt['cardepsin_activity'] = labData!['cardepsin_activity'];
+      probexpt['MFI'] = labData!['MFI'];
+      probexpt['Collagen'] = labData!['Collagen'];
+      probexpt['sourness'] = tongueData!['sourness'];
+      probexpt['bitterness'] = tongueData!['bitterness'];
+      probexpt['umami'] = tongueData!['umami'];
+      probexpt['richness'] = tongueData!['richness'];
+    }
+
+    return probexpt;
   }
 }

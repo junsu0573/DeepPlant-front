@@ -359,9 +359,8 @@ class _InsertionMeatImageState extends State<InsertionMeatImage> {
             margin: EdgeInsets.only(bottom: 28.h),
             child: SaveButton(
                 onPressed: pickedImage != null
-                    ? () async {
-                        await saveImage();
-                        saveData(widget.meatData, imagePath, year, month, day);
+                    ? () {
+                        saveMeatData();
                         if (!mounted) return;
                         context.go('/option/show-step');
                       }

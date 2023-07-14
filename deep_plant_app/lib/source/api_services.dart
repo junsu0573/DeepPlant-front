@@ -1,23 +1,25 @@
-import 'package:deep_plant_app/models/meat_data_model.dart';
 import 'package:http/http.dart' as http;
 
 class ApiServices {
   static String baseUrl = '';
-  MeatData meatData;
-  ApiServices({
-    required this.meatData,
-  });
 
-  static Future<dynamic> fetchData(String endpoint) async {
+  static Future<void> postMeatData(String jsonData) async {
+    String apiUrl = '$baseUrl/meat/set';
+    Map<String, String> headers = {'Content-Type': 'application/json'};
+    String requestBody = jsonData;
+
     try {
-      final response = await http.get(Uri.parse('$baseUrl/$endpoint'));
+      final response = await http.post(Uri.parse(apiUrl),
+          headers: headers, body: requestBody);
       if (response.statusCode == 200) {
-        return response.body;
+        print('POST 요청 성공');
+        print(response.body);
       } else {
-        throw Exception('Failed to fetch data from API');
+        print('POST 요청 실패: ${response.statusCode}');
       }
     } catch (e) {
-      throw Exception('Failed to connect to the API');
+      // 예외가 발생했습니다.
+      print('POST 요청 중 예외 발생: $e');
     }
   }
 }
