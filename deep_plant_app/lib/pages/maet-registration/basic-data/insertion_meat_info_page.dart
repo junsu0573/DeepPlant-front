@@ -1,7 +1,9 @@
 import 'package:deep_plant_app/models/meat_data_model.dart';
+import 'package:deep_plant_app/source/pallete.dart';
 import 'package:deep_plant_app/widgets/custom_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:deep_plant_app/source/meat_info_source.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
 class InsertionMeatInfo extends StatefulWidget {
@@ -104,72 +106,128 @@ class _InsertionMeatInfoState extends State<InsertionMeatInfo> {
     List<List<String>> tableData_1 = source.tableData_1;
     List<List<String>> tableData_2 = source.tableData_2;
 
-    return Scaffold(
-      backgroundColor: Colors.white,
-      resizeToAvoidBottomInset: false,
-      appBar: CustomAppBar(title: '', backButton: false, closeButton: true),
-      body: GestureDetector(
-        onTap: () => FocusScope.of(context).unfocus(),
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: [
-              SizedBox(height: 5.0),
-              Align(
-                alignment: Alignment.center,
-                child: Text(
-                  '육류 정보 입력',
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        resizeToAvoidBottomInset: false,
+        appBar: CustomAppBar(
+          title: '',
+          backButton: false,
+          closeButton: true,
+        ),
+        body: Column(
+          children: [
+            Text(
+              '육류 정보 입력',
+              style: TextStyle(
+                fontSize: 36.sp,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            SizedBox(
+              height: 126.h,
+            ),
+            Row(
+              children: [
+                Text(
+                  '종류',
                   style: TextStyle(
-                    fontSize: 20.0,
-                    fontWeight: FontWeight.bold,
+                    fontSize: 32.sp,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
+              ],
+            ),
+            SizedBox(
+              height: 20.0,
+            ),
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(42.5.sp),
+                border: Border.all(
+                  color: Palette.textFieldColor,
+                  width: 1.0,
+                ),
               ),
-              SizedBox(
-                height: 100.0,
+              child: DropdownButton(
+                padding: EdgeInsets.only(left: 50.w),
+                alignment: Alignment.center,
+                elevation: 1,
+                underline: Container(),
+                borderRadius: BorderRadius.circular(42.5.sp),
+                dropdownColor: Colors.white,
+                icon: Container(
+                  width: 34.w,
+                  margin: EdgeInsets.only(right: 30.w),
+                  child: Image.asset('assets/images/arrow-b.png'),
+                ),
+                isExpanded: true,
+                hint: Text('종류 선택'),
+                value: selectedOrder,
+                items: orders
+                    .map((e) => DropdownMenuItem(
+                          value: e,
+                          child: Center(
+                              child: Text(
+                            e,
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          )),
+                        ))
+                    .toList(),
+                onChanged: (value) {
+                  setState(() {
+                    selectedOrder = value!;
+                    setOrder(selectedOrder!, source);
+                  });
+                },
               ),
-              Padding(
-                padding: const EdgeInsets.only(left: 35.0),
-                child: Row(
-                  children: [
-                    Text(
-                      '종류',
-                      textAlign: TextAlign.start,
-                      style: TextStyle(
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.bold,
-                      ),
+            ),
+            SizedBox(
+              height: 20.0,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 35.0),
+              child: Row(
+                children: [
+                  Text(
+                    '부위',
+                    textAlign: TextAlign.start,
+                    style: TextStyle(
+                      fontSize: 20.0,
+                      fontWeight: FontWeight.bold,
                     ),
-                  ],
-                ),
-              ),
-              SizedBox(
-                height: 20.0,
-              ),
-              Container(
-                margin: EdgeInsets.only(left: 30.0, right: 30.0),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(25.0),
-                  border: Border.all(
-                    color: Colors.grey,
-                    width: 1.0,
                   ),
+                ],
+              ),
+            ),
+            SizedBox(
+              height: 20.0,
+            ),
+            Container(
+              margin: EdgeInsets.only(left: 30.0, right: 30.0),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(25.0),
+                border: Border.all(
+                  color: Colors.grey,
+                  width: 1.0,
                 ),
-                child: Padding(
-                  padding: EdgeInsets.only(left: 15.0, right: 15.0),
-                  child: DropdownButton(
+              ),
+              child: Padding(
+                padding: EdgeInsets.only(left: 15.0, right: 15.0),
+                child: DropdownButton(
                     padding: EdgeInsets.only(left: 25.0),
+                    underline: Container(),
+                    menuMaxHeight: 250.0,
                     alignment: Alignment.center,
                     elevation: 1,
-                    underline: Container(),
                     borderRadius: BorderRadius.circular(10.0),
                     dropdownColor: Colors.white,
-                    iconSize: 25.0,
                     isExpanded: true,
-                    hint: Text('종류 선택'),
+                    hint: Text('대부위 선택'),
                     iconEnabledColor: Colors.grey[400],
-                    value: selectedOrder,
-                    items: orders
+                    value: selectedLarge,
+                    items: (orderNum == 0 ? largeOrders_1 : largeOrders_2)
                         .map((e) => DropdownMenuItem(
                               value: e,
                               child: Center(
@@ -179,158 +237,94 @@ class _InsertionMeatInfoState extends State<InsertionMeatInfo> {
                               )),
                             ))
                         .toList(),
-                    onChanged: (value) {
-                      setState(() {
-                        selectedOrder = value!;
-                        setOrder(selectedOrder!, source);
-                      });
-                    },
-                  ),
+                    onChanged: isselectedorder
+                        ? (value) {
+                            setState(() {
+                              selectedLarge = value as String;
+                              setLarge(selectedLarge!, source);
+                            });
+                          }
+                        : null),
+              ),
+            ),
+            SizedBox(
+              height: 20.0,
+            ),
+            Container(
+              margin: EdgeInsets.only(left: 30.0, right: 30.0),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(25.0),
+                border: Border.all(
+                  color: Colors.grey,
+                  width: 1.0,
                 ),
               ),
-              SizedBox(
-                height: 20.0,
+              child: Padding(
+                padding: EdgeInsets.only(left: 15.0, right: 15.0),
+                child: DropdownButton(
+                    padding: EdgeInsets.only(left: 25.0),
+                    underline: Container(),
+                    menuMaxHeight: 250.0,
+                    alignment: Alignment.center,
+                    elevation: 1,
+                    borderRadius: BorderRadius.circular(10.0),
+                    dropdownColor: Colors.white,
+                    isExpanded: true,
+                    hint: Text('소부위 선택'),
+                    iconEnabledColor: Colors.grey[400],
+                    value: selectedLittle,
+                    items: (orderNum == 0
+                            ? tableData_1[largeNum]
+                            : tableData_2[largeNum])
+                        .map((e) => DropdownMenuItem(
+                              value: e,
+                              child: Center(
+                                  child: Text(
+                                e,
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              )),
+                            ))
+                        .toList(),
+                    onChanged: isselectedlarge
+                        ? (value) {
+                            setState(() {
+                              selectedLittle = value as String;
+                              setLittle(selectedLittle!, source);
+                            });
+                          }
+                        : null),
               ),
-              Padding(
-                padding: const EdgeInsets.only(left: 35.0),
-                child: Row(
-                  children: [
-                    Text(
-                      '부위',
-                      textAlign: TextAlign.start,
-                      style: TextStyle(
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.bold,
+            ),
+            Spacer(
+              flex: 2,
+            ),
+            Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Transform.translate(
+                offset: Offset(0, 0),
+                child: SizedBox(
+                  height: 55,
+                  width: 350,
+                  child: ElevatedButton(
+                    onPressed: isFinal
+                        ? () {
+                            saveData(widget.meatData, MeatInfoSource());
+                            context.go('/option/show-step');
+                          }
+                        : null,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.grey[800],
+                      disabledBackgroundColor: Colors.grey[400],
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0),
                       ),
                     ),
-                  ],
-                ),
-              ),
-              SizedBox(
-                height: 20.0,
-              ),
-              Container(
-                margin: EdgeInsets.only(left: 30.0, right: 30.0),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(25.0),
-                  border: Border.all(
-                    color: Colors.grey,
-                    width: 1.0,
+                    child: Text('다음'),
                   ),
                 ),
-                child: Padding(
-                  padding: EdgeInsets.only(left: 15.0, right: 15.0),
-                  child: DropdownButton(
-                      padding: EdgeInsets.only(left: 25.0),
-                      underline: Container(),
-                      menuMaxHeight: 250.0,
-                      alignment: Alignment.center,
-                      elevation: 1,
-                      borderRadius: BorderRadius.circular(10.0),
-                      dropdownColor: Colors.white,
-                      isExpanded: true,
-                      hint: Text('대부위 선택'),
-                      iconEnabledColor: Colors.grey[400],
-                      value: selectedLarge,
-                      items: (orderNum == 0 ? largeOrders_1 : largeOrders_2)
-                          .map((e) => DropdownMenuItem(
-                                value: e,
-                                child: Center(
-                                    child: Text(
-                                  e,
-                                  style: TextStyle(fontWeight: FontWeight.bold),
-                                )),
-                              ))
-                          .toList(),
-                      onChanged: isselectedorder
-                          ? (value) {
-                              setState(() {
-                                selectedLarge = value as String;
-                                setLarge(selectedLarge!, source);
-                              });
-                            }
-                          : null),
-                ),
               ),
-              SizedBox(
-                height: 20.0,
-              ),
-              Container(
-                margin: EdgeInsets.only(left: 30.0, right: 30.0),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(25.0),
-                  border: Border.all(
-                    color: Colors.grey,
-                    width: 1.0,
-                  ),
-                ),
-                child: Padding(
-                  padding: EdgeInsets.only(left: 15.0, right: 15.0),
-                  child: DropdownButton(
-                      padding: EdgeInsets.only(left: 25.0),
-                      underline: Container(),
-                      menuMaxHeight: 250.0,
-                      alignment: Alignment.center,
-                      elevation: 1,
-                      borderRadius: BorderRadius.circular(10.0),
-                      dropdownColor: Colors.white,
-                      isExpanded: true,
-                      hint: Text('소부위 선택'),
-                      iconEnabledColor: Colors.grey[400],
-                      value: selectedLittle,
-                      items: (orderNum == 0
-                              ? tableData_1[largeNum]
-                              : tableData_2[largeNum])
-                          .map((e) => DropdownMenuItem(
-                                value: e,
-                                child: Center(
-                                    child: Text(
-                                  e,
-                                  style: TextStyle(fontWeight: FontWeight.bold),
-                                )),
-                              ))
-                          .toList(),
-                      onChanged: isselectedlarge
-                          ? (value) {
-                              setState(() {
-                                selectedLittle = value as String;
-                                setLittle(selectedLittle!, source);
-                              });
-                            }
-                          : null),
-                ),
-              ),
-              Spacer(
-                flex: 2,
-              ),
-              Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Transform.translate(
-                  offset: Offset(0, 0),
-                  child: SizedBox(
-                    height: 55,
-                    width: 350,
-                    child: ElevatedButton(
-                      onPressed: isFinal
-                          ? () {
-                              saveData(widget.meatData, MeatInfoSource());
-                              context.go('/option/show-step');
-                            }
-                          : null,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.grey[800],
-                        disabledBackgroundColor: Colors.grey[400],
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                      ),
-                      child: Text('다음'),
-                    ),
-                  ),
-                ),
-              )
-            ],
-          ),
+            )
+          ],
         ),
       ),
     );
