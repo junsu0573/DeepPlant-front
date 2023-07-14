@@ -1,6 +1,8 @@
 import 'package:deep_plant_app/models/meat_data_model.dart';
 import 'package:deep_plant_app/source/pallete.dart';
 import 'package:deep_plant_app/widgets/custom_appbar.dart';
+import 'package:deep_plant_app/widgets/custom_dropdown.dart';
+import 'package:deep_plant_app/widgets/save_button.dart';
 import 'package:flutter/material.dart';
 import 'package:deep_plant_app/source/meat_info_source.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -118,125 +120,80 @@ class _InsertionMeatInfoState extends State<InsertionMeatInfo> {
         ),
         body: Column(
           children: [
-            Text(
-              '육류 정보 입력',
-              style: TextStyle(
-                fontSize: 36.sp,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-            SizedBox(
-              height: 126.h,
-            ),
-            Row(
-              children: [
-                Text(
-                  '종류',
-                  style: TextStyle(
-                    fontSize: 32.sp,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 20.0,
-            ),
             Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(42.5.sp),
-                border: Border.all(
-                  color: Palette.textFieldColor,
-                  width: 1.0,
-                ),
-              ),
-              child: DropdownButton(
-                padding: EdgeInsets.only(left: 50.w),
-                alignment: Alignment.center,
-                elevation: 1,
-                underline: Container(),
-                borderRadius: BorderRadius.circular(42.5.sp),
-                dropdownColor: Colors.white,
-                icon: Container(
-                  width: 34.w,
-                  margin: EdgeInsets.only(right: 30.w),
-                  child: Image.asset('assets/images/arrow-b.png'),
-                ),
-                isExpanded: true,
-                hint: Text('종류 선택'),
-                value: selectedOrder,
-                items: orders
-                    .map((e) => DropdownMenuItem(
-                          value: e,
-                          child: Center(
-                              child: Text(
-                            e,
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          )),
-                        ))
-                    .toList(),
-                onChanged: (value) {
-                  setState(() {
-                    selectedOrder = value!;
-                    setOrder(selectedOrder!, source);
-                  });
-                },
-              ),
-            ),
-            SizedBox(
-              height: 20.0,
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 35.0),
-              child: Row(
+              margin: EdgeInsets.symmetric(horizontal: 79.w),
+              child: Column(
                 children: [
                   Text(
-                    '부위',
-                    textAlign: TextAlign.start,
+                    '육류 정보 입력',
                     style: TextStyle(
-                      fontSize: 20.0,
-                      fontWeight: FontWeight.bold,
+                      fontSize: 36.sp,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
-                ],
-              ),
-            ),
-            SizedBox(
-              height: 20.0,
-            ),
-            Container(
-              margin: EdgeInsets.only(left: 30.0, right: 30.0),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(25.0),
-                border: Border.all(
-                  color: Colors.grey,
-                  width: 1.0,
-                ),
-              ),
-              child: Padding(
-                padding: EdgeInsets.only(left: 15.0, right: 15.0),
-                child: DropdownButton(
-                    padding: EdgeInsets.only(left: 25.0),
-                    underline: Container(),
-                    menuMaxHeight: 250.0,
-                    alignment: Alignment.center,
-                    elevation: 1,
-                    borderRadius: BorderRadius.circular(10.0),
-                    dropdownColor: Colors.white,
-                    isExpanded: true,
-                    hint: Text('대부위 선택'),
-                    iconEnabledColor: Colors.grey[400],
+                  SizedBox(
+                    height: 126.h,
+                  ),
+                  Row(
+                    children: [
+                      Text(
+                        '종류',
+                        style: TextStyle(
+                          fontSize: 32.sp,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 20.0,
+                  ),
+                  CustomDropdown(
+                    hintText: Text(
+                      '종류 선택',
+                      style: TextStyle(
+                        fontSize: 30.sp,
+                        fontWeight: FontWeight.w400,
+                        color: Palette.greyTextColor,
+                      ),
+                    ),
+                    value: selectedOrder,
+                    itemList: orders,
+                    onChanged: (value) {
+                      setState(() {
+                        selectedOrder = value!;
+                        setOrder(selectedOrder!, source);
+                      });
+                    },
+                  ),
+                  SizedBox(
+                    height: 42.0.h,
+                  ),
+                  Row(
+                    children: [
+                      Text(
+                        '부위',
+                        style: TextStyle(
+                          fontSize: 32.sp,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 16.0.h,
+                  ),
+                  CustomDropdown(
+                    hintText: Text(
+                      '대분할 선택',
+                      style: TextStyle(
+                        fontSize: 30.sp,
+                        fontWeight: FontWeight.w400,
+                        color: Palette.greyTextColor,
+                      ),
+                    ),
                     value: selectedLarge,
-                    items: (orderNum == 0 ? largeOrders_1 : largeOrders_2)
-                        .map((e) => DropdownMenuItem(
-                              value: e,
-                              child: Center(
-                                  child: Text(
-                                e,
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              )),
-                            ))
-                        .toList(),
+                    itemList: orderNum == 0 ? largeOrders_1 : largeOrders_2,
                     onChanged: isselectedorder
                         ? (value) {
                             setState(() {
@@ -244,47 +201,24 @@ class _InsertionMeatInfoState extends State<InsertionMeatInfo> {
                               setLarge(selectedLarge!, source);
                             });
                           }
-                        : null),
-              ),
-            ),
-            SizedBox(
-              height: 20.0,
-            ),
-            Container(
-              margin: EdgeInsets.only(left: 30.0, right: 30.0),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(25.0),
-                border: Border.all(
-                  color: Colors.grey,
-                  width: 1.0,
-                ),
-              ),
-              child: Padding(
-                padding: EdgeInsets.only(left: 15.0, right: 15.0),
-                child: DropdownButton(
-                    padding: EdgeInsets.only(left: 25.0),
-                    underline: Container(),
-                    menuMaxHeight: 250.0,
-                    alignment: Alignment.center,
-                    elevation: 1,
-                    borderRadius: BorderRadius.circular(10.0),
-                    dropdownColor: Colors.white,
-                    isExpanded: true,
-                    hint: Text('소부위 선택'),
-                    iconEnabledColor: Colors.grey[400],
+                        : null,
+                  ),
+                  SizedBox(
+                    height: 16.h,
+                  ),
+                  CustomDropdown(
+                    hintText: Text(
+                      '소분할 선택',
+                      style: TextStyle(
+                        fontSize: 30.sp,
+                        fontWeight: FontWeight.w400,
+                        color: Palette.greyTextColor,
+                      ),
+                    ),
                     value: selectedLittle,
-                    items: (orderNum == 0
-                            ? tableData_1[largeNum]
-                            : tableData_2[largeNum])
-                        .map((e) => DropdownMenuItem(
-                              value: e,
-                              child: Center(
-                                  child: Text(
-                                e,
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              )),
-                            ))
-                        .toList(),
+                    itemList: orderNum == 0
+                        ? tableData_1[largeNum]
+                        : tableData_2[largeNum],
                     onChanged: isselectedlarge
                         ? (value) {
                             setState(() {
@@ -292,38 +226,27 @@ class _InsertionMeatInfoState extends State<InsertionMeatInfo> {
                               setLittle(selectedLittle!, source);
                             });
                           }
-                        : null),
-              ),
-            ),
-            Spacer(
-              flex: 2,
-            ),
-            Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Transform.translate(
-                offset: Offset(0, 0),
-                child: SizedBox(
-                  height: 55,
-                  width: 350,
-                  child: ElevatedButton(
-                    onPressed: isFinal
-                        ? () {
-                            saveData(widget.meatData, MeatInfoSource());
-                            context.go('/option/show-step');
-                          }
                         : null,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.grey[800],
-                      disabledBackgroundColor: Colors.grey[400],
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                    ),
-                    child: Text('다음'),
                   ),
-                ),
+                ],
               ),
-            )
+            ),
+            Spacer(),
+            Container(
+              margin: EdgeInsets.only(bottom: 28.h),
+              child: SaveButton(
+                onPressed: isFinal
+                    ? () {
+                        saveData(widget.meatData, MeatInfoSource());
+                        context.go('/option/show-step');
+                      }
+                    : null,
+                text: '저장',
+                width: 658.w,
+                heigh: 104.h,
+                isWhite: false,
+              ),
+            ),
           ],
         ),
       ),

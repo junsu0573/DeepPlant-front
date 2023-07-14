@@ -53,7 +53,7 @@ final _router = GoRouter(
   routes: [
     GoRoute(
       path: '/',
-      builder: (context, state) => GetTraceNum(
+      builder: (context, state) => InsertionMeatInfo(
         meatData: newMeat,
       ),
       routes: [
