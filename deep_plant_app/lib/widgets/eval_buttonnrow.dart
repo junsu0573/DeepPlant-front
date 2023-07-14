@@ -57,36 +57,45 @@ class EvalRow extends StatefulWidget {
 class _EvalRowState extends State<EvalRow> {
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    return Column(
       children: [
-        for (int i = 0; i < widget.text.length; i++)
-          Column(
-            children: [
-              EvalButton(
-                isSelected: widget.isSelected[i],
-                backgroundColor: [
-                  Color(0xFFEFEFEF),
-                  Color(0xFFD9D9D9),
-                  Color(0xFFB0B0B0),
-                  Color(0xFF6F6F6F),
-                  Color(0xFF363636),
-                ][i],
-                onPressed: () => widget.onEvalButtonPressed(i),
-              ),
-              SizedBox(height: 11.h),
-              Text(
-                widget.text[i],
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 24.sp,
-                  fontFamily: 'Inter',
-                  height: 1.2,
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            for (int i = 0; i < widget.text.length; i++)
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 8.5.w),
+                child: EvalButton(
+                  isSelected: widget.isSelected[i],
+                  backgroundColor: [
+                    Color(0xFFEFEFEF),
+                    Color(0xFFD9D9D9),
+                    Color(0xFFB0B0B0),
+                    Color(0xFF6F6F6F),
+                    Color(0xFF363636),
+                  ][i],
+                  onPressed: () => widget.onEvalButtonPressed(i),
                 ),
-                textAlign: TextAlign.center,
               ),
-            ],
-          ),
+          ],
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            for (int i = 0; i < widget.text.length; i++)
+              SizedBox(
+                width: 123.w,
+                child: Text(
+                  widget.text[i],
+                  style: TextStyle(
+                    fontSize: 24.sp,
+                    fontWeight: FontWeight.w400,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+          ],
+        ),
       ],
     );
   }

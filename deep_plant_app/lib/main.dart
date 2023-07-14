@@ -53,8 +53,7 @@ final _router = GoRouter(
   routes: [
     GoRoute(
       path: '/',
-      builder: (context, state) => InsertionMeatImage(
-        user: newUser,
+      builder: (context, state) => FreshmeatEvaluation(
         meatData: newMeat,
       ),
       routes: [

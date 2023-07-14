@@ -1,3 +1,4 @@
+import 'package:deep_plant_app/source/pallete.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -13,40 +14,30 @@ class TitleDesc extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        SizedBox(
-          height: 60.h,
-          child: Center(
-            child: Text(
-              title,
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 36.sp,
-                fontFamily: 'Inter',
-                height: 1.389.h,
-              ),
+    return Container(
+      margin: EdgeInsets.only(left: 60.w),
+      child: Row(
+        children: [
+          Text(
+            title,
+            style: TextStyle(
+              fontSize: 36.sp,
+              fontWeight: FontWeight.w400,
             ),
           ),
-        ),
-        SizedBox(
-          width: 10.w,
-        ),
-        SizedBox(
-          height: 50.h,
-          child: Center(
-            child: Text(
-              desc,
-              style: TextStyle(
-                color: Color(0xFF606060),
-                fontSize: 24.sp,
-                fontFamily: 'Inter',
-                height: 1.667.h, // line-height equivalent
-              ),
+          SizedBox(
+            width: 10.w,
+          ),
+          Text(
+            desc,
+            style: TextStyle(
+              fontSize: 24.sp,
+              fontWeight: FontWeight.w400,
+              color: Palette.greyTextColor,
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
