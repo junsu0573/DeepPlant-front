@@ -1,6 +1,7 @@
 import 'package:deep_plant_app/models/meat_data_model.dart';
 import 'package:deep_plant_app/models/user_model.dart';
-import 'package:deep_plant_app/pages/data-management/reading_data_advanced_page.dart';
+import 'package:deep_plant_app/pages/data-management/data_confirm_page.dart';
+import 'package:deep_plant_app/pages/data-management/data_view_page.dart';
 import 'package:deep_plant_app/widgets/custom_appbar.dart';
 import 'package:deep_plant_app/pages/data-management/data_add_page.dart';
 import 'package:flutter/material.dart';
@@ -58,11 +59,11 @@ class _DataManagement2State extends State<DataManagement2> with SingleTickerProv
                       meat: widget.meat,
                     ),
                     // Tab2의 내용
-                    Container(
-                      color: Colors.green,
+                    DataConfirm(
+                      user: widget.user,
                     ),
                     // Tab3의 내용
-                    ReadingDataAdvanced(
+                    DataView(
                       user: widget.user,
                     ),
                   ],
