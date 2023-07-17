@@ -1,11 +1,8 @@
 import 'dart:io';
 
 import 'package:deep_plant_app/models/meat_data_model.dart';
-<<<<<<< HEAD
-import 'package:deep_plant_app/models/user_model.dart';
+import 'package:deep_plant_app/models/user_data_model.dart';
 import 'package:deep_plant_app/source/pallete.dart';
-=======
->>>>>>> 28e37de (object data edit)
 import 'package:deep_plant_app/widgets/camera_page_dialog_custom.dart';
 import 'package:deep_plant_app/widgets/custom_appbar.dart';
 import 'package:deep_plant_app/widgets/save_button.dart';
@@ -18,11 +15,11 @@ import 'package:firebase_storage/firebase_storage.dart';
 
 class InsertionMeatImage extends StatefulWidget {
   final MeatData meatData;
-  final UserModel user;
+  final UserData userData;
   const InsertionMeatImage({
     super.key,
     required this.meatData,
-    required this.user,
+    required this.userData,
   });
 
   @override
@@ -111,10 +108,8 @@ class _InsertionMeatImageState extends State<InsertionMeatImage> {
     });
   }
 
-  void saveData(MeatData meatData, String? imagePath, String year, String month,
-      String day) {
-    meatData.imageFile = imagePath;
-    meatData.saveTime = '{$year}-{$month}-{$day}';
+  void saveMeatData() {
+    widget.meatData.imagePath = imagePath;
   }
 
   @override
@@ -279,7 +274,7 @@ class _InsertionMeatImageState extends State<InsertionMeatImage> {
               ),
               isImageAssigned
                   ? Text(
-                      '${widget.user.name}(${widget.user.email})',
+                      '${widget.userData.name}(${widget.userData.userId})',
                       style: TextStyle(
                         fontSize: 26.sp,
                         fontWeight: FontWeight.w400,

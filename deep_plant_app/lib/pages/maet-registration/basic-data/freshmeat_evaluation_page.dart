@@ -1,11 +1,11 @@
 import 'package:deep_plant_app/models/meat_data_model.dart';
+import 'package:deep_plant_app/widgets/eval_buttonnrow.dart';
 import 'package:deep_plant_app/widgets/save_button.dart';
 import 'package:deep_plant_app/widgets/show_custom_dialog.dart';
 import 'package:deep_plant_app/widgets/title_desc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:deep_plant_app/widgets/custom_appbar.dart';
-import 'package:deep_plant_app/widgets/eval_buttonnrow.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
@@ -132,7 +132,6 @@ class _FreshmeatEvaluationState extends State<FreshmeatEvaluation> {
                   fontWeight: FontWeight.w600,
                 ),
               ),
-<<<<<<< HEAD
               SizedBox(height: 46.h),
               for (var evalData in evalDataList)
                 Column(
@@ -163,7 +162,7 @@ class _FreshmeatEvaluationState extends State<FreshmeatEvaluation> {
                 child: SaveButton(
                   onPressed: _isAllselected()
                       ? () {
-                          saveMeatData(widget.meatData);
+                          saveMeatData();
                           context.pop();
                         }
                       : null,
@@ -172,22 +171,6 @@ class _FreshmeatEvaluationState extends State<FreshmeatEvaluation> {
                   heigh: 104.h,
                   isWhite: false,
                 ),
-=======
-            ),
-            Container(
-              margin: EdgeInsets.only(bottom: 18.h),
-              child: SaveButton(
-                onPressed: _isAllselected()
-                    ? () {
-                        saveMeatData();
-                        context.pop();
-                      }
-                    : null,
-                text: '저장',
-                width: 658.w,
-                heigh: 104.h,
-                isWhite: false,
->>>>>>> 7ca8f21 (edit data)
               ),
             ],
           ),
