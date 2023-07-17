@@ -36,7 +36,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   await initializeDateFormatting();
-  runApp(const MyApp());
+  runApp(const DeepPlatinApp());
 }
 
 // 회원가입 및 로그인을 위한 유저 객체
@@ -238,8 +238,8 @@ final _router = GoRouter(
   ],
 );
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class DeepPlatinApp extends StatelessWidget {
+  const DeepPlatinApp({super.key});
 
   @override
   Widget build(BuildContext context) {
