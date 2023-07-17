@@ -6,19 +6,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
-class ExperimentDataInputPage extends StatefulWidget {
+class LabDataInput extends StatefulWidget {
   final MeatData meatData;
-  const ExperimentDataInputPage({
+  const LabDataInput({
     super.key,
     required this.meatData,
   });
 
   @override
-  State<ExperimentDataInputPage> createState() =>
-      _ExperimentDataInputPageState();
+  State<LabDataInput> createState() => _LabDataInputState();
 }
 
-class _ExperimentDataInputPageState extends State<ExperimentDataInputPage> {
+class _LabDataInputState extends State<LabDataInput> {
   TextEditingController l = TextEditingController();
   TextEditingController a = TextEditingController();
   TextEditingController b = TextEditingController();
