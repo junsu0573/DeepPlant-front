@@ -142,8 +142,8 @@ class OptionPage extends StatelessWidget {
                 InkWell(
                   onTap: () {
                     user.level == 'users_1'
-                        ? context.go('/option/add-data')
-                        : context.go('/option/add-data-2');
+                        ? context.go('/option/reading-data')
+                        : context.go('/option/data-management');
                   },
                   child: Padding(
                     padding: const EdgeInsets.all(5.0),
