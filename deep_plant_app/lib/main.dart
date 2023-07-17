@@ -36,7 +36,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   await initializeDateFormatting();
-  runApp(const MyApp());
+  runApp(const DeepPlantApp());
 }
 
 // 회원가입 및 로그인을 위한 유저 객체
@@ -194,7 +194,7 @@ final _router = GoRouter(
             ),
             GoRoute(
               path: 'experiment-data',
-              builder: (context, state) => ExperimentDataInputPage(
+              builder: (context, state) => LabDataInput(
                 meatData: newMeat,
               ),
             ),
@@ -241,8 +241,8 @@ final _router = GoRouter(
   ],
 );
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class DeepPlantApp extends StatelessWidget {
+  const DeepPlantApp({super.key});
 
   @override
   Widget build(BuildContext context) {
