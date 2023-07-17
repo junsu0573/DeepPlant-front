@@ -106,7 +106,7 @@ class _LabDataInputState extends State<LabDataInput> {
                 height: 90.h,
               ),
               TextFieldWithTitle(
-                  firstText: 'L 명도', secondText: '', controller: l),
+                  firstText: 'L명도', secondText: '', controller: l),
               TextFieldWithTitle(
                   firstText: 'a적색도', secondText: '', unit: '', controller: a),
               TextFieldWithTitle(
