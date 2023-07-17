@@ -61,8 +61,12 @@ class _ExperimentDataInputPageState extends State<ExperimentDataInputPage> {
   }
 
   bool _isAllInseted() {
-    if (dl.text.isNotEmpty &&
+    if (l.text.isNotEmpty &&
+        a.text.isNotEmpty &&
+        b.text.isNotEmpty &&
+        dl.text.isNotEmpty &&
         cl.text.isNotEmpty &&
+        rw.text.isNotEmpty &&
         ph.text.isNotEmpty &&
         wbsf.text.isNotEmpty &&
         ct.text.isNotEmpty &&
@@ -74,18 +78,18 @@ class _ExperimentDataInputPageState extends State<ExperimentDataInputPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: CustomAppBar(
-        title: '추가정보 입력',
-        backButton: false,
-        closeButton: true,
-      ),
-      body: GestureDetector(
-        onTap: () {
-          FocusScope.of(context).unfocus(); // 키보드 unfocus
-        },
-        child: SingleChildScrollView(
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).unfocus(); // 키보드 unfocus
+      },
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        appBar: CustomAppBar(
+          title: '추가정보 입력',
+          backButton: true,
+          closeButton: false,
+        ),
+        body: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.max,
             children: [

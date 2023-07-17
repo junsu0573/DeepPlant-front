@@ -53,7 +53,7 @@ final _router = GoRouter(
   routes: [
     GoRoute(
       path: '/',
-      builder: (context, state) => FreshmeatEvaluation(
+      builder: (context, state) => ExperimentDataInputPage(
         meatData: newMeat,
       ),
       routes: [

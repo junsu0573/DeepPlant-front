@@ -3,7 +3,6 @@ import 'package:deep_plant_app/widgets/tongue_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:deep_plant_app/widgets/custom_appbar.dart';
-import 'package:deep_plant_app/widgets/show_custom_dialog.dart';
 import 'package:deep_plant_app/widgets/save_button.dart';
 import 'package:go_router/go_router.dart';
 
@@ -54,71 +53,74 @@ class _TongueDataInputPageState extends State<TongueDataInputPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: CustomAppBar(
-        title: '추가정보 입력',
-        backButton: false,
-        closeButton: true,
-        closeButtonOnPressed: () {
-          showExitDialog(context, null); // CustomDialog
-        },
-      ),
-      body: GestureDetector(
-        onTap: () {
-          FocusScope.of(context).unfocus(); // 키보드 unfocus
-        },
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              SizedBox(
-                height: 38.h,
-              ),
-              Text(
-                '전자혀 데이터',
-                style: TextStyle(
-                  color: Color(0xFF000000),
-                  fontSize: 36.sp,
-                  fontFamily: 'Inter',
-                  fontWeight: FontWeight.w600,
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).unfocus(); // 키보드 unfocus
+      },
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        appBar: CustomAppBar(
+          title: '추가정보 입력',
+          backButton: true,
+          closeButton: false,
+        ),
+        body: Column(
+          children: [
+            SizedBox(
+              height: 900.h,
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 38.h,
+                    ),
+                    Text(
+                      '전자혀 데이터',
+                      style: TextStyle(
+                        fontSize: 36.sp,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 90.h,
+                    ),
+                    TongueFiled(
+                      mainText: 'Sourness',
+                      subText: '신맛',
+                      controller: sourness,
+                    ),
+                    SizedBox(
+                      height: 112.h,
+                    ),
+                    TongueFiled(
+                      mainText: 'Bitterness',
+                      subText: '진한맛',
+                      controller: bitterness,
+                    ),
+                    SizedBox(
+                      height: 112.h,
+                    ),
+                    TongueFiled(
+                      mainText: 'Umami',
+                      subText: '감칠맛',
+                      controller: umami,
+                    ),
+                    SizedBox(
+                      height: 112.h,
+                    ),
+                    TongueFiled(
+                      mainText: 'Richness',
+                      subText: '후미',
+                      controller: richness,
+                    ),
+                  ],
                 ),
               ),
-              SizedBox(
-                height: 90.h,
-              ),
-              TongueFiled(
-                mainText: 'Sourness',
-                subText: '신맛',
-                controller: sourness,
-              ),
-              SizedBox(
-                height: 112.h,
-              ),
-              TongueFiled(
-                mainText: 'Bitterness',
-                subText: '진한맛',
-                controller: bitterness,
-              ),
-              SizedBox(
-                height: 112.h,
-              ),
-              TongueFiled(
-                mainText: 'Umami',
-                subText: '감칠맛',
-                controller: umami,
-              ),
-              SizedBox(
-                height: 112.h,
-              ),
-              TongueFiled(
-                mainText: 'Richness',
-                subText: '후미',
-                controller: richness,
-              ),
-              SizedBox(
-                height: 260.h,
-              ),
-              SaveButton(
+            ),
+            Spacer(),
+            Container(
+              margin: EdgeInsets.only(bottom: 28.h),
+              child: SaveButton(
                 onPressed: _isAllInserted()
                     ? () {
                         _sendEvaluation();
@@ -130,8 +132,8 @@ class _TongueDataInputPageState extends State<TongueDataInputPage> {
                 heigh: 104.h,
                 isWhite: false,
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
