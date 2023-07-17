@@ -39,24 +39,21 @@ class _FreshmeatEvaluationState extends State<FreshmeatEvaluation> {
     return false;
   }
 
-  void _sendEvaluation(MeatData meatData) {
-    //firebase에 데이터 전송하는 '저장' 버튼 기능
-
-    // 사용자가 선택한 값(true)의 index에 1을 더한다.
-    // ex) (없음:1,약간있음:2, 보통:3, 약간많음:4, 많음:5)
+  // 육류 정보 저장
+  void saveMeatData(MeatData meatData) {
     double mablingIndex = _selectedMabling.indexOf(true) + 1;
     double colorIndex = _selectedColor.indexOf(true) + 1;
     double textureIndex = _selectedTexture.indexOf(true) + 1;
     double surfaceMoistureIndex = _selectedSurfaceMoisture.indexOf(true) + 1;
     double overallIndex = _selectedOverall.indexOf(true) + 1;
 
+    //데이터를 Map 형식으로 저장
     Map<String, double> freshData = {
-      //데이터를 Map 형식으로 지정
       'marbling': mablingIndex,
       'color': colorIndex,
       'texture': textureIndex,
       'surfaceMoisture': surfaceMoistureIndex,
-      'total': overallIndex,
+      'overall': overallIndex,
     };
 
     // 데이터를 객체에 저장
@@ -158,7 +155,7 @@ class _FreshmeatEvaluationState extends State<FreshmeatEvaluation> {
                 child: SaveButton(
                   onPressed: _isAllselected()
                       ? () {
-                          _sendEvaluation(widget.meatData);
+                          saveMeatData(widget.meatData);
                           context.pop();
                         }
                       : null,
