@@ -1,7 +1,6 @@
 import 'package:deep_plant_app/widgets/data_cell_icon_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:intl/intl.dart';
 
 final List<String> label = ['관리번호', '등록자', '관리'];
 
@@ -72,7 +71,7 @@ void sortUserData(List<String> source, bool sortDecending) {
   });
 }
 
-List<String> setDay(List<String> source, String option1) {
+List<String> setDay(List<String> source, String option1, DateTime? start, DateTime? end, bool selectedEtc) {
   if (option1 == '3일') {
     source = source.where((data) {
       List<String> parts = data.split(',');
@@ -94,16 +93,25 @@ List<String> setDay(List<String> source, String option1) {
       DateTime dateTime = DateTime.parse(dateTimeString);
       return dateTime.isAfter(threeMonthsAgo) && dateTime.isBefore(toDay);
     }).toList();
-  } else {}
+  } else {
+    if (selectedEtc == true) {
+      source = source.where((data) {
+        List<String> parts = data.split(',');
+        String dateTimeString = parts[2];
+        DateTime dateTime = DateTime.parse(dateTimeString);
+        return dateTime.isAfter(start!) && dateTime.isBefore(end!);
+      }).toList();
+    }
+  }
   return source;
 }
 
-List<DataRow> getRows(List<String> userData, String text, Function data, bool sortDscending, String option1) {
+List<DataRow> getRows(List<String> userData, String text, Function data, bool sortDscending, String option1, DateTime? start, DateTime? end, bool selectedEtc) {
   data();
   List<String> source = userData;
 
   sortUserData(source, sortDscending);
-  source = setDay(source, option1);
+  source = setDay(source, option1, start, end, selectedEtc);
 
   List<DataRow> dataRow = [];
 
@@ -190,14 +198,14 @@ List<DataRow> getRows(List<String> userData, String text, Function data, bool so
   return dataRow;
 }
 
-Widget getDataTable(List<String> userData, String text, Function data, bool sortDscending, String option1) {
+Widget getDataTable(List<String> userData, String text, Function data, bool sortDscending, String option1, DateTime? start, DateTime? end, bool selectedEtc) {
   return DataTable(
     showBottomBorder: true,
     headingRowColor: MaterialStateProperty.all(Colors.grey[200]),
     headingRowHeight: 40.0,
     columnSpacing: 35.0,
     columns: getColumns(),
-    rows: getRows(userData, text, data, sortDscending, option1),
+    rows: getRows(userData, text, data, sortDscending, option1, start, end, selectedEtc),
   );
 }
 
@@ -241,11 +249,12 @@ List<String> setType(List<String> source, String option3) {
   return source;
 }
 
-List<DataRow> getRowView(List<String> userData, String text, Function data, String option1, String option2, String option3) {
+List<DataRow> getRowView(
+    List<String> userData, String text, Function data, String option1, String option2, String option3, DateTime? start, DateTime? end, bool selectedEtc) {
   data();
   List<String> source = userData;
 
-  source = setDay(source, option1);
+  source = setDay(source, option1, start, end, selectedEtc);
   source = setUser(source, option2);
   source = setType(source, option3);
 
@@ -334,22 +343,24 @@ List<DataRow> getRowView(List<String> userData, String text, Function data, Stri
   return dataRow;
 }
 
-Widget getDataView(List<String> userData, String text, Function data, String option1, String option2, String option3) {
+Widget getDataView(
+    List<String> userData, String text, Function data, String option1, String option2, String option3, DateTime? start, DateTime? end, bool selectedEtc) {
   return DataTable(
     showBottomBorder: true,
     headingRowColor: MaterialStateProperty.all(Colors.grey[200]),
     headingRowHeight: 40.0,
     columnSpacing: 25.0,
     columns: getColumns(),
-    rows: getRowView(userData, text, data, option1, option2, option3),
+    rows: getRowView(userData, text, data, option1, option2, option3, start, end, selectedEtc),
   );
 }
 
-List<DataRow> getRowConfirm(List<String> userData, String text, Function data, String option1, String option2, String option3) {
+List<DataRow> getRowConfirm(
+    List<String> userData, String text, Function data, String option1, String option2, String option3, DateTime? start, DateTime? end, bool selectedEtc) {
   data();
   List<String> source = userData;
 
-  source = setDay(source, option1);
+  source = setDay(source, option1, start, end, selectedEtc);
   source = setUser(source, option2);
   source = setType(source, option3);
 
@@ -405,7 +416,7 @@ List<DataRow> getRowConfirm(List<String> userData, String text, Function data, S
             onPress: () {},
             width: 115.w,
             height: 55.h,
-            bgColor: Colors.grey.shade300,
+            bgColor: Colors.grey[300],
             fgColor: Colors.black,
             icon: Icons.circle_outlined,
           ),
@@ -419,7 +430,7 @@ List<DataRow> getRowConfirm(List<String> userData, String text, Function data, S
             onPress: () {},
             width: 115.w,
             height: 55.h,
-            bgColor: Colors.grey.shade300,
+            bgColor: Colors.grey[300],
             fgColor: Colors.black,
             icon: Icons.check_circle_outline_outlined,
           ),
@@ -433,7 +444,7 @@ List<DataRow> getRowConfirm(List<String> userData, String text, Function data, S
             onPress: () {},
             width: 115.w,
             height: 55.h,
-            bgColor: Colors.grey.shade300,
+            bgColor: Colors.grey[300],
             fgColor: Colors.black,
             icon: Icons.cancel_outlined,
           ),
@@ -448,13 +459,14 @@ List<DataRow> getRowConfirm(List<String> userData, String text, Function data, S
   return dataRow;
 }
 
-Widget getDataConfirm(List<String> userData, String text, Function data, String option1, String option2, String option3) {
+Widget getDataConfirm(
+    List<String> userData, String text, Function data, String option1, String option2, String option3, DateTime? start, DateTime? end, bool selectedEtc) {
   return DataTable(
     showBottomBorder: true,
     headingRowColor: MaterialStateProperty.all(Colors.grey[200]),
     headingRowHeight: 40.0,
     columnSpacing: 25.0,
     columns: getColumns(),
-    rows: getRowConfirm(userData, text, data, option1, option2, option3),
+    rows: getRowConfirm(userData, text, data, option1, option2, option3, start, end, selectedEtc),
   );
 }

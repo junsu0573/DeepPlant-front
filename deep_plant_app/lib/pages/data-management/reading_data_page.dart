@@ -5,6 +5,7 @@ import 'package:deep_plant_app/widgets/save_button.dart';
 import 'package:flutter/material.dart';
 import 'package:deep_plant_app/widgets/data_page_toggle_button.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:http/http.dart' as http;
@@ -22,6 +23,8 @@ class ReadingDataState extends State<ReadingData> {
   RangeSelectionMode _rangeSelectionMode = RangeSelectionMode.toggledOn;
   FocusNode focusNode = FocusNode();
   String text = '';
+  late String temp1 = '';
+  late String temp2 = '';
   List<bool> selections1 = [false, true, false, false];
   List<bool> tempSelections1 = [false, true, false, false];
   List<bool> selections2 = [true, false];
@@ -200,7 +203,7 @@ class ReadingDataState extends State<ReadingData> {
                             ),
                             builder: (BuildContext context) {
                               return StatefulBuilder(
-                                builder: (BuildContext context, StateSetter bottomState) {
+                                builder: (BuildContext context, StateSetter bottomState1) {
                                   return Container(
                                     margin: EdgeInsets.all(10.0),
                                     height: 300,
@@ -217,10 +220,13 @@ class ReadingDataState extends State<ReadingData> {
                                           ),
                                           ToggleButton(
                                             onPressed: (index) {
-                                              bottomState(() {
+                                              bottomState1(() {
                                                 if (index == 3) {
+                                                  selectedEtc = false;
                                                   showModalBottomSheet(
+                                                      isScrollControlled: true,
                                                       context: context,
+                                                      isDismissible: false,
                                                       shape: RoundedRectangleBorder(
                                                         borderRadius: BorderRadius.only(
                                                           topLeft: Radius.circular(15.0),
@@ -228,95 +234,120 @@ class ReadingDataState extends State<ReadingData> {
                                                         ),
                                                       ),
                                                       builder: (BuildContext context) {
-                                                        return StatefulBuilder(builder: (BuildContext context, StateSetter bottomState) {
+                                                        return StatefulBuilder(builder: (BuildContext context, StateSetter bottomState2) {
                                                           return Container(
                                                             margin: EdgeInsets.all(18.0),
-                                                            height: 300,
-                                                            child: TableCalendar(
-                                                              locale: 'ko_KR',
-                                                              firstDay: DateTime.utc(2023, 1, 1),
-                                                              lastDay: DateTime.utc(2023, 12, 31),
-                                                              focusedDay: _focusedDay,
-                                                              rangeStartDay: _rangeStart,
-                                                              rangeEndDay: _rangeEnd,
-                                                              rangeSelectionMode: _rangeSelectionMode,
-                                                              rowHeight: 35.0,
-                                                              onDaySelected: (selectedDay, focusedDay) {
-                                                                bottomState(
-                                                                  () {
-                                                                    if (!isSameDay(_selectedDay, selectedDay)) {
-                                                                      setState(() {
-                                                                        _selectedDay = selectedDay;
-                                                                        _focusedDay = focusedDay;
-                                                                        _rangeStart = null;
-                                                                        _rangeEnd = null;
-                                                                        _rangeSelectionMode = RangeSelectionMode.toggledOff;
-                                                                      });
-                                                                    }
-                                                                  },
-                                                                );
-                                                              },
-                                                              onRangeSelected: (startDay, endDay, focusedDay) {
-                                                                bottomState(
-                                                                  () {
-                                                                    setState(() {
-                                                                      _selectedDay = null;
-                                                                      _focusedDay = focusedDay;
-                                                                      _rangeStart = startDay;
-                                                                      _rangeEnd = endDay;
-                                                                      _rangeSelectionMode = RangeSelectionMode.toggledOn;
-                                                                    });
-                                                                  },
-                                                                );
-                                                              },
-                                                              onPageChanged: (focusedDay) {
-                                                                var thisMonth = DateFormat('MM').format(DateTime.now());
-                                                                var movedMonth = DateFormat('MM').format(focusedDay);
-                                                                _focusedDay = focusedDay;
-                                                                bottomState(
-                                                                  () {
-                                                                    setState(() {
-                                                                      if (movedMonth == thisMonth) {
-                                                                        _selectedDay = DateTime.now();
-                                                                      } else {
-                                                                        _selectedDay = focusedDay;
-                                                                      }
-                                                                    });
-                                                                  },
-                                                                );
-                                                              },
-                                                              selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
-                                                              headerStyle: HeaderStyle(
-                                                                formatButtonVisible: false,
-                                                                titleCentered: true,
-                                                                titleTextStyle: TextStyle(
-                                                                  fontSize: 17.0,
-                                                                  fontWeight: FontWeight.bold,
+                                                            height: 355,
+                                                            child: Column(
+                                                              children: [
+                                                                Row(
+                                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                  children: [
+                                                                    Row(
+                                                                      children: [
+                                                                        Text('$temp1-$temp2'),
+                                                                      ],
+                                                                    ),
+                                                                    InkWell(
+                                                                      onTap: () {
+                                                                        bottomState1(
+                                                                          () {
+                                                                            setState(
+                                                                              () {
+                                                                                if (_rangeEnd != null && _rangeStart != null) {
+                                                                                  temp1 = DateFormat('MM/dd').format(_rangeStart!);
+                                                                                  temp2 = DateFormat('MM/dd').format(_rangeEnd!);
+                                                                                  tempOption1 = '$temp1-$temp2';
+                                                                                  options1[3] = Text(tempOption1);
+                                                                                }
+                                                                              },
+                                                                            );
+                                                                          },
+                                                                        );
+                                                                        context.pop();
+                                                                      },
+                                                                      child: SizedBox(
+                                                                        width: 48.w,
+                                                                        height: 48.h,
+                                                                        child: Image(
+                                                                          image: AssetImage('assets/images/close.png'),
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                  ],
                                                                 ),
-                                                                leftChevronMargin: EdgeInsets.only(left: 65.0, top: 5.0),
-                                                                rightChevronMargin: EdgeInsets.only(right: 65.0, top: 5.0),
-                                                              ),
-                                                              calendarStyle: CalendarStyle(
-                                                                  outsideDaysVisible: false,
-                                                                  cellMargin: EdgeInsets.all(0),
-                                                                  rangeHighlightColor: Colors.grey.shade400,
-                                                                  withinRangeDecoration: const BoxDecoration(shape: BoxShape.circle),
-                                                                  rangeStartDecoration: const BoxDecoration(
-                                                                    color: Colors.grey,
-                                                                    shape: BoxShape.circle,
+                                                                TableCalendar(
+                                                                  locale: 'ko_KR',
+                                                                  firstDay: DateTime.utc(2023, 1, 1),
+                                                                  lastDay: DateTime.utc(2023, 12, 31),
+                                                                  focusedDay: _focusedDay,
+                                                                  rangeStartDay: _rangeStart,
+                                                                  rangeEndDay: _rangeEnd,
+                                                                  rangeSelectionMode: _rangeSelectionMode,
+                                                                  rowHeight: 40.0,
+                                                                  onDaySelected: (selectedDay, focusedDay) {
+                                                                    bottomState2(
+                                                                      () {
+                                                                        if (!isSameDay(_selectedDay, selectedDay)) {
+                                                                          setState(() {
+                                                                            _selectedDay = selectedDay;
+                                                                            _focusedDay = focusedDay;
+                                                                            _rangeStart = null;
+                                                                            _rangeEnd = null;
+                                                                            _rangeSelectionMode = RangeSelectionMode.toggledOff;
+                                                                          });
+                                                                        }
+                                                                      },
+                                                                    );
+                                                                  },
+                                                                  onRangeSelected: (startDay, endDay, focusedDay) {
+                                                                    bottomState2(
+                                                                      () {
+                                                                        setState(() {
+                                                                          _selectedDay = null;
+                                                                          _focusedDay = focusedDay;
+                                                                          _rangeStart = startDay;
+                                                                          _rangeEnd = endDay;
+                                                                          _rangeSelectionMode = RangeSelectionMode.toggledOn;
+                                                                        });
+                                                                      },
+                                                                    );
+                                                                  },
+                                                                  selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
+                                                                  headerStyle: HeaderStyle(
+                                                                    formatButtonVisible: false,
+                                                                    titleCentered: true,
+                                                                    titleTextStyle: TextStyle(
+                                                                      fontSize: 17.0,
+                                                                      fontWeight: FontWeight.bold,
+                                                                    ),
+                                                                    leftChevronMargin: EdgeInsets.only(left: 65.0, top: 5.0),
+                                                                    rightChevronMargin: EdgeInsets.only(right: 65.0, top: 5.0),
                                                                   ),
-                                                                  rangeEndDecoration: const BoxDecoration(
-                                                                    color: Colors.grey,
-                                                                    shape: BoxShape.circle,
-                                                                  ),
-                                                                  todayDecoration: const BoxDecoration(
-                                                                    color: Colors.black54,
-                                                                    shape: BoxShape.circle,
-                                                                  ),
-                                                                  selectedDecoration: const BoxDecoration(
-                                                                    color: Colors.grey,
-                                                                    shape: BoxShape.circle,
-                                                                  )),
+                                                                  calendarStyle: CalendarStyle(
+                                                                      outsideDaysVisible: true,
+                                                                      cellMargin: EdgeInsets.all(0),
+                                                                      rangeHighlightColor: Colors.grey.shade400,
+                                                                      withinRangeDecoration: const BoxDecoration(shape: BoxShape.circle),
+                                                                      outsideTextStyle: const TextStyle(color: Colors.transparent),
+                                                                      rangeStartDecoration: const BoxDecoration(
+                                                                        color: Colors.grey,
+                                                                        shape: BoxShape.circle,
+                                                                      ),
+                                                                      rangeEndDecoration: const BoxDecoration(
+                                                                        color: Colors.grey,
+                                                                        shape: BoxShape.circle,
+                                                                      ),
+                                                                      todayDecoration: const BoxDecoration(
+                                                                        color: Colors.black54,
+                                                                        shape: BoxShape.circle,
+                                                                      ),
+                                                                      selectedDecoration: const BoxDecoration(
+                                                                        color: Colors.grey,
+                                                                        shape: BoxShape.circle,
+                                                                      )),
+                                                                ),
+                                                              ],
                                                             ),
                                                           );
                                                         });
@@ -346,7 +377,7 @@ class ReadingDataState extends State<ReadingData> {
                                           ),
                                           ToggleButton(
                                             onPressed: (index) {
-                                              bottomState(() {
+                                              bottomState1(() {
                                                 for (int i = 0; i < tempSelections2.length; i++) {
                                                   if (i == index) {
                                                     tempSelections2[i] = true;
@@ -380,6 +411,7 @@ class ReadingDataState extends State<ReadingData> {
                                                 } else if (option2 == '과거순') {
                                                   sortDscending = false;
                                                 }
+                                                selectedEtc = true;
                                               });
                                             },
                                           ),
@@ -404,7 +436,7 @@ class ReadingDataState extends State<ReadingData> {
             ),
             Expanded(
               child: SingleChildScrollView(
-                child: getDataTable(userData, text, manageDataState, sortDscending, option1),
+                child: getDataTable(userData, text, manageDataState, sortDscending, option1, _rangeStart, _rangeEnd, selectedEtc),
               ),
             ),
           ],

@@ -417,6 +417,7 @@ class DataConfirmState extends State<DataConfirm> {
                                                   option1 = tempOption1;
                                                   option2 = tempOption2;
                                                   option3 = tempOption3;
+                                                  selectedEtc = true;
                                                 });
                                               },
                                             ),
@@ -452,7 +453,7 @@ class DataConfirmState extends State<DataConfirm> {
             ),
             Expanded(
               child: SingleChildScrollView(
-                child: getDataConfirm(userData, text, manageDataState, option1, option2, option3),
+                child: getDataConfirm(userData, text, manageDataState, option1, option2, option3, _rangeStart, _rangeEnd, selectedEtc),
               ),
             ),
           ],
