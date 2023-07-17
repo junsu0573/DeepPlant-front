@@ -131,7 +131,7 @@ class _CompleteResgistrationState extends State<CompleteResgistration> {
 
   // 육류 정보를 서버로 전송
   Future<void> sendMeatData(MeatData meatData) async {
-    // 육류 정보를 json 형삭으로 변환
+    // 육류 정보를 json 형식으로 변환
     final jsonData = meatData.convertNewMeatToJson();
 
     // 데이터 전송

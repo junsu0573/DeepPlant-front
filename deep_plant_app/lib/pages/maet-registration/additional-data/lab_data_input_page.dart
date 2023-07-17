@@ -59,9 +59,13 @@ class _LabDataInputState extends State<LabDataInput> {
     widget.meatData.labData = labData;
   }
 
-  bool _isAllInseted() {
-    if (dl.text.isNotEmpty &&
+  bool _isAllInserted() {
+    if (l.text.isNotEmpty &&
+        a.text.isNotEmpty &&
+        b.text.isNotEmpty &&
+        dl.text.isNotEmpty &&
         cl.text.isNotEmpty &&
+        rw.text.isNotEmpty &&
         ph.text.isNotEmpty &&
         wbsf.text.isNotEmpty &&
         ct.text.isNotEmpty &&
@@ -137,7 +141,7 @@ class _LabDataInputState extends State<LabDataInput> {
                 height: 16.h,
               ),
               SaveButton(
-                onPressed: _isAllInseted()
+                onPressed: _isAllInserted()
                     ? () {
                         saveMeatData();
                         context.pop();
