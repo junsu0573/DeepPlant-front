@@ -51,6 +51,7 @@ class _IdPwInsertionState extends State<IdPwInsertion> {
 
   // 아이디 유효성 검사
   String? idValidate(String? value) {
+    // 비어있지 않고 이메일 형식에 맞지 않을 때, 빨간 예외 메시지
     final bool isValid = EmailValidator.validate(value!);
     if (value.isEmpty) {
       setState(() {
@@ -76,6 +77,7 @@ class _IdPwInsertionState extends State<IdPwInsertion> {
 
   // 비밀번호 유효성 검사
   String? pwValidate(String? value) {
+    // 비어있지 않고 비밀번호 형식에 맞지 않을 때, 빨간 에러 메시지
     final bool isValid = validatePassword(value!);
     if (value.isEmpty) {
       setState(() {
@@ -101,6 +103,7 @@ class _IdPwInsertionState extends State<IdPwInsertion> {
 
   // 비밀번호 재입력 유효성 검사
   String? cPwValidate(String? value) {
+    // 비어있지 않고 비밀번호와 같지 않을 때, 빨간 에러 메시지
     if (value!.isEmpty) {
       setState(() {
         isValidCPw = false;
@@ -144,9 +147,11 @@ class _IdPwInsertionState extends State<IdPwInsertion> {
   // 이메일 중복 검사
   Future<void> dupliCheck(String userEmail) async {
     try {
+      // 유저 정보 검색
       dynamic data = await ApiServices.signIn(userEmail);
 
       if (data == null) {
+        // 해당 유저 정보 없음
         setState(() {
           _isUnique = true;
         });
