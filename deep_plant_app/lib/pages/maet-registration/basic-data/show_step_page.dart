@@ -28,7 +28,7 @@ class _ShowStepState extends State<ShowStep> {
   void initState() {
     super.initState();
     // 육류 정보 초기화
-    widget.meatData.resetDataForStep1();
+    widget.meatData.resetData();
 
     // 유저 아이디 저장
     _userId = widget.userData.userId!;
@@ -51,7 +51,7 @@ class _ShowStepState extends State<ShowStep> {
 
   void initialize() async {
     // 임시저장 데이터를 가져와 객체에 저장
-    await widget.meatData.initMeatDataForStep1(_userId).then((_) {
+    await widget.meatData.initMeatData(_userId).then((_) {
       setState(() {});
     });
 
@@ -62,8 +62,8 @@ class _ShowStepState extends State<ShowStep> {
       // 임시저장 데이터가 null값이 아닐 때 다이얼로그 호출
       showDataRegisterDialog(context, () async {
         // 처음부터
-        widget.meatData.resetTempDataForStep1();
-        await widget.meatData.initMeatDataForStep1(_userId).then((_) {
+        await widget.meatData.resetTempData();
+        await widget.meatData.initMeatData(_userId).then((_) {
           setState(() {});
         });
         if (!mounted) return;
@@ -84,10 +84,9 @@ class _ShowStepState extends State<ShowStep> {
         backButton: false,
         closeButton: true,
         closeButtonOnPressed: () {
-          showExitDialog(
-            context,
-            () => widget.meatData.initMeatDataForStep1(_userId),
-          );
+          showExitDialog(context, () async {
+            await widget.meatData.initMeatData(_userId);
+          });
         },
       ),
       body: Center(
@@ -150,8 +149,9 @@ class _ShowStepState extends State<ShowStep> {
                     onPressed: () {
                       showTemporarySaveDialog(
                         context,
-                        () {
-                          widget.meatData.saveTempDataForStep1();
+                        () async {
+                          await widget.meatData.saveTempData();
+                          if (!mounted) return;
                           context.pop();
                         },
                       );
@@ -167,10 +167,8 @@ class _ShowStepState extends State<ShowStep> {
                   SaveButton(
                     onPressed: _isAllCompleted()
                         ? () async {
-                            await widget.meatData.resetTempDataForStep1();
-                            if (!mounted) {
-                              return;
-                            }
+                            await widget.meatData.resetTempData();
+                            if (!mounted) return;
                             widget.userData.type == 'Normal'
                                 ? context.go('/option/complete-register')
                                 : context.go('/option/complete-register-2');

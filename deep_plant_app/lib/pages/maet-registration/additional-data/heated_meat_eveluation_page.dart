@@ -1,4 +1,5 @@
 import 'package:deep_plant_app/models/meat_data_model.dart';
+import 'package:deep_plant_app/source/get_date.dart';
 import 'package:deep_plant_app/widgets/save_button.dart';
 import 'package:deep_plant_app/widgets/show_custom_dialog.dart';
 import 'package:deep_plant_app/widgets/title_desc.dart';
@@ -7,7 +8,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:deep_plant_app/widgets/custom_appbar.dart';
 import 'package:deep_plant_app/widgets/eval_buttonnrow.dart';
 import 'package:go_router/go_router.dart';
-import 'package:intl/intl.dart';
 
 class HeatedMeatEvaluation extends StatefulWidget {
   final MeatData meatData;
@@ -49,13 +49,9 @@ class HeatedMeatEvaluationState extends State<HeatedMeatEvaluation> {
     double umamiIndex = _selectedUmami.indexOf(true) + 1;
     double palatabilityIndex = _selectedPalatability.indexOf(true) + 1;
 
-    DateTime now = DateTime.now();
-    String createdAt = DateFormat('yyyy-MM-ddTHH:mm:ssZ').format(now);
-
     // 데이터 생성
     Map<String, dynamic> heatedData = {
-      'createdAt': createdAt,
-      'userId': widget.meatData.userId,
+      'createdAt': GetDate.getCurrentDate(),
       'period': widget.meatData.getPeriod(),
       'flavor': flavorIndex,
       'juiciness': juicinessIndex,

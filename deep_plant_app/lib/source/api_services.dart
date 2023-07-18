@@ -45,8 +45,12 @@ class ApiServices {
   }
 
   // 육류 정보 전송 (POST)
-  static Future<void> sendMeatData(String jsonData) async {
-    await _postApi('meat/set', jsonData);
+  static Future<void> sendMeatData(String? dest, String jsonData) async {
+    String endPoint = 'meat/add';
+    if (dest != null) {
+      endPoint = 'meat/add/$dest';
+    }
+    await _postApi(endPoint, jsonData);
   }
 
   // 유저 회원가입 (POST)

@@ -2,7 +2,6 @@ import 'package:deep_plant_app/models/meat_data_model.dart';
 import 'package:deep_plant_app/models/user_data_model.dart';
 import 'package:deep_plant_app/widgets/custom_appbar.dart';
 import 'package:deep_plant_app/widgets/save_button.dart';
-import 'package:deep_plant_app/widgets/show_custom_dialog.dart';
 import 'package:deep_plant_app/widgets/step_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -30,11 +29,6 @@ class _ShowStep2State extends State<ShowStep2> {
     // 유저 아이디 저장
     _userId = widget.userData.userId!;
     widget.meatData.userId = _userId;
-
-    // 임시저장 처리
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      initialize();
-    });
   }
 
   bool _isAllCompleted() {
@@ -46,33 +40,6 @@ class _ShowStep2State extends State<ShowStep2> {
       return true;
     }
     return false;
-  }
-
-  // 임시저장 처리
-  void initialize() async {
-    // 임시저장 데이터를 가져와 객체에 저장
-    await widget.meatData.initMeatDataForStep2(_userId).then((_) {
-      setState(() {});
-    });
-
-    if (widget.meatData.speciesValue != null ||
-        widget.meatData.imagePath != null &&
-            widget.meatData.freshmeat != null) {
-      if (!mounted) return;
-      // 임시저장 데이터가 null값이 아닐 때 다이얼로그 호출
-      showDataRegisterDialog(context, () async {
-        // 처음부터
-        widget.meatData.resetTempDataForStep2();
-        await widget.meatData.initMeatDataForStep2(_userId).then((_) {
-          setState(() {});
-        });
-        if (!mounted) return;
-        context.pop();
-      }, () {
-        // 이어서
-        context.pop();
-      });
-    }
   }
 
   @override

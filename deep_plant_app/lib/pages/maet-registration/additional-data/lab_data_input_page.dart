@@ -41,8 +41,8 @@ class _LabDataInputState extends State<LabDataInput> {
     final ctData = double.parse(ct.text);
     final mfiData = double.parse(mfi.text);
 
+    // 데이터 생성
     Map<String, dynamic> labData = {
-      //데이터를 Map 형식으로 지정
       'L': lData,
       'a': aData,
       'b': bData,
