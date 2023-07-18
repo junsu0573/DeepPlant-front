@@ -1,3 +1,4 @@
+import 'package:deep_plant_app/models/user_data_model.dart';
 import 'package:deep_plant_app/widgets/common_button.dart';
 import 'package:deep_plant_app/widgets/custom_appbar.dart';
 import 'package:deep_plant_app/widgets/save_button.dart';
@@ -6,7 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
 class EditUserInfo extends StatefulWidget {
-  final UserModel user;
+  final UserData user;
   const EditUserInfo({
     super.key,
     required this.user,
@@ -57,7 +58,7 @@ class _EditUserInfoState extends State<EditUserInfo> {
                             width: 32.w,
                           ),
                           Text(
-                            '',
+                            widget.user.userId!,
                             style: TextStyle(
                               fontSize: 30.sp,
                               fontWeight: FontWeight.w400,

@@ -1,12 +1,13 @@
 import 'dart:convert';
 
+import 'package:deep_plant_app/models/user_data_model.dart';
 import 'package:http/http.dart' as http;
 
 class ApiServices {
   static String baseUrl = '';
 
   // API POST
-  static Future<void> _postData(String endPoint, String jsonData) async {
+  static Future<void> _postApi(String endPoint, String jsonData) async {
     String apiUrl = '$baseUrl/$endPoint';
     Map<String, String> headers = {'Content-Type': 'application/json'};
     String requestBody = jsonData;
@@ -26,7 +27,7 @@ class ApiServices {
   }
 
   // API GET
-  static Future<dynamic> _getData(String endPoint) async {
+  static Future<dynamic> _getApi(String endPoint) async {
     String apiUrl = '$baseUrl/$endPoint';
     try {
       final response = await http.get(Uri.parse(apiUrl));
@@ -43,19 +44,30 @@ class ApiServices {
     }
   }
 
-  // 육류 정보 전송
+  // 육류 정보 전송 (POST)
   static Future<void> sendMeatData(String jsonData) async {
-    _postData('meat/set', jsonData);
+    await _postApi('meat/set', jsonData);
   }
 
-  // 유저 로그인
-  static Future<void> signIn() async {
-    _getData('user/login');
+  // 유저 회원가입 (POST)
+  static Future<void> signUp(UserData user) async {
+    await _postApi('user/register', user.convertUserSignUpToJson());
   }
 
-  // 유저 로그아웃
-  static Future<dynamic> signOut() async {
-    dynamic jsonData = await _getData('user/logout');
+  // 유저 로그인 (GET)
+  static Future<dynamic> signIn(String userId) async {
+    dynamic jsonData = await _getApi('user/login?id=$userId');
     return jsonData;
+  }
+
+  // 유저 로그아웃 (GET)
+  static Future<dynamic> signOut(String userId) async {
+    dynamic jsonData = await _getApi('user/logout?id=$userId');
+    return jsonData;
+  }
+
+  // 유저 업데이트 (POST)
+  static Future<dynamic> updateUser(UserData user) async {
+    await _postApi('user/update', user.convertUserUpdateToJson());
   }
 }

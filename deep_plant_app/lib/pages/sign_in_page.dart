@@ -24,7 +24,9 @@ class SignIn extends StatefulWidget {
 }
 
 class _SignInState extends State<SignIn> {
-  final _formKey = GlobalKey<FormState>(); // form 구성
+  // form key
+  final _formKey = GlobalKey<FormState>();
+
   String _userId = '';
   String _userPw = '';
 
@@ -33,6 +35,12 @@ class _SignInState extends State<SignIn> {
 
   // firbase authentic
   final _authentication = FirebaseAuth.instance;
+
+  @override
+  void initState() {
+    super.initState();
+    widget.userData.resetData();
+  }
 
   // 아이디 유효성 검사
   String? idValidate(String? value) {
@@ -78,22 +86,15 @@ class _SignInState extends State<SignIn> {
         throw Error();
       }
 
-      // 유저가 입력한 ID로 API 탐색 후 userType 값 저장
-      ////////////////////////////////
-      // 코드 수정 필요함
-      ////////////////////////////////
-      // 로그인 시 유저의 정보를 API 호출을 통해 객체에 저장
-      ////////////////////////////////
-      // 코드 수정 필요함
-      ////////////////////////////////
-      saveUserInfo();
-
-      // 유저의 로그 정보를 fire store에 저장
+      // 유저 정보 저장
+      await saveUserInfo();
     } catch (e) {
       // 로딩 상태를 비활성화
       setState(() {
         isLoading = false;
       });
+
+      // 오류 스낵바
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('아이디와 비밀번호를 확인하세요'),
@@ -103,11 +104,12 @@ class _SignInState extends State<SignIn> {
       return;
     }
 
+    // 로딩 상태를 비활성화
     setState(() {
-      isLoading = false; // 로딩 상태를 비활성화
+      isLoading = false;
     });
 
-    // 데이터 fetch 성공시 다음 페이지를 push
+    // 데이터 fetch 성공시 다음 페이지로 go
     if (!mounted) return;
     context.go('/option');
   }
@@ -126,16 +128,13 @@ class _SignInState extends State<SignIn> {
     return false;
   }
 
-  // 유저의 정보를 가져와 객체에 저장
+  // 유저 정보 저장
   Future<void> saveUserInfo() async {
-    dynamic data = ApiServices.signIn();
-    widget.userData.name = data['name'];
-    widget.userData.homeAdress = data['homeAdress'];
-    widget.userData.company = data['company'];
-    widget.userData.jobTitle = data['jobTitle'];
-    widget.userData.type = data['type'];
-    widget.userData.createdAt = data['createdAt'];
-    widget.userData.alarm = data['alarm'];
+    // 로그인 API 호출
+    dynamic userInfo = await ApiServices.signIn(_userId);
+
+    // 데이터 fetch
+    widget.userData.fetchData(userInfo);
   }
 
   @override

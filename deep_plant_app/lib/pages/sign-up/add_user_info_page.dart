@@ -7,11 +7,16 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
 class AddUserInfo extends StatelessWidget {
-  final UserData user;
+  final UserData userData;
   const AddUserInfo({
     super.key,
-    required this.user,
+    required this.userData,
   });
+
+  final String mainHomeAdress = '';
+  final String subHomeAdress = '';
+  final String company = '';
+  final String jobTitle = '';
 
   @override
   Widget build(BuildContext context) {

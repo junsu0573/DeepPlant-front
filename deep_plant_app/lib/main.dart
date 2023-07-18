@@ -74,7 +74,7 @@ final _router = GoRouter(
                 GoRoute(
                   path: 'add-user-info',
                   builder: (context, state) => AddUserInfo(
-                    user: newUser,
+                    userData: newUser,
                   ),
                 ),
               ],
@@ -116,7 +116,9 @@ final _router = GoRouter(
               routes: [
                 GoRoute(
                   path: 'reset-pw',
-                  builder: (context, state) => ResetPW(),
+                  builder: (context, state) => ResetPW(
+                    userData: newUser,
+                  ),
                 ),
               ],
             ),
