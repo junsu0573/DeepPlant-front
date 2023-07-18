@@ -1,4 +1,5 @@
 import 'package:deep_plant_app/models/meat_data_model.dart';
+import 'package:deep_plant_app/source/api_services.dart';
 
 import 'package:deep_plant_app/source/pallete.dart';
 import 'package:deep_plant_app/widgets/common_button.dart';
@@ -126,7 +127,16 @@ class _SignInState extends State<SignIn> {
   }
 
   // 유저의 정보를 가져와 객체에 저장
-  Future<void> saveUserInfo() async {}
+  Future<void> saveUserInfo() async {
+    dynamic data = ApiServices.signIn();
+    widget.userData.name = data['name'];
+    widget.userData.homeAdress = data['homeAdress'];
+    widget.userData.company = data['company'];
+    widget.userData.jobTitle = data['jobTitle'];
+    widget.userData.type = data['type'];
+    widget.userData.createdAt = data['createdAt'];
+    widget.userData.alarm = data['alarm'];
+  }
 
   @override
   Widget build(BuildContext context) {

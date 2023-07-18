@@ -49,8 +49,8 @@ class ApiServices {
   }
 
   // 유저 로그인
-  static Future<void> signIn(String jsonData) async {
-    _postData('user/login', jsonData);
+  static Future<void> signIn() async {
+    _getData('user/login');
   }
 
   // 유저 로그아웃

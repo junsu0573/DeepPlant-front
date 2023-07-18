@@ -137,7 +137,7 @@ class _CompleteResgistration2State extends State<CompleteResgistration2> {
     final jsonData = meatData.convertNewMeatToJson();
 
     // 데이터 전송
-    await ApiServices.postMeatData(jsonData);
+    await ApiServices.sendMeatData(jsonData);
   }
 
   @override

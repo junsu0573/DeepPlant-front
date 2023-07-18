@@ -36,14 +36,15 @@ class UserData {
     alarm = null;
   }
 
-  // 로그인 시 json 변환
-  String convertUserSignInToJson() {
-    Map<String, dynamic> jsonData = {
-      "userId": userId,
-      "password": password,
-      "type": type,
-    };
-    return jsonEncode(jsonData);
+  // fetch
+  void fetchData(dynamic jsonData) {
+    name = jsonData['name'];
+    homeAdress = jsonData['homeAdress'];
+    company = jsonData['company'];
+    jobTitle = jsonData['jobTitle'];
+    type = jsonData['type'];
+    createdAt = jsonData['createdAt'];
+    alarm = jsonData['alarm'];
   }
 
   // 유저 정보 업데이트 시 json 변환

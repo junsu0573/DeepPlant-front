@@ -45,10 +45,10 @@ class _CompleteAdditionalRegistrationState
     final probexptData = meatData.convertPorbexptToJson();
 
     // 데이터 전송
-    await ApiServices.postMeatData(deepAgingData);
-    await ApiServices.postMeatData(freshMeatData);
-    await ApiServices.postMeatData(heatedMeatData);
-    await ApiServices.postMeatData(probexptData);
+    await ApiServices.sendMeatData(deepAgingData);
+    await ApiServices.sendMeatData(freshMeatData);
+    await ApiServices.sendMeatData(heatedMeatData);
+    await ApiServices.sendMeatData(probexptData);
   }
 
   @override
