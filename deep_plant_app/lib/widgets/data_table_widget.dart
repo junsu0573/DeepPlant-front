@@ -175,22 +175,7 @@ List<DataRow> getRows(List<String> userData, String text, Function data, bool so
         ),
       );
     } else {
-      cells.add(
-        DataCell(
-          ElevatedButton(
-            onPressed: () {},
-            style: ElevatedButton.styleFrom(
-                foregroundColor: Colors.black,
-                backgroundColor: Colors.grey[300],
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(35.0),
-                )),
-            child: Text(
-              '열람',
-            ),
-          ),
-        ),
-      );
+      cells.add(DataCell.empty);
     }
 
     dataRow.add(DataRow(cells: cells));

@@ -18,7 +18,7 @@ class DataView extends StatefulWidget {
 
 class DataViewState extends State<DataView> {
   final TextEditingController search = TextEditingController();
-  RangeSelectionMode _rangeSelectionMode = RangeSelectionMode.toggledOn;
+  final RangeSelectionMode _rangeSelectionMode = RangeSelectionMode.toggledOn;
   FocusNode focusNode = FocusNode();
   String text = '';
   List<bool> selections1 = [false, true, false, false];
@@ -61,8 +61,11 @@ class DataViewState extends State<DataView> {
   DateTime? _selectedDay;
   DateTime? _rangeStart;
   DateTime? _rangeEnd;
+  DateTime? tempRangeStart;
+  DateTime? tempRangeEnd;
 
   bool selectedEtc = false;
+  bool selectedFinal = true;
 
   final List<String> userData = [
     '000189843795,test,2023-01-22 20:44:25,normal,pig',
@@ -206,6 +209,7 @@ class DataViewState extends State<DataView> {
                             tempSelections3 = List<bool>.from(selections3);
                             showModalBottomSheet(
                               context: context,
+                              isDismissible: false,
                               isScrollControlled: true,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.only(
@@ -256,21 +260,20 @@ class DataViewState extends State<DataView> {
                                                                 rangeEndDay: _rangeEnd,
                                                                 rangeSelectionMode: _rangeSelectionMode,
                                                                 rowHeight: 35.0,
-                                                                onDaySelected: (selectedDay, focusedDay) {
-                                                                  bottomState(
-                                                                    () {
-                                                                      if (!isSameDay(_selectedDay, selectedDay)) {
-                                                                        setState(() {
-                                                                          _selectedDay = selectedDay;
-                                                                          _focusedDay = focusedDay;
-                                                                          _rangeStart = null;
-                                                                          _rangeEnd = null;
-                                                                          _rangeSelectionMode = RangeSelectionMode.toggledOff;
-                                                                        });
-                                                                      }
-                                                                    },
-                                                                  );
-                                                                },
+                                                                // onDaySelected: (selectedDay, focusedDay) {
+                                                                //   bottomState(
+                                                                //     () {
+                                                                //       if (!isSameDay(_selectedDay, selectedDay)) {
+                                                                //         setState(() {
+                                                                //           _selectedDay = selectedDay;
+                                                                //           _focusedDay = focusedDay;
+                                                                //           _rangeStart = null;
+                                                                //           _rangeEnd = null;
+                                                                //         });
+                                                                //       }
+                                                                //     },
+                                                                //   );
+                                                                // },
                                                                 onRangeSelected: (startDay, endDay, focusedDay) {
                                                                   bottomState(
                                                                     () {
@@ -279,7 +282,6 @@ class DataViewState extends State<DataView> {
                                                                         _focusedDay = focusedDay;
                                                                         _rangeStart = startDay;
                                                                         _rangeEnd = endDay;
-                                                                        _rangeSelectionMode = RangeSelectionMode.toggledOn;
                                                                       });
                                                                     },
                                                                   );
