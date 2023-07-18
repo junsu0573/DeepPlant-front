@@ -1,7 +1,9 @@
+import 'package:deep_plant_app/models/data_management_filter_model.dart';
 import 'package:deep_plant_app/models/meat_data_model.dart';
 import 'package:deep_plant_app/models/user_model.dart';
 import 'package:deep_plant_app/pages/data-management/data_management_page_2.dart';
 import 'package:deep_plant_app/pages/data-management/reading_data_page.dart';
+import 'package:deep_plant_app/pages/home_page.dart';
 import 'package:deep_plant_app/pages/maet-registration/additional-data/complete_additional_registration_page.dart';
 import 'package:deep_plant_app/pages/maet-registration/additional-data/data_add_home_page.dart';
 import 'package:deep_plant_app/pages/maet-registration/additional-data/deep_aging_page.dart';
@@ -46,7 +48,11 @@ UserModel newUser = UserModel();
 // 육류 입력 정보 저장을 위한 객체
 MeatData newMeat = MeatData();
 
-DeepAgingData deepAging = DeepAgingData();
+// 딥에이징 입력 정보를 위한 객체
+DeepAgingData newAging = DeepAgingData();
+
+// 데이터 관리 필터 저장을 위한 객체
+FilterModel newFilter = FilterModel();
 
 // 라우팅
 final _router = GoRouter(
@@ -54,7 +60,7 @@ final _router = GoRouter(
   routes: [
     GoRoute(
       path: '/',
-      builder: (context, state) => DataAddHome(),
+      builder: (context, state) => HomePage(),
       routes: [
         GoRoute(
           path: 'sign-in',
@@ -233,6 +239,7 @@ final _router = GoRouter(
           builder: (context, state) => DataManagement2(
             user: newUser,
             meat: newMeat,
+            filter: newFilter,
           ),
         ),
       ],
@@ -251,8 +258,7 @@ class DeepPlantApp extends StatelessWidget {
       // 기본 색상
       theme: ThemeData(
         primaryColor: const Color.fromRGBO(51, 51, 51, 1),
-        buttonTheme:
-            const ButtonThemeData(buttonColor: Color.fromRGBO(51, 51, 51, 1)),
+        buttonTheme: const ButtonThemeData(buttonColor: Color.fromRGBO(51, 51, 51, 1)),
       ),
       routerConfig: _router,
       builder: (context, child) {
