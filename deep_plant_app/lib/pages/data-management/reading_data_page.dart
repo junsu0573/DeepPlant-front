@@ -24,8 +24,8 @@ class ReadingDataState extends State<ReadingData> {
   final RangeSelectionMode _rangeSelectionMode = RangeSelectionMode.toggledOn;
   FocusNode focusNode = FocusNode();
   String text = '';
-  late String temp1 = '';
-  late String temp2 = '';
+  String temp1 = '';
+  String temp2 = '';
   List<bool> selections1 = [false, true, false, false];
   List<bool> tempSelections1 = [false, true, false, false];
   List<bool> selections2 = [true, false];
@@ -34,13 +34,13 @@ class ReadingDataState extends State<ReadingData> {
   String tempOption1 = '1개월';
   String option2 = '최신순';
   String tempOption2 = '최신순';
-  final List<Widget> options1 = [
+  List<Widget> options1 = [
     Text('3일'),
     Text('1개월'),
     Text('3개월'),
     Text('직접설정'),
   ];
-  final List<Widget> options2 = [
+  List<Widget> options2 = [
     Text('최신순'),
     Text('과거순'),
   ];
