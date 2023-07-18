@@ -134,7 +134,9 @@ class _SignInState extends State<SignIn> {
     dynamic userInfo = await ApiServices.signIn(_userId);
 
     // 데이터 fetch
-    widget.userData.fetchData(userInfo);
+    if (userInfo != null) {
+      widget.userData.fetchData(userInfo);
+    }
   }
 
   @override
