@@ -67,7 +67,7 @@ class _SignInState extends State<SignIn> {
   }
 
   // 데이터 호출 및 저장
-  void fetchData() async {
+  Future<void> signIn() async {
     // 로딩 상태를 활성화
     setState(() {
       isLoading = true;
@@ -83,7 +83,7 @@ class _SignInState extends State<SignIn> {
       if (!isValidEmail) {
         _authentication.signOut();
 
-        throw Error();
+        throw InvalidEmailException('이메일 인증을 완료하세요.');
       }
 
       // 유저 정보 저장
@@ -94,13 +94,26 @@ class _SignInState extends State<SignIn> {
         isLoading = false;
       });
 
-      // 오류 스낵바
+      // 예외 처리
+      String errorMessage;
+      if (e is FirebaseException) {
+        // 로그인 실패
+        errorMessage = '아이디와 비밀번호를 확인하세요.';
+      } else if (e is InvalidEmailException) {
+        // 이메일 인증 미완료
+        errorMessage = e.message;
+      } else {
+        // 기타 오류
+        errorMessage = '오류가 발생했습니다.';
+      }
+
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('아이디와 비밀번호를 확인하세요'),
+        SnackBar(
+          content: Text(errorMessage),
           backgroundColor: Colors.amber,
         ),
       );
+
       return;
     }
 
@@ -223,7 +236,7 @@ class _SignInState extends State<SignIn> {
                         ),
                         onPress: () {
                           _tryValidation();
-                          fetchData();
+                          signIn();
                         },
                         width: 372.w,
                         height: 85.h,
@@ -299,5 +312,17 @@ class _SignInState extends State<SignIn> {
         ),
       ),
     );
+  }
+}
+
+// 이메일 인증 예외 처리
+class InvalidEmailException implements Exception {
+  final String message;
+
+  InvalidEmailException(this.message);
+
+  @override
+  String toString() {
+    return 'InvalidEmailException: $message';
   }
 }
