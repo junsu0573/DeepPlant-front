@@ -31,7 +31,7 @@ class _CompleteResgistrationState extends State<CompleteResgistration> {
   bool isLoading = false;
 
   @override
-  void initState() async {
+  void initState() {
     super.initState();
     // 로딩상태 활성화
     setState(() {
@@ -42,10 +42,10 @@ class _CompleteResgistrationState extends State<CompleteResgistration> {
     createManagementNum();
 
     // 이미지 저장
-    await sendImageToFirebase();
+    sendImageToFirebase();
 
     // 데이터 전송
-    await sendMeatData(widget.meatData);
+    sendMeatData(widget.meatData);
 
     // 로딩상태 비활성화
     setState(() {
@@ -93,8 +93,9 @@ class _CompleteResgistrationState extends State<CompleteResgistration> {
   Future<void> sendImageToFirebase() async {
     try {
       // fire storage에 육류 이미지 저장
-      final refMeatImage =
-          FirebaseStorage.instance.ref().child('sensory/$managementNum-0.png');
+      final refMeatImage = FirebaseStorage.instance
+          .ref()
+          .child('sensory_evals/$managementNum-0.png');
 
       await refMeatImage.putFile(
         File(widget.meatData.imagePath!),

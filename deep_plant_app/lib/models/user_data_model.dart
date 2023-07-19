@@ -65,7 +65,7 @@ class UserData {
       "name": name,
       "company": company,
       "jobTitle": jobTitle,
-      "homeAdress": homeAdress,
+      "homeAddr": homeAdress,
       "alarm": alarm,
       "type": type,
     };

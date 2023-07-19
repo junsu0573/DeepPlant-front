@@ -4,7 +4,6 @@ import 'package:deep_plant_app/source/api_services.dart';
 import 'package:deep_plant_app/widgets/common_button.dart';
 import 'package:deep_plant_app/widgets/custom_appbar.dart';
 import 'package:deep_plant_app/widgets/save_button.dart';
-import 'package:deep_plant_app/widgets/show_custom_popup.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -146,24 +145,15 @@ class _IdPwInsertionState extends State<IdPwInsertion> {
 
   // 이메일 중복 검사
   Future<void> dupliCheck(String userEmail) async {
-    try {
-      // 유저 정보 검색
-      dynamic data = await ApiServices.signIn(userEmail);
-
-      if (data == null) {
-        // 해당 유저 정보 없음
-        setState(() {
-          _isUnique = true;
-        });
-      } else {
-        // 이메일 중복
-        setState(() {
-          _isUnique = false;
-          showDuplicateEmailPopup(context);
-        });
-      }
-    } catch (e) {
-      print('에러 발생');
+    bool isDuplicated = await ApiServices.dupliCheck(userEmail);
+    if (isDuplicated) {
+      setState(() {
+        _isUnique = false;
+      });
+    } else {
+      setState(() {
+        _isUnique = true;
+      });
     }
   }
 

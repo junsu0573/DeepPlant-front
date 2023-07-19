@@ -19,9 +19,18 @@ class _EmailVerificationState extends State<EmailVerification> {
   // firebase authentication
   final FirebaseAuth _authentication = FirebaseAuth.instance;
 
+  @override
+  void initState() {
+    super.initState();
+    signUpWithVerify(widget.userData);
+  }
+
   // 회원가입 및 인증
   Future<void> signUpWithVerify(UserData userData) async {
     try {
+      // 사용자의 회원가입 정보를 서버로 전송
+      await ApiServices.signUp(userData);
+
       // 새로운 유저 생성
       UserCredential credential =
           await _authentication.createUserWithEmailAndPassword(
@@ -33,9 +42,6 @@ class _EmailVerificationState extends State<EmailVerification> {
       } else {
         throw Error();
       }
-
-      // 사용자의 회원가입 정보를 서버로 전송
-      await ApiServices.signUp(userData);
 
       // 페이지 이동
       if (!mounted) return;
@@ -52,12 +58,6 @@ class _EmailVerificationState extends State<EmailVerification> {
           print('Error');
       }
     }
-  }
-
-  @override
-  void initState() async {
-    super.initState();
-    await signUpWithVerify(widget.userData);
   }
 
   @override

@@ -4,7 +4,7 @@ import 'package:deep_plant_app/models/user_data_model.dart';
 import 'package:http/http.dart' as http;
 
 class ApiServices {
-  static String baseUrl = '';
+  static String baseUrl = 'http://10.221.71.140:8080';
 
   // API POST
   static Future<void> _postApi(String endPoint, String jsonData) async {
@@ -73,5 +73,17 @@ class ApiServices {
   // 유저 업데이트 (POST)
   static Future<dynamic> updateUser(UserData user) async {
     await _postApi('user/update', user.convertUserUpdateToJson());
+  }
+
+  // 유저 중복검사 (GET)
+  static Future<bool> dupliCheck(String userId) async {
+    dynamic data = await _getApi('user/duplicate_check?id=$userId');
+    if (data == null) {
+      // 404: 중복
+      return true;
+    } else {
+      // 200: !중복
+      return false;
+    }
   }
 }

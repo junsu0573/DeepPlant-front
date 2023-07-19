@@ -32,8 +32,10 @@ class _ShowStepState extends State<ShowStep> {
     widget.meatData.seqno = 0;
 
     // 유저 아이디 저장
-    _userId = widget.userData.userId!;
-    widget.meatData.userId = _userId;
+    if (widget.userData.userId != null) {
+      _userId = widget.userData.userId!;
+      widget.meatData.userId = _userId;
+    }
 
     // 임시저장 처리
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -168,8 +170,9 @@ class _ShowStepState extends State<ShowStep> {
                   SaveButton(
                     onPressed: _isAllCompleted()
                         ? () async {
-                            await widget.meatData.resetTempData();
+                            // await widget.meatData.resetTempData();
                             if (!mounted) return;
+
                             widget.userData.type == 'Normal'
                                 ? context.go('/option/complete-register')
                                 : context.go('/option/complete-register-2');
