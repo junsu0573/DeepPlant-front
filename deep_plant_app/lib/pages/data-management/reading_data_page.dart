@@ -1,15 +1,22 @@
+import 'package:deep_plant_app/models/user_data_model.dart';
 import 'package:deep_plant_app/widgets/custom_appbar.dart';
 import 'package:deep_plant_app/widgets/data_table_widget.dart';
 import 'package:deep_plant_app/widgets/save_button.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:deep_plant_app/widgets/data_page_toggle_button.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
+import 'package:table_calendar/table_calendar.dart';
 import 'package:http/http.dart' as http;
 
 class ReadingData extends StatefulWidget {
-  ReadingData({super.key, required this.user});
-  final UserModel user;
+  final UserData userData;
+  ReadingData({
+    super.key,
+    required this.userData,
+  });
 
   @override
   State<ReadingData> createState() => ReadingDataState();
@@ -17,11 +24,11 @@ class ReadingData extends StatefulWidget {
 
 class ReadingDataState extends State<ReadingData> {
   final TextEditingController search = TextEditingController();
-  RangeSelectionMode _rangeSelectionMode = RangeSelectionMode.toggledOn;
+  final RangeSelectionMode _rangeSelectionMode = RangeSelectionMode.toggledOn;
   FocusNode focusNode = FocusNode();
   String text = '';
-  late String temp1 = '';
-  late String temp2 = '';
+  String temp1 = '';
+  String temp2 = '';
   List<bool> selections1 = [false, true, false, false];
   List<bool> tempSelections1 = [false, true, false, false];
   List<bool> selections2 = [true, false];
@@ -30,13 +37,13 @@ class ReadingDataState extends State<ReadingData> {
   String tempOption1 = '1개월';
   String option2 = '최신순';
   String tempOption2 = '최신순';
-  final List<Widget> options1 = [
+  List<Widget> options1 = [
     Text('3일'),
     Text('1개월'),
     Text('3개월'),
     Text('직접설정'),
   ];
-  final List<Widget> options2 = [
+  List<Widget> options2 = [
     Text('최신순'),
     Text('과거순'),
   ];
@@ -51,9 +58,12 @@ class ReadingDataState extends State<ReadingData> {
   DateTime? _selectedDay;
   DateTime? _rangeStart;
   DateTime? _rangeEnd;
+  DateTime? tempRangeStart;
+  DateTime? tempRangeEnd;
 
   bool sortDscending = true;
   bool selectedEtc = false;
+  bool selectedFinal = true;
 
   final List<String> userData = [
     '000189843795,test,2023-01-22 20:44:25',
@@ -195,6 +205,7 @@ class ReadingDataState extends State<ReadingData> {
                           tempSelections2 = List<bool>.from(selections2);
                           showModalBottomSheet(
                             context: context,
+                            isDismissible: false,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.only(
                                 topLeft: Radius.circular(15.0),
@@ -204,7 +215,7 @@ class ReadingDataState extends State<ReadingData> {
                             builder: (BuildContext context) {
                               return StatefulBuilder(
                                 builder: (BuildContext context,
-                                    StateSetter bottomState) {
+                                    StateSetter bottomState1) {
                                   return Container(
                                     margin: EdgeInsets.all(10.0),
                                     height: 300,
@@ -223,11 +234,12 @@ class ReadingDataState extends State<ReadingData> {
                                           ToggleButton(
                                             onPressed: (index) {
                                               bottomState1(() {
+                                                selectedEtc = true;
                                                 if (index == 3) {
-                                                  selectedEtc = false;
                                                   showModalBottomSheet(
                                                       isScrollControlled: true,
                                                       context: context,
+                                                      isDismissible: false,
                                                       shape:
                                                           RoundedRectangleBorder(
                                                         borderRadius:
@@ -246,185 +258,399 @@ class ReadingDataState extends State<ReadingData> {
                                                             builder: (BuildContext
                                                                     context,
                                                                 StateSetter
-                                                                    bottomState) {
+                                                                    bottomState2) {
                                                           return Container(
                                                             margin:
                                                                 EdgeInsets.all(
                                                                     18.0),
-                                                            height: 300,
-                                                            child:
-                                                                TableCalendar(
-                                                              locale: 'ko_KR',
-                                                              firstDay:
-                                                                  DateTime.utc(
-                                                                      2023,
-                                                                      1,
-                                                                      1),
-                                                              lastDay:
-                                                                  DateTime.utc(
-                                                                      2023,
-                                                                      12,
-                                                                      31),
-                                                              focusedDay:
-                                                                  _focusedDay,
-                                                              rangeStartDay:
-                                                                  _rangeStart,
-                                                              rangeEndDay:
-                                                                  _rangeEnd,
-                                                              rangeSelectionMode:
-                                                                  _rangeSelectionMode,
-                                                              rowHeight: 35.0,
-                                                              onDaySelected:
-                                                                  (selectedDay,
-                                                                      focusedDay) {
-                                                                bottomState(
-                                                                  () {
-                                                                    if (!isSameDay(
-                                                                        _selectedDay,
-                                                                        selectedDay)) {
-                                                                      setState(
+                                                            height: 375,
+                                                            child: Column(
+                                                              children: [
+                                                                Row(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .spaceBetween,
+                                                                  children: [
+                                                                    Row(
+                                                                      children: [
+                                                                        TextButton(
+                                                                          onPressed:
+                                                                              () {
+                                                                            showModalBottomSheet(
+                                                                                context: context,
+                                                                                isDismissible: true,
+                                                                                shape: RoundedRectangleBorder(
+                                                                                  borderRadius: BorderRadius.only(
+                                                                                    topLeft: Radius.circular(15.0),
+                                                                                    topRight: Radius.circular(15.0),
+                                                                                  ),
+                                                                                ),
+                                                                                builder: (BuildContext context) {
+                                                                                  DateTime selectDate = DateTime.now();
+                                                                                  return Container(
+                                                                                    height: 200,
+                                                                                    margin: EdgeInsets.all(10.0),
+                                                                                    child: Column(
+                                                                                      children: [
+                                                                                        Row(
+                                                                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                                          children: [
+                                                                                            IconButton(
+                                                                                                onPressed: () {
+                                                                                                  Navigator.pop(context);
+                                                                                                },
+                                                                                                icon: Icon(
+                                                                                                  Icons.close,
+                                                                                                  color: Colors.black,
+                                                                                                  size: 26,
+                                                                                                )),
+                                                                                            IconButton(
+                                                                                                onPressed: () {
+                                                                                                  bottomState2(
+                                                                                                    () {
+                                                                                                      setState(() {
+                                                                                                        tempRangeStart = selectDate;
+                                                                                                        temp1 = DateFormat('MM/dd').format(tempRangeStart!);
+                                                                                                      });
+                                                                                                    },
+                                                                                                  );
+                                                                                                  Navigator.pop(context);
+                                                                                                },
+                                                                                                icon: Icon(
+                                                                                                  Icons.check,
+                                                                                                  color: Colors.black,
+                                                                                                  size: 26,
+                                                                                                )),
+                                                                                          ],
+                                                                                        ),
+                                                                                        Divider(
+                                                                                          height: 1,
+                                                                                          color: Colors.grey,
+                                                                                        ),
+                                                                                        SizedBox(
+                                                                                          height: 10,
+                                                                                        ),
+                                                                                        SizedBox(
+                                                                                          height: 120,
+                                                                                          //Cupertino형 위젯을 스타일 할때 사용하는 위젯
+                                                                                          child: CupertinoTheme(
+                                                                                            data: CupertinoThemeData(
+                                                                                              textTheme: CupertinoTextThemeData(
+                                                                                                dateTimePickerTextStyle: TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.bold),
+                                                                                              ),
+                                                                                            ),
+                                                                                            //Cupertino형 날짜 선택 위젯
+                                                                                            child: CupertinoDatePicker(
+                                                                                              backgroundColor: Colors.white,
+                                                                                              //현재 날짜
+                                                                                              initialDateTime: (tempRangeStart == null) ? DateTime.now() : tempRangeStart,
+                                                                                              //끝 연도
+                                                                                              maximumYear: DateTime.now().year,
+                                                                                              //끝날짜
+                                                                                              maximumDate: DateTime.now(),
+                                                                                              //첫 연도
+                                                                                              minimumYear: 2023,
+                                                                                              //날짜 선택 모드
+                                                                                              mode: CupertinoDatePickerMode.date,
+                                                                                              onDateTimeChanged: (dateTime) {
+                                                                                                selectDate = dateTime;
+                                                                                              },
+                                                                                            ),
+                                                                                          ),
+                                                                                        ),
+                                                                                      ],
+                                                                                    ),
+                                                                                  );
+                                                                                });
+                                                                          },
+                                                                          child:
+                                                                              Text(
+                                                                            temp1,
+                                                                            style:
+                                                                                TextStyle(color: Colors.black),
+                                                                          ),
+                                                                        ),
+                                                                        Text(
+                                                                          '-',
+                                                                          style:
+                                                                              TextStyle(fontSize: 30.0),
+                                                                        ),
+                                                                        TextButton(
+                                                                          onPressed:
+                                                                              () {
+                                                                            showModalBottomSheet(
+                                                                                context: context,
+                                                                                isDismissible: true,
+                                                                                shape: RoundedRectangleBorder(
+                                                                                  borderRadius: BorderRadius.only(
+                                                                                    topLeft: Radius.circular(15.0),
+                                                                                    topRight: Radius.circular(15.0),
+                                                                                  ),
+                                                                                ),
+                                                                                builder: (BuildContext context) {
+                                                                                  DateTime selectDate = DateTime.now();
+                                                                                  return Container(
+                                                                                    height: 200,
+                                                                                    margin: EdgeInsets.all(10.0),
+                                                                                    child: Column(
+                                                                                      children: [
+                                                                                        Row(
+                                                                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                                          children: [
+                                                                                            IconButton(
+                                                                                                onPressed: () {
+                                                                                                  Navigator.pop(context);
+                                                                                                },
+                                                                                                icon: Icon(
+                                                                                                  Icons.close,
+                                                                                                  color: Colors.black,
+                                                                                                  size: 26,
+                                                                                                )),
+                                                                                            IconButton(
+                                                                                                onPressed: () {
+                                                                                                  bottomState2(
+                                                                                                    () {
+                                                                                                      setState(() {
+                                                                                                        tempRangeEnd = selectDate;
+                                                                                                        temp2 = DateFormat('MM/dd').format(tempRangeEnd!);
+                                                                                                      });
+                                                                                                    },
+                                                                                                  );
+                                                                                                  Navigator.pop(context);
+                                                                                                },
+                                                                                                icon: Icon(
+                                                                                                  Icons.check,
+                                                                                                  color: Colors.black,
+                                                                                                  size: 26,
+                                                                                                )),
+                                                                                          ],
+                                                                                        ),
+                                                                                        Divider(
+                                                                                          height: 1,
+                                                                                          color: Colors.grey,
+                                                                                        ),
+                                                                                        SizedBox(
+                                                                                          height: 10,
+                                                                                        ),
+                                                                                        SizedBox(
+                                                                                          height: 120,
+                                                                                          //Cupertino형 위젯을 스타일 할때 사용하는 위젯
+                                                                                          child: CupertinoTheme(
+                                                                                            data: CupertinoThemeData(
+                                                                                              textTheme: CupertinoTextThemeData(
+                                                                                                dateTimePickerTextStyle: TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.bold),
+                                                                                              ),
+                                                                                            ),
+                                                                                            //Cupertino형 날짜 선택 위젯
+                                                                                            child: CupertinoDatePicker(
+                                                                                              backgroundColor: Colors.white,
+                                                                                              //현재 날짜
+                                                                                              initialDateTime: (tempRangeEnd == null) ? DateTime.now() : tempRangeEnd,
+                                                                                              //끝 연도
+                                                                                              maximumYear: DateTime.now().year,
+                                                                                              //끝날짜
+                                                                                              maximumDate: DateTime.now(),
+                                                                                              //첫 연도
+                                                                                              minimumYear: 2023,
+                                                                                              //날짜 선택 모드
+                                                                                              mode: CupertinoDatePickerMode.date,
+                                                                                              onDateTimeChanged: (dateTime) {
+                                                                                                selectDate = dateTime;
+                                                                                              },
+                                                                                            ),
+                                                                                          ),
+                                                                                        ),
+                                                                                      ],
+                                                                                    ),
+                                                                                  );
+                                                                                });
+                                                                          },
+                                                                          child:
+                                                                              Text(
+                                                                            temp2,
+                                                                            style:
+                                                                                TextStyle(color: Colors.black),
+                                                                          ),
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                                    InkWell(
+                                                                      onTap:
                                                                           () {
-                                                                        _selectedDay =
-                                                                            selectedDay;
-                                                                        _focusedDay =
-                                                                            focusedDay;
-                                                                        _rangeStart =
-                                                                            null;
-                                                                        _rangeEnd =
-                                                                            null;
-                                                                        _rangeSelectionMode =
-                                                                            RangeSelectionMode.toggledOff;
-                                                                      });
-                                                                    }
+                                                                        bottomState1(
+                                                                          () {
+                                                                            setState(
+                                                                              () {
+                                                                                if (tempRangeEnd != null && tempRangeStart != null) {
+                                                                                  tempOption1 = '$temp1-$temp2';
+                                                                                  options1[3] = Text(tempOption1);
+                                                                                  selectedFinal = true;
+                                                                                } else {
+                                                                                  tempOption1 = '직접설정';
+                                                                                  options1[3] = Text(tempOption1);
+                                                                                  selectedFinal = false;
+                                                                                }
+                                                                              },
+                                                                            );
+                                                                          },
+                                                                        );
+                                                                        context
+                                                                            .pop();
+                                                                      },
+                                                                      child:
+                                                                          SizedBox(
+                                                                        width:
+                                                                            48.w,
+                                                                        height:
+                                                                            48.h,
+                                                                        child:
+                                                                            Image(
+                                                                          image:
+                                                                              AssetImage('assets/images/close.png'),
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                                TableCalendar(
+                                                                  locale:
+                                                                      'ko_KR',
+                                                                  firstDay:
+                                                                      DateTime.utc(
+                                                                          2023,
+                                                                          1,
+                                                                          1),
+                                                                  lastDay:
+                                                                      DateTime.utc(
+                                                                          2023,
+                                                                          12,
+                                                                          31),
+                                                                  focusedDay:
+                                                                      _focusedDay,
+                                                                  rangeStartDay:
+                                                                      tempRangeStart,
+                                                                  rangeEndDay:
+                                                                      tempRangeEnd,
+                                                                  rangeSelectionMode:
+                                                                      _rangeSelectionMode,
+                                                                  rowHeight:
+                                                                      40.0,
+                                                                  // onDaySelected: (selectedDay, focusedDay) {
+                                                                  //   bottomState2(
+                                                                  //     () {
+                                                                  //       if (!isSameDay(_selectedDay, selectedDay)) {
+                                                                  //         setState(() {
+                                                                  //           _selectedDay = selectedDay;
+                                                                  //           _focusedDay = focusedDay;
+                                                                  //           _rangeStart = null;
+                                                                  //           _rangeEnd = null;
+                                                                  //           _rangeSelectionMode = RangeSelectionMode.toggledOff;
+                                                                  //         });
+                                                                  //       }
+                                                                  //     },
+                                                                  //   );
+                                                                  // },
+                                                                  onRangeSelected:
+                                                                      (startDay,
+                                                                          endDay,
+                                                                          focusedDay) {
+                                                                    bottomState2(
+                                                                      () {
+                                                                        setState(
+                                                                            () {
+                                                                          _selectedDay =
+                                                                              null;
+                                                                          _focusedDay =
+                                                                              focusedDay;
+                                                                          tempRangeStart =
+                                                                              startDay;
+                                                                          tempRangeEnd =
+                                                                              endDay;
+                                                                          if (tempRangeEnd != null &&
+                                                                              tempRangeStart !=
+                                                                                  null) {
+                                                                            temp1 =
+                                                                                DateFormat('MM/dd').format(tempRangeStart!);
+                                                                            temp2 =
+                                                                                DateFormat('MM/dd').format(tempRangeEnd!);
+                                                                          } else if (tempRangeEnd ==
+                                                                              null) {
+                                                                            temp1 =
+                                                                                DateFormat('MM/dd').format(tempRangeStart!);
+                                                                            temp2 =
+                                                                                "";
+                                                                          } else if (tempRangeStart ==
+                                                                              null) {
+                                                                            temp2 =
+                                                                                DateFormat('MM/dd').format(tempRangeEnd!);
+                                                                            temp1 =
+                                                                                "";
+                                                                          }
+                                                                        });
+                                                                      },
+                                                                    );
                                                                   },
-                                                                );
-                                                              },
-                                                              onRangeSelected:
-                                                                  (startDay,
-                                                                      endDay,
-                                                                      focusedDay) {
-                                                                bottomState(
-                                                                  () {
-                                                                    setState(
-                                                                        () {
-                                                                      _selectedDay =
-                                                                          null;
-                                                                      _focusedDay =
-                                                                          focusedDay;
-                                                                      _rangeStart =
-                                                                          startDay;
-                                                                      _rangeEnd =
-                                                                          endDay;
-                                                                      _rangeSelectionMode =
-                                                                          RangeSelectionMode
-                                                                              .toggledOn;
-                                                                    });
-                                                                  },
-                                                                );
-                                                              },
-                                                              onPageChanged:
-                                                                  (focusedDay) {
-                                                                var thisMonth =
-                                                                    DateFormat(
-                                                                            'MM')
-                                                                        .format(
-                                                                            DateTime.now());
-                                                                var movedMonth =
-                                                                    DateFormat(
-                                                                            'MM')
-                                                                        .format(
-                                                                            focusedDay);
-                                                                _focusedDay =
-                                                                    focusedDay;
-                                                                bottomState(
-                                                                  () {
-                                                                    setState(
-                                                                        () {
-                                                                      if (movedMonth ==
-                                                                          thisMonth) {
-                                                                        _selectedDay =
-                                                                            DateTime.now();
-                                                                      } else {
-                                                                        _selectedDay =
-                                                                            focusedDay;
-                                                                      }
-                                                                    });
-                                                                  },
-                                                                );
-                                                              },
-                                                              selectedDayPredicate:
-                                                                  (day) =>
+                                                                  selectedDayPredicate: (day) =>
                                                                       isSameDay(
                                                                           _selectedDay,
                                                                           day),
-                                                              headerStyle:
-                                                                  HeaderStyle(
-                                                                formatButtonVisible:
-                                                                    false,
-                                                                titleCentered:
-                                                                    true,
-                                                                titleTextStyle:
-                                                                    TextStyle(
-                                                                  fontSize:
-                                                                      17.0,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold,
-                                                                ),
-                                                                leftChevronMargin:
-                                                                    EdgeInsets.only(
+                                                                  headerStyle:
+                                                                      HeaderStyle(
+                                                                    formatButtonVisible:
+                                                                        false,
+                                                                    titleCentered:
+                                                                        true,
+                                                                    titleTextStyle:
+                                                                        TextStyle(
+                                                                      fontSize:
+                                                                          17.0,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold,
+                                                                    ),
+                                                                    leftChevronMargin: EdgeInsets.only(
                                                                         left:
                                                                             65.0,
                                                                         top:
                                                                             5.0),
-                                                                rightChevronMargin:
-                                                                    EdgeInsets.only(
+                                                                    rightChevronMargin: EdgeInsets.only(
                                                                         right:
                                                                             65.0,
                                                                         top:
                                                                             5.0),
-                                                              ),
-                                                              calendarStyle:
-                                                                  CalendarStyle(
-                                                                      outsideDaysVisible:
-                                                                          false,
-                                                                      cellMargin:
-                                                                          EdgeInsets.all(
-                                                                              0),
-                                                                      rangeHighlightColor: Colors
-                                                                          .grey
-                                                                          .shade400,
-                                                                      withinRangeDecoration: const BoxDecoration(
-                                                                          shape: BoxShape
-                                                                              .circle),
-                                                                      rangeStartDecoration:
-                                                                          const BoxDecoration(
+                                                                  ),
+                                                                  calendarStyle: CalendarStyle(
+                                                                      outsideDaysVisible: true,
+                                                                      cellMargin: EdgeInsets.all(0),
+                                                                      rangeHighlightColor: Colors.grey.shade400,
+                                                                      withinRangeDecoration: const BoxDecoration(shape: BoxShape.circle),
+                                                                      outsideTextStyle: const TextStyle(color: Colors.transparent),
+                                                                      rangeStartDecoration: const BoxDecoration(
                                                                         color: Colors
                                                                             .grey,
                                                                         shape: BoxShape
                                                                             .circle,
                                                                       ),
-                                                                      rangeEndDecoration:
-                                                                          const BoxDecoration(
+                                                                      rangeEndDecoration: const BoxDecoration(
                                                                         color: Colors
                                                                             .grey,
                                                                         shape: BoxShape
                                                                             .circle,
                                                                       ),
-                                                                      todayDecoration:
-                                                                          const BoxDecoration(
+                                                                      todayDecoration: const BoxDecoration(
                                                                         color: Colors
                                                                             .black54,
                                                                         shape: BoxShape
                                                                             .circle,
                                                                       ),
-                                                                      selectedDecoration:
-                                                                          const BoxDecoration(
+                                                                      selectedDecoration: const BoxDecoration(
                                                                         color: Colors
                                                                             .grey,
                                                                         shape: BoxShape
                                                                             .circle,
                                                                       )),
+                                                                ),
+                                                              ],
                                                             ),
                                                           );
                                                         });
@@ -439,6 +665,9 @@ class ReadingDataState extends State<ReadingData> {
                                                         (options1[i] as Text)
                                                             .data
                                                             .toString();
+                                                    if (index != 3) {
+                                                      selectedFinal = true;
+                                                    }
                                                   } else {
                                                     tempSelections1[i] = false;
                                                   }
@@ -459,7 +688,7 @@ class ReadingDataState extends State<ReadingData> {
                                           ),
                                           ToggleButton(
                                             onPressed: (index) {
-                                              bottomState(() {
+                                              bottomState1(() {
                                                 for (int i = 0;
                                                     i < tempSelections2.length;
                                                     i++) {
@@ -482,28 +711,44 @@ class ReadingDataState extends State<ReadingData> {
                                             minWidth: 160.0,
                                           ),
                                           SaveButton(
-                                            text: '확인',
-                                            width: 658.w,
-                                            heigh: 104.h,
-                                            isWhite: false,
-                                            onPressed: () {
-                                              Navigator.pop(context);
-                                              setState(() {
-                                                selections1 =
-                                                    List.from(tempSelections1);
-                                                selections2 =
-                                                    List.from(tempSelections2);
-                                                option1 = tempOption1;
-                                                option2 = tempOption2;
-                                                if (option2 == '최신순') {
-                                                  sortDscending = true;
-                                                } else if (option2 == '과거순') {
-                                                  sortDscending = false;
-                                                }
-                                                selectedEtc = true;
-                                              });
-                                            },
-                                          ),
+                                              text: '확인',
+                                              width: 658.w,
+                                              heigh: 104.h,
+                                              isWhite: false,
+                                              onPressed: selectedFinal
+                                                  ? () {
+                                                      Navigator.pop(context);
+                                                      setState(() {
+                                                        selections1 = List.from(
+                                                            tempSelections1);
+                                                        selections2 = List.from(
+                                                            tempSelections2);
+                                                        option1 = tempOption1;
+                                                        option2 = tempOption2;
+                                                        _rangeStart =
+                                                            tempRangeStart;
+                                                        _rangeEnd =
+                                                            tempRangeEnd;
+                                                        if (option2 == '최신순') {
+                                                          sortDscending = true;
+                                                        } else if (option2 ==
+                                                            '과거순') {
+                                                          sortDscending = false;
+                                                        }
+                                                        if (option1 == '3일' ||
+                                                            option1 == '1개월' ||
+                                                            option1 == '3개월') {
+                                                          selectedEtc = false;
+                                                          tempRangeEnd = null;
+                                                          tempRangeStart = null;
+                                                          temp1 = '';
+                                                          temp2 = '';
+                                                          options1[3] =
+                                                              Text('직접설정');
+                                                        }
+                                                      });
+                                                    }
+                                                  : null),
                                         ],
                                       ),
                                     ),
@@ -526,7 +771,14 @@ class ReadingDataState extends State<ReadingData> {
             Expanded(
               child: SingleChildScrollView(
                 child: getDataTable(
-                    userData, text, manageDataState, sortDscending, option1),
+                    userData,
+                    text,
+                    manageDataState,
+                    sortDscending,
+                    option1,
+                    _rangeStart,
+                    _rangeEnd,
+                    selectedEtc),
               ),
             ),
           ],
