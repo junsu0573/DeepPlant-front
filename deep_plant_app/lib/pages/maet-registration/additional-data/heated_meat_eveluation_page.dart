@@ -1,4 +1,7 @@
+import 'dart:js_interop';
+
 import 'package:deep_plant_app/models/meat_data_model.dart';
+import 'package:deep_plant_app/source/api_services.dart';
 import 'package:deep_plant_app/source/get_date.dart';
 import 'package:deep_plant_app/widgets/save_button.dart';
 import 'package:deep_plant_app/widgets/show_custom_dialog.dart';
@@ -165,8 +168,17 @@ class HeatedMeatEvaluationState extends State<HeatedMeatEvaluation> {
               margin: EdgeInsets.only(bottom: 28.h),
               child: SaveButton(
                 onPressed: _isAllselected()
-                    ? () {
+                    ? () async {
+                        // 객체 데이터 저장
                         saveMeatData();
+
+                        // 데이터 서버로 전송
+                        await ApiServices.sendMeatData(
+                            'heatedmeat_eval',
+                            widget.meatData.convertHeatedMeatToJson(
+                                !widget.meatData.deepAging.isNull));
+
+                        if (!mounted) return;
                         context.pop();
                       }
                     : null,

@@ -1,4 +1,5 @@
 import 'package:deep_plant_app/models/meat_data_model.dart';
+import 'package:deep_plant_app/source/api_services.dart';
 import 'package:deep_plant_app/source/get_date.dart';
 import 'package:deep_plant_app/widgets/eval_buttonnrow.dart';
 import 'package:deep_plant_app/widgets/save_button.dart';
@@ -157,8 +158,16 @@ class _FreshmeatEvaluationState extends State<FreshmeatEvaluation> {
                 margin: EdgeInsets.only(bottom: 18.h),
                 child: SaveButton(
                   onPressed: _isAllselected()
-                      ? () {
+                      ? () async {
+                          // 객체 데이터 저장
                           saveMeatData();
+
+                          // deepAging 데이터가 존재하면 서버로 전송
+                          if (widget.meatData.deepAging != null) {
+                            await ApiServices.sendMeatData('sendory_eval',
+                                widget.meatData.convertFreshMeatToJson(true));
+                          }
+                          if (!mounted) return;
                           context.pop();
                         }
                       : null,

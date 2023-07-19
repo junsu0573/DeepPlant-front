@@ -6,13 +6,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crypto/crypto.dart';
 import 'package:deep_plant_app/models/meat_data_model.dart';
 import 'package:deep_plant_app/source/api_services.dart';
+import 'package:deep_plant_app/source/get_date.dart';
 import 'package:deep_plant_app/source/pallete.dart';
 import 'package:deep_plant_app/widgets/save_button.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:intl/intl.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 class CompleteResgistration2 extends StatefulWidget {
@@ -61,16 +61,14 @@ class _CompleteResgistration2State extends State<CompleteResgistration2> {
         widget.meatData.speciesValue != null &&
         widget.meatData.primalValue != null &&
         widget.meatData.secondaryValue != null) {
-      DateTime now = DateTime.now();
-      String createdAt = DateFormat('yyyy-MM-ddTHH:mm:ssZ').format(now);
-
+      // 관리번호: 이력코드-생성일자-종-대분할-소분할
+      String createdAt = GetDate.getCurrentDate();
       String originalString =
           '${widget.meatData.traceNum!}-$createdAt-${widget.meatData.speciesValue!}-${widget.meatData.primalValue!}-${widget.meatData.secondaryValue!}';
 
       // 해시함수로 관리번호 생성 및 데이터 저장
       managementNum = hashStringTo12Digits(originalString);
       widget.meatData.id = managementNum;
-      widget.meatData.createdAt = createdAt;
     } else {
       print('에러');
     }
@@ -137,7 +135,7 @@ class _CompleteResgistration2State extends State<CompleteResgistration2> {
     final jsonData = meatData.convertNewMeatToJson();
 
     // 데이터 전송
-    await ApiServices.sendMeatData(jsonData);
+    await ApiServices.sendMeatData(null, jsonData);
   }
 
   @override

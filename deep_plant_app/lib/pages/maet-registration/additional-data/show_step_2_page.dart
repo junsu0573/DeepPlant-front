@@ -116,22 +116,8 @@ class _ShowStep2State extends State<ShowStep2> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SaveButton(
-                    onPressed: () async {
-                      // 육류 데이터 로컬에 저장
-                      await widget.meatData.saveTempDataForStep2();
-                    },
-                    text: '임시저장',
-                    width: 310.w,
-                    heigh: 104.h,
-                    isWhite: true,
-                  ),
-                  SizedBox(
-                    width: 41.w,
-                  ),
-                  SaveButton(
                     onPressed: _isAllCompleted()
                         ? () async {
-                            await widget.meatData.resetTempDataForStep2();
                             if (!mounted) {
                               return;
                             }
