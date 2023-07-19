@@ -60,7 +60,7 @@ final _router = GoRouter(
   routes: [
     GoRoute(
       path: '/',
-      builder: (context, state) => HomePage(),
+      builder: (context, state) => DataAddHome(),
       routes: [
         GoRoute(
           path: 'sign-in',
