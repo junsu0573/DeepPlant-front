@@ -79,8 +79,6 @@ class _DataAddHomeState extends State<DataAddHome> {
       padding: EdgeInsets.only(
         top: 5.0,
         bottom: 5.0,
-        left: 30.0,
-        right: 30.0,
       ),
       height: 70.0,
       child: OutlinedButton(
@@ -88,33 +86,18 @@ class _DataAddHomeState extends State<DataAddHome> {
         child: Row(
           children: [
             Padding(
-              padding: const EdgeInsets.all(2.0),
-              child: RichText(
-                maxLines: 2,
-                text: TextSpan(
-                  children: <TextSpan>[
-                    TextSpan(
-                      text: '  ${index + 1}차\n',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 20.sp,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    TextSpan(
-                      text: '처리일',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 20.sp,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
+              padding: EdgeInsets.only(right: 6.0),
+              child: Text(
+                '${index + 1}차',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 20.sp,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(6.0),
               child: VerticalDivider(
                 thickness: 2,
                 width: 1,
@@ -122,7 +105,7 @@ class _DataAddHomeState extends State<DataAddHome> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(6.0),
               child: Text(
                 '${objects[index].insertedHour}시간 ${objects[index].insertedMinute}분',
                 style: TextStyle(
@@ -131,7 +114,6 @@ class _DataAddHomeState extends State<DataAddHome> {
                 ),
               ),
             ),
-            Spacer(flex: 2),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
@@ -142,12 +124,14 @@ class _DataAddHomeState extends State<DataAddHome> {
                 ),
               ),
             ),
+            SizedBox(
+              width: 40.w,
+            ),
             Padding(
-              padding: const EdgeInsets.all(4.0),
-              child: Icon(
-                Icons.arrow_forward_ios_outlined,
-                color: Colors.black,
-                size: 20.0,
+              padding: const EdgeInsets.all(6.0),
+              child: Text(
+                '수정',
+                style: TextStyle(color: Colors.black),
               ),
             )
           ],
@@ -186,6 +170,7 @@ class _DataAddHomeState extends State<DataAddHome> {
               ),
               Divider(
                 height: 0,
+                thickness: 1.5,
               ),
               SizedBox(
                 height: 23.w,
@@ -250,6 +235,7 @@ class _DataAddHomeState extends State<DataAddHome> {
               ),
               Divider(
                 height: 0,
+                thickness: 1.5,
               ),
               SizedBox(
                 height: 40.h,
@@ -301,13 +287,27 @@ class _DataAddHomeState extends State<DataAddHome> {
                 decoration: BoxDecoration(color: Palette.textFieldColor),
                 child: Row(
                   children: [
-                    Text('차수'),
+                    Text(
+                      '차수',
+                      style: TextStyle(fontSize: 24.sp),
+                    ),
                     Spacer(),
-                    Text('처리시간'),
+                    Text(
+                      '처리시간',
+                      style: TextStyle(fontSize: 24.sp),
+                    ),
+                    Spacer(
+                      flex: 2,
+                    ),
+                    Text(
+                      '처리일자',
+                      style: TextStyle(fontSize: 24.sp),
+                    ),
                     Spacer(),
-                    Text('처리일자'),
-                    Spacer(),
-                    Text('추가정보 입력'),
+                    Text(
+                      '추가정보 입력',
+                      style: TextStyle(fontSize: 24.sp),
+                    ),
                   ],
                 ),
               ),
