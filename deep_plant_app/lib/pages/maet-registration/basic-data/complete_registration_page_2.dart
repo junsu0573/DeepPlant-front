@@ -30,7 +30,7 @@ class CompleteResgistration2 extends StatefulWidget {
 class _CompleteResgistration2State extends State<CompleteResgistration2> {
   String managementNum = '';
   FirebaseFirestore firestore = FirebaseFirestore.instance;
-  bool isLoading = false;
+  bool isLoading = true;
 
   @override
   void initState() {
@@ -48,11 +48,6 @@ class _CompleteResgistration2State extends State<CompleteResgistration2> {
 
     // 데이터 전송
     sendMeatData(widget.meatData);
-
-    // 로딩상태 비활성화
-    setState(() {
-      isLoading = false;
-    });
   }
 
   // 관리번호 생성
@@ -106,10 +101,9 @@ class _CompleteResgistration2State extends State<CompleteResgistration2> {
 
       // QR 생성 후 firestore에 업로드
       uploadQRCodeImageToStorage(managementNum);
-
-      // delay
     } catch (e) {
       print(e);
+      context.go('/option/error');
     }
   }
 
@@ -134,12 +128,21 @@ class _CompleteResgistration2State extends State<CompleteResgistration2> {
 
   // 육류 정보를 서버로 전송
   Future<void> sendMeatData(MeatData meatData) async {
-    // 육류 정보를 json 형식으로 변환
-
     // 데이터 전송
-    await ApiServices.sendMeatData(null, meatData.convertNewMeatToJson());
-    //await ApiServices.sendMeatData(
-    //  'sensory_eval', meatData.convertFreshMeatToJson());
+
+    final response1 =
+        await ApiServices.sendMeatData(null, meatData.convertNewMeatToJson());
+    final response2 = await ApiServices.sendMeatData(
+        'sensory_eval', meatData.convertFreshMeatToJson());
+    if (response1 == null || response2 == null) {
+      if (!mounted) return;
+      context.go('/option/error');
+    }
+
+    // 로딩상태 비활성화
+    setState(() {
+      isLoading = false;
+    });
   }
 
   @override

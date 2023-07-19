@@ -4,10 +4,10 @@ import 'package:deep_plant_app/models/user_data_model.dart';
 import 'package:http/http.dart' as http;
 
 class ApiServices {
-  static String baseUrl = 'http://10.221.71.140:8080';
+  static String baseUrl = 'http://192.168.45.214:8080';
 
   // API POST
-  static Future<void> _postApi(String endPoint, String jsonData) async {
+  static Future<dynamic> _postApi(String endPoint, String jsonData) async {
     String apiUrl = '$baseUrl/$endPoint';
     Map<String, String> headers = {'Content-Type': 'application/json'};
     String requestBody = jsonData;
@@ -18,11 +18,14 @@ class ApiServices {
       if (response.statusCode == 200) {
         print('POST 요청 성공');
         print(response.body);
+        return response.body;
       } else {
         print('POST 요청 실패: ${response.body}');
+        return;
       }
     } catch (e) {
       print('POST 요청 중 예외 발생: $e');
+      return;
     }
   }
 
@@ -45,12 +48,12 @@ class ApiServices {
   }
 
   // 육류 정보 전송 (POST)
-  static Future<void> sendMeatData(String? dest, String jsonData) async {
+  static Future<dynamic> sendMeatData(String? dest, String jsonData) async {
     String endPoint = 'meat/add';
     if (dest != null) {
       endPoint = 'meat/add/$dest';
     }
-    await _postApi(endPoint, jsonData);
+    return await _postApi(endPoint, jsonData);
   }
 
   // 유저 회원가입 (POST)

@@ -86,16 +86,24 @@ class MeatData {
 
   // 임시 데이터를 로컬 임시 파일로 저장
   Future<void> saveDataToLocal(Map<String, dynamic> data, String path) async {
-    final directory = await getApplicationDocumentsDirectory();
-    final file = File('${directory.path}/$path');
+    try {
+      final directory = await getApplicationDocumentsDirectory();
+      final file = File('${directory.path}/$path.json');
 
-    await file.writeAsString(jsonEncode(data));
+      // 파일을 저장할 디렉토리가 없으면 새로 생성
+      await Directory(directory.path).create(recursive: true);
+
+      await file.writeAsString(jsonEncode(data));
+      print('임시저장 성공');
+    } catch (e) {
+      print('임시저장 실패: $e');
+    }
   }
 
   // 객체 데이터를 임시 저장 데이터로 초기화
   Future<void> initMeatData(String path) async {
     final directory = await getApplicationDocumentsDirectory();
-    final file = File('${directory.path}/$path/basic-data');
+    final file = File('${directory.path}/$path/basic-data.json');
     if (await file.exists()) {
       final jsonData = await file.readAsString();
       final data = jsonDecode(jsonData);
@@ -119,6 +127,10 @@ class MeatData {
 
       // 신선육 관능평가
       freshmeat = data['freshmeat'];
+
+      print('임시저장 데이터 fetch 성공');
+    } else {
+      print('임시저장 데이터 없음');
     }
   }
 

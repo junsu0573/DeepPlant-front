@@ -15,6 +15,7 @@ import 'package:deep_plant_app/pages/maet-registration/basic-data/insertion_meat
 import 'package:deep_plant_app/pages/maet-registration/basic-data/insertion_meat_info_page.dart';
 import 'package:deep_plant_app/pages/maet-registration/additional-data/show_step_2_page.dart';
 import 'package:deep_plant_app/pages/maet-registration/basic-data/show_step_page.dart';
+import 'package:deep_plant_app/pages/show_error_page.dart';
 import 'package:deep_plant_app/pages/sign-up/add_user_info_page.dart';
 import 'package:deep_plant_app/pages/my-page/my_page.dart';
 import 'package:deep_plant_app/pages/my-page/reset_pw_page.dart';
@@ -104,6 +105,10 @@ final _router = GoRouter(
         userData: newUser,
       ),
       routes: [
+        GoRoute(
+          path: 'error',
+          builder: (context, state) => ShowError(),
+        ),
         // 마이페이지
         GoRoute(
           path: 'my-page',
