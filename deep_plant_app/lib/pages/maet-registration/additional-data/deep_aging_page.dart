@@ -34,17 +34,27 @@ class _DeepAgingState extends State<DeepAging> {
   List<int> hour = List<int>.filled(4, 0);
   List<int> minute = List<int>.filled(4, 0);
 
-  void intoString() {
+  // 육류 데이터 저장
+  void saveMeatData() {
+    // 데이터 생성
+    convertToString();
+
+    // 데이터 저장
+    widget.meatData.deepAging = deepAgingModel;
+  }
+
+  void convertToString() {
     for (int i = 0; i < objects.length; i++) {
       String timeTemp = ((int.parse(objects[i].insertedHour!) * 60) +
               (int.parse(objects[i].insertedMinute!)))
           .toString();
       String temp =
-          '${objects[i].selectedYear}/${objects[i].selectedMonth}/${objects[i].selectedDay}/$timeTemp';
+          '${objects[i].selectedYear}${objects[i].selectedMonth}${objects[i].selectedDay}/$timeTemp';
       deepAgingModel.add(temp);
     }
   }
 
+  // 시간 계산
   void calTime(DeepAgingData data, int index, bool edit) {
     if (edit == true) {
       totalHour -= hour[index];
@@ -60,10 +70,6 @@ class _DeepAgingState extends State<DeepAging> {
       totalHour += q;
       totalMinute = r;
     }
-  }
-
-  void saveMeatData() {
-    widget.meatData.deepAging = deepAgingModel;
   }
 
   void widgetCreate(int index) {
@@ -322,8 +328,7 @@ class _DeepAgingState extends State<DeepAging> {
                 width: 350,
                 child: ElevatedButton(
                   onPressed: (objects.isNotEmpty)
-                      ? () async {
-                          intoString();
+                      ? () {
                           saveMeatData();
                           context.pop();
                         }
