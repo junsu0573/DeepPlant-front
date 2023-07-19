@@ -28,8 +28,6 @@ class _CompleteAdditionalRegistrationState
       isLoading = true;
     });
 
-    await sendMeatData(widget.meatData);
-
     setState(() {
       isLoading = false;
     });

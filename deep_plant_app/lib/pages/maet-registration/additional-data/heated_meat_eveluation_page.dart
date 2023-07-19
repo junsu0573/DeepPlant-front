@@ -1,5 +1,3 @@
-import 'dart:js_interop';
-
 import 'package:deep_plant_app/models/meat_data_model.dart';
 import 'package:deep_plant_app/source/api_services.dart';
 import 'package:deep_plant_app/source/get_date.dart';
@@ -173,10 +171,8 @@ class HeatedMeatEvaluationState extends State<HeatedMeatEvaluation> {
                         saveMeatData();
 
                         // 데이터 서버로 전송
-                        await ApiServices.sendMeatData(
-                            'heatedmeat_eval',
-                            widget.meatData.convertHeatedMeatToJson(
-                                !widget.meatData.deepAging.isNull));
+                        await ApiServices.sendMeatData('heatedmeat_eval',
+                            widget.meatData.convertHeatedMeatToJson());
 
                         if (!mounted) return;
                         context.pop();

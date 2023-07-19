@@ -1,4 +1,5 @@
 import 'package:deep_plant_app/models/meat_data_model.dart';
+import 'package:deep_plant_app/source/api_services.dart';
 import 'package:deep_plant_app/widgets/tongue_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -122,8 +123,15 @@ class _TongueDataInputPageState extends State<TongueDataInputPage> {
               margin: EdgeInsets.only(bottom: 28.h),
               child: SaveButton(
                 onPressed: _isAllInserted()
-                    ? () {
+                    ? () async {
+                        // 데이터 저장
                         saveMeatData();
+
+                        // 데이터 서버로 전송
+                        await ApiServices.sendMeatData('probexp_data',
+                            widget.meatData.convertPorbexptToJson());
+
+                        if (!mounted) return;
                         context.pop();
                       }
                     : null,
