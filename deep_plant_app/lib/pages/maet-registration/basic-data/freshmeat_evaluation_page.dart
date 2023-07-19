@@ -165,7 +165,7 @@ class _FreshmeatEvaluationState extends State<FreshmeatEvaluation> {
                           // deepAging 데이터가 존재하면 서버로 전송
                           if (widget.meatData.deepAging != null) {
                             await ApiServices.sendMeatData('sendory_eval',
-                                widget.meatData.convertFreshMeatToJson(true));
+                                widget.meatData.convertFreshMeatToJson());
                           }
                           if (!mounted) return;
                           context.pop();

@@ -27,6 +27,10 @@ class MeatData {
   // 육류 이미지 경로
   String? imagePath;
 
+  // 딥에이징 차수
+  int? seqno;
+
+  // 신선육 관능평가 데이터
   Map<String, dynamic>? freshmeat;
 
   // 연구 데이터 추가 입력 완료 시 저장
@@ -51,6 +55,7 @@ class MeatData {
     this.primalValue,
     this.secondaryValue,
     this.imagePath,
+    this.seqno,
     this.freshmeat,
 
     // 연구 데이터 추가 입력 완료 시 저장
@@ -76,6 +81,7 @@ class MeatData {
     secondaryValue = null;
     imagePath = null;
     freshmeat = null;
+    seqno = null;
   }
 
   // 임시 데이터를 로컬 임시 파일로 저장
@@ -193,7 +199,7 @@ class MeatData {
   }
 
   // 신선육 관능평가 데이터를 json 형식으로 변환
-  String convertFreshMeatToJson(bool isDeepAged) {
+  String convertFreshMeatToJson() {
     Map<String, dynamic> jsonData = {
       'id': id,
       'createdAt': freshmeat?['createdAt'],
@@ -204,24 +210,33 @@ class MeatData {
       'texture': freshmeat?['texture'],
       'surfaceMoisture': freshmeat?['surfaceMoisture'],
       'overall': freshmeat?['overall'],
-      'fresh': isDeepAged,
-      'deepAging': deepAging,
+      'seqno': seqno,
+      'deepAging': _getDeepAging(seqno),
     };
 
     return jsonEncode(jsonData);
   }
 
-  // 딥에징 데이터를 json 형식으로 변환
-  String convertDeepAgingToJson() {
-    Map<String, dynamic> jsonData = {
-      'id': id,
-      'deepAging': deepAging,
+  // 딥에이징 데이터
+  Map? _getDeepAging(int? idx) {
+    if (idx == null || idx == 0) {
+      return null;
+    }
+    String inputString = deepAging![idx - 1];
+
+    List<String> parts = inputString.split('/');
+
+    String date = parts[0];
+    int minute = int.parse(parts[1]);
+
+    return {
+      'date': date,
+      'minute': minute,
     };
-    return jsonEncode(jsonData);
   }
 
   // 가열육 데이터를 json 형식으로 변환
-  String convertHeatedMeatToJson(bool isDeepAged) {
+  String convertHeatedMeatToJson() {
     Map<String, dynamic> jsonData = {
       'id': id,
       'createdAt': heatedmeat?['createdAt'],
@@ -232,7 +247,7 @@ class MeatData {
       'tenderness': heatedmeat?['tenderness'],
       'umami': heatedmeat?['umami'],
       'palability': heatedmeat!['palability'],
-      'fresh': isDeepAged,
+      'seqno': seqno,
     };
 
     return jsonEncode(jsonData);
@@ -260,7 +275,7 @@ class MeatData {
       'bitterness': tongueData?['bitterness'],
       'umami': tongueData?['umami'],
       'richness': tongueData?['richness'],
-      'fresh': true,
+      'seqno': seqno,
     };
 
     return jsonEncode(jsonData);

@@ -95,8 +95,9 @@ class _CompleteResgistration2State extends State<CompleteResgistration2> {
   Future<void> sendImageToFirebase() async {
     try {
       // fire storage에 육류 이미지 저장
-      final refMeatImage =
-          FirebaseStorage.instance.ref().child('meats/$managementNum.png');
+      final refMeatImage = FirebaseStorage.instance
+          .ref()
+          .child('sensory_evals/$managementNum-0.png');
 
       await refMeatImage.putFile(
         File(widget.meatData.imagePath!),
@@ -132,10 +133,11 @@ class _CompleteResgistration2State extends State<CompleteResgistration2> {
   // 육류 정보를 서버로 전송
   Future<void> sendMeatData(MeatData meatData) async {
     // 육류 정보를 json 형식으로 변환
-    final jsonData = meatData.convertNewMeatToJson();
 
     // 데이터 전송
-    await ApiServices.sendMeatData(null, jsonData);
+    await ApiServices.sendMeatData(null, meatData.convertNewMeatToJson());
+    await ApiServices.sendMeatData(
+        'sensory_eval', meatData.convertFreshMeatToJson());
   }
 
   @override

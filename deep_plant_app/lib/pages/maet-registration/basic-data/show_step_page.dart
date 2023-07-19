@@ -29,6 +29,7 @@ class _ShowStepState extends State<ShowStep> {
     super.initState();
     // 육류 정보 초기화
     widget.meatData.resetData();
+    widget.meatData.seqno = 0;
 
     // 유저 아이디 저장
     _userId = widget.userData.userId!;

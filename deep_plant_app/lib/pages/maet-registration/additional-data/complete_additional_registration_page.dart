@@ -1,5 +1,4 @@
 import 'package:deep_plant_app/models/meat_data_model.dart';
-import 'package:deep_plant_app/source/api_services.dart';
 import 'package:deep_plant_app/source/pallete.dart';
 import 'package:deep_plant_app/widgets/save_button.dart';
 import 'package:flutter/material.dart';
@@ -34,21 +33,6 @@ class _CompleteAdditionalRegistrationState
     setState(() {
       isLoading = false;
     });
-  }
-
-  // 육류 정보를 서버로 전송
-  Future<void> sendMeatData(MeatData meatData) async {
-    // 육류 정보를 json 형식으로 변환
-    final deepAgingData = meatData.convertDeepAgingToJson();
-    final freshMeatData = meatData.convertNewMeatToJson();
-    final heatedMeatData = meatData.convertNewMeatToJson();
-    final probexptData = meatData.convertPorbexptToJson();
-
-    // 데이터 전송
-    await ApiServices.sendMeatData(deepAgingData);
-    await ApiServices.sendMeatData(freshMeatData);
-    await ApiServices.sendMeatData(heatedMeatData);
-    await ApiServices.sendMeatData(probexptData);
   }
 
   @override

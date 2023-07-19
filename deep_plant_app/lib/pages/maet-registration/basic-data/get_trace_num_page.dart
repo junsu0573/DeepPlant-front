@@ -38,7 +38,7 @@ class _GetTraceNumState extends State<GetTraceNum> {
   bool isValue = false;
   String? traceNum;
   String? birthYmd;
-  String? lsType;
+  String? species;
   String? sexType;
   String? farmerNm;
   String? farmAddr;
@@ -67,7 +67,7 @@ class _GetTraceNumState extends State<GetTraceNum> {
     tableData.clear();
     traceNum = null;
     birthYmd = null;
-    lsType = null;
+    species = null;
     sexType = null;
     farmerNm = null;
     farmAddr = null;
@@ -132,7 +132,7 @@ class _GetTraceNumState extends State<GetTraceNum> {
             .format(DateTime.parse(date!))
             .toString(); // 여기 형식을 yyyyMMdd로 변경
 
-        lsType =
+        species =
             meatAPIData1['response']['body']['items']['item']['lsTypeNm'] ?? "";
         sexType = meatAPIData1['response']['body']['items']['item']['sexNm'] ??
             ""; // 이건 그대로 string으로 주면 됨
@@ -180,7 +180,7 @@ class _GetTraceNumState extends State<GetTraceNum> {
             .format(DateTime.parse(time!))
             .toString(); // 여기 형식을 yyyyMMdd로 변경
 
-        lsType = '돼지';
+        species = '돼지';
       } catch (e) {
         tableData.clear();
         isFinal = false;
@@ -191,7 +191,7 @@ class _GetTraceNumState extends State<GetTraceNum> {
       tableData.addAll([
         traceNum,
         birthYmd,
-        lsType,
+        species,
         sexType,
         farmerNm,
         farmAddr,
@@ -214,7 +214,7 @@ class _GetTraceNumState extends State<GetTraceNum> {
     widget.meatData.butcheryYmd = butcheryYmd;
     widget.meatData.birthYmd = birthYmd;
     widget.meatData.sexType = sexType;
-    widget.meatData.lsType = lsType;
+    widget.meatData.speciesValue = species;
     widget.meatData.gradeNum = gradeNum;
   }
 
