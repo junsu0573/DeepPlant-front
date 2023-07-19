@@ -19,7 +19,7 @@ class ApiServices {
         print('POST 요청 성공');
         print(response.body);
       } else {
-        print('POST 요청 실패: ${response.statusCode}');
+        print('POST 요청 실패: ${response.body}');
       }
     } catch (e) {
       print('POST 요청 중 예외 발생: $e');

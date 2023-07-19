@@ -33,7 +33,7 @@ class _CompleteResgistration2State extends State<CompleteResgistration2> {
   bool isLoading = false;
 
   @override
-  void initState() async {
+  void initState() {
     super.initState();
     // 로딩상태 활성화
     setState(() {
@@ -44,10 +44,10 @@ class _CompleteResgistration2State extends State<CompleteResgistration2> {
     createManagementNum();
 
     // 이미지 저장
-    await sendImageToFirebase();
+    sendImageToFirebase();
 
     // 데이터 전송
-    await sendMeatData(widget.meatData);
+    sendMeatData(widget.meatData);
 
     // 로딩상태 비활성화
     setState(() {
@@ -106,6 +106,8 @@ class _CompleteResgistration2State extends State<CompleteResgistration2> {
 
       // QR 생성 후 firestore에 업로드
       uploadQRCodeImageToStorage(managementNum);
+
+      // delay
     } catch (e) {
       print(e);
     }
@@ -136,8 +138,8 @@ class _CompleteResgistration2State extends State<CompleteResgistration2> {
 
     // 데이터 전송
     await ApiServices.sendMeatData(null, meatData.convertNewMeatToJson());
-    await ApiServices.sendMeatData(
-        'sensory_eval', meatData.convertFreshMeatToJson());
+    //await ApiServices.sendMeatData(
+    //  'sensory_eval', meatData.convertFreshMeatToJson());
   }
 
   @override
