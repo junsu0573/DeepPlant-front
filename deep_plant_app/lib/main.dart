@@ -124,7 +124,9 @@ final _router = GoRouter(
             ),
             GoRoute(
               path: 'success-pw-change',
-              builder: (context, state) => SucceedPwChange(),
+              builder: (context, state) => SucceedPwChange(
+                userData: newUser,
+              ),
             ),
           ],
         ),
