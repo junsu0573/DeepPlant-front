@@ -1,5 +1,4 @@
 import 'package:deep_plant_app/models/meat_data_model.dart';
-import 'package:deep_plant_app/models/user_data_model.dart';
 import 'package:deep_plant_app/widgets/custom_appbar.dart';
 import 'package:deep_plant_app/widgets/save_button.dart';
 import 'package:deep_plant_app/widgets/step_card.dart';
@@ -8,8 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
 class StepDeepagingMeat extends StatefulWidget {
-  const StepDeepagingMeat({super.key, required this.user, required this.meat});
-  final UserData user;
+  const StepDeepagingMeat({super.key, required this.meat});
   final MeatData meat;
 
   @override

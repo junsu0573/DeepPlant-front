@@ -174,22 +174,19 @@ class ReadingDataState extends State<ReadingData> {
                                   icon: Icon(Icons.search),
                                 ),
                           focusedBorder: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(width: 0.2, color: Colors.grey),
+                            borderSide: BorderSide(width: 0.2, color: Colors.grey),
                             borderRadius: BorderRadius.all(
                               Radius.circular(25.0),
                             ),
                           ),
                           enabledBorder: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(width: 0.2, color: Colors.grey),
+                            borderSide: BorderSide(width: 0.2, color: Colors.grey),
                             borderRadius: BorderRadius.all(
                               Radius.circular(25.0),
                             ),
                           ),
                           border: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(width: 0.2, color: Colors.grey),
+                            borderSide: BorderSide(width: 0.2, color: Colors.grey),
                             borderRadius: BorderRadius.all(
                               Radius.circular(25.0),
                             ),
@@ -214,15 +211,13 @@ class ReadingDataState extends State<ReadingData> {
                             ),
                             builder: (BuildContext context) {
                               return StatefulBuilder(
-                                builder: (BuildContext context,
-                                    StateSetter bottomState1) {
+                                builder: (BuildContext context, StateSetter bottomState1) {
                                   return Container(
                                     margin: EdgeInsets.all(10.0),
                                     height: 300,
                                     child: Center(
                                       child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
+                                        mainAxisAlignment: MainAxisAlignment.center,
                                         mainAxisSize: MainAxisSize.min,
                                         children: <Widget>[
                                           Text(
@@ -240,42 +235,26 @@ class ReadingDataState extends State<ReadingData> {
                                                       isScrollControlled: true,
                                                       context: context,
                                                       isDismissible: false,
-                                                      shape:
-                                                          RoundedRectangleBorder(
-                                                        borderRadius:
-                                                            BorderRadius.only(
-                                                          topLeft:
-                                                              Radius.circular(
-                                                                  15.0),
-                                                          topRight:
-                                                              Radius.circular(
-                                                                  15.0),
+                                                      shape: RoundedRectangleBorder(
+                                                        borderRadius: BorderRadius.only(
+                                                          topLeft: Radius.circular(15.0),
+                                                          topRight: Radius.circular(15.0),
                                                         ),
                                                       ),
-                                                      builder: (BuildContext
-                                                          context) {
-                                                        return StatefulBuilder(
-                                                            builder: (BuildContext
-                                                                    context,
-                                                                StateSetter
-                                                                    bottomState2) {
+                                                      builder: (BuildContext context) {
+                                                        return StatefulBuilder(builder: (BuildContext context, StateSetter bottomState2) {
                                                           return Container(
-                                                            margin:
-                                                                EdgeInsets.all(
-                                                                    18.0),
+                                                            margin: EdgeInsets.all(18.0),
                                                             height: 375,
                                                             child: Column(
                                                               children: [
                                                                 Row(
-                                                                  mainAxisAlignment:
-                                                                      MainAxisAlignment
-                                                                          .spaceBetween,
+                                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                                   children: [
                                                                     Row(
                                                                       children: [
                                                                         TextButton(
-                                                                          onPressed:
-                                                                              () {
+                                                                          onPressed: () {
                                                                             showModalBottomSheet(
                                                                                 context: context,
                                                                                 isDismissible: true,
@@ -336,14 +315,18 @@ class ReadingDataState extends State<ReadingData> {
                                                                                           child: CupertinoTheme(
                                                                                             data: CupertinoThemeData(
                                                                                               textTheme: CupertinoTextThemeData(
-                                                                                                dateTimePickerTextStyle: TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.bold),
+                                                                                                dateTimePickerTextStyle: TextStyle(
+                                                                                                    color: Colors.black,
+                                                                                                    fontSize: 20,
+                                                                                                    fontWeight: FontWeight.bold),
                                                                                               ),
                                                                                             ),
                                                                                             //Cupertino형 날짜 선택 위젯
                                                                                             child: CupertinoDatePicker(
                                                                                               backgroundColor: Colors.white,
                                                                                               //현재 날짜
-                                                                                              initialDateTime: (tempRangeStart == null) ? DateTime.now() : tempRangeStart,
+                                                                                              initialDateTime:
+                                                                                                  (tempRangeStart == null) ? DateTime.now() : tempRangeStart,
                                                                                               //끝 연도
                                                                                               maximumYear: DateTime.now().year,
                                                                                               //끝날짜
@@ -363,21 +346,17 @@ class ReadingDataState extends State<ReadingData> {
                                                                                   );
                                                                                 });
                                                                           },
-                                                                          child:
-                                                                              Text(
+                                                                          child: Text(
                                                                             temp1,
-                                                                            style:
-                                                                                TextStyle(color: Colors.black),
+                                                                            style: TextStyle(color: Colors.black),
                                                                           ),
                                                                         ),
                                                                         Text(
                                                                           '-',
-                                                                          style:
-                                                                              TextStyle(fontSize: 30.0),
+                                                                          style: TextStyle(fontSize: 30.0),
                                                                         ),
                                                                         TextButton(
-                                                                          onPressed:
-                                                                              () {
+                                                                          onPressed: () {
                                                                             showModalBottomSheet(
                                                                                 context: context,
                                                                                 isDismissible: true,
@@ -438,14 +417,18 @@ class ReadingDataState extends State<ReadingData> {
                                                                                           child: CupertinoTheme(
                                                                                             data: CupertinoThemeData(
                                                                                               textTheme: CupertinoTextThemeData(
-                                                                                                dateTimePickerTextStyle: TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.bold),
+                                                                                                dateTimePickerTextStyle: TextStyle(
+                                                                                                    color: Colors.black,
+                                                                                                    fontSize: 20,
+                                                                                                    fontWeight: FontWeight.bold),
                                                                                               ),
                                                                                             ),
                                                                                             //Cupertino형 날짜 선택 위젯
                                                                                             child: CupertinoDatePicker(
                                                                                               backgroundColor: Colors.white,
                                                                                               //현재 날짜
-                                                                                              initialDateTime: (tempRangeEnd == null) ? DateTime.now() : tempRangeEnd,
+                                                                                              initialDateTime:
+                                                                                                  (tempRangeEnd == null) ? DateTime.now() : tempRangeEnd,
                                                                                               //끝 연도
                                                                                               maximumYear: DateTime.now().year,
                                                                                               //끝날짜
@@ -465,18 +448,15 @@ class ReadingDataState extends State<ReadingData> {
                                                                                   );
                                                                                 });
                                                                           },
-                                                                          child:
-                                                                              Text(
+                                                                          child: Text(
                                                                             temp2,
-                                                                            style:
-                                                                                TextStyle(color: Colors.black),
+                                                                            style: TextStyle(color: Colors.black),
                                                                           ),
                                                                         ),
                                                                       ],
                                                                     ),
                                                                     InkWell(
-                                                                      onTap:
-                                                                          () {
+                                                                      onTap: () {
                                                                         bottomState1(
                                                                           () {
                                                                             setState(
@@ -494,47 +474,27 @@ class ReadingDataState extends State<ReadingData> {
                                                                             );
                                                                           },
                                                                         );
-                                                                        context
-                                                                            .pop();
+                                                                        context.pop();
                                                                       },
-                                                                      child:
-                                                                          SizedBox(
-                                                                        width:
-                                                                            48.w,
-                                                                        height:
-                                                                            48.h,
-                                                                        child:
-                                                                            Image(
-                                                                          image:
-                                                                              AssetImage('assets/images/close.png'),
+                                                                      child: SizedBox(
+                                                                        width: 48.w,
+                                                                        height: 48.h,
+                                                                        child: Image(
+                                                                          image: AssetImage('assets/images/close.png'),
                                                                         ),
                                                                       ),
                                                                     ),
                                                                   ],
                                                                 ),
                                                                 TableCalendar(
-                                                                  locale:
-                                                                      'ko_KR',
-                                                                  firstDay:
-                                                                      DateTime.utc(
-                                                                          2023,
-                                                                          1,
-                                                                          1),
-                                                                  lastDay:
-                                                                      DateTime.utc(
-                                                                          2023,
-                                                                          12,
-                                                                          31),
-                                                                  focusedDay:
-                                                                      _focusedDay,
-                                                                  rangeStartDay:
-                                                                      tempRangeStart,
-                                                                  rangeEndDay:
-                                                                      tempRangeEnd,
-                                                                  rangeSelectionMode:
-                                                                      _rangeSelectionMode,
-                                                                  rowHeight:
-                                                                      40.0,
+                                                                  locale: 'ko_KR',
+                                                                  firstDay: DateTime.utc(2023, 1, 1),
+                                                                  lastDay: DateTime.utc(2023, 12, 31),
+                                                                  focusedDay: _focusedDay,
+                                                                  rangeStartDay: tempRangeStart,
+                                                                  rangeEndDay: tempRangeEnd,
+                                                                  rangeSelectionMode: _rangeSelectionMode,
+                                                                  rowHeight: 40.0,
                                                                   // onDaySelected: (selectedDay, focusedDay) {
                                                                   //   bottomState2(
                                                                   //     () {
@@ -550,74 +510,38 @@ class ReadingDataState extends State<ReadingData> {
                                                                   //     },
                                                                   //   );
                                                                   // },
-                                                                  onRangeSelected:
-                                                                      (startDay,
-                                                                          endDay,
-                                                                          focusedDay) {
+                                                                  onRangeSelected: (startDay, endDay, focusedDay) {
                                                                     bottomState2(
                                                                       () {
-                                                                        setState(
-                                                                            () {
-                                                                          _selectedDay =
-                                                                              null;
-                                                                          _focusedDay =
-                                                                              focusedDay;
-                                                                          tempRangeStart =
-                                                                              startDay;
-                                                                          tempRangeEnd =
-                                                                              endDay;
-                                                                          if (tempRangeEnd != null &&
-                                                                              tempRangeStart !=
-                                                                                  null) {
-                                                                            temp1 =
-                                                                                DateFormat('MM/dd').format(tempRangeStart!);
-                                                                            temp2 =
-                                                                                DateFormat('MM/dd').format(tempRangeEnd!);
-                                                                          } else if (tempRangeEnd ==
-                                                                              null) {
-                                                                            temp1 =
-                                                                                DateFormat('MM/dd').format(tempRangeStart!);
-                                                                            temp2 =
-                                                                                "";
-                                                                          } else if (tempRangeStart ==
-                                                                              null) {
-                                                                            temp2 =
-                                                                                DateFormat('MM/dd').format(tempRangeEnd!);
-                                                                            temp1 =
-                                                                                "";
+                                                                        setState(() {
+                                                                          _selectedDay = null;
+                                                                          _focusedDay = focusedDay;
+                                                                          tempRangeStart = startDay;
+                                                                          tempRangeEnd = endDay;
+                                                                          if (tempRangeEnd != null && tempRangeStart != null) {
+                                                                            temp1 = DateFormat('MM/dd').format(tempRangeStart!);
+                                                                            temp2 = DateFormat('MM/dd').format(tempRangeEnd!);
+                                                                          } else if (tempRangeEnd == null) {
+                                                                            temp1 = DateFormat('MM/dd').format(tempRangeStart!);
+                                                                            temp2 = "";
+                                                                          } else if (tempRangeStart == null) {
+                                                                            temp2 = DateFormat('MM/dd').format(tempRangeEnd!);
+                                                                            temp1 = "";
                                                                           }
                                                                         });
                                                                       },
                                                                     );
                                                                   },
-                                                                  selectedDayPredicate: (day) =>
-                                                                      isSameDay(
-                                                                          _selectedDay,
-                                                                          day),
-                                                                  headerStyle:
-                                                                      HeaderStyle(
-                                                                    formatButtonVisible:
-                                                                        false,
-                                                                    titleCentered:
-                                                                        true,
-                                                                    titleTextStyle:
-                                                                        TextStyle(
-                                                                      fontSize:
-                                                                          17.0,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .bold,
+                                                                  selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
+                                                                  headerStyle: HeaderStyle(
+                                                                    formatButtonVisible: false,
+                                                                    titleCentered: true,
+                                                                    titleTextStyle: TextStyle(
+                                                                      fontSize: 17.0,
+                                                                      fontWeight: FontWeight.bold,
                                                                     ),
-                                                                    leftChevronMargin: EdgeInsets.only(
-                                                                        left:
-                                                                            65.0,
-                                                                        top:
-                                                                            5.0),
-                                                                    rightChevronMargin: EdgeInsets.only(
-                                                                        right:
-                                                                            65.0,
-                                                                        top:
-                                                                            5.0),
+                                                                    leftChevronMargin: EdgeInsets.only(left: 65.0, top: 5.0),
+                                                                    rightChevronMargin: EdgeInsets.only(right: 65.0, top: 5.0),
                                                                   ),
                                                                   calendarStyle: CalendarStyle(
                                                                       outsideDaysVisible: true,
@@ -626,28 +550,20 @@ class ReadingDataState extends State<ReadingData> {
                                                                       withinRangeDecoration: const BoxDecoration(shape: BoxShape.circle),
                                                                       outsideTextStyle: const TextStyle(color: Colors.transparent),
                                                                       rangeStartDecoration: const BoxDecoration(
-                                                                        color: Colors
-                                                                            .grey,
-                                                                        shape: BoxShape
-                                                                            .circle,
+                                                                        color: Colors.grey,
+                                                                        shape: BoxShape.circle,
                                                                       ),
                                                                       rangeEndDecoration: const BoxDecoration(
-                                                                        color: Colors
-                                                                            .grey,
-                                                                        shape: BoxShape
-                                                                            .circle,
+                                                                        color: Colors.grey,
+                                                                        shape: BoxShape.circle,
                                                                       ),
                                                                       todayDecoration: const BoxDecoration(
-                                                                        color: Colors
-                                                                            .black54,
-                                                                        shape: BoxShape
-                                                                            .circle,
+                                                                        color: Colors.black54,
+                                                                        shape: BoxShape.circle,
                                                                       ),
                                                                       selectedDecoration: const BoxDecoration(
-                                                                        color: Colors
-                                                                            .grey,
-                                                                        shape: BoxShape
-                                                                            .circle,
+                                                                        color: Colors.grey,
+                                                                        shape: BoxShape.circle,
                                                                       )),
                                                                 ),
                                                               ],
@@ -656,15 +572,10 @@ class ReadingDataState extends State<ReadingData> {
                                                         });
                                                       });
                                                 }
-                                                for (int i = 0;
-                                                    i < tempSelections1.length;
-                                                    i++) {
+                                                for (int i = 0; i < tempSelections1.length; i++) {
                                                   if (i == index) {
                                                     tempSelections1[i] = true;
-                                                    tempOption1 =
-                                                        (options1[i] as Text)
-                                                            .data
-                                                            .toString();
+                                                    tempOption1 = (options1[i] as Text).data.toString();
                                                     if (index != 3) {
                                                       selectedFinal = true;
                                                     }
@@ -689,15 +600,10 @@ class ReadingDataState extends State<ReadingData> {
                                           ToggleButton(
                                             onPressed: (index) {
                                               bottomState1(() {
-                                                for (int i = 0;
-                                                    i < tempSelections2.length;
-                                                    i++) {
+                                                for (int i = 0; i < tempSelections2.length; i++) {
                                                   if (i == index) {
                                                     tempSelections2[i] = true;
-                                                    tempOption2 =
-                                                        (options2[i] as Text)
-                                                            .data
-                                                            .toString();
+                                                    tempOption2 = (options2[i] as Text).data.toString();
                                                   } else {
                                                     tempSelections2[i] = false;
                                                   }
@@ -719,32 +625,24 @@ class ReadingDataState extends State<ReadingData> {
                                                   ? () {
                                                       Navigator.pop(context);
                                                       setState(() {
-                                                        selections1 = List.from(
-                                                            tempSelections1);
-                                                        selections2 = List.from(
-                                                            tempSelections2);
+                                                        selections1 = List.from(tempSelections1);
+                                                        selections2 = List.from(tempSelections2);
                                                         option1 = tempOption1;
                                                         option2 = tempOption2;
-                                                        _rangeStart =
-                                                            tempRangeStart;
-                                                        _rangeEnd =
-                                                            tempRangeEnd;
+                                                        _rangeStart = tempRangeStart;
+                                                        _rangeEnd = tempRangeEnd;
                                                         if (option2 == '최신순') {
                                                           sortDscending = true;
-                                                        } else if (option2 ==
-                                                            '과거순') {
+                                                        } else if (option2 == '과거순') {
                                                           sortDscending = false;
                                                         }
-                                                        if (option1 == '3일' ||
-                                                            option1 == '1개월' ||
-                                                            option1 == '3개월') {
+                                                        if (option1 == '3일' || option1 == '1개월' || option1 == '3개월') {
                                                           selectedEtc = false;
                                                           tempRangeEnd = null;
                                                           tempRangeStart = null;
                                                           temp1 = '';
                                                           temp2 = '';
-                                                          options1[3] =
-                                                              Text('직접설정');
+                                                          options1[3] = Text('직접설정');
                                                         }
                                                       });
                                                     }
@@ -770,15 +668,7 @@ class ReadingDataState extends State<ReadingData> {
             ),
             Expanded(
               child: SingleChildScrollView(
-                child: getDataTable(
-                    userData,
-                    text,
-                    manageDataState,
-                    sortDscending,
-                    option1,
-                    _rangeStart,
-                    _rangeEnd,
-                    selectedEtc),
+                child: getDataTable(userData, text, manageDataState, sortDscending, option1, _rangeStart, _rangeEnd, selectedEtc),
               ),
             ),
           ],

@@ -106,38 +106,16 @@ class _LabDataInputState extends State<LabDataInput> {
               SizedBox(
                 height: 90.h,
               ),
-              TextFieldWithTitle(
-                  firstText: 'L명도', secondText: '', controller: l),
-              TextFieldWithTitle(
-                  firstText: 'a적색도', secondText: '', unit: '', controller: a),
-              TextFieldWithTitle(
-                  firstText: 'b황색도', secondText: '', unit: '', controller: b),
-              TextFieldWithTitle(
-                  firstText: 'DL육즙감량',
-                  secondText: '',
-                  unit: '%',
-                  controller: dl),
-              TextFieldWithTitle(
-                  firstText: 'CL가열감량',
-                  secondText: '',
-                  unit: '%',
-                  controller: cl),
-              TextFieldWithTitle(
-                  firstText: 'RW압착감량',
-                  secondText: '',
-                  unit: '%',
-                  controller: rw),
-              TextFieldWithTitle(
-                  firstText: 'PH', secondText: '', controller: ph),
-              TextFieldWithTitle(
-                  firstText: 'WBSF전단가',
-                  secondText: '',
-                  unit: 'kgf',
-                  controller: wbsf),
-              TextFieldWithTitle(
-                  firstText: '카텝신활성도', secondText: '', controller: ct),
-              TextFieldWithTitle(
-                  firstText: 'MFI근소편화지수', secondText: '', controller: mfi),
+              TextFieldWithTitle(firstText: 'L명도', secondText: '', controller: l),
+              TextFieldWithTitle(firstText: 'a적색도', secondText: '', unit: '', controller: a),
+              TextFieldWithTitle(firstText: 'b황색도', secondText: '', unit: '', controller: b),
+              TextFieldWithTitle(firstText: 'DL육즙감량', secondText: '', unit: '%', controller: dl),
+              TextFieldWithTitle(firstText: 'CL가열감량', secondText: '', unit: '%', controller: cl),
+              TextFieldWithTitle(firstText: 'RW압착감량', secondText: '', unit: '%', controller: rw),
+              TextFieldWithTitle(firstText: 'PH', secondText: '', controller: ph),
+              TextFieldWithTitle(firstText: 'WBSF전단가', secondText: '', unit: 'kgf', controller: wbsf),
+              TextFieldWithTitle(firstText: '카텝신활성도', secondText: '', controller: ct),
+              TextFieldWithTitle(firstText: 'MFI근소편화지수', secondText: '', controller: mfi),
               SizedBox(
                 height: 16.h,
               ),
@@ -148,8 +126,7 @@ class _LabDataInputState extends State<LabDataInput> {
                         saveMeatData();
 
                         // 데이터 서버로 전송
-                        ApiServices.sendMeatData('probexp_data',
-                            widget.meatData.convertPorbexptToJson());
+                        ApiServices.sendMeatData('probexp_data', widget.meatData.convertPorbexptToJson());
 
                         if (!mounted) return;
                         context.pop();

@@ -111,9 +111,7 @@ class OptionPage extends StatelessWidget {
                                     ),
                                   ),
                                   Text(
-                                    userData.type == 'Normal'
-                                        ? textForNormal1
-                                        : textForResearcher1,
+                                    userData.type == 'Normal' ? textForNormal1 : textForResearcher1,
                                     style: TextStyle(
                                       color: Colors.white,
                                       fontSize: 24.sp,
@@ -141,9 +139,7 @@ class OptionPage extends StatelessWidget {
                 // 데이어 관리 버튼
                 InkWell(
                   onTap: () {
-                    userData.type == 'Normal'
-                        ? context.go('/option/reading-data')
-                        : context.go('/option/data-management');
+                    userData.type == 'Normal' ? context.go('/option/reading-data') : context.go('/option/data-management');
                   },
                   child: Padding(
                     padding: const EdgeInsets.all(5.0),
@@ -173,9 +169,7 @@ class OptionPage extends StatelessWidget {
                                     ),
                                   ),
                                   Text(
-                                    userData.type == 'Normal'
-                                        ? textForNormal2
-                                        : textForResearcher2,
+                                    userData.type == 'Normal' ? textForNormal2 : textForResearcher2,
                                     style: TextStyle(
                                       color: Colors.white,
                                       fontSize: 24.sp,
