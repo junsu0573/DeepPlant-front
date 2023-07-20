@@ -1,12 +1,16 @@
 import 'package:deep_plant_app/models/data_management_filter_model.dart';
 import 'package:deep_plant_app/models/meat_data_model.dart';
 import 'package:deep_plant_app/models/user_data_model.dart';
+import 'package:deep_plant_app/pages/data-management/data_add_page.dart';
 import 'package:deep_plant_app/pages/data-management/data_management_page_2.dart';
 import 'package:deep_plant_app/pages/data-management/reading_data_page.dart';
 import 'package:deep_plant_app/pages/home_page.dart';
 import 'package:deep_plant_app/pages/maet-registration/additional-data/complete_additional_registration_page.dart';
+import 'package:deep_plant_app/pages/maet-registration/additional-data/data_add_home_page.dart';
 import 'package:deep_plant_app/pages/maet-registration/additional-data/deep_aging_page.dart';
 import 'package:deep_plant_app/pages/maet-registration/additional-data/lab_data_input_page.dart';
+import 'package:deep_plant_app/pages/maet-registration/additional-data/step_deepaging_meat_page.dart';
+import 'package:deep_plant_app/pages/maet-registration/additional-data/step_fresh_meat_page.dart';
 import 'package:deep_plant_app/pages/maet-registration/basic-data/complete_registration_page.dart';
 import 'package:deep_plant_app/pages/maet-registration/basic-data/complete_registration_page_2.dart';
 import 'package:deep_plant_app/pages/maet-registration/basic-data/freshmeat_evaluation_page.dart';
@@ -54,16 +58,13 @@ DeepAgingData newAging = DeepAgingData();
 // 데이터 관리 필터 저장을 위한 객체
 FilterModel newFilter = FilterModel();
 
-// 데이터 관리 필터 저장을 위한 객체
-FilterModel newFilter = FilterModel();
-
 // 라우팅
 final _router = GoRouter(
   initialLocation: '/',
   routes: [
     GoRoute(
       path: '/',
-      builder: (context, state) => HomePage(),
+      builder: (context, state) => DataAddHome(meatData: newMeat),
       routes: [
         GoRoute(
           path: 'sign-in',
@@ -243,13 +244,40 @@ final _router = GoRouter(
           ),
         ),
         GoRoute(
-          path: 'data-management',
-          builder: (context, state) => DataManagement2(
-            userData: newUser,
-            meatData: newMeat,
-            filter: newFilter,
-          ),
-        ),
+            path: 'data-management',
+            builder: (context, state) => DataManagement2(
+                  userData: newUser,
+                  meatData: newMeat,
+                  filter: newFilter,
+                ),
+            routes: [
+              GoRoute(
+                  path: 'data-add',
+                  builder: (context, state) => DataAdd(
+                        meat: newMeat,
+                      ),
+                  routes: [
+                    GoRoute(
+                        path: 'data-add-home',
+                        builder: (context, state) => DataAddHome(
+                              meatData: newMeat,
+                            ),
+                        routes: [
+                          GoRoute(
+                            path: 'step-fresh-meat',
+                            builder: (context, state) => StepFreshMeat(
+                              meat: newMeat,
+                            ),
+                          ),
+                          GoRoute(
+                            path: 'step-deepaging-meat',
+                            builder: (context, state) => StepDeepagingMeat(
+                              meat: newMeat,
+                            ),
+                          )
+                        ])
+                  ])
+            ]),
       ],
     ),
   ],

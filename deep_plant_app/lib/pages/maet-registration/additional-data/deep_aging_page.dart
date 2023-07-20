@@ -76,6 +76,18 @@ class _DeepAgingState extends State<DeepAging> {
     });
   }
 
+  void intoData() {
+    setState(() {
+      if (data.insertedHour != null) {
+        objects.insert(index, data);
+        widgets.insert(index, widgetCreate(index));
+        calTime(data, index++, false);
+        // 객체를 초기화 해준다.
+        data = DeepAgingData();
+      }
+    });
+  }
+
   Widget widgetCreate(int index) {
     return Container(
       padding: EdgeInsets.only(
@@ -253,15 +265,7 @@ class _DeepAgingState extends State<DeepAging> {
                               builder: (context) => InsertDeepAgingData(
                                     agingdata: data,
                                   ))).then((_) {
-                        setState(() {
-                          if (data.insertedHour != null) {
-                            objects.insert(index, data);
-                            widgets.insert(index, widgetCreate(index));
-                            calTime(data, index++, false);
-                            // 객체를 초기화 해준다.
-                            data = DeepAgingData();
-                          }
-                        });
+                        intoData();
                       });
                     },
                     // 이 아래는 추가하는 버튼에 대한 내용이며, 위는 setState를 통해 버튼이 만들어진다.

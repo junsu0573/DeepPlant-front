@@ -19,7 +19,7 @@ class StepCard extends StatelessWidget {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 24.w),
       width: 588.w,
-      height: 159.h,
+      height: 149.h,
       decoration: BoxDecoration(
         color: isCompleted ? Color(0xFFE1E1E1) : Colors.white,
         border: Border.all(

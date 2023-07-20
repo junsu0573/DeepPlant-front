@@ -1,5 +1,4 @@
 import 'package:deep_plant_app/models/meat_data_model.dart';
-import 'package:deep_plant_app/models/user_data_model.dart';
 import 'package:deep_plant_app/widgets/custom_appbar.dart';
 import 'package:deep_plant_app/widgets/save_button.dart';
 import 'package:deep_plant_app/widgets/step_card.dart';
@@ -7,20 +6,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
-class StepDeepagingMeat extends StatefulWidget {
-  final UserData user;
+class StepFreshMeat extends StatefulWidget {
   final MeatData meat;
-  const StepDeepagingMeat({
+  const StepFreshMeat({
     super.key,
-    required this.user,
     required this.meat,
   });
 
   @override
-  State<StepDeepagingMeat> createState() => _StepDeepagingMeatState();
+  State<StepFreshMeat> createState() => _StepFreshMeatState();
 }
 
-class _StepDeepagingMeatState extends State<StepDeepagingMeat> {
+class _StepFreshMeatState extends State<StepFreshMeat> {
   bool _isAllCompleted() {
     return true;
   }
@@ -53,7 +50,7 @@ class _StepDeepagingMeatState extends State<StepDeepagingMeat> {
                 mainText: '가열육 단면 촬영',
                 subText: '데이터를 입력해주세요',
                 step: '1',
-                isCompleted: false,
+                isCompleted: widget.meat.imagePath != null ? true : false,
               ),
             ),
             GestureDetector(

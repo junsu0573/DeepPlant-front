@@ -6,6 +6,7 @@ import 'package:deep_plant_app/widgets/custom_appbar.dart';
 import 'package:deep_plant_app/widgets/save_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 
 class DataAddHome extends StatefulWidget {
   final MeatData meatData;
@@ -38,6 +39,10 @@ class _DataAddHomeState extends State<DataAddHome> {
   // 객체 중 시간 요소를 담게 된다.
   List<int> hour = List<int>.filled(3, 0);
   List<int> minute = List<int>.filled(3, 0);
+
+  // 추가 정보의 입력이 온전한지를 판별해준다.
+  bool isFreshEnd = false;
+  List<bool> isDeepEnd = [false, false, false];
 
   void intoString() {
     // 시간을 분으로 통합 | 전달 형식에 맞게 '년월일/분'으로 변환
@@ -77,6 +82,96 @@ class _DataAddHomeState extends State<DataAddHome> {
     });
   }
 
+  void checkFresh() {
+    if (widget.meatData.heatedmeat != null && widget.meatData.tongueData != null && widget.meatData.labData != null) {
+      isFreshEnd = true;
+    } else {
+      isFreshEnd = false;
+    }
+  }
+
+  void tempDataFetch() {
+    widget.meatData.butcheryYmd = '2022.09.19';
+    widget.meatData.speciesValue = '소';
+    widget.meatData.secondaryValue = '갈비살';
+    widget.meatData.heatedmeat = {
+      'createdAt': DateTime.now(),
+      'period': DateTime.now(),
+      'flavor': 1.0,
+      'juiciness': 1.0,
+      'tenderness': 1.0,
+      'umami': 1.0,
+      'palability': 1.0,
+    };
+    widget.meatData.freshmeat = {
+      'createdAt': DateTime.now(),
+      'period': DateTime.now(),
+      'flavor': 1.0,
+      'juiciness': 1.0,
+      'tenderness': 1.0,
+      'umami': 1.0,
+      'palability': 1.0,
+    };
+    widget.meatData.tongueData = {
+      'sourness': 1.0,
+      'bitterness': 2.0,
+      'umami': 3.0,
+      'richness': 4.0,
+    };
+    widget.meatData.labData = {
+      'L': 1.0,
+      'a': 1.0,
+      'b': 1.0,
+      'DL': 1.0,
+      'CL': 1.0,
+      'RW': 1.0,
+      'ph': 1.0,
+      'WBSF': 1.0,
+      'cardepsin_activity': 1.0,
+      'MFI': 1.0,
+    };
+    widget.meatData.deepAging = ['20230720/120', '20230719/220'];
+    intoObject(widget.meatData.deepAging!);
+  }
+
+  void intoObject(List<String> objects) {
+    for (int i = 0; i < objects.length; i++) {
+      String part = objects[i].replaceAll(RegExp(r'\D'), '');
+      String part1 = part.substring(0, 4);
+      String part2 = part.substring(4, 6);
+      String part3 = part.substring(6, 8);
+      String part4 = part.substring(8, part.length);
+      if (int.parse(part4) >= 60) {
+        data.insertedHour = (int.parse(part4) ~/ 60).toString();
+        data.insertedMinute = (int.parse(part4) % 60).toString();
+      }
+      data.selectedYear = part1;
+      data.selectedMonth = part2;
+      data.selectedDay = part3;
+
+      intoData();
+    }
+  }
+
+  void intoData() {
+    setState(() {
+      if (data.insertedHour != null) {
+        objects.insert(index, data);
+        widgets.insert(index, widgetCreate(index));
+        calTime(data, index++, false);
+        // 객체를 초기화 해준다.
+        data = DeepAgingData();
+      }
+    });
+  }
+
+  @override
+  void initState() {
+    tempDataFetch();
+    checkFresh();
+    super.initState();
+  }
+
   Widget widgetCreate(int index) {
     return Container(
       padding: EdgeInsets.only(
@@ -85,7 +180,9 @@ class _DataAddHomeState extends State<DataAddHome> {
       ),
       height: 70.0,
       child: OutlinedButton(
-        onPressed: () {},
+        onPressed: () {
+          context.go('/option/data-management/data-add/data-add-home/step-deepaging-meat');
+        },
         child: Row(
           children: [
             Padding(
@@ -107,8 +204,9 @@ class _DataAddHomeState extends State<DataAddHome> {
                 color: Colors.grey[300],
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(6.0),
+            Container(
+              width: 190.w,
+              padding: EdgeInsets.only(left: 6.0),
               child: Text(
                 '${objects[index].insertedHour}시간 ${objects[index].insertedMinute}분',
                 style: TextStyle(
@@ -118,7 +216,7 @@ class _DataAddHomeState extends State<DataAddHome> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.only(right: 6.0),
               child: Text(
                 '${objects[index].selectedYear}.${objects[index].selectedMonth}.${objects[index].selectedDay}',
                 style: TextStyle(
@@ -131,9 +229,9 @@ class _DataAddHomeState extends State<DataAddHome> {
               width: 40.w,
             ),
             Padding(
-              padding: const EdgeInsets.all(6.0),
+              padding: const EdgeInsets.only(left: 8.0),
               child: Text(
-                '수정',
+                isDeepEnd[index] ? '완료' : '미완료',
                 style: TextStyle(color: Colors.black),
               ),
             )
@@ -212,18 +310,98 @@ class _DataAddHomeState extends State<DataAddHome> {
                 ),
                 child: Row(
                   children: [
-                    Text('종'),
+                    Text(
+                      '종',
+                      style: TextStyle(fontSize: 24.sp),
+                    ),
                     Spacer(),
-                    Text('부위'),
+                    Text(
+                      '부위',
+                      style: TextStyle(fontSize: 24.sp),
+                    ),
+                    Spacer(
+                      flex: 2,
+                    ),
+                    Text(
+                      '도축일자',
+                      style: TextStyle(fontSize: 24.sp),
+                    ),
                     Spacer(),
-                    Text('도축일자'),
-                    Spacer(),
-                    Text('추가정보 입력'),
+                    Text(
+                      '추가정보 입력',
+                      style: TextStyle(fontSize: 24.sp),
+                    ),
                   ],
                 ),
               ),
+              Container(
+                padding: EdgeInsets.only(
+                  top: 5.0,
+                  bottom: 5.0,
+                ),
+                height: 70.0,
+                child: OutlinedButton(
+                  onPressed: () {
+                    context.go('/option/data-management/data-add/data-add-home/step-fresh-meat');
+                  },
+                  child: Row(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(right: 6.0),
+                        child: Text(
+                          widget.meatData.speciesValue!,
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 20.sp,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(6.0),
+                        child: VerticalDivider(
+                          thickness: 2,
+                          width: 1,
+                          color: Colors.grey[300],
+                        ),
+                      ),
+                      Container(
+                        width: 180.w,
+                        padding: EdgeInsets.only(left: 6.0),
+                        child: Text(
+                          widget.meatData.secondaryValue!,
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 32.sp,
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(right: 6.0),
+                        child: Text(
+                          widget.meatData.butcheryYmd!,
+                          style: TextStyle(
+                            color: Colors.grey[400],
+                            fontSize: 12.0,
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 40.w,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 15.0),
+                        child: Text(
+                          isFreshEnd ? '완료' : '미완료',
+                          style: TextStyle(color: Colors.black),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ),
               SizedBox(
-                height: 100.h,
+                height: 40.h,
               ),
               Row(
                 children: [
@@ -315,7 +493,7 @@ class _DataAddHomeState extends State<DataAddHome> {
                 ),
               ),
               SizedBox(
-                height: 309.h,
+                height: 339.h,
                 child: ListView.builder(
                   itemCount: widgets.length,
                   itemBuilder: (BuildContext context, int index) {
@@ -342,15 +520,7 @@ class _DataAddHomeState extends State<DataAddHome> {
                                   builder: (context) => InsertDeepAgingData(
                                         agingdata: data,
                                       ))).then((_) {
-                            setState(() {
-                              if (data.insertedHour != null) {
-                                objects.insert(index, data);
-                                widgets.insert(index, widgetCreate(index));
-                                calTime(data, index++, false);
-                                // 객체를 초기화 해준다.
-                                data = DeepAgingData();
-                              }
-                            });
+                            intoData();
                           });
                         },
                         icon: Icon(
