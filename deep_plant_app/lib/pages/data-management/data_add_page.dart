@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:deep_plant_app/models/meat_data_model.dart';
+import 'package:deep_plant_app/source/api_services.dart';
 import 'package:deep_plant_app/widgets/call_mangement_dialog.dart';
 import 'package:deep_plant_app/widgets/common_button.dart';
 import 'package:deep_plant_app/widgets/m_num_data_list_card.dart';
@@ -10,10 +11,10 @@ import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 
 class DataAdd extends StatefulWidget {
-  final MeatData meat;
+  final MeatData meatData;
   const DataAdd({
     super.key,
-    required this.meat,
+    required this.meatData,
   });
 
   @override
@@ -29,28 +30,11 @@ class _DataAddState extends State<DataAdd> {
 
     if (response.statusCode == 200) {
       Map<String, dynamic> data = await jsonDecode(response.body);
-      meatDataFetch(data);
+      widget.meatData.fetchData(data);
+      print(widget.meatData);
     } else {
       print('Request failed with status: ${response.statusCode}');
     }
-  }
-
-  // step-1 데이터로 객체 초기화
-  void meatDataFetch(Map data) {
-    widget.meat.id = data['id'];
-    widget.meat.userId = data['uesrId'];
-    widget.meat.createdAt = data['createdAt'];
-    widget.meat.traceNum = data['traceNum'];
-    widget.meat.farmAddr = data['farmAddr'];
-    widget.meat.farmerNm = data['farmerNm'];
-    widget.meat.butcheryYmd = data['butcheryYmd'];
-    widget.meat.birthYmd = data['birthYmd'];
-    widget.meat.sexType = data['sexType'];
-    widget.meat.freshmeat = data['freshmeat'];
-    widget.meat.gradeNum = data['gradeNum'];
-    widget.meat.speciesValue = data['speciesValue'];
-    widget.meat.primalValue = data['primalValue'];
-    widget.meat.secondaryValue = data['secondaryValue'];
   }
 
   @override
@@ -111,9 +95,11 @@ class _DataAddState extends State<DataAdd> {
             itemCount: dataList.length,
             itemBuilder: (context, index) {
               return InkWell(
-                onTap: () {
-                  getMeatData(dataList[index]);
-                  context.go('/option/show-step-2');
+                onTap: () async {
+                  final data = await ApiServices.getMeatData(dataList[index]);
+                  widget.meatData.fetchData(data);
+                  if (!mounted) return;
+                  context.go('/option/data-management/data-add/data-add-home');
                 },
                 child: MNumDataListCard(
                   idx: index + 1,

@@ -13,7 +13,8 @@ import 'package:go_router/go_router.dart';
 class DataAddHome extends StatefulWidget {
   final MeatData meatData;
   final UserData userData;
-  const DataAddHome({super.key, required this.meatData, required this.userData});
+  const DataAddHome(
+      {super.key, required this.meatData, required this.userData});
 
   @override
   State<DataAddHome> createState() => _DataAddHomeState();
@@ -47,8 +48,11 @@ class _DataAddHomeState extends State<DataAddHome> {
   void intoString() {
     // 시간을 분으로 통합 | 전달 형식에 맞게 '년월일/분'으로 변환
     for (int i = 0; i < objects.length; i++) {
-      String timeTemp = ((int.parse(objects[i].insertedHour!) * 60) + (int.parse(objects[i].insertedMinute!))).toString();
-      String temp = '${objects[i].selectedYear}${objects[i].selectedMonth}${objects[i].selectedDay}/$timeTemp';
+      String timeTemp = ((int.parse(objects[i].insertedHour!) * 60) +
+              (int.parse(objects[i].insertedMinute!)))
+          .toString();
+      String temp =
+          '${objects[i].selectedYear}${objects[i].selectedMonth}${objects[i].selectedDay}/$timeTemp';
       deepAgingModel.add(temp);
     }
     // 객체에 데이터 저장
@@ -83,55 +87,14 @@ class _DataAddHomeState extends State<DataAddHome> {
   }
 
   void checkFresh() {
-    if (widget.meatData.imagePath != null && widget.meatData.heatedmeat != null && widget.meatData.tongueData != null && widget.meatData.labData != null) {
+    if (widget.meatData.imagePath != null &&
+        widget.meatData.heatedmeat != null &&
+        widget.meatData.tongueData != null &&
+        widget.meatData.labData != null) {
       isFreshEnd = true;
     } else {
       isFreshEnd = false;
     }
-  }
-
-  void tempDataFetch() {
-    widget.meatData.butcheryYmd = '2022.09.19';
-    widget.meatData.speciesValue = '소';
-    widget.meatData.secondaryValue = '갈비살';
-    widget.meatData.heatedmeat = {
-      'createdAt': DateTime.now(),
-      'period': DateTime.now(),
-      'flavor': 1.0,
-      'juiciness': 1.0,
-      'tenderness': 1.0,
-      'umami': 1.0,
-      'palability': 1.0,
-    };
-    widget.meatData.freshmeat = {
-      'createdAt': DateTime.now(),
-      'period': DateTime.now(),
-      'flavor': 1.0,
-      'juiciness': 1.0,
-      'tenderness': 1.0,
-      'umami': 1.0,
-      'palability': 1.0,
-    };
-    widget.meatData.tongueData = {
-      'sourness': 1.0,
-      'bitterness': 2.0,
-      'umami': 3.0,
-      'richness': 4.0,
-    };
-    widget.meatData.labData = {
-      'L': 1.0,
-      'a': 1.0,
-      'b': 1.0,
-      'DL': 1.0,
-      'CL': 1.0,
-      'RW': 1.0,
-      'ph': 1.0,
-      'WBSF': 1.0,
-      'cardepsin_activity': 1.0,
-      'MFI': 1.0,
-    };
-    widget.meatData.deepAging = ['20230720/120', '20230719/220'];
-    intoObject(widget.meatData.deepAging!);
   }
 
   void intoObject(List<String> objects) {
@@ -167,9 +130,8 @@ class _DataAddHomeState extends State<DataAddHome> {
 
   @override
   void initState() {
-    tempDataFetch();
-    checkFresh();
     super.initState();
+    checkFresh();
   }
 
   Widget widgetCreate(int index) {
@@ -181,7 +143,8 @@ class _DataAddHomeState extends State<DataAddHome> {
       height: 70.0,
       child: OutlinedButton(
         onPressed: () {
-          context.go('/option/data-management/data-add/data-add-home/step-deepaging-meat');
+          context.go(
+              '/option/data-management/data-add/data-add-home/step-deepaging-meat');
         },
         child: Row(
           children: [
@@ -246,7 +209,7 @@ class _DataAddHomeState extends State<DataAddHome> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: CustomAppBar(
-        title: 'EUWD2830aeaE',
+        title: widget.meatData.id!,
         backButton: false,
         closeButton: true,
       ),
@@ -289,7 +252,7 @@ class _DataAddHomeState extends State<DataAddHome> {
                     width: 12.w,
                   ),
                   Text(
-                    'example@example.com',
+                    widget.meatData.userId!,
                     style: TextStyle(
                       fontSize: 24.sp,
                       fontWeight: FontWeight.w500,
@@ -341,7 +304,8 @@ class _DataAddHomeState extends State<DataAddHome> {
                 ),
                 height: 70.0,
                 child: OutlinedButton(
-                  onPressed: () async {
+                  onPressed: () {
+                    widget.meatData.fetchDataForOrigin();
                     Navigator.push(
                       context,
                       MaterialPageRoute(

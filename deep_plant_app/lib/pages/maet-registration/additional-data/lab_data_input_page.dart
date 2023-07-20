@@ -31,17 +31,104 @@ class _LabDataInputState extends State<LabDataInput> {
   TextEditingController ct = TextEditingController();
   TextEditingController mfi = TextEditingController();
 
+  @override
+  void initState() {
+    super.initState();
+    if (widget.meatData.labData != null) {
+      if (widget.meatData.labData!['L'] != null) {
+        l.text = widget.meatData.labData!['L'].toString();
+      }
+      if (widget.meatData.labData!['a'] != null) {
+        a.text = widget.meatData.labData!['a'].toString();
+      }
+      if (widget.meatData.labData!['b'] != null) {
+        b.text = widget.meatData.labData!['b'].toString();
+      }
+      if (widget.meatData.labData!['DL'] != null) {
+        dl.text = widget.meatData.labData!['DL'].toString();
+      }
+      if (widget.meatData.labData!['CL'] != null) {
+        cl.text = widget.meatData.labData!['CL'].toString();
+      }
+      if (widget.meatData.labData!['RW'] != null) {
+        rw.text = widget.meatData.labData!['RW'].toString();
+      }
+      if (widget.meatData.labData!['ph'] != null) {
+        ph.text = widget.meatData.labData!['ph'].toString();
+      }
+      if (widget.meatData.labData!['WBSF'] != null) {
+        wbsf.text = widget.meatData.labData!['WBSF'].toString();
+      }
+      if (widget.meatData.labData!['cardepsin_activity'] != null) {
+        ct.text = widget.meatData.labData!['cardepsin_activity'].toString();
+      }
+      if (widget.meatData.labData!['MFI'] != null) {
+        mfi.text = widget.meatData.labData!['MFI'].toString();
+      }
+    }
+  }
+
   void saveMeatData() {
-    final lData = double.parse(l.text);
-    final aData = double.parse(a.text);
-    final bData = double.parse(b.text);
-    final dlData = double.parse(dl.text);
-    final clData = double.parse(cl.text);
-    final rwData = double.parse(rw.text);
-    final phData = double.parse(ph.text);
-    final wbsfData = double.parse(wbsf.text);
-    final ctData = double.parse(ct.text);
-    final mfiData = double.parse(mfi.text);
+    final double? lData;
+    final double? aData;
+    final double? bData;
+    final double? dlData;
+    final double? clData;
+    final double? rwData;
+    final double? phData;
+    final double? wbsfData;
+    final double? ctData;
+    final double? mfiData;
+    if (l.text.isNotEmpty) {
+      lData = double.parse(l.text);
+    } else {
+      lData = null;
+    }
+    if (a.text.isNotEmpty) {
+      aData = double.parse(a.text);
+    } else {
+      aData = null;
+    }
+    if (b.text.isNotEmpty) {
+      bData = double.parse(b.text);
+    } else {
+      bData = null;
+    }
+    if (dl.text.isNotEmpty) {
+      dlData = double.parse(dl.text);
+    } else {
+      dlData = null;
+    }
+    if (cl.text.isNotEmpty) {
+      clData = double.parse(cl.text);
+    } else {
+      clData = null;
+    }
+    if (rw.text.isNotEmpty) {
+      rwData = double.parse(rw.text);
+    } else {
+      rwData = null;
+    }
+    if (ph.text.isNotEmpty) {
+      phData = double.parse(ph.text);
+    } else {
+      phData = null;
+    }
+    if (wbsf.text.isNotEmpty) {
+      wbsfData = double.parse(wbsf.text);
+    } else {
+      wbsfData = null;
+    }
+    if (ct.text.isNotEmpty) {
+      ctData = double.parse(ct.text);
+    } else {
+      ctData = null;
+    }
+    if (mfi.text.isNotEmpty) {
+      mfiData = double.parse(mfi.text);
+    } else {
+      mfiData = null;
+    }
 
     // 데이터 생성
     Map<String, dynamic> labData = {
@@ -59,39 +146,6 @@ class _LabDataInputState extends State<LabDataInput> {
 
     // 데이터를 객체에 저장
     widget.meatData.labData = labData;
-  }
-
-  bool _isAllInserted() {
-    if (l.text.isNotEmpty &&
-        a.text.isNotEmpty &&
-        b.text.isNotEmpty &&
-        dl.text.isNotEmpty &&
-        cl.text.isNotEmpty &&
-        rw.text.isNotEmpty &&
-        ph.text.isNotEmpty &&
-        wbsf.text.isNotEmpty &&
-        ct.text.isNotEmpty &&
-        mfi.text.isNotEmpty) {
-      return true;
-    }
-    return false;
-  }
-
-  @override
-  void initState() {
-    if (widget.meatData.labData != null) {
-      l.text = widget.meatData.labData!['L'].toString();
-      a.text = widget.meatData.labData!['a'].toString();
-      b.text = widget.meatData.labData!['b'].toString();
-      dl.text = widget.meatData.labData!['DL'].toString();
-      cl.text = widget.meatData.labData!['CL'].toString();
-      rw.text = widget.meatData.labData!['RW'].toString();
-      ph.text = widget.meatData.labData!['ph'].toString();
-      wbsf.text = widget.meatData.labData!['WBSF'].toString();
-      ct.text = widget.meatData.labData!['cardepsin_activity'].toString();
-      mfi.text = widget.meatData.labData!['MFI'].toString();
-    }
-    super.initState();
   }
 
   @override
@@ -127,32 +181,53 @@ class _LabDataInputState extends State<LabDataInput> {
               SizedBox(
                 height: 90.h,
               ),
-              TextFieldWithTitle(firstText: 'L명도', secondText: '', controller: l),
-              TextFieldWithTitle(firstText: 'a적색도', secondText: '', unit: '', controller: a),
-              TextFieldWithTitle(firstText: 'b황색도', secondText: '', unit: '', controller: b),
-              TextFieldWithTitle(firstText: 'DL육즙감량', secondText: '', unit: '%', controller: dl),
-              TextFieldWithTitle(firstText: 'CL가열감량', secondText: '', unit: '%', controller: cl),
-              TextFieldWithTitle(firstText: 'RW압착감량', secondText: '', unit: '%', controller: rw),
-              TextFieldWithTitle(firstText: 'PH', secondText: '', controller: ph),
-              TextFieldWithTitle(firstText: 'WBSF전단가', secondText: '', unit: 'kgf', controller: wbsf),
-              TextFieldWithTitle(firstText: '카텝신활성도', secondText: '', controller: ct),
-              TextFieldWithTitle(firstText: 'MFI근소편화지수', secondText: '', controller: mfi),
+              TextFieldWithTitle(
+                  firstText: 'L명도', secondText: '', controller: l),
+              TextFieldWithTitle(
+                  firstText: 'a적색도', secondText: '', unit: '', controller: a),
+              TextFieldWithTitle(
+                  firstText: 'b황색도', secondText: '', unit: '', controller: b),
+              TextFieldWithTitle(
+                  firstText: 'DL육즙감량',
+                  secondText: '',
+                  unit: '%',
+                  controller: dl),
+              TextFieldWithTitle(
+                  firstText: 'CL가열감량',
+                  secondText: '',
+                  unit: '%',
+                  controller: cl),
+              TextFieldWithTitle(
+                  firstText: 'RW압착감량',
+                  secondText: '',
+                  unit: '%',
+                  controller: rw),
+              TextFieldWithTitle(
+                  firstText: 'PH', secondText: '', controller: ph),
+              TextFieldWithTitle(
+                  firstText: 'WBSF전단가',
+                  secondText: '',
+                  unit: 'kgf',
+                  controller: wbsf),
+              TextFieldWithTitle(
+                  firstText: '카텝신활성도', secondText: '', controller: ct),
+              TextFieldWithTitle(
+                  firstText: 'MFI근소편화지수', secondText: '', controller: mfi),
               SizedBox(
                 height: 16.h,
               ),
               SaveButton(
-                onPressed: _isAllInserted()
-                    ? () {
-                        // 데이터 저장
-                        saveMeatData();
+                onPressed: () {
+                  // 데이터 저장
+                  saveMeatData();
 
-                        // 데이터 서버로 전송
-                        ApiServices.sendMeatData('probexp_data', widget.meatData.convertPorbexptToJson());
+                  // 데이터 서버로 전송
+                  ApiServices.sendMeatData(
+                      'probexpt_data', widget.meatData.convertPorbexptToJson());
 
-                        if (!mounted) return;
-                        context.pop();
-                      }
-                    : null,
+                  if (!mounted) return;
+                  context.pop();
+                },
                 text: '저장',
                 width: 658.w,
                 heigh: 104.h,

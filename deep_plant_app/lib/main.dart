@@ -64,10 +64,7 @@ final _router = GoRouter(
   routes: [
     GoRoute(
       path: '/',
-      builder: (context, state) => DataAddHome(
-        meatData: newMeat,
-        userData: newUser,
-      ),
+      builder: (context, state) => HomePage(),
       routes: [
         GoRoute(
           path: 'sign-in',
@@ -171,6 +168,7 @@ final _router = GoRouter(
               builder: (context, state) => InsertionMeatImage(
                 userData: newUser,
                 meatData: newMeat,
+                imageIdx: 0,
               ),
             ),
             GoRoute(
@@ -257,7 +255,7 @@ final _router = GoRouter(
               GoRoute(
                   path: 'data-add',
                   builder: (context, state) => DataAdd(
-                        meat: newMeat,
+                        meatData: newMeat,
                       ),
                   routes: [
                     GoRoute(
@@ -299,7 +297,8 @@ class DeepPlatinApp extends StatelessWidget {
       // 기본 색상
       theme: ThemeData(
         primaryColor: const Color.fromRGBO(51, 51, 51, 1),
-        buttonTheme: const ButtonThemeData(buttonColor: Color.fromRGBO(51, 51, 51, 1)),
+        buttonTheme:
+            const ButtonThemeData(buttonColor: Color.fromRGBO(51, 51, 51, 1)),
       ),
       routerConfig: _router,
       builder: (context, child) {

@@ -13,7 +13,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class StepFreshMeat extends StatefulWidget {
   final MeatData meatData;
   final UserData userData;
-  const StepFreshMeat({super.key, required this.meatData, required this.userData});
+  const StepFreshMeat(
+      {super.key, required this.meatData, required this.userData});
 
   @override
   State<StepFreshMeat> createState() => _StepFreshMeatState();
@@ -46,13 +47,14 @@ class _StepFreshMeatState extends State<StepFreshMeat> {
             SizedBox(
               height: 48.h,
             ),
-            GestureDetector(
+            InkWell(
               onTap: () => Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) => InsertionMeatImage(
                     meatData: widget.meatData,
                     userData: widget.userData,
+                    imageIdx: 1,
                   ),
                 ),
               ).then((_) {
@@ -62,19 +64,21 @@ class _StepFreshMeatState extends State<StepFreshMeat> {
                 mainText: '가열육 단면 촬영',
                 subText: '데이터를 입력해주세요',
                 step: '1',
-                isCompleted: widget.meatData.imagePath != null ? true : false,
+                isCompleted: widget.meatData.heatedImage != null ? true : false,
               ),
             ),
-            GestureDetector(
-              onTap: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => HeatedMeatEvaluation(
-                          meatData: widget.meatData,
-                        )),
-              ).then((_) {
-                setState(() {});
-              }),
+            InkWell(
+              onTap: widget.meatData.heatedImage != null
+                  ? () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => HeatedMeatEvaluation(
+                                  meatData: widget.meatData,
+                                )),
+                      ).then((_) {
+                        setState(() {});
+                      })
+                  : null,
               child: StepCard(
                 mainText: '가열육 관능평가',
                 subText: '데이터를 입력해주세요',
@@ -82,38 +86,48 @@ class _StepFreshMeatState extends State<StepFreshMeat> {
                 isCompleted: widget.meatData.heatedmeat != null ? true : false,
               ),
             ),
-            GestureDetector(
-              onTap: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => TongueDataInputPage(
-                          meatData: widget.meatData,
-                        )),
-              ).then((_) {
-                setState(() {});
-              }),
+            InkWell(
+              onTap: widget.meatData.heatedmeat != null
+                  ? () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => TongueDataInputPage(
+                                  meatData: widget.meatData,
+                                )),
+                      ).then((_) {
+                        setState(() {});
+                      })
+                  : null,
               child: StepCard(
                 mainText: '전자혀 데이터',
                 subText: '데이터를 입력해주세요',
                 step: '3',
-                isCompleted: widget.meatData.tongueData != null ? true : false,
+                isCompleted: widget.meatData.tongueData != null &&
+                        !widget.meatData.tongueData!.containsValue(null)
+                    ? true
+                    : false,
               ),
             ),
-            GestureDetector(
-              onTap: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => LabDataInput(
-                          meatData: widget.meatData,
-                        )),
-              ).then((_) {
-                setState(() {});
-              }),
+            InkWell(
+              onTap: widget.meatData.heatedmeat != null
+                  ? () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => LabDataInput(
+                                  meatData: widget.meatData,
+                                )),
+                      ).then((_) {
+                        setState(() {});
+                      })
+                  : null,
               child: StepCard(
                 mainText: '실험 데이터',
                 subText: '데이터를 입력해주세요',
                 step: '4',
-                isCompleted: widget.meatData.labData != null ? true : false,
+                isCompleted: widget.meatData.labData != null &&
+                        !widget.meatData.labData!.containsValue(null)
+                    ? true
+                    : false,
               ),
             ),
             Spacer(),

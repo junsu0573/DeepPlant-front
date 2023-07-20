@@ -23,7 +23,8 @@ class DataManagement2 extends StatefulWidget {
   State<DataManagement2> createState() => _DataManagement2State();
 }
 
-class _DataManagement2State extends State<DataManagement2> with SingleTickerProviderStateMixin {
+class _DataManagement2State extends State<DataManagement2>
+    with SingleTickerProviderStateMixin {
   late TabController _tabController;
   @override
   void initState() {
@@ -59,7 +60,7 @@ class _DataManagement2State extends State<DataManagement2> with SingleTickerProv
                   children: [
                     // Tab1의 내용
                     DataAdd(
-                      meat: widget.meatData,
+                      meatData: widget.meatData,
                     ),
                     // Tab2의 내용
                     DataConfirm(

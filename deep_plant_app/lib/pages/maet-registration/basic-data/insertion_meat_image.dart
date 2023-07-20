@@ -2,6 +2,8 @@ import 'dart:io';
 
 import 'package:deep_plant_app/models/meat_data_model.dart';
 import 'package:deep_plant_app/models/user_data_model.dart';
+import 'package:deep_plant_app/pages/show_error_page.dart';
+import 'package:deep_plant_app/source/firebase_services.dart';
 import 'package:deep_plant_app/source/pallete.dart';
 import 'package:deep_plant_app/widgets/camera_page_dialog_custom.dart';
 import 'package:deep_plant_app/widgets/custom_appbar.dart';
@@ -12,15 +14,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 
 class InsertionMeatImage extends StatefulWidget {
   final MeatData meatData;
   final UserData userData;
+  final int imageIdx;
   const InsertionMeatImage({
     super.key,
     required this.meatData,
     required this.userData,
+    required this.imageIdx,
   });
 
   @override
@@ -83,34 +86,40 @@ class _InsertionMeatImageState extends State<InsertionMeatImage> {
     });
   }
 
-  // 이미지를 firebase storage에 저장하는 비동기 함수
-  Future<void> saveImage() async {
-    setState(() {
-      isLoading = true;
-    });
-    try {
-      // 이미지를 firbaseStorage에 userid/시간.png 형식으로 저장
+  Future<void> saveMeatData() async {
+    if (widget.imageIdx == 0) {
+      widget.meatData.imagePath = imagePath;
+    } else if (widget.imageIdx == 1) {
+      widget.meatData.heatedImage = imagePath;
+      // 파이어베이스로 이미지 전송
+      dynamic response = await FirebaseServices.sendImageToFirebase(
+          widget.meatData.id!, imagePath!);
+      if (response == null) {
+        if (!mounted) return;
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ShowError(),
+          ),
+        );
+      }
+    } else if (widget.imageIdx == 2) {
+      widget.meatData.deepAgedImage = imagePath;
 
-      // 이미지 이름 생성!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-      final refImage = FirebaseStorage.instance.ref().child('1-2-3-4-5.png');
-
-      await refImage.putFile(
-        File(imagePath!),
-        SettableMetadata(contentType: 'image/jpeg'),
-      );
-    } catch (e) {
-      setState(() {
-        isLoading = false;
-      });
+      dynamic response = await FirebaseServices.sendImageToFirebase(
+          widget.meatData.id!, imagePath!);
+      if (response == null) {
+        if (!mounted) return;
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ShowError(),
+          ),
+        );
+      }
+    } else {
+      print('imageIdx 에러');
     }
-
-    setState(() {
-      isLoading = false;
-    });
-  }
-
-  void saveMeatData() {
-    widget.meatData.imagePath = imagePath;
   }
 
   @override
@@ -192,7 +201,9 @@ class _InsertionMeatImageState extends State<InsertionMeatImage> {
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15.sp),
-                  color: isImageAssigned ? Palette.deepOptionColor : Palette.lightOptionColor,
+                  color: isImageAssigned
+                      ? Palette.deepOptionColor
+                      : Palette.lightOptionColor,
                 ),
                 width: 158.w,
                 height: 73.h,
@@ -213,7 +224,9 @@ class _InsertionMeatImageState extends State<InsertionMeatImage> {
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15.sp),
-                  color: isImageAssigned ? Palette.deepOptionColor : Palette.lightOptionColor,
+                  color: isImageAssigned
+                      ? Palette.deepOptionColor
+                      : Palette.lightOptionColor,
                 ),
                 width: 158.w,
                 height: 73.h,
@@ -234,7 +247,9 @@ class _InsertionMeatImageState extends State<InsertionMeatImage> {
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15.sp),
-                  color: isImageAssigned ? Palette.deepOptionColor : Palette.lightOptionColor,
+                  color: isImageAssigned
+                      ? Palette.deepOptionColor
+                      : Palette.lightOptionColor,
                 ),
                 width: 238.w,
                 height: 73.h,
@@ -354,7 +369,6 @@ class _InsertionMeatImageState extends State<InsertionMeatImage> {
                 onPressed: pickedImage != null
                     ? () {
                         saveMeatData();
-                        if (!mounted) return;
                         context.pop();
                       }
                     : null,

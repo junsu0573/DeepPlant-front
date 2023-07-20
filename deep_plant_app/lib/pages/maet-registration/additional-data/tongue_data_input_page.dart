@@ -26,10 +26,33 @@ class _TongueDataInputPageState extends State<TongueDataInputPage> {
   TextEditingController richness = TextEditingController();
 
   void saveMeatData() {
-    final sournessData = double.parse(sourness.text);
-    final bitternessData = double.parse(bitterness.text);
-    final umamiData = double.parse(umami.text);
-    final richnessData = double.parse(richness.text);
+    final double? sournessData;
+    final double? bitternessData;
+    final double? umamiData;
+    final double? richnessData;
+    if (sourness.text.isNotEmpty) {
+      sournessData = double.parse(sourness.text);
+    } else {
+      sournessData = null;
+    }
+
+    if (bitterness.text.isNotEmpty) {
+      bitternessData = double.parse(bitterness.text);
+    } else {
+      bitternessData = null;
+    }
+
+    if (umami.text.isNotEmpty) {
+      umamiData = double.parse(umami.text);
+    } else {
+      umamiData = null;
+    }
+
+    if (richness.text.isNotEmpty) {
+      richnessData = double.parse(richness.text);
+    } else {
+      richnessData = null;
+    }
 
     // 데이터 생성
     Map<String, dynamic> tongueData = {
@@ -43,20 +66,21 @@ class _TongueDataInputPageState extends State<TongueDataInputPage> {
     widget.meatData.tongueData = tongueData;
   }
 
-  bool _isAllInserted() {
-    if (sourness.text.isNotEmpty && bitterness.text.isNotEmpty && umami.text.isNotEmpty && richness.text.isNotEmpty) {
-      return true;
-    }
-    return false;
-  }
-
   @override
   void initState() {
     if (widget.meatData.tongueData != null) {
-      sourness.text = widget.meatData.tongueData!['sourness'].toString();
-      bitterness.text = widget.meatData.tongueData!['bitterness'].toString();
-      umami.text = widget.meatData.tongueData!['umami'].toString();
-      richness.text = widget.meatData.tongueData!['richness'].toString();
+      if (widget.meatData.tongueData!['sourness'] != null) {
+        sourness.text = widget.meatData.tongueData!['sourness'].toString();
+      }
+      if (widget.meatData.tongueData!['bitterness'] != null) {
+        bitterness.text = widget.meatData.tongueData!['bitterness'].toString();
+      }
+      if (widget.meatData.tongueData!['umami'] != null) {
+        umami.text = widget.meatData.tongueData!['umami'].toString();
+      }
+      if (widget.meatData.tongueData!['richness'] != null) {
+        richness.text = widget.meatData.tongueData!['richness'].toString();
+      }
     }
     super.initState();
   }
@@ -128,18 +152,17 @@ class _TongueDataInputPageState extends State<TongueDataInputPage> {
               Container(
                 margin: EdgeInsets.only(bottom: 28.h),
                 child: SaveButton(
-                  onPressed: _isAllInserted()
-                      ? () async {
-                          // 데이터 저장
-                          saveMeatData();
+                  onPressed: () async {
+                    // 데이터 저장
+                    saveMeatData();
 
-                          // 데이터 서버로 전송
-                          await ApiServices.sendMeatData('probexp_data', widget.meatData.convertPorbexptToJson());
+                    // 데이터 서버로 전송
+                    await ApiServices.sendMeatData('probexpt_data',
+                        widget.meatData.convertPorbexptToJson());
 
-                          if (!mounted) return;
-                          context.pop();
-                        }
-                      : null,
+                    if (!mounted) return;
+                    context.pop();
+                  },
                   text: '저장',
                   width: 658.w,
                   heigh: 104.h,
