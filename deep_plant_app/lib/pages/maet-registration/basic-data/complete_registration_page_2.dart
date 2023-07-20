@@ -40,14 +40,18 @@ class _CompleteResgistration2State extends State<CompleteResgistration2> {
       isLoading = true;
     });
 
+    initFunc();
+  }
+
+  Future<void> initFunc() async {
     // 관리번호 생성
     createManagementNum();
 
     // 이미지 저장
-    sendImageToFirebase();
+    await sendImageToFirebase();
 
     // 데이터 전송
-    sendMeatData(widget.meatData);
+    await sendMeatData(widget.meatData);
   }
 
   // 관리번호 생성
@@ -100,7 +104,7 @@ class _CompleteResgistration2State extends State<CompleteResgistration2> {
       );
 
       // QR 생성 후 firestore에 업로드
-      uploadQRCodeImageToStorage(managementNum);
+      await uploadQRCodeImageToStorage(managementNum);
     } catch (e) {
       print(e);
       context.go('/option/error');
@@ -137,12 +141,12 @@ class _CompleteResgistration2State extends State<CompleteResgistration2> {
     if (response1 == null || response2 == null) {
       if (!mounted) return;
       context.go('/option/error');
+    } else {
+      // 로딩상태 비활성화
+      setState(() {
+        isLoading = false;
+      });
     }
-
-    // 로딩상태 비활성화
-    setState(() {
-      isLoading = false;
-    });
   }
 
   @override

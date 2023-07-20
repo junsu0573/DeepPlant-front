@@ -192,20 +192,21 @@ class MeatData {
   // 신규 육류 데이터를 json 형식으로 변환
   String convertNewMeatToJson() {
     Map<String, dynamic> jsonData = {
-      'id': id,
-      'userId': userId,
-      'createdAt': GetDate.getCurrentDate(),
-      'traceNum': traceNum,
-      'farmAddr': farmAddr,
-      'farmerNm': farmerNm,
-      'butcheryYmd': butcheryYmd,
-      'birthYmd': birthYmd,
-      'sexType': sexType,
-      'gradeNum': gradeNum,
-      'speciesValue': speciesValue,
-      'primalValue': primalValue,
-      'secondaryValue': secondaryValue,
+      "id": id,
+      "userId": userId,
+      "createdAt": GetDate.getCurrentDate(),
+      "traceNum": traceNum,
+      "farmAddr": farmAddr,
+      "farmerNm": farmerNm,
+      "butcheryYmd": butcheryYmd,
+      "birthYmd": birthYmd,
+      "sexType": sexType,
+      "gradeNum": gradeNum,
+      "specieValue": speciesValue,
+      "primalValue": primalValue,
+      "secondaryValue": secondaryValue,
     };
+    print(jsonData);
 
     return jsonEncode(jsonData);
   }
@@ -213,17 +214,17 @@ class MeatData {
   // 신선육 관능평가 데이터를 json 형식으로 변환
   String convertFreshMeatToJson() {
     Map<String, dynamic> jsonData = {
-      'id': id,
-      'createdAt': freshmeat?['createdAt'],
-      'userId': userId,
-      'period': freshmeat?['period'],
-      'marbling': freshmeat?['marbling'],
-      'color': freshmeat?['color'],
-      'texture': freshmeat?['texture'],
-      'surfaceMoisture': freshmeat?['surfaceMoisture'],
-      'overall': freshmeat?['overall'],
-      'seqno': seqno,
-      'deepAging': _getDeepAging(seqno),
+      "id": id,
+      "createdAt": freshmeat?["createdAt"],
+      "userId": userId,
+      "period": freshmeat?["period"],
+      "marbling": freshmeat?["marbling"],
+      "color": freshmeat?["color"],
+      "texture": freshmeat?["texture"],
+      "surfaceMoisture": freshmeat?["surfaceMoisture"],
+      "overall": freshmeat?["overall"],
+      "seqno": seqno,
+      "deepAging": _getDeepAging(seqno),
     };
 
     return jsonEncode(jsonData);
