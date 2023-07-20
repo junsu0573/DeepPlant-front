@@ -1,5 +1,6 @@
 import 'package:deep_plant_app/models/meat_data_model.dart';
 import 'package:deep_plant_app/source/api_services.dart';
+import 'package:deep_plant_app/widgets/show_custom_dialog.dart';
 import 'package:deep_plant_app/widgets/tongue_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -43,13 +44,21 @@ class _TongueDataInputPageState extends State<TongueDataInputPage> {
   }
 
   bool _isAllInserted() {
-    if (sourness.text.isNotEmpty &&
-        bitterness.text.isNotEmpty &&
-        umami.text.isNotEmpty &&
-        richness.text.isNotEmpty) {
+    if (sourness.text.isNotEmpty && bitterness.text.isNotEmpty && umami.text.isNotEmpty && richness.text.isNotEmpty) {
       return true;
     }
     return false;
+  }
+
+  @override
+  void initState() {
+    if (widget.meatData.tongueData != null) {
+      sourness.text = widget.meatData.tongueData!['sourness'].toString();
+      bitterness.text = widget.meatData.tongueData!['bitterness'].toString();
+      umami.text = widget.meatData.tongueData!['umami'].toString();
+      richness.text = widget.meatData.tongueData!['richness'].toString();
+    }
+    super.initState();
   }
 
   @override
@@ -62,86 +71,83 @@ class _TongueDataInputPageState extends State<TongueDataInputPage> {
         backgroundColor: Colors.white,
         appBar: CustomAppBar(
           title: '추가정보 입력',
-          backButton: true,
-          closeButton: false,
+          backButton: false,
+          closeButton: true,
+          closeButtonOnPressed: () {
+            showExitDialog(context, null);
+          },
         ),
-        body: Column(
-          children: [
-            SizedBox(
-              height: 900.h,
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    SizedBox(
-                      height: 38.h,
-                    ),
-                    Text(
-                      '전자혀 데이터',
-                      style: TextStyle(
-                        fontSize: 36.sp,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 90.h,
-                    ),
-                    TongueFiled(
-                      mainText: 'Sourness',
-                      subText: '신맛',
-                      controller: sourness,
-                    ),
-                    SizedBox(
-                      height: 112.h,
-                    ),
-                    TongueFiled(
-                      mainText: 'Bitterness',
-                      subText: '진한맛',
-                      controller: bitterness,
-                    ),
-                    SizedBox(
-                      height: 112.h,
-                    ),
-                    TongueFiled(
-                      mainText: 'Umami',
-                      subText: '감칠맛',
-                      controller: umami,
-                    ),
-                    SizedBox(
-                      height: 112.h,
-                    ),
-                    TongueFiled(
-                      mainText: 'Richness',
-                      subText: '후미',
-                      controller: richness,
-                    ),
-                    Spacer(),
-                    Container(
-                      margin: EdgeInsets.only(bottom: 28.h),
-                      child: SaveButton(
-                        onPressed: _isAllInserted()
-                            ? () async {
-                                // 데이터 저장
-                                saveMeatData();
-
-                                // 데이터 서버로 전송
-                                await ApiServices.sendMeatData('probexp_data',
-                                    widget.meatData.convertPorbexptToJson());
-
-                                if (!mounted) return;
-                                context.pop();
-                              }
-                            : null,
-                        text: '저장',
-                        width: 658.w,
-                        heigh: 104.h,
-                        isWhite: false,
-                      ),
-                    ),
-                  ],
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              SizedBox(
+                height: 38.h,
+              ),
+              Text(
+                '전자혀 데이터',
+                style: TextStyle(
+                  fontSize: 36.sp,
+                  fontWeight: FontWeight.w600,
                 ),
               ),
-            ),
-          ],
+              SizedBox(
+                height: 90.h,
+              ),
+              TongueFiled(
+                mainText: 'Sourness',
+                subText: '신맛',
+                controller: sourness,
+              ),
+              SizedBox(
+                height: 112.h,
+              ),
+              TongueFiled(
+                mainText: 'Bitterness',
+                subText: '진한맛',
+                controller: bitterness,
+              ),
+              SizedBox(
+                height: 112.h,
+              ),
+              TongueFiled(
+                mainText: 'Umami',
+                subText: '감칠맛',
+                controller: umami,
+              ),
+              SizedBox(
+                height: 112.h,
+              ),
+              TongueFiled(
+                mainText: 'Richness',
+                subText: '후미',
+                controller: richness,
+              ),
+              SizedBox(
+                height: 300.h,
+              ),
+              Container(
+                margin: EdgeInsets.only(bottom: 28.h),
+                child: SaveButton(
+                  onPressed: _isAllInserted()
+                      ? () async {
+                          // 데이터 저장
+                          saveMeatData();
+
+                          // 데이터 서버로 전송
+                          await ApiServices.sendMeatData('probexp_data', widget.meatData.convertPorbexptToJson());
+
+                          if (!mounted) return;
+                          context.pop();
+                        }
+                      : null,
+                  text: '저장',
+                  width: 658.w,
+                  heigh: 104.h,
+                  isWhite: false,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

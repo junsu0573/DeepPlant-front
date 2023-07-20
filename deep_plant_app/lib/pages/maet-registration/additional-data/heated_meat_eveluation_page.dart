@@ -113,9 +113,6 @@ class HeatedMeatEvaluationState extends State<HeatedMeatEvaluation> {
         title: '',
         backButton: false,
         closeButton: true,
-        backButtonOnPressed: () {
-          //customDialog (context);
-        },
         closeButtonOnPressed: () {
           showExitDialog(context, null);
         },
@@ -147,9 +144,7 @@ class HeatedMeatEvaluationState extends State<HeatedMeatEvaluation> {
                           isSelected: evalData.isSelected,
                           onEvalButtonPressed: (index) {
                             setState(() {
-                              for (int i = 0;
-                                  i < evalData.isSelected.length;
-                                  i++) {
+                              for (int i = 0; i < evalData.isSelected.length; i++) {
                                 evalData.isSelected[i] = i == index;
                               }
                             });
@@ -171,8 +166,7 @@ class HeatedMeatEvaluationState extends State<HeatedMeatEvaluation> {
                         saveMeatData();
 
                         // 데이터 서버로 전송
-                        await ApiServices.sendMeatData('heatedmeat_eval',
-                            widget.meatData.convertHeatedMeatToJson());
+                        await ApiServices.sendMeatData('heatedmeat_eval', widget.meatData.convertHeatedMeatToJson());
 
                         if (!mounted) return;
                         context.pop();

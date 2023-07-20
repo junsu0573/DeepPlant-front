@@ -6,6 +6,7 @@ import 'package:deep_plant_app/source/pallete.dart';
 import 'package:deep_plant_app/widgets/camera_page_dialog_custom.dart';
 import 'package:deep_plant_app/widgets/custom_appbar.dart';
 import 'package:deep_plant_app/widgets/save_button.dart';
+import 'package:deep_plant_app/widgets/show_custom_dialog.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -126,6 +127,9 @@ class _InsertionMeatImageState extends State<InsertionMeatImage> {
         title: '',
         backButton: false,
         closeButton: true,
+        closeButtonOnPressed: () {
+          showExitDialog(context, null);
+        },
       ),
       body: Column(
         children: [
@@ -188,9 +192,7 @@ class _InsertionMeatImageState extends State<InsertionMeatImage> {
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15.sp),
-                  color: isImageAssigned
-                      ? Palette.deepOptionColor
-                      : Palette.lightOptionColor,
+                  color: isImageAssigned ? Palette.deepOptionColor : Palette.lightOptionColor,
                 ),
                 width: 158.w,
                 height: 73.h,
@@ -211,9 +213,7 @@ class _InsertionMeatImageState extends State<InsertionMeatImage> {
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15.sp),
-                  color: isImageAssigned
-                      ? Palette.deepOptionColor
-                      : Palette.lightOptionColor,
+                  color: isImageAssigned ? Palette.deepOptionColor : Palette.lightOptionColor,
                 ),
                 width: 158.w,
                 height: 73.h,
@@ -234,9 +234,7 @@ class _InsertionMeatImageState extends State<InsertionMeatImage> {
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15.sp),
-                  color: isImageAssigned
-                      ? Palette.deepOptionColor
-                      : Palette.lightOptionColor,
+                  color: isImageAssigned ? Palette.deepOptionColor : Palette.lightOptionColor,
                 ),
                 width: 238.w,
                 height: 73.h,
@@ -357,7 +355,7 @@ class _InsertionMeatImageState extends State<InsertionMeatImage> {
                     ? () {
                         saveMeatData();
                         if (!mounted) return;
-                        context.go('/option/show-step');
+                        context.pop();
                       }
                     : null,
                 text: '다음',

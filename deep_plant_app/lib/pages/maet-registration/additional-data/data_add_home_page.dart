@@ -1,6 +1,8 @@
 import 'package:deep_plant_app/models/deep_aging_data_model.dart';
 import 'package:deep_plant_app/models/meat_data_model.dart';
+import 'package:deep_plant_app/models/user_data_model.dart';
 import 'package:deep_plant_app/pages/maet-registration/additional-data/insert_deep_aging_data_page.dart';
+import 'package:deep_plant_app/pages/maet-registration/additional-data/step_fresh_meat_page.dart';
 import 'package:deep_plant_app/source/pallete.dart';
 import 'package:deep_plant_app/widgets/custom_appbar.dart';
 import 'package:deep_plant_app/widgets/save_button.dart';
@@ -10,10 +12,8 @@ import 'package:go_router/go_router.dart';
 
 class DataAddHome extends StatefulWidget {
   final MeatData meatData;
-  const DataAddHome({
-    super.key,
-    required this.meatData,
-  });
+  final UserData userData;
+  const DataAddHome({super.key, required this.meatData, required this.userData});
 
   @override
   State<DataAddHome> createState() => _DataAddHomeState();
@@ -83,7 +83,7 @@ class _DataAddHomeState extends State<DataAddHome> {
   }
 
   void checkFresh() {
-    if (widget.meatData.heatedmeat != null && widget.meatData.tongueData != null && widget.meatData.labData != null) {
+    if (widget.meatData.imagePath != null && widget.meatData.heatedmeat != null && widget.meatData.tongueData != null && widget.meatData.labData != null) {
       isFreshEnd = true;
     } else {
       isFreshEnd = false;
@@ -341,8 +341,16 @@ class _DataAddHomeState extends State<DataAddHome> {
                 ),
                 height: 70.0,
                 child: OutlinedButton(
-                  onPressed: () {
-                    context.go('/option/data-management/data-add/data-add-home/step-fresh-meat');
+                  onPressed: () async {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => StepFreshMeat(
+                          meatData: widget.meatData,
+                          userData: widget.userData,
+                        ),
+                      ),
+                    ).then((_) => checkFresh());
                   },
                   child: Row(
                     children: [
