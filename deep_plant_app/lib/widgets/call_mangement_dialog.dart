@@ -1,13 +1,11 @@
-import 'dart:convert';
-
 import 'package:deep_plant_app/pages/get_qr_page.dart';
+import 'package:deep_plant_app/source/api_services.dart';
 import 'package:deep_plant_app/widgets/common_button.dart';
 import 'package:deep_plant_app/widgets/m_num_data_list_card.dart';
 import 'package:deep_plant_app/widgets/save_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:http/http.dart' as http;
 
 class NumCallDialog extends StatefulWidget {
   final List data;
@@ -30,19 +28,16 @@ class _NumCallDialogState extends State<NumCallDialog> {
   }
 
   Future<void> fetchData(String text) async {
-    var url = Uri.parse('http://10.221.72.45:8080/meat?part_id=$text');
-    var response = await http.get(url);
+    Map<String, dynamic>? jsonData = await ApiServices.searchMeatId(text);
 
-    if (response.statusCode == 200) {
-      // JSON 데이터 파싱
-      Map<String, dynamic> data = await jsonDecode(response.body);
-      // "text" 배열에서 "id" 값을 가져오기
-      List<dynamic> meatData = data[text];
-      setState(() {
-        mNumList = meatData.map((obj) => obj['id'].toString()).toList();
-      });
+    if (jsonData == null) {
+      print('데이터 없음');
     } else {
-      print('Request failed with status: ${response.statusCode}');
+      // "text" 배열에서 "id" 값을 가져오기
+      List<String> meatData = jsonData[text];
+      setState(() {
+        mNumList = meatData;
+      });
     }
   }
 
@@ -170,7 +165,8 @@ class _NumCallDialogState extends State<NumCallDialog> {
                                   borderRadius: BorderRadius.circular(42.5.sp),
                                   borderSide: BorderSide.none,
                                 ),
-                                contentPadding: EdgeInsets.only(bottom: 10, left: 10),
+                                contentPadding:
+                                    EdgeInsets.only(bottom: 10, left: 10),
                               ),
                             ),
                           ),
