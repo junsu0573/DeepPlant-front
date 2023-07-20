@@ -1,11 +1,13 @@
 import 'package:deep_plant_app/models/meat_data_model.dart';
+import 'package:deep_plant_app/source/api_services.dart';
+import 'package:deep_plant_app/source/get_date.dart';
+import 'package:deep_plant_app/widgets/eval_buttonnrow.dart';
 import 'package:deep_plant_app/widgets/save_button.dart';
 import 'package:deep_plant_app/widgets/show_custom_dialog.dart';
 import 'package:deep_plant_app/widgets/title_desc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:deep_plant_app/widgets/custom_appbar.dart';
-import 'package:deep_plant_app/widgets/eval_buttonnrow.dart';
 import 'package:go_router/go_router.dart';
 
 class FreshmeatEvaluation extends StatefulWidget {
@@ -40,7 +42,7 @@ class _FreshmeatEvaluationState extends State<FreshmeatEvaluation> {
   }
 
   // 육류 정보 저장
-  void saveMeatData(MeatData meatData) {
+  void saveMeatData() {
     double mablingIndex = _selectedMabling.indexOf(true) + 1;
     double colorIndex = _selectedColor.indexOf(true) + 1;
     double textureIndex = _selectedTexture.indexOf(true) + 1;
@@ -48,7 +50,9 @@ class _FreshmeatEvaluationState extends State<FreshmeatEvaluation> {
     double overallIndex = _selectedOverall.indexOf(true) + 1;
 
     //데이터를 Map 형식으로 저장
-    Map<String, double> freshData = {
+    Map<String, dynamic> freshData = {
+      'createdAt': GetDate.getCurrentDate(),
+      'period': widget.meatData.getPeriod(),
       'marbling': mablingIndex,
       'color': colorIndex,
       'texture': textureIndex,
@@ -57,7 +61,7 @@ class _FreshmeatEvaluationState extends State<FreshmeatEvaluation> {
     };
 
     // 데이터를 객체에 저장
-    meatData.freshData = freshData;
+    widget.meatData.freshmeat = freshData;
   }
 
   @override
@@ -154,8 +158,17 @@ class _FreshmeatEvaluationState extends State<FreshmeatEvaluation> {
                 margin: EdgeInsets.only(bottom: 18.h),
                 child: SaveButton(
                   onPressed: _isAllselected()
-                      ? () {
-                          saveMeatData(widget.meatData);
+                      ? () async {
+                          // 객체 데이터 저장
+                          saveMeatData();
+
+                          // deepAging 데이터가 존재하면 서버로 전송
+                          if (widget.meatData.seqno != null &&
+                              widget.meatData.seqno! > 0) {
+                            await ApiServices.sendMeatData('sensory_eval',
+                                widget.meatData.convertFreshMeatToJson());
+                          }
+                          if (!mounted) return;
                           context.pop();
                         }
                       : null,

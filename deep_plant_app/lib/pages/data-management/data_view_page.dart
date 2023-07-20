@@ -1,5 +1,5 @@
 import 'package:deep_plant_app/models/data_management_filter_model.dart';
-import 'package:deep_plant_app/models/user_model.dart';
+import 'package:deep_plant_app/models/user_data_model.dart';
 import 'package:deep_plant_app/widgets/data_table_widget.dart';
 import 'package:deep_plant_app/widgets/save_button.dart';
 import 'package:flutter/cupertino.dart';
@@ -12,9 +12,13 @@ import 'package:table_calendar/table_calendar.dart';
 import 'package:http/http.dart' as http;
 
 class DataView extends StatefulWidget {
-  DataView({super.key, required this.user, required this.filter});
-  final UserModel user;
+  final UserData userData;
   final FilterModel filter;
+  DataView({
+    super.key,
+    required this.userData,
+    required this.filter,
+  });
 
   @override
   State<DataView> createState() => DataViewState();

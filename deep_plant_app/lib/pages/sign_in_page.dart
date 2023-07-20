@@ -1,20 +1,20 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:deep_plant_app/models/meat_data_model.dart';
-import 'package:deep_plant_app/models/user_model.dart';
+import 'package:deep_plant_app/source/api_services.dart';
+
 import 'package:deep_plant_app/source/pallete.dart';
 import 'package:deep_plant_app/widgets/common_button.dart';
+import 'package:deep_plant_app/models/user_data_model.dart';
 import 'package:deep_plant_app/widgets/text_insertion_field.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:intl/intl.dart';
 
 class SignIn extends StatefulWidget {
-  final UserModel user;
+  final UserData userData;
   final MeatData meatData;
   const SignIn({
-    required this.user,
+    required this.userData,
     required this.meatData,
     super.key,
   });
@@ -24,7 +24,9 @@ class SignIn extends StatefulWidget {
 }
 
 class _SignInState extends State<SignIn> {
-  final _formKey = GlobalKey<FormState>(); // form 구성
+  // form key
+  final _formKey = GlobalKey<FormState>();
+
   String _userId = '';
   String _userPw = '';
 
@@ -34,7 +36,11 @@ class _SignInState extends State<SignIn> {
   // firbase authentic
   final _authentication = FirebaseAuth.instance;
 
-  final _firestore = FirebaseFirestore.instance;
+  @override
+  void initState() {
+    super.initState();
+    widget.userData.resetData();
+  }
 
   // 아이디 유효성 검사
   String? idValidate(String? value) {
@@ -61,9 +67,10 @@ class _SignInState extends State<SignIn> {
   }
 
   // 데이터 호출 및 저장
-  void fetchData() async {
+  Future<void> signIn() async {
+    // 로딩 상태를 활성화
     setState(() {
-      isLoading = true; // 로딩 상태를 활성화
+      isLoading = true;
     });
 
     try {
@@ -72,72 +79,52 @@ class _SignInState extends State<SignIn> {
         email: _userId,
         password: _userPw,
       );
-      final bool isValid = await getUserValid();
-      if (!isValid) {
+      final bool isValidEmail = await getUserValid();
+      if (!isValidEmail) {
         _authentication.signOut();
 
-        throw Error();
+        throw InvalidEmailException('이메일 인증을 완료하세요.');
       }
 
-      // 유저가 입력한 ID의 level 값을 가져온다
-      String userLevel = '';
-      DocumentSnapshot docSnapshot =
-          await _firestore.collection('user_emails').doc(_userId).get();
-
-      if (!docSnapshot.exists) {
-        _authentication.signOut();
-        throw Error();
-      } else {
-        userLevel = docSnapshot.get('level');
-      }
-
-      // 유저의 데이터를 객체에 저장
-      DocumentSnapshot userDocSnapshot =
-          await _firestore.collection(userLevel).doc(_userId).get();
-      String userName = userDocSnapshot.get('name');
-
-      // 로그인 시 이름, 이메일, 등급을 객체에 저장
-      widget.user.name = userName;
-      widget.user.email = _userId;
-      widget.user.level = userLevel;
-
-      // 유저의 로그 정보를 fire store에 저장
-      DateTime now = DateTime.now();
-
-      String userLog = DateFormat('yyyy-MM-ddTHH:mm:ssZ').format(now);
-
-      Map<String, dynamic> updateData = {
-        'lastLogin': userLog,
-      };
-      await _firestore.collection(userLevel).doc(_userId).update(updateData);
-
-      // 유저 이메일 0-0-0-0-0 에 추가
-      DocumentReference ref = _firestore.collection('meat').doc('0-0-0-0-0');
-
-      await ref.update({
-        'fix_data.$userLevel': FieldValue.arrayUnion([_userId]),
-      });
+      // 유저 정보 저장
+      await saveUserInfo();
     } catch (e) {
       // 로딩 상태를 비활성화
       setState(() {
         isLoading = false;
       });
+
+      // 예외 처리
+      String errorMessage;
+      if (e is FirebaseException) {
+        // 로그인 실패
+        errorMessage = '아이디와 비밀번호를 확인하세요.';
+      } else if (e is InvalidEmailException) {
+        // 이메일 인증 미완료
+        errorMessage = e.message;
+      } else {
+        // 기타 오류
+        errorMessage = '오류가 발생했습니다.';
+      }
+
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('아이디와 비밀번호를 확인하세요'),
+        SnackBar(
+          content: Text(errorMessage),
           backgroundColor: Colors.amber,
         ),
       );
+
       return;
     }
 
+    // 로딩 상태를 비활성화
     setState(() {
-      isLoading = false; // 로딩 상태를 비활성화
+      isLoading = false;
     });
 
-    // 데이터 fetch 성공시 다음 페이지를 push
+    // 데이터 fetch 성공시 다음 페이지로 go
     if (!mounted) return;
-    context.pushReplacement('/option');
+    context.go('/option');
   }
 
   // 유저의 이메일 valid 검사
@@ -152,6 +139,17 @@ class _SignInState extends State<SignIn> {
       print('인증 실패');
     }
     return false;
+  }
+
+  // 유저 정보 저장
+  Future<void> saveUserInfo() async {
+    // 로그인 API 호출
+    dynamic userInfo = await ApiServices.signIn(_userId);
+
+    // 데이터 fetch
+    if (userInfo != null) {
+      widget.userData.fetchData(userInfo);
+    }
   }
 
   @override
@@ -238,7 +236,7 @@ class _SignInState extends State<SignIn> {
                         ),
                         onPress: () {
                           _tryValidation();
-                          fetchData();
+                          signIn();
                         },
                         width: 372.w,
                         height: 85.h,
@@ -314,5 +312,17 @@ class _SignInState extends State<SignIn> {
         ),
       ),
     );
+  }
+}
+
+// 이메일 인증 예외 처리
+class InvalidEmailException implements Exception {
+  final String message;
+
+  InvalidEmailException(this.message);
+
+  @override
+  String toString() {
+    return 'InvalidEmailException: $message';
   }
 }

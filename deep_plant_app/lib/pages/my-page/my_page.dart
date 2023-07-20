@@ -1,4 +1,4 @@
-import 'package:deep_plant_app/models/user_model.dart';
+import 'package:deep_plant_app/models/user_data_model.dart';
 import 'package:deep_plant_app/widgets/common_button.dart';
 import 'package:deep_plant_app/widgets/custom_appbar.dart';
 import 'package:flutter/material.dart';
@@ -6,10 +6,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
 class MyPage extends StatelessWidget {
-  final UserModel user;
+  final UserData userData;
   const MyPage({
     super.key,
-    required this.user,
+    required this.userData,
   });
 
   @override
@@ -82,7 +82,7 @@ class MyPage extends StatelessWidget {
                 Column(
                   children: [
                     Text(
-                      '${user.name}',
+                      '${userData.name}',
                       style: TextStyle(
                         fontSize: 30.sp,
                         fontWeight: FontWeight.w400,
@@ -92,7 +92,7 @@ class MyPage extends StatelessWidget {
                       height: 33.h,
                     ),
                     Text(
-                      '${user.email}',
+                      '${userData.userId}',
                       style: TextStyle(
                         fontSize: 30.sp,
                         fontWeight: FontWeight.w400,
@@ -102,7 +102,7 @@ class MyPage extends StatelessWidget {
                       height: 33.h,
                     ),
                     Text(
-                      '${user.level}',
+                      '${userData.type}',
                       style: TextStyle(
                         fontSize: 30.sp,
                         fontWeight: FontWeight.w400,
@@ -112,7 +112,7 @@ class MyPage extends StatelessWidget {
                       height: 33.h,
                     ),
                     Text(
-                      '2023.06.26',
+                      '${userData.createdAt}',
                       style: TextStyle(
                         fontSize: 30.sp,
                         fontWeight: FontWeight.w400,

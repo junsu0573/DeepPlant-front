@@ -1,6 +1,6 @@
 import 'package:deep_plant_app/models/data_management_filter_model.dart';
 import 'package:deep_plant_app/models/meat_data_model.dart';
-import 'package:deep_plant_app/models/user_model.dart';
+import 'package:deep_plant_app/models/user_data_model.dart';
 import 'package:deep_plant_app/pages/data-management/data_confirm_page.dart';
 import 'package:deep_plant_app/pages/data-management/data_view_page.dart';
 import 'package:deep_plant_app/widgets/custom_appbar.dart';
@@ -9,13 +9,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class DataManagement2 extends StatefulWidget {
-  final UserModel user;
-  final MeatData meat;
+  final UserData userData;
+  final MeatData meatData;
   final FilterModel filter;
   const DataManagement2({
     super.key,
-    required this.meat,
-    required this.user,
+    required this.meatData,
+    required this.userData,
     required this.filter,
   });
 
@@ -59,16 +59,16 @@ class _DataManagement2State extends State<DataManagement2> with SingleTickerProv
                   children: [
                     // Tab1의 내용
                     DataAdd(
-                      meat: widget.meat,
+                      meat: widget.meatData,
                     ),
                     // Tab2의 내용
                     DataConfirm(
-                      user: widget.user,
+                      userData: widget.userData,
                       filter: widget.filter,
                     ),
                     // Tab3의 내용
                     DataView(
-                      user: widget.user,
+                      userData: widget.userData,
                       filter: widget.filter,
                     ),
                   ],

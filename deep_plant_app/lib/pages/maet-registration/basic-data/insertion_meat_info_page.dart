@@ -89,14 +89,15 @@ class _InsertionMeatInfoState extends State<InsertionMeatInfo> {
     }
   }
 
-  void saveData(MeatData meatData, MeatInfoSource source) {
-    meatData.species = source.species[selectedOrder];
+  // 육류 정보 저장
+  void saveMeatData(MeatInfoSource source) {
+    widget.meatData.speciesValue = source.species[selectedOrder];
     if (selectedOrder == '소') {
-      meatData.lDivision = source.cattleLarge[selectedLarge];
-      meatData.sDivision = source.cattleSmall[selectedLittle];
+      widget.meatData.primalValue = source.cattleLarge[selectedLarge];
+      widget.meatData.secondaryValue = source.cattleSmall[selectedLittle];
     } else if (selectedOrder == '돼지') {
-      meatData.lDivision = source.pigLarge[selectedLarge];
-      meatData.sDivision = source.pigSmall[selectedLittle];
+      widget.meatData.primalValue = source.pigLarge[selectedLarge];
+      widget.meatData.secondaryValue = source.pigSmall[selectedLittle];
     }
   }
 
@@ -237,7 +238,7 @@ class _InsertionMeatInfoState extends State<InsertionMeatInfo> {
               child: SaveButton(
                 onPressed: isFinal
                     ? () {
-                        saveData(widget.meatData, MeatInfoSource());
+                        saveMeatData(MeatInfoSource());
                         context.go('/option/show-step');
                       }
                     : null,

@@ -1,4 +1,5 @@
 import 'package:deep_plant_app/models/meat_data_model.dart';
+import 'package:deep_plant_app/source/api_services.dart';
 import 'package:deep_plant_app/widgets/custom_appbar.dart';
 import 'package:deep_plant_app/widgets/save_button.dart';
 import 'package:deep_plant_app/widgets/textfield_with_title.dart';
@@ -29,37 +30,37 @@ class _LabDataInputState extends State<LabDataInput> {
   TextEditingController ct = TextEditingController();
   TextEditingController mfi = TextEditingController();
 
-  void saveEvaluation() {
-    final ldata = double.parse(dl.text);
-    final adata = double.parse(dl.text);
-    final bdata = double.parse(dl.text);
-    final dldata = double.parse(dl.text);
-    final cldata = double.parse(cl.text);
-    final rwdata = double.parse(dl.text);
-    final phdata = double.parse(ph.text);
-    final wbsfdata = double.parse(wbsf.text);
-    final ctdata = double.parse(ct.text);
-    final mfidata = double.parse(mfi.text);
+  void saveMeatData() {
+    final lData = double.parse(l.text);
+    final aData = double.parse(a.text);
+    final bData = double.parse(b.text);
+    final dlData = double.parse(dl.text);
+    final clData = double.parse(cl.text);
+    final rwData = double.parse(rw.text);
+    final phData = double.parse(ph.text);
+    final wbsfData = double.parse(wbsf.text);
+    final ctData = double.parse(ct.text);
+    final mfiData = double.parse(mfi.text);
 
-    Map<String, double> labData = {
-      //데이터를 Map 형식으로 지정
-      'L': ldata,
-      'a': adata,
-      'b': bdata,
-      'DL': dldata,
-      'CL': cldata,
-      'RW': rwdata,
-      'ph': phdata,
-      'WBSF': wbsfdata,
-      'cardepsin_activity': ctdata,
-      'MFI': mfidata
+    // 데이터 생성
+    Map<String, dynamic> labData = {
+      'L': lData,
+      'a': aData,
+      'b': bData,
+      'DL': dlData,
+      'CL': clData,
+      'RW': rwData,
+      'ph': phData,
+      'WBSF': wbsfData,
+      'cardepsin_activity': ctData,
+      'MFI': mfiData
     };
 
     // 데이터를 객체에 저장
     widget.meatData.labData = labData;
   }
 
-  bool _isAllInseted() {
+  bool _isAllInserted() {
     if (l.text.isNotEmpty &&
         a.text.isNotEmpty &&
         b.text.isNotEmpty &&
@@ -85,8 +86,8 @@ class _LabDataInputState extends State<LabDataInput> {
         backgroundColor: Colors.white,
         appBar: CustomAppBar(
           title: '추가정보 입력',
-          backButton: true,
-          closeButton: false,
+          backButton: false,
+          closeButton: true,
         ),
         body: SingleChildScrollView(
           child: Column(
@@ -105,45 +106,29 @@ class _LabDataInputState extends State<LabDataInput> {
               SizedBox(
                 height: 90.h,
               ),
-              TextFieldWithTitle(
-                  firstText: 'L명도', secondText: '', controller: l),
-              TextFieldWithTitle(
-                  firstText: 'a적색도', secondText: '', unit: '', controller: a),
-              TextFieldWithTitle(
-                  firstText: 'b황색도', secondText: '', unit: '', controller: b),
-              TextFieldWithTitle(
-                  firstText: 'DL육즙감량',
-                  secondText: '',
-                  unit: '%',
-                  controller: dl),
-              TextFieldWithTitle(
-                  firstText: 'CL가열감량',
-                  secondText: '',
-                  unit: '%',
-                  controller: cl),
-              TextFieldWithTitle(
-                  firstText: 'RW압착감량',
-                  secondText: '',
-                  unit: '%',
-                  controller: rw),
-              TextFieldWithTitle(
-                  firstText: 'PH', secondText: '', controller: ph),
-              TextFieldWithTitle(
-                  firstText: 'WBSF전단가',
-                  secondText: '',
-                  unit: 'kgf',
-                  controller: wbsf),
-              TextFieldWithTitle(
-                  firstText: '카텝신활성도', secondText: '', controller: ct),
-              TextFieldWithTitle(
-                  firstText: 'MFI근소편화지수', secondText: '', controller: mfi),
+              TextFieldWithTitle(firstText: 'L명도', secondText: '', controller: l),
+              TextFieldWithTitle(firstText: 'a적색도', secondText: '', unit: '', controller: a),
+              TextFieldWithTitle(firstText: 'b황색도', secondText: '', unit: '', controller: b),
+              TextFieldWithTitle(firstText: 'DL육즙감량', secondText: '', unit: '%', controller: dl),
+              TextFieldWithTitle(firstText: 'CL가열감량', secondText: '', unit: '%', controller: cl),
+              TextFieldWithTitle(firstText: 'RW압착감량', secondText: '', unit: '%', controller: rw),
+              TextFieldWithTitle(firstText: 'PH', secondText: '', controller: ph),
+              TextFieldWithTitle(firstText: 'WBSF전단가', secondText: '', unit: 'kgf', controller: wbsf),
+              TextFieldWithTitle(firstText: '카텝신활성도', secondText: '', controller: ct),
+              TextFieldWithTitle(firstText: 'MFI근소편화지수', secondText: '', controller: mfi),
               SizedBox(
                 height: 16.h,
               ),
               SaveButton(
-                onPressed: _isAllInseted()
+                onPressed: _isAllInserted()
                     ? () {
-                        saveEvaluation();
+                        // 데이터 저장
+                        saveMeatData();
+
+                        // 데이터 서버로 전송
+                        ApiServices.sendMeatData('probexp_data', widget.meatData.convertPorbexptToJson());
+
+                        if (!mounted) return;
                         context.pop();
                       }
                     : null,

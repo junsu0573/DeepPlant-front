@@ -11,7 +11,10 @@ import 'dart:core';
 
 class InsertDeepAgingData extends StatefulWidget {
   final DeepAgingData agingdata;
-  const InsertDeepAgingData({super.key, required this.agingdata});
+  const InsertDeepAgingData({
+    super.key,
+    required this.agingdata,
+  });
 
   @override
   State<InsertDeepAgingData> createState() => _InsertDeepAgingDataState();

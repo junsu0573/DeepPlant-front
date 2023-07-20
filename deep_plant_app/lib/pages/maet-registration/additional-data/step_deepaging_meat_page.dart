@@ -1,5 +1,5 @@
 import 'package:deep_plant_app/models/meat_data_model.dart';
-import 'package:deep_plant_app/models/user_model.dart';
+import 'package:deep_plant_app/models/user_data_model.dart';
 import 'package:deep_plant_app/widgets/custom_appbar.dart';
 import 'package:deep_plant_app/widgets/save_button.dart';
 import 'package:deep_plant_app/widgets/step_card.dart';
@@ -9,7 +9,7 @@ import 'package:go_router/go_router.dart';
 
 class StepDeepagingMeat extends StatefulWidget {
   const StepDeepagingMeat({super.key, required this.user, required this.meat});
-  final UserModel user;
+  final UserData user;
   final MeatData meat;
 
   @override
@@ -18,10 +18,7 @@ class StepDeepagingMeat extends StatefulWidget {
 
 class _StepDeepagingMeatState extends State<StepDeepagingMeat> {
   bool _isAllCompleted() {
-    if (widget.meat.freshData != null && widget.meat.heatedMeat != null && widget.meat.tongueData != null && widget.meat.labData != null) {
-      return true;
-    }
-    return false;
+    return true;
   }
 
   @override
@@ -61,7 +58,7 @@ class _StepDeepagingMeatState extends State<StepDeepagingMeat> {
                 mainText: '처리육 관능평가',
                 subText: '데이터를 입력해주세요',
                 step: '2',
-                isCompleted: widget.meat.freshData != null ? true : false,
+                isCompleted: widget.meat.freshmeat != null ? true : false,
               ),
             ),
             GestureDetector(
@@ -79,7 +76,7 @@ class _StepDeepagingMeatState extends State<StepDeepagingMeat> {
                 mainText: '가열육 관능평가',
                 subText: '데이터를 입력해주세요',
                 step: '4',
-                isCompleted: widget.meat.heatedMeat != null ? true : false,
+                isCompleted: widget.meat.heatedmeat != null ? true : false,
               ),
             ),
             GestureDetector(

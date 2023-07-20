@@ -8,8 +8,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class DataAddHome extends StatefulWidget {
-  const DataAddHome({super.key, required this.meat});
-  final MeatData meat;
+  final MeatData meatData;
+  const DataAddHome({
+    super.key,
+    required this.meatData,
+  });
 
   @override
   State<DataAddHome> createState() => _DataAddHomeState();
@@ -44,7 +47,7 @@ class _DataAddHomeState extends State<DataAddHome> {
       deepAgingModel.add(temp);
     }
     // 객체에 데이터 저장
-    widget.meat.deepAging = deepAgingModel;
+    widget.meatData.deepAging = deepAgingModel;
   }
 
   void calTime(DeepAgingData data, int index, bool edit) {

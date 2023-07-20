@@ -1,4 +1,4 @@
-import 'package:deep_plant_app/models/user_model.dart';
+import 'package:deep_plant_app/models/user_data_model.dart';
 import 'package:deep_plant_app/widgets/common_button.dart';
 import 'package:deep_plant_app/widgets/custom_appbar.dart';
 import 'package:deep_plant_app/widgets/save_button.dart';
@@ -7,11 +7,16 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
 class AddUserInfo extends StatelessWidget {
-  final UserModel user;
+  final UserData userData;
   const AddUserInfo({
     super.key,
-    required this.user,
+    required this.userData,
   });
+
+  final String mainHomeAdress = '';
+  final String subHomeAdress = '';
+  final String company = '';
+  final String jobTitle = '';
 
   @override
   Widget build(BuildContext context) {

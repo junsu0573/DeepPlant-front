@@ -1,25 +1,26 @@
+import 'dart:convert';
 import 'dart:io';
 import 'dart:ui';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:crypto/crypto.dart';
 import 'package:deep_plant_app/models/meat_data_model.dart';
-import 'package:deep_plant_app/models/user_model.dart';
+import 'package:deep_plant_app/source/api_services.dart';
+import 'package:deep_plant_app/source/get_date.dart';
 import 'package:deep_plant_app/source/pallete.dart';
 import 'package:deep_plant_app/widgets/save_button.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:intl/intl.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 class CompleteResgistration2 extends StatefulWidget {
   final MeatData meatData;
-  final UserModel user;
+
   const CompleteResgistration2({
     super.key,
     required this.meatData,
-    required this.user,
   });
 
   @override
@@ -27,86 +28,83 @@ class CompleteResgistration2 extends StatefulWidget {
 }
 
 class _CompleteResgistration2State extends State<CompleteResgistration2> {
-  String managementNumber = '';
+  String managementNum = '';
   FirebaseFirestore firestore = FirebaseFirestore.instance;
-  bool isLoading = false;
+  bool isLoading = true;
 
   @override
   void initState() {
     super.initState();
-    if (widget.meatData.historyNumber != null &&
-        widget.meatData.species != null &&
-        widget.meatData.lDivision != null &&
-        widget.meatData.sDivision != null) {
-      managementNumber =
-          '${widget.meatData.historyNumber!}-${widget.meatData.species!}-${widget.meatData.lDivision!}-${widget.meatData.sDivision!}';
-    }
-
-    sendDataToFirebase();
-  }
-
-  Future<void> sendDataToFirebase() async {
+    // 로딩상태 활성화
     setState(() {
       isLoading = true;
     });
+
+    // 관리번호 생성
+    createManagementNum();
+
+    // 이미지 저장
+    sendImageToFirebase();
+
+    // 데이터 전송
+    sendMeatData(widget.meatData);
+  }
+
+  // 관리번호 생성
+  void createManagementNum() {
+    if (widget.meatData.traceNum != null &&
+        widget.meatData.speciesValue != null &&
+        widget.meatData.primalValue != null &&
+        widget.meatData.secondaryValue != null) {
+      // 관리번호: 이력코드-생성일자-종-대분할-소분할
+      String createdAt = GetDate.getCurrentDate();
+      String originalString =
+          '${widget.meatData.traceNum!}-$createdAt-${widget.meatData.speciesValue!}-${widget.meatData.primalValue!}-${widget.meatData.secondaryValue!}';
+
+      // 해시함수로 관리번호 생성 및 데이터 저장
+      managementNum = hashStringTo12Digits(originalString);
+      widget.meatData.id = managementNum;
+    } else {
+      print('에러');
+    }
+  }
+
+  // 관리번호 해시 함수
+  String hashStringTo12Digits(String input) {
+    // 입력 문자열을 UTF-8로 인코딩
+    List<int> bytes = utf8.encode(input);
+
+    // 해시 알고리즘으로 SHA-256을 선택
+    Digest digest = sha256.convert(bytes);
+
+    // 해시 값을 16진수로 변환
+    String hexHash = digest.toString();
+
+    // 앞에서부터 12자리를 추출
+    String twelveDigits = hexHash.substring(0, 12);
+
+    return twelveDigits;
+  }
+
+  // 이미지를 파이어베이스에 저장
+  Future<void> sendImageToFirebase() async {
     try {
-      // meat 컬렉션에 데이터 저장
-      final refData = firestore.collection('meat').doc(managementNumber);
-
-      DateTime now = DateTime.now();
-
-      String saveDate = DateFormat('yyyy-MM-ddTHH:mm:ssZ').format(now);
-
-      await refData.set({
-        'traceNumber': widget.meatData.historyNumber,
-        'species': widget.meatData.species,
-        'l_division': widget.meatData.lDivision,
-        's_division': widget.meatData.sDivision,
-        'fresh': widget.meatData.freshData,
-        'email': widget.user.email,
-        'saveTime': saveDate,
-        'gradeNm': widget.meatData.gradeNm,
-        'farmAddr': widget.meatData.butcheryPlaceNm,
-        'butcheryPlaceNm': widget.meatData.butcheryPlaceNm,
-        'butcheryYmd': widget.meatData.butcheryYmd,
-      });
-
-      // 0-0-0-0-0 에 관리번호 저장
-      DocumentReference documentRef =
-          firestore.collection('meat').doc('0-0-0-0-0');
-      await documentRef.update({
-        'fix_data.meat': FieldValue.arrayUnion([managementNumber]),
-      });
-
-      // 0-0-0-0-0 에 유저 이메일 추가
-      await documentRef.update({
-        'fix_data.${widget.user.level}':
-            FieldValue.arrayUnion([widget.user.email]),
-      });
-
-      // user의 meatList에 관리번호 추가
-      DocumentReference refNum =
-          firestore.collection(widget.user.level!).doc(widget.user.email);
-      List<dynamic> newNum = [managementNumber];
-      await refNum.update({'meatList': FieldValue.arrayUnion(newNum)});
-
       // fire storage에 육류 이미지 저장
-      final refMeatImage =
-          FirebaseStorage.instance.ref().child('meats/$managementNumber.png');
+      final refMeatImage = FirebaseStorage.instance
+          .ref()
+          .child('sensory_evals/$managementNum-0.png');
 
       await refMeatImage.putFile(
-        File(widget.meatData.imageFile!),
+        File(widget.meatData.imagePath!),
         SettableMetadata(contentType: 'image/jpeg'),
       );
 
       // QR 생성 후 firestore에 업로드
-      uploadQRCodeImageToStorage(managementNumber);
+      uploadQRCodeImageToStorage(managementNum);
     } catch (e) {
       print(e);
+      context.go('/option/error');
     }
-    setState(() {
-      isLoading = false;
-    });
   }
 
   // QR생성 및 전송
@@ -126,6 +124,25 @@ class _CompleteResgistration2State extends State<CompleteResgistration2> {
     final storageRef =
         FirebaseStorage.instance.ref().child('qr_codes/$data.png');
     await storageRef.putData(bytes);
+  }
+
+  // 육류 정보를 서버로 전송
+  Future<void> sendMeatData(MeatData meatData) async {
+    // 데이터 전송
+
+    final response1 =
+        await ApiServices.sendMeatData(null, meatData.convertNewMeatToJson());
+    final response2 = await ApiServices.sendMeatData(
+        'sensory_eval', meatData.convertFreshMeatToJson());
+    if (response1 == null || response2 == null) {
+      if (!mounted) return;
+      context.go('/option/error');
+    }
+
+    // 로딩상태 비활성화
+    setState(() {
+      isLoading = false;
+    });
   }
 
   @override
@@ -153,7 +170,7 @@ class _CompleteResgistration2State extends State<CompleteResgistration2> {
                     ),
                   ),
                   Text(
-                    managementNumber,
+                    managementNum,
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 20,

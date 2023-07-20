@@ -37,18 +37,20 @@ class _DataAddState extends State<DataAdd> {
 
   // step-1 데이터로 객체 초기화
   void meatDataFetch(Map data) {
-    widget.meat.mNum = data['id'];
-    widget.meat.userEmail = data['email'];
-    widget.meat.historyNumber = data['traceNumber'];
-    widget.meat.species = data['species'];
-    widget.meat.lDivision = data['l_division'];
-    widget.meat.sDivision = data['s_division'];
-    widget.meat.userEmail = data['email'];
-    widget.meat.gradeNm = data['gradeNm'];
+    widget.meat.id = data['id'];
+    widget.meat.userId = data['uesrId'];
+    widget.meat.createdAt = data['createdAt'];
+    widget.meat.traceNum = data['traceNum'];
     widget.meat.farmAddr = data['farmAddr'];
-    widget.meat.butcheryPlaceNm = data['butcheryPlaceNm'];
+    widget.meat.farmerNm = data['farmerNm'];
     widget.meat.butcheryYmd = data['butcheryYmd'];
-    widget.meat.freshData = data['fresh']?.cast<String, double>();
+    widget.meat.birthYmd = data['birthYmd'];
+    widget.meat.sexType = data['sexType'];
+    widget.meat.freshmeat = data['freshmeat'];
+    widget.meat.gradeNum = data['gradeNum'];
+    widget.meat.speciesValue = data['speciesValue'];
+    widget.meat.primalValue = data['primalValue'];
+    widget.meat.secondaryValue = data['secondaryValue'];
   }
 
   @override

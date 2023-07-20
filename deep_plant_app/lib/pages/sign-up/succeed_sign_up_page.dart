@@ -1,4 +1,6 @@
+import 'package:deep_plant_app/widgets/save_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
 class SucceedSignUp extends StatelessWidget {
@@ -32,28 +34,15 @@ class SucceedSignUp extends StatelessWidget {
             ),
           ),
           Container(
-            width: 350,
-            height: 50,
-            margin: const EdgeInsets.only(bottom: 20),
-            child: ElevatedButton(
-              onPressed: () {
-                context.go('/sign-in');
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Theme.of(context).primaryColor,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
-              child: const Text(
-                '로그인',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 18,
-                ),
-              ),
+            margin: EdgeInsets.only(bottom: 18.h),
+            child: SaveButton(
+              onPressed: () => context.go('/sign-in'),
+              text: '로그인',
+              width: 658.w,
+              heigh: 104.h,
+              isWhite: false,
             ),
-          ),
+          )
         ],
       ),
     );

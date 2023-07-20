@@ -1,4 +1,4 @@
-import 'package:deep_plant_app/models/user_model.dart';
+import 'package:deep_plant_app/models/user_data_model.dart';
 import 'package:deep_plant_app/widgets/custom_appbar.dart';
 import 'package:deep_plant_app/widgets/data_table_widget.dart';
 import 'package:deep_plant_app/widgets/save_button.dart';
@@ -12,8 +12,11 @@ import 'package:table_calendar/table_calendar.dart';
 import 'package:http/http.dart' as http;
 
 class ReadingData extends StatefulWidget {
-  ReadingData({super.key, required this.user});
-  final UserModel user;
+  final UserData userData;
+  ReadingData({
+    super.key,
+    required this.userData,
+  });
 
   @override
   State<ReadingData> createState() => ReadingDataState();

@@ -1,4 +1,6 @@
 import 'package:deep_plant_app/models/meat_data_model.dart';
+import 'package:deep_plant_app/source/api_services.dart';
+import 'package:deep_plant_app/source/get_date.dart';
 import 'package:deep_plant_app/widgets/save_button.dart';
 import 'package:deep_plant_app/widgets/show_custom_dialog.dart';
 import 'package:deep_plant_app/widgets/title_desc.dart';
@@ -39,9 +41,7 @@ class HeatedMeatEvaluationState extends State<HeatedMeatEvaluation> {
     return false;
   }
 
-  void _sendEvaluation(MeatData meatData) {
-    //firebase에 데이터 전송하는 '저장' 버튼 기능
-
+  void saveMeatData() {
     // 사용자가 선택한 값(true)의 index에 1을 더한다.
     // ex) (없음:1,약간있음:2, 보통:3, 약간많음:4, 많음:5)
     double flavorIndex = _selectedFlavor.indexOf(true) + 1;
@@ -50,8 +50,10 @@ class HeatedMeatEvaluationState extends State<HeatedMeatEvaluation> {
     double umamiIndex = _selectedUmami.indexOf(true) + 1;
     double palatabilityIndex = _selectedPalatability.indexOf(true) + 1;
 
-    Map<String, double> heatedData = {
-      //데이터를 Map 형식으로 지정
+    // 데이터 생성
+    Map<String, dynamic> heatedData = {
+      'createdAt': GetDate.getCurrentDate(),
+      'period': widget.meatData.getPeriod(),
       'flavor': flavorIndex,
       'juiciness': juicinessIndex,
       'tenderness': tendernessIndex,
@@ -60,7 +62,7 @@ class HeatedMeatEvaluationState extends State<HeatedMeatEvaluation> {
     };
 
     // 데이터를 객체에 저장
-    meatData.heatedMeat = heatedData;
+    widget.meatData.heatedmeat = heatedData;
   }
 
   @override
@@ -164,8 +166,15 @@ class HeatedMeatEvaluationState extends State<HeatedMeatEvaluation> {
               margin: EdgeInsets.only(bottom: 28.h),
               child: SaveButton(
                 onPressed: _isAllselected()
-                    ? () {
-                        _sendEvaluation(widget.meatData);
+                    ? () async {
+                        // 객체 데이터 저장
+                        saveMeatData();
+
+                        // 데이터 서버로 전송
+                        await ApiServices.sendMeatData('heatedmeat_eval',
+                            widget.meatData.convertHeatedMeatToJson());
+
+                        if (!mounted) return;
                         context.pop();
                       }
                     : null,

@@ -6,7 +6,7 @@ import 'package:deep_plant_app/widgets/save_button.dart';
 import 'package:deep_plant_app/widgets/text_insertion_field.dart';
 import 'package:flutter/material.dart';
 
-import 'package:deep_plant_app/source/api_source.dart';
+import 'package:deep_plant_app/source/oepn_api_source.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:intl/intl.dart';
@@ -94,8 +94,8 @@ class _GetTraceNumState extends State<GetTraceNum> {
 
     if (historyNo.startsWith('L1')) {
       try {
-        ApiSource source =
-            ApiSource(baseUrl: "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?serviceKey=$apikey&traceNo=$historyNo&optionNo=9");
+        OpenApiSource source = OpenApiSource(
+            baseUrl: "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?serviceKey=$apikey&traceNo=$historyNo&optionNo=9");
 
         final pigAPIData = await source.getJsonData();
 
@@ -110,12 +110,12 @@ class _GetTraceNumState extends State<GetTraceNum> {
 
     if (traceNum!.startsWith('0')) {
       try {
-        ApiSource source1 =
-            ApiSource(baseUrl: "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?serviceKey=$apikey&traceNo=$traceNum&optionNo=1");
-        ApiSource source2 =
-            ApiSource(baseUrl: "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?serviceKey=$apikey&traceNo=$traceNum&optionNo=2");
-        ApiSource source3 =
-            ApiSource(baseUrl: "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?serviceKey=$apikey&traceNo=$traceNum&optionNo=3");
+        OpenApiSource source1 = OpenApiSource(
+            baseUrl: "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?serviceKey=$apikey&traceNo=$traceNum&optionNo=1");
+        OpenApiSource source2 = OpenApiSource(
+            baseUrl: "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?serviceKey=$apikey&traceNo=$traceNum&optionNo=2");
+        OpenApiSource source3 = OpenApiSource(
+            baseUrl: "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?serviceKey=$apikey&traceNo=$traceNum&optionNo=3");
 
         final meatAPIData1 = await source1.getJsonData();
         final meatAPIData2 = await source2.getJsonData();
@@ -141,10 +141,10 @@ class _GetTraceNumState extends State<GetTraceNum> {
       }
     } else {
       try {
-        ApiSource source4 =
-            ApiSource(baseUrl: "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?serviceKey=$apikey&traceNo=$traceNum&optionNo=4");
-        ApiSource source3 =
-            ApiSource(baseUrl: "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?serviceKey=$apikey&traceNo=$traceNum&optionNo=3");
+        OpenApiSource source4 = OpenApiSource(
+            baseUrl: "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?serviceKey=$apikey&traceNo=$traceNum&optionNo=4");
+        OpenApiSource source3 = OpenApiSource(
+            baseUrl: "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?serviceKey=$apikey&traceNo=$traceNum&optionNo=3");
 
         final meatAPIData4 = await source4.getJsonData();
         final meatAPIData3 = await source3.getJsonData();
@@ -171,8 +171,16 @@ class _GetTraceNumState extends State<GetTraceNum> {
     }
   }
 
-  void saveData() {
-    // 여기에서 tableData 요소를 담아서 넘기셈.
+  // 육류 정보 저장
+  void saveMeatData() {
+    widget.meatData.traceNum = traceNum;
+    widget.meatData.farmAddr = farmAddr;
+    widget.meatData.farmerNm = farmerNm;
+    widget.meatData.butcheryYmd = butcheryYmd;
+    widget.meatData.birthYmd = birthYmd;
+    widget.meatData.sexType = sexType;
+    widget.meatData.speciesValue = species;
+    widget.meatData.gradeNum = gradeNum;
   }
 
   @override
@@ -287,7 +295,7 @@ class _GetTraceNumState extends State<GetTraceNum> {
                 heigh: 104.h,
                 onPressed: (isFinal && !isNull)
                     ? () {
-                        saveData();
+                        saveMeatData();
                         context.go('/option/show-step/insert-meat-info');
                       }
                     : null,

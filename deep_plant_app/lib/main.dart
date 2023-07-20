@@ -1,6 +1,6 @@
 import 'package:deep_plant_app/models/data_management_filter_model.dart';
 import 'package:deep_plant_app/models/meat_data_model.dart';
-import 'package:deep_plant_app/models/user_model.dart';
+import 'package:deep_plant_app/models/user_data_model.dart';
 import 'package:deep_plant_app/pages/data-management/data_management_page_2.dart';
 import 'package:deep_plant_app/pages/data-management/reading_data_page.dart';
 import 'package:deep_plant_app/pages/home_page.dart';
@@ -8,19 +8,20 @@ import 'package:deep_plant_app/pages/maet-registration/additional-data/complete_
 import 'package:deep_plant_app/pages/maet-registration/additional-data/deep_aging_page.dart';
 import 'package:deep_plant_app/pages/maet-registration/additional-data/lab_data_input_page.dart';
 import 'package:deep_plant_app/pages/maet-registration/basic-data/complete_registration_page.dart';
-import 'package:deep_plant_app/pages/maet-registration/additional-data/complete_registration_page_2.dart';
+import 'package:deep_plant_app/pages/maet-registration/basic-data/complete_registration_page_2.dart';
 import 'package:deep_plant_app/pages/maet-registration/basic-data/freshmeat_evaluation_page.dart';
 import 'package:deep_plant_app/pages/maet-registration/additional-data/heated_meat_eveluation_page.dart';
 import 'package:deep_plant_app/pages/maet-registration/basic-data/insertion_meat_image.dart';
 import 'package:deep_plant_app/pages/maet-registration/basic-data/insertion_meat_info_page.dart';
 import 'package:deep_plant_app/pages/maet-registration/additional-data/show_step_2_page.dart';
 import 'package:deep_plant_app/pages/maet-registration/basic-data/show_step_page.dart';
-import 'package:deep_plant_app/pages/my-page/edit_user_info_page.dart';
+import 'package:deep_plant_app/pages/show_error_page.dart';
+import 'package:deep_plant_app/pages/sign-up/add_user_info_page.dart';
 import 'package:deep_plant_app/pages/my-page/my_page.dart';
 import 'package:deep_plant_app/pages/my-page/reset_pw_page.dart';
 import 'package:deep_plant_app/pages/my-page/succeed_pw_change_page.dart';
 import 'package:deep_plant_app/pages/option_page.dart';
-import 'package:deep_plant_app/pages/sign-up/add_user_info_page.dart';
+import 'package:deep_plant_app/pages/my-page/edit_user_info_page.dart';
 import 'package:deep_plant_app/pages/sign-up/email_verification.dart';
 import 'package:deep_plant_app/pages/sign-up/id_pw_insertion_page.dart';
 import 'package:deep_plant_app/pages/sign_in_page.dart';
@@ -38,17 +39,20 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   await initializeDateFormatting();
-  runApp(const DeepPlantApp());
+  runApp(const DeepPlatinApp());
 }
 
 // 회원가입 및 로그인을 위한 유저 객체
-UserModel newUser = UserModel();
+UserData newUser = UserData();
 
 // 육류 입력 정보 저장을 위한 객체
 MeatData newMeat = MeatData();
 
 // 딥에이징 입력 정보를 위한 객체
 DeepAgingData newAging = DeepAgingData();
+
+// 데이터 관리 필터 저장을 위한 객체
+FilterModel newFilter = FilterModel();
 
 // 데이터 관리 필터 저장을 위한 객체
 FilterModel newFilter = FilterModel();
@@ -64,7 +68,7 @@ final _router = GoRouter(
         GoRoute(
           path: 'sign-in',
           builder: (context, state) => SignIn(
-            user: newUser,
+            userData: newUser,
             meatData: newMeat,
           ),
           // 회원가입을 위한 라우팅
@@ -72,13 +76,13 @@ final _router = GoRouter(
             GoRoute(
               path: ('sign-up'),
               builder: (context, state) => IdPwInsertion(
-                user: newUser,
+                userData: newUser,
               ),
               routes: [
                 GoRoute(
                   path: 'add-user-info',
                   builder: (context, state) => AddUserInfo(
-                    user: newUser,
+                    userData: newUser,
                   ),
                 ),
               ],
@@ -86,7 +90,7 @@ final _router = GoRouter(
             GoRoute(
               path: ('succeed-sign-up'),
               builder: (context, state) => EmailVerification(
-                user: newUser,
+                userData: newUser,
               ),
             ),
           ],
@@ -102,14 +106,18 @@ final _router = GoRouter(
     GoRoute(
       path: '/option',
       builder: (context, state) => OptionPage(
-        user: newUser,
+        userData: newUser,
       ),
       routes: [
+        GoRoute(
+          path: 'error',
+          builder: (context, state) => ShowError(),
+        ),
         // 마이페이지
         GoRoute(
           path: 'my-page',
           builder: (context, state) => MyPage(
-            user: newUser,
+            userData: newUser,
           ),
           routes: [
             GoRoute(
@@ -120,13 +128,17 @@ final _router = GoRouter(
               routes: [
                 GoRoute(
                   path: 'reset-pw',
-                  builder: (context, state) => ResetPW(),
+                  builder: (context, state) => ResetPW(
+                    userData: newUser,
+                  ),
                 ),
               ],
             ),
             GoRoute(
               path: 'success-pw-change',
-              builder: (context, state) => SucceedPwChange(),
+              builder: (context, state) => SucceedPwChange(
+                userData: newUser,
+              ),
             ),
           ],
         ),
@@ -134,8 +146,8 @@ final _router = GoRouter(
         GoRoute(
           path: 'show-step',
           builder: (context, state) => ShowStep(
-            user: newUser,
-            meat: newMeat,
+            userData: newUser,
+            meatData: newMeat,
           ),
           routes: [
             GoRoute(
@@ -153,7 +165,7 @@ final _router = GoRouter(
             GoRoute(
               path: 'insert-meat-image',
               builder: (context, state) => InsertionMeatImage(
-                user: newUser,
+                userData: newUser,
                 meatData: newMeat,
               ),
             ),
@@ -169,14 +181,14 @@ final _router = GoRouter(
         GoRoute(
           path: 'show-step-2',
           builder: (context, state) => ShowStep2(
-            user: newUser,
-            meat: newMeat,
+            userData: newUser,
+            meatData: newMeat,
           ),
           routes: [
             GoRoute(
                 path: 'deep-aging-data',
                 builder: (context, state) => DeepAging(
-                      meat: newMeat,
+                      meatData: newMeat,
                     )),
             GoRoute(
               path: 'fresh-meat-data',
@@ -209,35 +221,32 @@ final _router = GoRouter(
           path: 'complete-register',
           builder: (context, state) => CompleteResgistration(
             meatData: newMeat,
-            user: newUser,
           ),
         ),
         GoRoute(
           path: 'complete-register-2',
           builder: (context, state) => CompleteResgistration2(
             meatData: newMeat,
-            user: newUser,
           ),
         ),
         GoRoute(
           path: 'complete-add-register',
           builder: (context, state) => CompleteAdditionalRegistration(
             meatData: newMeat,
-            user: newUser,
           ),
         ),
         // 데이터 관리 페이지
         GoRoute(
           path: 'reading-data',
           builder: (context, state) => ReadingData(
-            user: newUser,
+            userData: newUser,
           ),
         ),
         GoRoute(
           path: 'data-management',
           builder: (context, state) => DataManagement2(
-            user: newUser,
-            meat: newMeat,
+            userData: newUser,
+            meatData: newMeat,
             filter: newFilter,
           ),
         ),
@@ -246,8 +255,8 @@ final _router = GoRouter(
   ],
 );
 
-class DeepPlantApp extends StatelessWidget {
-  const DeepPlantApp({super.key});
+class DeepPlatinApp extends StatelessWidget {
+  const DeepPlatinApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -257,8 +266,7 @@ class DeepPlantApp extends StatelessWidget {
       // 기본 색상
       theme: ThemeData(
         primaryColor: const Color.fromRGBO(51, 51, 51, 1),
-        buttonTheme:
-            const ButtonThemeData(buttonColor: Color.fromRGBO(51, 51, 51, 1)),
+        buttonTheme: const ButtonThemeData(buttonColor: Color.fromRGBO(51, 51, 51, 1)),
       ),
       routerConfig: _router,
       builder: (context, child) {

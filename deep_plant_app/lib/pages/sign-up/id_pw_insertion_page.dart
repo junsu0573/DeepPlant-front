@@ -1,20 +1,19 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:deep_plant_app/models/user_model.dart';
+import 'package:deep_plant_app/models/user_data_model.dart';
 import 'package:deep_plant_app/pages/sign-up/certification_bottom_sheet.dart';
+import 'package:deep_plant_app/source/api_services.dart';
 import 'package:deep_plant_app/widgets/common_button.dart';
 import 'package:deep_plant_app/widgets/custom_appbar.dart';
 import 'package:deep_plant_app/widgets/save_button.dart';
-import 'package:deep_plant_app/widgets/show_custom_popup.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-//ignore: must_be_immutable
+// ignore: must_be_immutable
 class IdPwInsertion extends StatefulWidget {
-  UserModel user;
+  UserData userData;
   IdPwInsertion({
     super.key,
-    required this.user,
+    required this.userData,
   });
 
   @override
@@ -22,11 +21,16 @@ class IdPwInsertion extends StatefulWidget {
 }
 
 class _IdPwInsertionState extends State<IdPwInsertion> {
-  // form 구성
+  // form
   final _formKey = GlobalKey<FormState>();
 
-  // firebase firestore
-  final _firestore = FirebaseFirestore.instance;
+  @override
+  void initState() {
+    super.initState();
+
+    // user 정보 초기화
+    widget.userData.resetData();
+  }
 
   bool _isUnique = false;
   String userName = '';
@@ -46,6 +50,7 @@ class _IdPwInsertionState extends State<IdPwInsertion> {
 
   // 아이디 유효성 검사
   String? idValidate(String? value) {
+    // 비어있지 않고 이메일 형식에 맞지 않을 때, 빨간 예외 메시지
     final bool isValid = EmailValidator.validate(value!);
     if (value.isEmpty) {
       setState(() {
@@ -71,6 +76,7 @@ class _IdPwInsertionState extends State<IdPwInsertion> {
 
   // 비밀번호 유효성 검사
   String? pwValidate(String? value) {
+    // 비어있지 않고 비밀번호 형식에 맞지 않을 때, 빨간 에러 메시지
     final bool isValid = validatePassword(value!);
     if (value.isEmpty) {
       setState(() {
@@ -96,6 +102,7 @@ class _IdPwInsertionState extends State<IdPwInsertion> {
 
   // 비밀번호 재입력 유효성 검사
   String? cPwValidate(String? value) {
+    // 비어있지 않고 비밀번호와 같지 않을 때, 빨간 에러 메시지
     if (value!.isEmpty) {
       setState(() {
         isValidCPw = false;
@@ -126,37 +133,27 @@ class _IdPwInsertionState extends State<IdPwInsertion> {
     }
   }
 
+  // 비밀번호 유효성 검사 (정규식)
   bool validatePassword(String password) {
-    // 비밀번호 유효성을 검사하는 정규식
+    // 조건: 영문 대/소문자, 숫자, 특수문자 10자~15자
     const pattern =
-        r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#$%^&*()\-_=+{};:,<.>]).{10,}$';
+        r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#$%^&*()\-_=+{};:,<.>]).{10,15}$';
     final regex = RegExp(pattern);
 
     return regex.hasMatch(password);
   }
 
+  // 이메일 중복 검사
   Future<void> dupliCheck(String userEmail) async {
-    try {
-      // 유저가 입력한 ID가 해당 컬렉션에 존재하는지 확인
-      DocumentSnapshot docSnapshot =
-          await _firestore.collection('user_emails').doc(userEmail).get();
-
-      if (docSnapshot.exists) {
-        setState(() {
-          _isUnique = false;
-          if (_isValidId) {
-            showDuplicateEmailPopup(context);
-          }
-        });
-      } else {
-        if (_isValidId) {
-          setState(() {
-            _isUnique = true;
-          });
-        }
-      }
-    } catch (e) {
-      print('에러 발생');
+    bool isDuplicated = await ApiServices.dupliCheck(userEmail);
+    if (isDuplicated) {
+      setState(() {
+        _isUnique = false;
+      });
+    } else {
+      setState(() {
+        _isUnique = true;
+      });
     }
   }
 
@@ -170,17 +167,6 @@ class _IdPwInsertionState extends State<IdPwInsertion> {
       return true;
     }
     return false;
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    // user 정보 초기화
-    widget.user.userAddress = null;
-    widget.user.company = null;
-    widget.user.companyAdress = null;
-    widget.user.position = null;
-    widget.user.level = 'users_1';
   }
 
   @override
@@ -255,6 +241,7 @@ class _IdPwInsertionState extends State<IdPwInsertion> {
                             ),
                           ),
                           Spacer(),
+                          // 중복확인 버튼
                           CommonButton(
                               text: _isUnique
                                   ? Icon(Icons.check)
@@ -264,7 +251,8 @@ class _IdPwInsertionState extends State<IdPwInsertion> {
                                     ),
                               onPress: _isUnique
                                   ? null
-                                  : () => dupliCheck(userEmail),
+                                  : () =>
+                                      _isValidId ? dupliCheck(userEmail) : {},
                               width: 169.w,
                               height: 75.h),
                         ],
@@ -351,16 +339,17 @@ class _IdPwInsertionState extends State<IdPwInsertion> {
                 SaveButton(
                   onPressed: isAllChecked()
                       ? () {
-                          // user의 이메일, 이름, 패스워드를 객체에 저장
-                          widget.user.email = userEmail;
-                          widget.user.name = userName;
-                          widget.user.password = userPassword;
+                          // user의 이메일, 패스워드, 이름을 객체에 저장
+                          widget.userData.userId = userEmail;
+                          widget.userData.password = userPassword;
+                          widget.userData.name = userName;
+
                           showModalBottomSheet(
                             isScrollControlled: true,
                             backgroundColor: Colors.transparent,
                             context: context,
                             builder: (context) => CertificationBottomSheet(
-                              user: widget.user,
+                              userData: widget.userData,
                             ),
                           );
                         }

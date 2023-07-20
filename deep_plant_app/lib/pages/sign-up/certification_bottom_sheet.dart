@@ -1,4 +1,4 @@
-import 'package:deep_plant_app/models/user_model.dart';
+import 'package:deep_plant_app/models/user_data_model.dart';
 import 'package:deep_plant_app/source/pallete.dart';
 import 'package:deep_plant_app/widgets/save_button.dart';
 import 'package:flutter/material.dart';
@@ -6,10 +6,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
 class CertificationBottomSheet extends StatefulWidget {
-  final UserModel user;
+  final UserData userData;
   const CertificationBottomSheet({
     super.key,
-    required this.user,
+    required this.userData,
   });
 
   @override
@@ -199,7 +199,7 @@ class _CertificationBottomSheetState extends State<CertificationBottomSheet> {
             SaveButton(
               onPressed: isRequiredChecked
                   ? () {
-                      widget.user.isAlarmed = isChecked3;
+                      widget.userData.alarm = isChecked3;
                       context.go('/sign-in/sign-up/add-user-info');
                     }
                   : null,
