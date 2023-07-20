@@ -56,6 +56,16 @@ class ApiServices {
     return await _postApi(endPoint, jsonData);
   }
 
+  // 관리번호부분 검색 (GET)
+  Future<void> fetchData(String text) async {
+    dynamic data = await _getApi('meat?part_id=$text');
+  }
+
+  // 육류 정보 조회 (GET)
+  Future<void> getMeatData(String id) async {
+    dynamic data = await _getApi('meat?id=$id');
+  }
+
   // 유저 회원가입 (POST)
   static Future<void> signUp(UserData user) async {
     await _postApi('user/register', user.convertUserSignUpToJson());

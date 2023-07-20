@@ -18,32 +18,28 @@ class DeepAging extends StatefulWidget {
 }
 
 class _DeepAgingState extends State<DeepAging> {
-  // 딥에이징 데이터 추가 시에 등록될 버튼이 추가될 위치.
-  DeepAgingData data = DeepAgingData();
-
-  // 이곳에 최종적인 deepagingdata 객체가 모인다.
+  // deepagingdata 객체가 모인다.
   final List<DeepAgingData> objects = [];
 
+  // model로 보낼 변환된 string이 보관된다.
   final List<String> deepAgingModel = [];
 
-  // 아래는 페이지 진행 중 지정되는 임시 변수들이다.
+  // 작동을 진행할 버튼 위젯이 보관된다.
+  List<Widget> widgets = [];
+
+  // 작업 진행 중 사용될 딥에이징 데이터 객체
+  DeepAgingData data = DeepAgingData();
+
   int totalMinute = 0;
   int totalHour = 0;
+  // 객체와 위젯의 index를 표현한다.
   int index = 0;
-  List<Widget> widgets = [];
-  List<int> hour = List<int>.filled(4, 0);
-  List<int> minute = List<int>.filled(4, 0);
+  // 객체 중 시간 요소를 담게 된다.
+  List<int> hour = List<int>.filled(3, 0);
+  List<int> minute = List<int>.filled(3, 0);
 
-  // 육류 데이터 저장
-  void saveMeatData() {
-    // 데이터 생성
-    convertToString();
-
-    // 데이터 저장
-    widget.meatData.deepAging = deepAgingModel;
-  }
-
-  void convertToString() {
+  void intoString() {
+    // 시간을 분으로 통합 | 전달 형식에 맞게 '년월일/분'으로 변환
     for (int i = 0; i < objects.length; i++) {
       String timeTemp = ((int.parse(objects[i].insertedHour!) * 60) +
               (int.parse(objects[i].insertedMinute!)))
@@ -52,10 +48,12 @@ class _DeepAgingState extends State<DeepAging> {
           '${objects[i].selectedYear}${objects[i].selectedMonth}${objects[i].selectedDay}/$timeTemp';
       deepAgingModel.add(temp);
     }
+    // 객체에 데이터 저장
+    widget.meatData.deepAging = deepAgingModel;
   }
 
-  // 시간 계산
   void calTime(DeepAgingData data, int index, bool edit) {
+    // 시간 계산이 진행되며, 데이터 수정시에는 기존 값을 제거한다.
     if (edit == true) {
       totalHour -= hour[index];
       totalMinute -= minute[index];
@@ -72,101 +70,101 @@ class _DeepAgingState extends State<DeepAging> {
     }
   }
 
-  void widgetCreate(int index) {
-    widgets.insert(
-      index,
-      Container(
-        padding: EdgeInsets.only(
-          top: 5.0,
-          bottom: 5.0,
-          left: 30.0,
-          right: 30.0,
-        ),
-        height: 70.0,
-        child: OutlinedButton(
-          onPressed: () async {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => InsertDeepAgingData(
-                          agingdata: objects[index],
-                        ))).then((value) {
-              setState(() {
-                if (value != null) {
-                  widgets.removeAt(index);
-                  widgetCreate(index);
-                  calTime(objects[index], index, true);
-                }
-              });
-            });
-          },
-          child: Row(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(2.0),
-                child: RichText(
-                  maxLines: 2,
-                  text: TextSpan(
-                    children: <TextSpan>[
-                      TextSpan(
-                        text: '  ${index + 1}차\n',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 20.sp,
-                          fontWeight: FontWeight.bold,
-                        ),
+  void editing(int index, dynamic value) {
+    // 위젯을 수정, 객체의 값이 변할 때 작동한다.
+    setState(() {
+      objects[index] = value;
+      calTime(objects[index], index, true);
+      widgets[index] = widgetCreate(index);
+    });
+  }
+
+  Widget widgetCreate(int index) {
+    return Container(
+      padding: EdgeInsets.only(
+        top: 5.0,
+        bottom: 5.0,
+        left: 30.0,
+        right: 30.0,
+      ),
+      height: 70.0,
+      child: OutlinedButton(
+        onPressed: () async {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => InsertDeepAgingData(
+                        agingdata: objects[index],
+                      ))).then((_) {
+            editing(index, objects[index]);
+          });
+        },
+        child: Row(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(2.0),
+              child: RichText(
+                maxLines: 2,
+                text: TextSpan(
+                  children: <TextSpan>[
+                    TextSpan(
+                      text: '  ${index + 1}차\n',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 20.sp,
+                        fontWeight: FontWeight.bold,
                       ),
-                      TextSpan(
-                        text: '처리일',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 20.sp,
-                          fontWeight: FontWeight.bold,
-                        ),
+                    ),
+                    TextSpan(
+                      text: '처리일',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 20.sp,
+                        fontWeight: FontWeight.bold,
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: VerticalDivider(
-                  thickness: 2,
-                  width: 1,
-                  color: Colors.grey[300],
-                ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: VerticalDivider(
+                thickness: 2,
+                width: 1,
+                color: Colors.grey[300],
               ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  '${objects[index].insertedHour}시간 ${objects[index].insertedMinute}분',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 32.sp,
-                  ),
-                ),
-              ),
-              Spacer(flex: 2),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  '${objects[index].selectedYear}.${objects[index].selectedMonth}.${objects[index].selectedDay}',
-                  style: TextStyle(
-                    color: Colors.grey[400],
-                    fontSize: 12.0,
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(4.0),
-                child: Icon(
-                  Icons.arrow_forward_ios_outlined,
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                '${objects[index].insertedHour}시간 ${objects[index].insertedMinute}분',
+                style: TextStyle(
                   color: Colors.black,
-                  size: 20.0,
+                  fontSize: 32.sp,
                 ),
-              )
-            ],
-          ),
+              ),
+            ),
+            Spacer(flex: 2),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                '${objects[index].selectedYear}.${objects[index].selectedMonth}.${objects[index].selectedDay}',
+                style: TextStyle(
+                  color: Colors.grey[400],
+                  fontSize: 12.0,
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(4.0),
+              child: Icon(
+                Icons.arrow_forward_ios_outlined,
+                color: Colors.black,
+                size: 20.0,
+              ),
+            )
+          ],
         ),
       ),
     );
@@ -230,13 +228,15 @@ class _DeepAgingState extends State<DeepAging> {
             height: 15.0,
           ),
           Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: widgets,
+            child: ListView.builder(
+              itemCount: widgets.length,
+              itemBuilder: (BuildContext context, int index) {
+                return widgets[index];
+              },
             ),
           ),
-          // 만일 버튼 위젯이 4개가 된다면, 추가 버튼은 사라질 것이다.
-          if (widgets.length < 4)
+          // 만일 버튼 위젯이 3개가 된다면, 추가 버튼은 사라질 것이다.
+          if (widgets.length < 3)
             Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
@@ -255,12 +255,13 @@ class _DeepAgingState extends State<DeepAging> {
                           MaterialPageRoute(
                               builder: (context) => InsertDeepAgingData(
                                     agingdata: data,
-                                  ))).then((value) {
+                                  ))).then((_) {
                         setState(() {
                           if (data.insertedHour != null) {
-                            objects.add(data);
-                            widgetCreate(index);
+                            objects.insert(index, data);
+                            widgets.insert(index, widgetCreate(index));
                             calTime(data, index++, false);
+                            // 객체를 초기화 해준다.
                             data = DeepAgingData();
                           }
                         });
@@ -329,7 +330,7 @@ class _DeepAgingState extends State<DeepAging> {
                 child: ElevatedButton(
                   onPressed: (objects.isNotEmpty)
                       ? () {
-                          saveMeatData();
+                          intoString();
                           context.pop();
                         }
                       : null,
