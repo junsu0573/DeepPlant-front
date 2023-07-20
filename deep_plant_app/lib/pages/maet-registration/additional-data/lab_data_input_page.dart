@@ -2,6 +2,7 @@ import 'package:deep_plant_app/models/meat_data_model.dart';
 import 'package:deep_plant_app/source/api_services.dart';
 import 'package:deep_plant_app/widgets/custom_appbar.dart';
 import 'package:deep_plant_app/widgets/save_button.dart';
+import 'package:deep_plant_app/widgets/show_custom_dialog.dart';
 import 'package:deep_plant_app/widgets/textfield_with_title.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -77,6 +78,23 @@ class _LabDataInputState extends State<LabDataInput> {
   }
 
   @override
+  void initState() {
+    if (widget.meatData.labData != null) {
+      l.text = widget.meatData.labData!['L'].toString();
+      a.text = widget.meatData.labData!['a'].toString();
+      b.text = widget.meatData.labData!['b'].toString();
+      dl.text = widget.meatData.labData!['DL'].toString();
+      cl.text = widget.meatData.labData!['CL'].toString();
+      rw.text = widget.meatData.labData!['RW'].toString();
+      ph.text = widget.meatData.labData!['ph'].toString();
+      wbsf.text = widget.meatData.labData!['WBSF'].toString();
+      ct.text = widget.meatData.labData!['cardepsin_activity'].toString();
+      mfi.text = widget.meatData.labData!['MFI'].toString();
+    }
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
@@ -88,6 +106,9 @@ class _LabDataInputState extends State<LabDataInput> {
           title: '추가정보 입력',
           backButton: false,
           closeButton: true,
+          closeButtonOnPressed: () {
+            showExitDialog(context, null);
+          },
         ),
         body: SingleChildScrollView(
           child: Column(
