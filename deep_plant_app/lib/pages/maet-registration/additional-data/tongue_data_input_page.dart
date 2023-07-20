@@ -114,31 +114,31 @@ class _TongueDataInputPageState extends State<TongueDataInputPage> {
                       subText: '후미',
                       controller: richness,
                     ),
+                    Spacer(),
+                    Container(
+                      margin: EdgeInsets.only(bottom: 28.h),
+                      child: SaveButton(
+                        onPressed: _isAllInserted()
+                            ? () async {
+                                // 데이터 저장
+                                saveMeatData();
+
+                                // 데이터 서버로 전송
+                                await ApiServices.sendMeatData('probexp_data',
+                                    widget.meatData.convertPorbexptToJson());
+
+                                if (!mounted) return;
+                                context.pop();
+                              }
+                            : null,
+                        text: '저장',
+                        width: 658.w,
+                        heigh: 104.h,
+                        isWhite: false,
+                      ),
+                    ),
                   ],
                 ),
-              ),
-            ),
-            Spacer(),
-            Container(
-              margin: EdgeInsets.only(bottom: 28.h),
-              child: SaveButton(
-                onPressed: _isAllInserted()
-                    ? () async {
-                        // 데이터 저장
-                        saveMeatData();
-
-                        // 데이터 서버로 전송
-                        await ApiServices.sendMeatData('probexp_data',
-                            widget.meatData.convertPorbexptToJson());
-
-                        if (!mounted) return;
-                        context.pop();
-                      }
-                    : null,
-                text: '저장',
-                width: 658.w,
-                heigh: 104.h,
-                isWhite: false,
               ),
             ),
           ],

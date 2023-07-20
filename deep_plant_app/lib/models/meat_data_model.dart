@@ -26,12 +26,15 @@ class MeatData {
 
   // 육류 이미지 경로
   String? imagePath;
+  String? heatedImage;
+  String? deepAgedImage;
 
   // 딥에이징 차수
   int? seqno;
 
   // 신선육 관능평가 데이터
   Map<String, dynamic>? freshmeat;
+  Map<String, dynamic>? deepAgedFreshmeat;
 
   // 연구 데이터 추가 입력 완료 시 저장
   List<String>? deepAging;
@@ -55,8 +58,11 @@ class MeatData {
     this.primalValue,
     this.secondaryValue,
     this.imagePath,
+    this.heatedImage,
+    this.deepAgedImage,
     this.seqno,
     this.freshmeat,
+    this.deepAgedFreshmeat,
 
     // 연구 데이터 추가 입력 완료 시 저장
     this.deepAging,
