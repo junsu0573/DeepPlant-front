@@ -306,4 +306,33 @@ class MeatData {
     }
     return period;
   }
+
+  // 관리번호 데이터 fetch
+  void fetchData(dynamic jsonData) {
+    // 변수에 데이터 저장
+    birthYmd = jsonData['birthYmd'];
+    butcheryYmd = jsonData['butcheryYmd'];
+    createdAt = jsonData['createdAt'];
+    farmAddr = jsonData['farmAddr'];
+    farmerNm = jsonData['farmerNm'];
+    gradeNum = jsonData['gradeNum'];
+    id = jsonData['id'];
+    imagePath = jsonData['imagePath'];
+    primalValue = jsonData['primalValue'];
+
+    Map<String, dynamic>? processedmeat = jsonData['processedmeat'];
+    if (processedmeat != null) {}
+
+    Map<String, dynamic> rawmeat = jsonData['rawmeat'];
+    freshmeat = rawmeat['sensory_eval'];
+    heatedmeat = rawmeat['heatedmeat_sensory_eval'];
+    Map<String, dynamic>? probexptData = rawmeat['probexpt_data'];
+    if (probexptData != null) {}
+
+    secondaryValue = jsonData['secondaryValue'];
+    sexType = jsonData['sexType'];
+    speciesValue = jsonData['specieValue'];
+    traceNum = jsonData['traceNum'];
+    userId = jsonData['userId'];
+  }
 }

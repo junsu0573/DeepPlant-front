@@ -34,9 +34,9 @@ class _NumCallDialogState extends State<NumCallDialog> {
       print('데이터 없음');
     } else {
       // "text" 배열에서 "id" 값을 가져오기
-      List<String> meatData = jsonData[text];
+      List<dynamic> meatData = jsonData[text];
       setState(() {
-        mNumList = meatData;
+        mNumList = meatData.cast<String>();
       });
     }
   }

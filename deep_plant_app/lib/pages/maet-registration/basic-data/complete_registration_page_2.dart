@@ -40,10 +40,10 @@ class _CompleteResgistration2State extends State<CompleteResgistration2> {
       isLoading = true;
     });
 
-    initFunc();
+    initialize();
   }
 
-  Future<void> initFunc() async {
+  Future<void> initialize() async {
     // 관리번호 생성
     createManagementNum();
 
