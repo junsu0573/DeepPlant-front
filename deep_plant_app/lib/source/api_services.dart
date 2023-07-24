@@ -58,12 +58,13 @@ class ApiServices {
   }
 
   // 육류 정보 조회 (GET)
-  static Future<dynamic> receiveMeatData(String? dest, String jsonData) async {
+  static Future<dynamic> receiveMeatData(String? dest) async {
     String endPoint = 'meat/get';
     if (dest != null) {
       endPoint = 'meat/get/$dest';
     }
-    return await _getApi(endPoint);
+
+    print(await _getApi(endPoint));
   }
 
   // 관리번호 육류 정보 조회 (GET)
