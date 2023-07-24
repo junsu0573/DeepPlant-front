@@ -2,13 +2,14 @@ import 'package:deep_plant_app/models/deep_aging_data_model.dart';
 import 'package:deep_plant_app/models/meat_data_model.dart';
 import 'package:deep_plant_app/models/user_data_model.dart';
 import 'package:deep_plant_app/pages/maet-registration/additional-data/insert_deep_aging_data_page.dart';
+import 'package:deep_plant_app/pages/maet-registration/additional-data/step_deepaging_meat_page.dart';
 import 'package:deep_plant_app/pages/maet-registration/additional-data/step_fresh_meat_page.dart';
+import 'package:deep_plant_app/source/api_services.dart';
 import 'package:deep_plant_app/source/pallete.dart';
 import 'package:deep_plant_app/widgets/custom_appbar.dart';
 import 'package:deep_plant_app/widgets/save_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
 
 class DataAddHome extends StatefulWidget {
   final MeatData meatData;
@@ -22,7 +23,7 @@ class DataAddHome extends StatefulWidget {
 
 class _DataAddHomeState extends State<DataAddHome> {
   // deepagingdata 객체가 모인다.
-  final List<DeepAgingData> objects = [];
+  List<DeepAgingData> objects = [];
 
   // model로 보낼 변환된 string이 보관된다.
   final List<String> deepAgingModel = [];
@@ -45,18 +46,19 @@ class _DataAddHomeState extends State<DataAddHome> {
   bool isFreshEnd = false;
   List<bool> isDeepEnd = [false, false, false];
 
-  void intoString() {
+  void intoString(int i) {
     // 시간을 분으로 통합 | 전달 형식에 맞게 '년월일/분'으로 변환
-    for (int i = 0; i < objects.length; i++) {
-      String timeTemp = ((int.parse(objects[i].insertedHour!) * 60) +
-              (int.parse(objects[i].insertedMinute!)))
-          .toString();
-      String temp =
-          '${objects[i].selectedYear}${objects[i].selectedMonth}${objects[i].selectedDay}/$timeTemp';
-      deepAgingModel.add(temp);
+
+    String timeTemp = ((int.parse(objects[i].insertedHour!) * 60) +
+            (int.parse(objects[i].insertedMinute!)))
+        .toString();
+    String temp =
+        '${objects[i].selectedYear}${objects[i].selectedMonth}${objects[i].selectedDay}/$timeTemp';
+    if (widget.meatData.deepAging == null) {
+      widget.meatData.deepAging = [temp];
+    } else {
+      widget.meatData.deepAging!.add(temp);
     }
-    // 객체에 데이터 저장
-    widget.meatData.deepAging = deepAgingModel;
   }
 
   void calTime(DeepAgingData data, int index, bool edit) {
@@ -121,7 +123,11 @@ class _DataAddHomeState extends State<DataAddHome> {
       if (data.insertedHour != null) {
         objects.insert(index, data);
         widgets.insert(index, widgetCreate(index));
+        // 데이터 fetch
+        intoString(index);
+
         calTime(data, index++, false);
+
         // 객체를 초기화 해준다.
         data = DeepAgingData();
       }
@@ -131,10 +137,44 @@ class _DataAddHomeState extends State<DataAddHome> {
   @override
   void initState() {
     super.initState();
-    checkFresh();
+    initialize();
   }
 
-  Widget widgetCreate(int index) {
+  void initialize() {
+    List<String>? deepAging = widget.meatData.deepAging;
+
+    if (deepAging != null) {
+      objects = [];
+      List<Widget> temp = [];
+      for (index = 0; index < deepAging.length; index++) {
+        objects.add(DeepAgingData());
+
+        // 정규표현식을 사용하여 연도, 월, 일, 분 값을 추출
+        RegExp regex = RegExp(r"(\d{4})(\d{2})(\d{2})/(\d+)");
+        Match? match = regex.firstMatch(deepAging[index]);
+
+        if (match != null) {
+          String year = match.group(1)!;
+          String month = match.group(2)!;
+          String day = match.group(3)!;
+          int minutes = int.parse(match.group(4)!);
+          int hours = minutes ~/ 60;
+          int remainingMinutes = minutes % 60;
+
+          objects[index].selectedYear = year;
+          objects[index].selectedMonth = month;
+          objects[index].selectedDay = day;
+          objects[index].insertedHour = '$hours';
+          objects[index].insertedMinute = '$remainingMinutes';
+        }
+
+        temp.add(widgetCreate(index));
+        widgets = temp;
+      }
+    }
+  }
+
+  Widget widgetCreate(int widgetIndex) {
     return Container(
       padding: EdgeInsets.only(
         top: 5.0,
@@ -142,16 +182,28 @@ class _DataAddHomeState extends State<DataAddHome> {
       ),
       height: 70.0,
       child: OutlinedButton(
-        onPressed: () {
-          context.go(
-              '/option/data-management/data-add/data-add-home/step-deepaging-meat');
+        onPressed: () async {
+          widget.meatData.seqno = widgetIndex + 1;
+          final data = await ApiServices.getMeatData(widget.meatData.id!);
+          widget.meatData.fetchData(data);
+          widget.meatData.fetchDataForDeepAging();
+          if (!mounted) return;
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => StepDeepagingMeat(
+                userData: widget.userData,
+                meatData: widget.meatData,
+              ),
+            ),
+          );
         },
         child: Row(
           children: [
             Padding(
               padding: EdgeInsets.only(right: 6.0),
               child: Text(
-                '${index + 1}차',
+                '${widgetIndex + 1}차',
                 style: TextStyle(
                   color: Colors.black,
                   fontSize: 20.sp,
@@ -171,7 +223,7 @@ class _DataAddHomeState extends State<DataAddHome> {
               width: 190.w,
               padding: EdgeInsets.only(left: 6.0),
               child: Text(
-                '${objects[index].insertedHour}시간 ${objects[index].insertedMinute}분',
+                '${objects[widgetIndex].insertedHour}시간 ${objects[widgetIndex].insertedMinute}분',
                 style: TextStyle(
                   color: Colors.black,
                   fontSize: 32.sp,
@@ -181,7 +233,7 @@ class _DataAddHomeState extends State<DataAddHome> {
             Padding(
               padding: const EdgeInsets.only(right: 6.0),
               child: Text(
-                '${objects[index].selectedYear}.${objects[index].selectedMonth}.${objects[index].selectedDay}',
+                '${objects[widgetIndex].selectedYear}.${objects[widgetIndex].selectedMonth}.${objects[widgetIndex].selectedDay}',
                 style: TextStyle(
                   color: Colors.grey[400],
                   fontSize: 12.0,
@@ -194,7 +246,7 @@ class _DataAddHomeState extends State<DataAddHome> {
             Padding(
               padding: const EdgeInsets.only(left: 8.0),
               child: Text(
-                isDeepEnd[index] ? '완료' : '미완료',
+                isDeepEnd[widgetIndex] ? '완료' : '미완료',
                 style: TextStyle(color: Colors.black),
               ),
             )
@@ -486,13 +538,19 @@ class _DataAddHomeState extends State<DataAddHome> {
                       width: 588.w,
                       child: OutlinedButton.icon(
                         onPressed: () async {
+                          widget.meatData.seqno = widgets.length + 1;
                           Navigator.push(
                               context,
                               MaterialPageRoute(
                                   builder: (context) => InsertDeepAgingData(
                                         agingdata: data,
-                                      ))).then((_) {
+                                        meatData: widget.meatData,
+                                      ))).then((_) async {
                             intoData();
+                            await ApiServices.sendMeatData(
+                              'deep_aging_data',
+                              widget.meatData.convertDeepAgingToJson(),
+                            );
                           });
                         },
                         icon: Icon(

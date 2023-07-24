@@ -21,10 +21,6 @@ class StepFreshMeat extends StatefulWidget {
 }
 
 class _StepFreshMeatState extends State<StepFreshMeat> {
-  bool _isAllCompleted() {
-    return true;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -137,7 +133,9 @@ class _StepFreshMeatState extends State<StepFreshMeat> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SaveButton(
-                    onPressed: _isAllCompleted() ? () {} : null,
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
                     text: '다음',
                     width: 620.w,
                     heigh: 104.h,

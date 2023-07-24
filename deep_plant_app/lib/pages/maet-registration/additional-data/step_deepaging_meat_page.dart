@@ -1,4 +1,10 @@
 import 'package:deep_plant_app/models/meat_data_model.dart';
+import 'package:deep_plant_app/models/user_data_model.dart';
+import 'package:deep_plant_app/pages/maet-registration/additional-data/heated_meat_eveluation_page.dart';
+import 'package:deep_plant_app/pages/maet-registration/additional-data/lab_data_input_page.dart';
+import 'package:deep_plant_app/pages/maet-registration/additional-data/tongue_data_input_page.dart';
+import 'package:deep_plant_app/pages/maet-registration/basic-data/freshmeat_evaluation_page.dart';
+import 'package:deep_plant_app/pages/maet-registration/basic-data/insertion_meat_image.dart';
 import 'package:deep_plant_app/widgets/custom_appbar.dart';
 import 'package:deep_plant_app/widgets/save_button.dart';
 import 'package:deep_plant_app/widgets/step_card.dart';
@@ -7,8 +13,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
 class StepDeepagingMeat extends StatefulWidget {
-  const StepDeepagingMeat({super.key, required this.meat});
-  final MeatData meat;
+  final UserData userData;
+  final MeatData meatData;
+  const StepDeepagingMeat({
+    super.key,
+    required this.userData,
+    required this.meatData,
+  });
 
   @override
   State<StepDeepagingMeat> createState() => _StepDeepagingMeatState();
@@ -41,58 +52,136 @@ class _StepDeepagingMeatState extends State<StepDeepagingMeat> {
             SizedBox(
               height: 48.h,
             ),
-            GestureDetector(
-              onTap: () => context.go('/option/show-step/insert-meat-image'),
+            InkWell(
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => InsertionMeatImage(
+                    meatData: widget.meatData,
+                    userData: widget.userData,
+                    imageIdx: 2,
+                  ),
+                ),
+              ).then((value) {
+                setState(() {});
+              }),
               child: StepCard(
                 mainText: '처리육 단면 촬영',
                 subText: '데이터를 입력해주세요',
                 step: '1',
-                isCompleted: false,
+                isCompleted:
+                    widget.meatData.deepAgedImage != null ? true : false,
               ),
             ),
-            GestureDetector(
-              onTap: () => context.go('/option/show-step-2/fresh-meat-data'),
+            InkWell(
+              onTap: () => widget.meatData.deepAgedImage != null
+                  ? Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => FreshmeatEvaluation(
+                          meatData: widget.meatData,
+                          isDeepAged: true,
+                        ),
+                      ),
+                    ).then((value) {
+                      setState(() {});
+                    })
+                  : null,
               child: StepCard(
                 mainText: '처리육 관능평가',
                 subText: '데이터를 입력해주세요',
                 step: '2',
-                isCompleted: widget.meat.freshmeat != null ? true : false,
+                isCompleted: widget.meatData.deepAgedFreshmeat != null &&
+                        widget.meatData.deepAgedFreshmeat!['marbling'] != null
+                    ? true
+                    : false,
               ),
             ),
-            GestureDetector(
-              onTap: () => context.go('/option/show-step/insert-meat-image'),
+            InkWell(
+              onTap: () => widget.meatData.deepAgedFreshmeat != null
+                  ? Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => InsertionMeatImage(
+                          meatData: widget.meatData,
+                          userData: widget.userData,
+                          imageIdx: 1,
+                        ),
+                      ),
+                    ).then((value) {
+                      setState(() {});
+                    })
+                  : null,
               child: StepCard(
                 mainText: '가열육 단면 촬영',
                 subText: '데이터를 입력해주세요',
                 step: '3',
-                isCompleted: false,
+                isCompleted: widget.meatData.heatedImage != null ? true : false,
               ),
             ),
-            GestureDetector(
-              onTap: () => context.go('/option/show-step-2/heated-meat-data'),
+            InkWell(
+              onTap: () => widget.meatData.heatedImage != null
+                  ? Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => HeatedMeatEvaluation(
+                          meatData: widget.meatData,
+                        ),
+                      ),
+                    ).then((value) {
+                      setState(() {});
+                    })
+                  : null,
               child: StepCard(
                 mainText: '가열육 관능평가',
                 subText: '데이터를 입력해주세요',
                 step: '4',
-                isCompleted: widget.meat.heatedmeat != null ? true : false,
+                isCompleted: widget.meatData.heatedmeat != null ? true : false,
               ),
             ),
-            GestureDetector(
-              onTap: () => context.go('/option/show-step-2/tongue-data'),
+            InkWell(
+              onTap: () => widget.meatData.heatedmeat != null
+                  ? Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            TongueDataInputPage(meatData: widget.meatData),
+                      ),
+                    ).then((value) {
+                      setState(() {});
+                    })
+                  : false,
               child: StepCard(
                 mainText: '전자혀 데이터',
                 subText: '데이터를 입력해주세요',
                 step: '5',
-                isCompleted: widget.meat.tongueData != null ? true : false,
+                isCompleted: widget.meatData.tongueData != null &&
+                        !widget.meatData.tongueData!.containsValue(null)
+                    ? true
+                    : false,
               ),
             ),
             GestureDetector(
-              onTap: () => context.go('/option/show-step-2/experiment-data'),
+              onTap: () => widget.meatData.heatedmeat != null
+                  ? Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => LabDataInput(
+                          meatData: widget.meatData,
+                        ),
+                      ),
+                    ).then((value) {
+                      setState(() {});
+                    })
+                  : null,
               child: StepCard(
                 mainText: '실험 데이터',
                 subText: '데이터를 입력해주세요',
                 step: '6',
-                isCompleted: widget.meat.labData != null ? true : false,
+                isCompleted: widget.meatData.labData != null &&
+                        !widget.meatData.labData!.containsValue(null)
+                    ? true
+                    : false,
               ),
             ),
             Spacer(),
@@ -102,7 +191,9 @@ class _StepDeepagingMeatState extends State<StepDeepagingMeat> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SaveButton(
-                    onPressed: _isAllCompleted() ? () {} : null,
+                    onPressed: () {
+                      context.pop();
+                    },
                     text: '다음',
                     width: 620.w,
                     heigh: 104.h,

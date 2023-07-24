@@ -68,6 +68,7 @@ class _TongueDataInputPageState extends State<TongueDataInputPage> {
 
   @override
   void initState() {
+    super.initState();
     if (widget.meatData.tongueData != null) {
       if (widget.meatData.tongueData!['sourness'] != null) {
         sourness.text = widget.meatData.tongueData!['sourness'].toString();
@@ -82,7 +83,6 @@ class _TongueDataInputPageState extends State<TongueDataInputPage> {
         richness.text = widget.meatData.tongueData!['richness'].toString();
       }
     }
-    super.initState();
   }
 
   @override

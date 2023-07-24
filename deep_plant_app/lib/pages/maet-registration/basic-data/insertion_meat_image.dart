@@ -9,10 +9,8 @@ import 'package:deep_plant_app/widgets/camera_page_dialog_custom.dart';
 import 'package:deep_plant_app/widgets/custom_appbar.dart';
 import 'package:deep_plant_app/widgets/save_button.dart';
 import 'package:deep_plant_app/widgets/show_custom_dialog.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 
 class InsertionMeatImage extends StatefulWidget {
@@ -31,8 +29,6 @@ class InsertionMeatImage extends StatefulWidget {
 }
 
 class _InsertionMeatImageState extends State<InsertionMeatImage> {
-  final _authentication = FirebaseAuth.instance;
-  User? loggedUser;
   File? pickedImage;
   String? imagePath;
   String? userName;
@@ -43,19 +39,6 @@ class _InsertionMeatImageState extends State<InsertionMeatImage> {
   String year = '';
   String month = '';
   String day = '';
-
-  // user 정보 가져오기
-  void getCurrentUser() {
-    try {
-      final user = _authentication.currentUser;
-      if (user != null) {
-        loggedUser = user;
-        userName = loggedUser!.displayName;
-      }
-    } catch (e) {
-      print(e);
-    }
-  }
 
   // 이미지 촬영을 위한 메소드
   void _pickImage() async {
@@ -88,12 +71,13 @@ class _InsertionMeatImageState extends State<InsertionMeatImage> {
 
   Future<void> saveMeatData() async {
     if (widget.imageIdx == 0) {
+      // 원육 사진
       widget.meatData.imagePath = imagePath;
     } else if (widget.imageIdx == 1) {
+      // 가열육 사진
       widget.meatData.heatedImage = imagePath;
-      // 파이어베이스로 이미지 전송
-      dynamic response = await FirebaseServices.sendImageToFirebase(
-          widget.meatData.id!, imagePath!);
+      dynamic response = await FirebaseServices.sendImageToFirebase(imagePath!,
+          'heatedmeat_sensory_evals/${widget.meatData.id}-${widget.meatData.seqno}');
       if (response == null) {
         if (!mounted) return;
         Navigator.push(
@@ -104,10 +88,11 @@ class _InsertionMeatImageState extends State<InsertionMeatImage> {
         );
       }
     } else if (widget.imageIdx == 2) {
+      // 처리육 사진
       widget.meatData.deepAgedImage = imagePath;
 
-      dynamic response = await FirebaseServices.sendImageToFirebase(
-          widget.meatData.id!, imagePath!);
+      dynamic response = await FirebaseServices.sendImageToFirebase(imagePath!,
+          'sensory_evals/${widget.meatData.id}-${widget.meatData.seqno}');
       if (response == null) {
         if (!mounted) return;
         Navigator.push(
@@ -120,12 +105,6 @@ class _InsertionMeatImageState extends State<InsertionMeatImage> {
     } else {
       print('imageIdx 에러');
     }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    getCurrentUser();
   }
 
   @override
@@ -367,9 +346,10 @@ class _InsertionMeatImageState extends State<InsertionMeatImage> {
             margin: EdgeInsets.only(bottom: 28.h),
             child: SaveButton(
                 onPressed: pickedImage != null
-                    ? () {
-                        saveMeatData();
-                        context.pop();
+                    ? () async {
+                        await saveMeatData();
+                        if (!mounted) return;
+                        Navigator.pop(context);
                       }
                     : null,
                 text: '다음',
