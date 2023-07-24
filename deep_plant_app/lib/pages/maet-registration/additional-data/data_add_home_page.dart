@@ -166,6 +166,12 @@ class _DataAddHomeState extends State<DataAddHome> {
           objects[index].selectedDay = day;
           objects[index].insertedHour = '$hours';
           objects[index].insertedMinute = '$remainingMinutes';
+          totalHour += hours;
+          totalMinute += remainingMinutes;
+          if (totalMinute >= 60) {
+            totalHour += remainingMinutes ~/ 60;
+            totalMinute = remainingMinutes % 60;
+          }
         }
 
         temp.add(widgetCreate(index));
