@@ -1,23 +1,15 @@
 import 'package:deep_plant_app/models/data_management_filter_model.dart';
 import 'package:deep_plant_app/models/meat_data_model.dart';
 import 'package:deep_plant_app/models/user_data_model.dart';
-import 'package:deep_plant_app/pages/data-management/data_add_page.dart';
 import 'package:deep_plant_app/pages/data-management/data_management_page_2.dart';
 import 'package:deep_plant_app/pages/data-management/reading_data_page.dart';
 import 'package:deep_plant_app/pages/home_page.dart';
 import 'package:deep_plant_app/pages/maet-registration/additional-data/complete_additional_registration_page.dart';
-import 'package:deep_plant_app/pages/maet-registration/additional-data/data_add_home_page.dart';
-import 'package:deep_plant_app/pages/maet-registration/additional-data/deep_aging_page.dart';
-import 'package:deep_plant_app/pages/maet-registration/additional-data/lab_data_input_page.dart';
-import 'package:deep_plant_app/pages/maet-registration/additional-data/step_deepaging_meat_page.dart';
-import 'package:deep_plant_app/pages/maet-registration/additional-data/step_fresh_meat_page.dart';
 import 'package:deep_plant_app/pages/maet-registration/basic-data/complete_registration_page.dart';
 import 'package:deep_plant_app/pages/maet-registration/basic-data/complete_registration_page_2.dart';
 import 'package:deep_plant_app/pages/maet-registration/basic-data/freshmeat_evaluation_page.dart';
-import 'package:deep_plant_app/pages/maet-registration/additional-data/heated_meat_eveluation_page.dart';
 import 'package:deep_plant_app/pages/maet-registration/basic-data/insertion_meat_image.dart';
 import 'package:deep_plant_app/pages/maet-registration/basic-data/insertion_meat_info_page.dart';
-import 'package:deep_plant_app/pages/maet-registration/additional-data/show_step_2_page.dart';
 import 'package:deep_plant_app/pages/maet-registration/basic-data/show_step_page.dart';
 import 'package:deep_plant_app/pages/show_error_page.dart';
 import 'package:deep_plant_app/pages/sign-up/add_user_info_page.dart';
@@ -30,7 +22,6 @@ import 'package:deep_plant_app/pages/sign-up/email_verification.dart';
 import 'package:deep_plant_app/pages/sign-up/id_pw_insertion_page.dart';
 import 'package:deep_plant_app/pages/sign_in_page.dart';
 import 'package:deep_plant_app/pages/sign-up/succeed_sign_up_page.dart';
-import 'package:deep_plant_app/pages/maet-registration/additional-data/tongue_data_input_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -179,45 +170,7 @@ final _router = GoRouter(
             ),
           ],
         ),
-        // step 2
-        GoRoute(
-          path: 'show-step-2',
-          builder: (context, state) => ShowStep2(
-            userData: newUser,
-            meatData: newMeat,
-          ),
-          routes: [
-            GoRoute(
-                path: 'deep-aging-data',
-                builder: (context, state) => DeepAging(
-                      meatData: newMeat,
-                    )),
-            GoRoute(
-              path: 'fresh-meat-data',
-              builder: (context, state) => FreshmeatEvaluation(
-                meatData: newMeat,
-              ),
-            ),
-            GoRoute(
-              path: 'heated-meat-data',
-              builder: (context, state) => HeatedMeatEvaluation(
-                meatData: newMeat,
-              ),
-            ),
-            GoRoute(
-              path: 'tongue-data',
-              builder: (context, state) => TongueDataInputPage(
-                meatData: newMeat,
-              ),
-            ),
-            GoRoute(
-              path: 'experiment-data',
-              builder: (context, state) => LabDataInput(
-                meatData: newMeat,
-              ),
-            ),
-          ],
-        ),
+
         // 육류 등록 성공
         GoRoute(
           path: 'complete-register',
@@ -245,42 +198,13 @@ final _router = GoRouter(
           ),
         ),
         GoRoute(
-            path: 'data-management',
-            builder: (context, state) => DataManagement2(
-                  userData: newUser,
-                  meatData: newMeat,
-                  filter: newFilter,
-                ),
-            routes: [
-              GoRoute(
-                  path: 'data-add',
-                  builder: (context, state) => DataAdd(
-                        meatData: newMeat,
-                      ),
-                  routes: [
-                    GoRoute(
-                        path: 'data-add-home',
-                        builder: (context, state) => DataAddHome(
-                              meatData: newMeat,
-                              userData: newUser,
-                            ),
-                        routes: [
-                          GoRoute(
-                            path: 'step-fresh-meat',
-                            builder: (context, state) => StepFreshMeat(
-                              meatData: newMeat,
-                              userData: newUser,
-                            ),
-                          ),
-                          GoRoute(
-                            path: 'step-deepaging-meat',
-                            builder: (context, state) => StepDeepagingMeat(
-                              meat: newMeat,
-                            ),
-                          )
-                        ])
-                  ])
-            ]),
+          path: 'data-management',
+          builder: (context, state) => DataManagement2(
+            userData: newUser,
+            meatData: newMeat,
+            filter: newFilter,
+          ),
+        ),
       ],
     ),
   ],

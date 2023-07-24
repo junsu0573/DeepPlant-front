@@ -228,18 +228,33 @@ class MeatData {
   String convertFreshMeatToJson() {
     Map<String, dynamic> jsonData = {
       "id": id,
-      "createdAt": freshmeat?["createdAt"],
+      "createdAt": deepAgedFreshmeat?["createdAt"],
       "userId": userId,
-      "period": freshmeat?["period"],
-      "marbling": freshmeat?["marbling"],
-      "color": freshmeat?["color"],
-      "texture": freshmeat?["texture"],
-      "surfaceMoisture": freshmeat?["surfaceMoisture"],
-      "overall": freshmeat?["overall"],
+      "period": deepAgedFreshmeat?["period"],
+      "marbling": deepAgedFreshmeat?["marbling"],
+      "color": deepAgedFreshmeat?["color"],
+      "texture": deepAgedFreshmeat?["texture"],
+      "surfaceMoisture": deepAgedFreshmeat?["surfaceMoisture"],
+      "overall": deepAgedFreshmeat?["overall"],
       "seqno": seqno,
       "deepAging": _getDeepAging(seqno),
     };
+    print(jsonData);
 
+    return jsonEncode(jsonData);
+  }
+
+  // 딥에이징 데이터를 json 형식으로 변환
+  String convertDeepAgingToJson() {
+    Map<String, dynamic> jsonData = {
+      "id": id,
+      "createdAt": GetDate.getCurrentDate(),
+      "userId": userId,
+      "period": 0,
+      "seqno": seqno,
+      "deepAging": _getDeepAging(seqno),
+    };
+    print(jsonData);
     return jsonEncode(jsonData);
   }
 
@@ -268,7 +283,7 @@ class MeatData {
       'createdAt': heatedmeat?['createdAt'],
       'userId': userId,
       'period': heatedmeat?['period'],
-      'flavor': heatedmeat?['createdAt'],
+      'flavor': heatedmeat?['flavor'],
       'juiciness': heatedmeat?['juiciness'],
       'tenderness': heatedmeat?['tenderness'],
       'umami': heatedmeat?['umami'],
@@ -335,6 +350,18 @@ class MeatData {
     primalValue = jsonData['primalValue'];
 
     processedmeat = jsonData['processedmeat'];
+    if (processedmeat != null && processedmeat!.isNotEmpty) {
+      int entryCount = processedmeat!.length;
+      List<String> tempDeepAging = [];
+      for (int i = 1; i <= entryCount; i++) {
+        Map<String, dynamic> temp = processedmeat!['$i회'];
+        Map<String, dynamic> temp2 = temp['sensory_eval'];
+        Map<String, dynamic> temp3 = temp2['deepaging_data'];
+
+        tempDeepAging.add('${temp3['date']}/${temp3['minute']}');
+      }
+      deepAging = tempDeepAging;
+    }
 
     rawmeat = jsonData['rawmeat'];
 
@@ -345,12 +372,14 @@ class MeatData {
     userId = jsonData['userId'];
   }
 
+  // 원육 데이터 fetch
   void fetchDataForOrigin() {
     seqno = 0;
     Map<String, dynamic>? data = rawmeat;
     if (data == null) {
       heatedmeat = null;
     } else {
+      // 실험데이터
       if (data['probexpt_data'] != null) {
         Map<String, dynamic> temp = data['probexpt_data'];
         tongueData = {
@@ -372,7 +401,60 @@ class MeatData {
           'MFI': temp['MFI']
         };
       }
+      // 가열육 데이터
       heatedmeat = data['heatedmeat_sensory_eval'];
+      heatedImage = null;
+      if (heatedmeat != null) {
+        Map<String, dynamic> heatedTemp = data['heatedmeat_sensory_eval'];
+        heatedImage = heatedTemp['imagePath'];
+      }
+    }
+  }
+
+  // 처리육 데이터 fetch
+  void fetchDataForDeepAging() {
+    Map<String, dynamic> data = processedmeat!['$seqno회'];
+
+    // 신선육 데이터
+    deepAgedFreshmeat = data['sensory_eval'];
+    deepAgedImage = null;
+    if (data['sensory_eval'] != null) {
+      Map<String, dynamic> temp = data['sensory_eval'];
+      deepAgedImage = temp['imagePath'];
+    }
+
+    // 가열육 데이터
+    heatedmeat = data['heatedmeat_sensory_eval'];
+    heatedImage = null;
+    if (data['heatedmeat_sensory_eval'] != null) {
+      Map<String, dynamic> temp = data['heatedmeat_sensory_eval'];
+      heatedImage = temp['imagePath'];
+    }
+
+    // 실험데이터
+    if (data['probexpt_data'] != null) {
+      Map<String, dynamic> temp = data['probexpt_data'];
+      tongueData = {
+        'sourness': temp['sourness'],
+        'bitterness': temp['bitterness'],
+        'umami': temp['umami'],
+        'richness': temp['richness'],
+      };
+      labData = {
+        'L': temp['L'],
+        'a': temp['a'],
+        'b': temp['b'],
+        'DL': temp['DL'],
+        'CL': temp['CL'],
+        'RW': temp['RW'],
+        'ph': temp['ph'],
+        'WBSF': temp['WBSF'],
+        'cardepsin_activity': temp['cardepsin_activity'],
+        'MFI': temp['MFI']
+      };
+    } else {
+      tongueData = null;
+      labData = null;
     }
   }
 }

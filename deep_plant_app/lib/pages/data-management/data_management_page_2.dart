@@ -60,6 +60,7 @@ class _DataManagement2State extends State<DataManagement2>
                   children: [
                     // Tab1의 내용
                     DataAdd(
+                      userData: widget.userData,
                       meatData: widget.meatData,
                     ),
                     // Tab2의 내용

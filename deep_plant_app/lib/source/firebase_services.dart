@@ -7,10 +7,9 @@ class FirebaseServices {
 
   // 이미지를 파이어베이스에 저장
   static Future<dynamic> sendImageToFirebase(
-      String meatId, String imagePath) async {
+      String imagePath, String imageDest) async {
     try {
-      final refMeatImage =
-          _firebaseStorage.ref().child('sensory_evals/$meatId-0.png');
+      final refMeatImage = _firebaseStorage.ref().child('$imageDest.png');
 
       await refMeatImage.putFile(
         File(imagePath),

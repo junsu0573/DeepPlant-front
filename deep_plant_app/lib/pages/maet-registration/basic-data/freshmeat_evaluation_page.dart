@@ -12,9 +12,11 @@ import 'package:go_router/go_router.dart';
 
 class FreshmeatEvaluation extends StatefulWidget {
   final MeatData meatData;
+  final bool? isDeepAged;
   const FreshmeatEvaluation({
     super.key,
     required this.meatData,
+    this.isDeepAged,
   });
 
   @override
@@ -61,7 +63,11 @@ class _FreshmeatEvaluationState extends State<FreshmeatEvaluation> {
     };
 
     // 데이터를 객체에 저장
-    widget.meatData.freshmeat = freshData;
+    if (widget.isDeepAged != null) {
+      widget.meatData.deepAgedFreshmeat = freshData;
+    } else {
+      widget.meatData.freshmeat = freshData;
+    }
   }
 
   @override

@@ -1,19 +1,19 @@
-import 'dart:convert';
-
 import 'package:deep_plant_app/models/meat_data_model.dart';
+import 'package:deep_plant_app/models/user_data_model.dart';
+import 'package:deep_plant_app/pages/maet-registration/additional-data/data_add_home_page.dart';
 import 'package:deep_plant_app/source/api_services.dart';
 import 'package:deep_plant_app/widgets/call_mangement_dialog.dart';
 import 'package:deep_plant_app/widgets/common_button.dart';
 import 'package:deep_plant_app/widgets/m_num_data_list_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
-import 'package:http/http.dart' as http;
 
 class DataAdd extends StatefulWidget {
+  final UserData userData;
   final MeatData meatData;
   const DataAdd({
     super.key,
+    required this.userData,
     required this.meatData,
   });
 
@@ -23,19 +23,6 @@ class DataAdd extends StatefulWidget {
 
 class _DataAddState extends State<DataAdd> {
   List<String> dataList = [];
-
-  Future<void> getMeatData(String text) async {
-    var url = Uri.parse('http://10.221.72.45:8080/meat?id=$text');
-    var response = await http.get(url);
-
-    if (response.statusCode == 200) {
-      Map<String, dynamic> data = await jsonDecode(response.body);
-      widget.meatData.fetchData(data);
-      print(widget.meatData);
-    } else {
-      print('Request failed with status: ${response.statusCode}');
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -99,7 +86,13 @@ class _DataAddState extends State<DataAdd> {
                   final data = await ApiServices.getMeatData(dataList[index]);
                   widget.meatData.fetchData(data);
                   if (!mounted) return;
-                  context.go('/option/data-management/data-add/data-add-home');
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => DataAddHome(
+                          meatData: widget.meatData, userData: widget.userData),
+                    ),
+                  );
                 },
                 child: MNumDataListCard(
                   idx: index + 1,
