@@ -6,7 +6,6 @@ import 'package:deep_plant_app/widgets/save_button.dart';
 import 'package:flutter/material.dart';
 import 'package:deep_plant_app/source/meat_info_source.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
 
 class InsertionMeatInfo extends StatefulWidget {
   final MeatData meatData;
@@ -239,7 +238,7 @@ class _InsertionMeatInfoState extends State<InsertionMeatInfo> {
                 onPressed: isFinal
                     ? () {
                         saveMeatData(MeatInfoSource());
-                        context.go('/option/show-step');
+                        Navigator.pop(context);
                       }
                     : null,
                 text: '저장',

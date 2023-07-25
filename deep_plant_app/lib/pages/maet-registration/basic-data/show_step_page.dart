@@ -1,5 +1,8 @@
 import 'package:deep_plant_app/models/meat_data_model.dart';
 import 'package:deep_plant_app/models/user_data_model.dart';
+import 'package:deep_plant_app/pages/maet-registration/basic-data/freshmeat_evaluation_page.dart';
+import 'package:deep_plant_app/pages/maet-registration/basic-data/get_trace_num_page.dart';
+import 'package:deep_plant_app/pages/maet-registration/basic-data/insertion_meat_image.dart';
 import 'package:deep_plant_app/widgets/custom_appbar.dart';
 import 'package:deep_plant_app/widgets/save_button.dart';
 import 'package:deep_plant_app/widgets/show_custom_dialog.dart';
@@ -107,7 +110,16 @@ class _ShowStepState extends State<ShowStep> {
             ),
             InkWell(
               onTap: () async {
-                context.go('/option/show-step/insert-his-num');
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => GetTraceNum(
+                      meatData: widget.meatData,
+                    ),
+                  ),
+                ).then((value) {
+                  setState(() {});
+                });
               },
               child: StepCard(
                 mainText: '육류 기본정보 입력',
@@ -121,7 +133,20 @@ class _ShowStepState extends State<ShowStep> {
               height: 18.h,
             ),
             InkWell(
-              onTap: () => context.go('/option/show-step/insert-meat-image'),
+              onTap: () => widget.meatData.speciesValue != null
+                  ? Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => InsertionMeatImage(
+                          userData: widget.userData,
+                          meatData: widget.meatData,
+                          imageIdx: 0,
+                        ),
+                      ),
+                    ).then((value) {
+                      setState(() {});
+                    })
+                  : null,
               child: StepCard(
                 mainText: '육류 단면 촬영',
                 subText: '데이터를 입력해 주세요.',
@@ -133,8 +158,18 @@ class _ShowStepState extends State<ShowStep> {
               height: 18.h,
             ),
             InkWell(
-              onTap: () =>
-                  context.go('/option/show-step/insert-fresh-evaluation'),
+              onTap: () => widget.meatData.imagePath != null
+                  ? Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => FreshmeatEvaluation(
+                          meatData: widget.meatData,
+                        ),
+                      ),
+                    ).then((value) {
+                      setState(() {});
+                    })
+                  : null,
               child: StepCard(
                 mainText: '신선육 관능평가',
                 subText: '데이터를 입력해 주세요.',

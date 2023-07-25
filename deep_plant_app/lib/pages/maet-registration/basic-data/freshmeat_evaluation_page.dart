@@ -172,7 +172,7 @@ class _FreshmeatEvaluationState extends State<FreshmeatEvaluation> {
                           if (widget.meatData.seqno != null &&
                               widget.meatData.seqno! > 0) {
                             await ApiServices.sendMeatData('sensory_eval',
-                                widget.meatData.convertFreshMeatToJson());
+                                widget.meatData.convertFreshMeatToJson(1));
                           }
                           if (!mounted) return;
                           context.pop();

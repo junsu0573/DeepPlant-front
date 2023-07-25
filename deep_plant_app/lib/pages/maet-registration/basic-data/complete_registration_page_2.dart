@@ -5,6 +5,7 @@ import 'dart:ui';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crypto/crypto.dart';
 import 'package:deep_plant_app/models/meat_data_model.dart';
+import 'package:deep_plant_app/models/user_data_model.dart';
 import 'package:deep_plant_app/source/api_services.dart';
 import 'package:deep_plant_app/source/get_date.dart';
 import 'package:deep_plant_app/source/pallete.dart';
@@ -16,10 +17,12 @@ import 'package:go_router/go_router.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 class CompleteResgistration2 extends StatefulWidget {
+  final UserData userData;
   final MeatData meatData;
 
   const CompleteResgistration2({
     super.key,
+    required this.userData,
     required this.meatData,
   });
 
@@ -137,7 +140,7 @@ class _CompleteResgistration2State extends State<CompleteResgistration2> {
     final response1 =
         await ApiServices.sendMeatData(null, meatData.convertNewMeatToJson());
     final response2 = await ApiServices.sendMeatData(
-        'sensory_eval', meatData.convertFreshMeatToJson());
+        'sensory_eval', meatData.convertFreshMeatToJson(0));
     if (response1 == null || response2 == null) {
       if (!mounted) return;
       context.go('/option/error');
@@ -261,7 +264,7 @@ class _CompleteResgistration2State extends State<CompleteResgistration2> {
                           width: 46.w,
                         ),
                         SaveButton(
-                          onPressed: () => context.go('/option/show-step-2'),
+                          onPressed: () => context.go('/option/data-add-home'),
                           text: '추가정보 입력',
                           width: 305.w,
                           heigh: 104.h,

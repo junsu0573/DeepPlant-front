@@ -4,7 +4,7 @@ import 'package:deep_plant_app/models/user_data_model.dart';
 import 'package:http/http.dart' as http;
 
 class ApiServices {
-  static String baseUrl = 'http://192.168.45.65:8080';
+  static String baseUrl = 'http://10.221.71.163:8080';
 
   // API POST
   static Future<dynamic> _postApi(String endPoint, String jsonData) async {
@@ -79,6 +79,16 @@ class ApiServices {
     dynamic jsonData = await _getApi('meat/get?part_id=$text');
     print(jsonData);
     return jsonData;
+  }
+
+  // 유저가 등록한 관리번호 조회 (GET)
+  static Future<dynamic> getUserMeatData(String? dest) async {
+    String endPoint = 'meat/user';
+    if (dest != null) {
+      endPoint = 'meat/user/$dest';
+    }
+
+    print(await _getApi(endPoint));
   }
 
   // 유저 회원가입 (POST)

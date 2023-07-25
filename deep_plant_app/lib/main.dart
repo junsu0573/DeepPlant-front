@@ -5,11 +5,9 @@ import 'package:deep_plant_app/pages/data-management/data_management_page_2.dart
 import 'package:deep_plant_app/pages/data-management/reading_data_page.dart';
 import 'package:deep_plant_app/pages/home_page.dart';
 import 'package:deep_plant_app/pages/maet-registration/additional-data/complete_additional_registration_page.dart';
+import 'package:deep_plant_app/pages/maet-registration/additional-data/data_add_home_page.dart';
 import 'package:deep_plant_app/pages/maet-registration/basic-data/complete_registration_page.dart';
 import 'package:deep_plant_app/pages/maet-registration/basic-data/complete_registration_page_2.dart';
-import 'package:deep_plant_app/pages/maet-registration/basic-data/freshmeat_evaluation_page.dart';
-import 'package:deep_plant_app/pages/maet-registration/basic-data/insertion_meat_image.dart';
-import 'package:deep_plant_app/pages/maet-registration/basic-data/insertion_meat_info_page.dart';
 import 'package:deep_plant_app/pages/maet-registration/basic-data/show_step_page.dart';
 import 'package:deep_plant_app/pages/show_error_page.dart';
 import 'package:deep_plant_app/pages/sign-up/add_user_info_page.dart';
@@ -26,7 +24,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:deep_plant_app/pages/maet-registration/basic-data/get_trace_num_page.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:deep_plant_app/models/deep_aging_data_model.dart';
 
@@ -141,36 +138,7 @@ final _router = GoRouter(
             userData: newUser,
             meatData: newMeat,
           ),
-          routes: [
-            GoRoute(
-              path: 'insert-his-num',
-              builder: (context, state) => GetTraceNum(
-                meatData: newMeat,
-              ),
-            ),
-            GoRoute(
-              path: 'insert-meat-info',
-              builder: (context, state) => InsertionMeatInfo(
-                meatData: newMeat,
-              ),
-            ),
-            GoRoute(
-              path: 'insert-meat-image',
-              builder: (context, state) => InsertionMeatImage(
-                userData: newUser,
-                meatData: newMeat,
-                imageIdx: 0,
-              ),
-            ),
-            GoRoute(
-              path: 'insert-fresh-evaluation',
-              builder: (context, state) => FreshmeatEvaluation(
-                meatData: newMeat,
-              ),
-            ),
-          ],
         ),
-
         // 육류 등록 성공
         GoRoute(
           path: 'complete-register',
@@ -181,9 +149,11 @@ final _router = GoRouter(
         GoRoute(
           path: 'complete-register-2',
           builder: (context, state) => CompleteResgistration2(
+            userData: newUser,
             meatData: newMeat,
           ),
         ),
+        // 육류 데이터 추가 성공
         GoRoute(
           path: 'complete-add-register',
           builder: (context, state) => CompleteAdditionalRegistration(
@@ -203,6 +173,13 @@ final _router = GoRouter(
             userData: newUser,
             meatData: newMeat,
             filter: newFilter,
+          ),
+        ),
+        GoRoute(
+          path: 'data-add-home',
+          builder: (context, state) => DataAddHome(
+            meatData: newMeat,
+            userData: newUser,
           ),
         ),
       ],

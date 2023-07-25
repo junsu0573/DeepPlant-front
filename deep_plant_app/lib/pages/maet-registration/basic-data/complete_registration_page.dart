@@ -135,7 +135,7 @@ class _CompleteResgistrationState extends State<CompleteResgistration> {
     final response1 =
         await ApiServices.sendMeatData(null, meatData.convertNewMeatToJson());
     final response2 = await ApiServices.sendMeatData(
-        'sensory_eval', meatData.convertFreshMeatToJson());
+        'sensory_eval', meatData.convertFreshMeatToJson(0));
     if (response1 == null || response2 == null) {
       if (!mounted) return;
       context.go('/option/error');

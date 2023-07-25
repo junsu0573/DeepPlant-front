@@ -225,17 +225,25 @@ class MeatData {
   }
 
   // 신선육 관능평가 데이터를 json 형식으로 변환
-  String convertFreshMeatToJson() {
+  String convertFreshMeatToJson(int idx) {
     Map<String, dynamic> jsonData = {
       "id": id,
-      "createdAt": deepAgedFreshmeat?["createdAt"],
+      "createdAt": idx == 0
+          ? (freshmeat?["createdAt"])
+          : deepAgedFreshmeat?["createdAt"],
       "userId": userId,
-      "period": deepAgedFreshmeat?["period"],
-      "marbling": deepAgedFreshmeat?["marbling"],
-      "color": deepAgedFreshmeat?["color"],
-      "texture": deepAgedFreshmeat?["texture"],
-      "surfaceMoisture": deepAgedFreshmeat?["surfaceMoisture"],
-      "overall": deepAgedFreshmeat?["overall"],
+      "period":
+          idx == 0 ? (freshmeat?["period"]) : deepAgedFreshmeat?["period"],
+      "marbling":
+          idx == 0 ? (freshmeat?["marbling"]) : deepAgedFreshmeat?["marbling"],
+      "color": idx == 0 ? (freshmeat?["color"]) : deepAgedFreshmeat?["color"],
+      "texture":
+          idx == 0 ? (freshmeat?["texture"]) : deepAgedFreshmeat?["texture"],
+      "surfaceMoisture": idx == 0
+          ? (freshmeat?["surfaceMoisture"])
+          : deepAgedFreshmeat?["surfaceMoisture"],
+      "overall":
+          idx == 0 ? (freshmeat?["overall"]) : deepAgedFreshmeat?["overall"],
       "seqno": seqno,
       "deepAging": _getDeepAging(seqno),
     };
