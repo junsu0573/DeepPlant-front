@@ -1,5 +1,6 @@
 //
 
+import 'package:deep_plant_app/widgets/custom_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -78,6 +79,10 @@ class _EvalRowState extends State<EvalRow> {
                 ),
               ),
           ],
+        ),
+        CustomSlider(),
+        SizedBox(
+          height: 45.h,
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,

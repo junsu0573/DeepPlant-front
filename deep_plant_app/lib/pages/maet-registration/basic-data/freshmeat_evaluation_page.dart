@@ -124,68 +124,67 @@ class _FreshmeatEvaluationState extends State<FreshmeatEvaluation> {
       ),
       body: SingleChildScrollView(
         controller: _scrollController,
-        child: SizedBox(
-          height: 1400.h,
-          child: Column(
-            children: [
-              Text(
-                '신선육관능평가',
-                style: TextStyle(
-                  fontSize: 36.sp,
-                  fontWeight: FontWeight.w600,
-                ),
+        child: Column(
+          children: [
+            Text(
+              '신선육관능평가',
+              style: TextStyle(
+                fontSize: 36.sp,
+                fontWeight: FontWeight.w600,
               ),
-              SizedBox(height: 46.h),
-              for (var evalData in evalDataList)
-                Column(
-                  children: [
-                    TitleDesc(title: evalData.title, desc: evalData.desc),
-                    SizedBox(
-                      height: 10.h,
-                    ),
-                    EvalRow(
-                      isSelected: evalData.isSelected,
-                      onEvalButtonPressed: (index) {
-                        setState(() {
-                          for (int i = 0; i < evalData.isSelected.length; i++) {
-                            evalData.isSelected[i] = i == index;
-                          }
-                        });
-                      },
-                      text: evalData.text,
-                    ),
-                    SizedBox(
-                      height: 11.h,
-                    ),
-                  ],
-                ),
-              Spacer(),
-              Container(
-                margin: EdgeInsets.only(bottom: 18.h),
-                child: SaveButton(
-                  onPressed: _isAllselected()
-                      ? () async {
-                          // 객체 데이터 저장
-                          saveMeatData();
-
-                          // deepAging 데이터가 존재하면 서버로 전송
-                          if (widget.meatData.seqno != null &&
-                              widget.meatData.seqno! > 0) {
-                            await ApiServices.sendMeatData('sensory_eval',
-                                widget.meatData.convertFreshMeatToJson(1));
-                          }
-                          if (!mounted) return;
-                          context.pop();
+            ),
+            SizedBox(height: 46.h),
+            for (var evalData in evalDataList)
+              Column(
+                children: [
+                  TitleDesc(title: evalData.title, desc: evalData.desc),
+                  SizedBox(
+                    height: 10.h,
+                  ),
+                  EvalRow(
+                    isSelected: evalData.isSelected,
+                    onEvalButtonPressed: (index) {
+                      setState(() {
+                        for (int i = 0; i < evalData.isSelected.length; i++) {
+                          evalData.isSelected[i] = i == index;
                         }
-                      : null,
-                  text: '저장',
-                  width: 658.w,
-                  heigh: 104.h,
-                  isWhite: false,
-                ),
+                      });
+                    },
+                    text: evalData.text,
+                  ),
+                  SizedBox(
+                    height: 11.h,
+                  ),
+                ],
               ),
-            ],
-          ),
+            SizedBox(
+              height: 60.h,
+            ),
+            Container(
+              margin: EdgeInsets.only(bottom: 18.h),
+              child: SaveButton(
+                onPressed: _isAllselected()
+                    ? () async {
+                        // 객체 데이터 저장
+                        saveMeatData();
+
+                        // deepAging 데이터가 존재하면 서버로 전송
+                        if (widget.meatData.seqno != null &&
+                            widget.meatData.seqno! > 0) {
+                          await ApiServices.sendMeatData('sensory_eval',
+                              widget.meatData.convertFreshMeatToJson(1));
+                        }
+                        if (!mounted) return;
+                        context.pop();
+                      }
+                    : null,
+                text: '저장',
+                width: 658.w,
+                heigh: 104.h,
+                isWhite: false,
+              ),
+            ),
+          ],
         ),
       ),
     );
