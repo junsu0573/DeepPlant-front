@@ -122,43 +122,43 @@ class HeatedMeatEvaluationState extends State<HeatedMeatEvaluation> {
         controller: _scrollController,
         child: Column(
           children: [
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 55.w),
-              child: Column(
-                children: [
-                  Text(
-                    '가열육 관능평가 데이터',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 36.sp,
-                      fontFamily: 'Inter',
-                      fontWeight: FontWeight.w600,
-                      height: 1.22,
-                    ),
+            Column(
+              children: [
+                Text(
+                  '가열육 관능평가 데이터',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 36.sp,
+                    fontFamily: 'Inter',
+                    fontWeight: FontWeight.w600,
+                    height: 1.22,
                   ),
-                  SizedBox(height: 50.h),
-                  for (var evalData in evalDataList)
-                    Column(
-                      children: [
-                        TitleDesc(title: evalData.title, desc: evalData.desc),
-                        EvalRow(
-                          isSelected: evalData.isSelected,
-                          onEvalButtonPressed: (index) {
-                            setState(() {
-                              for (int i = 0;
-                                  i < evalData.isSelected.length;
-                                  i++) {
-                                evalData.isSelected[i] = i == index;
-                              }
-                            });
-                          },
-                          text: evalData.text,
-                        ),
-                      ],
-                    ),
-                  SizedBox(height: 101.h),
-                ],
-              ),
+                ),
+                SizedBox(height: 50.h),
+                for (var evalData in evalDataList)
+                  Column(
+                    children: [
+                      TitleDesc(title: evalData.title, desc: evalData.desc),
+                      EvalRow(
+                        isSelected: evalData.isSelected,
+                        onEvalButtonPressed: (index) {
+                          setState(() {
+                            for (int i = 0;
+                                i < evalData.isSelected.length;
+                                i++) {
+                              evalData.isSelected[i] = i == index;
+                            }
+                          });
+                        },
+                        text: evalData.text,
+                      ),
+                      SizedBox(
+                        height: 11.h,
+                      ),
+                    ],
+                  ),
+                SizedBox(height: 101.h),
+              ],
             ),
             Container(
               margin: EdgeInsets.only(bottom: 28.h),
