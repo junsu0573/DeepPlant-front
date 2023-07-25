@@ -205,7 +205,7 @@ class _ShowStepState extends State<ShowStep> {
                   SaveButton(
                     onPressed: _isAllCompleted()
                         ? () async {
-                            await widget.meatData.resetTempData();
+                            //await widget.meatData.resetTempData();
                             if (!mounted) return;
 
                             widget.userData.type == 'Normal'
