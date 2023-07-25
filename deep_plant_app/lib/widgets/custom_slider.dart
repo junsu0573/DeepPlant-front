@@ -4,15 +4,19 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:syncfusion_flutter_sliders/sliders.dart';
 
 class CustomSlider extends StatefulWidget {
-  const CustomSlider({super.key});
+  final double value;
+  final Function(dynamic)? onChanged;
+  const CustomSlider({
+    super.key,
+    required this.value,
+    required this.onChanged,
+  });
 
   @override
   State<CustomSlider> createState() => _CustomSliderState();
 }
 
 class _CustomSliderState extends State<CustomSlider> {
-  double _value = 0;
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -22,7 +26,7 @@ class _CustomSliderState extends State<CustomSlider> {
       child: SfSlider(
         min: 0.0,
         max: 9,
-        value: _value,
+        value: widget.value,
         interval: 1,
         showTicks: true,
         showLabels: true,
@@ -30,11 +34,12 @@ class _CustomSliderState extends State<CustomSlider> {
         inactiveColor: Palette.subButtonColor,
         enableTooltip: true,
         minorTicksPerInterval: 1,
-        onChanged: (dynamic value) {
-          setState(() {
-            _value = double.parse(value.toStringAsFixed(1));
-          });
-        },
+        onChanged: widget.onChanged,
+        //(dynamic value) {
+        //   setState(() {
+        //     _value = double.parse(value.toStringAsFixed(1));
+        //   });
+        // },
       ),
     );
   }

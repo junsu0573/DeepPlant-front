@@ -140,16 +140,6 @@ class HeatedMeatEvaluationState extends State<HeatedMeatEvaluation> {
                     children: [
                       TitleDesc(title: evalData.title, desc: evalData.desc),
                       EvalRow(
-                        isSelected: evalData.isSelected,
-                        onEvalButtonPressed: (index) {
-                          setState(() {
-                            for (int i = 0;
-                                i < evalData.isSelected.length;
-                                i++) {
-                              evalData.isSelected[i] = i == index;
-                            }
-                          });
-                        },
                         text: evalData.text,
                       ),
                       SizedBox(
