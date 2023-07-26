@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:deep_plant_app/models/meat_data_model.dart';
 import 'package:deep_plant_app/source/api_services.dart';
 import 'package:deep_plant_app/source/get_date.dart';
@@ -26,13 +24,11 @@ class HeatedMeatEvaluation extends StatefulWidget {
 class _HeatedMeatEvaluation extends State<HeatedMeatEvaluation>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
-  String _meatImage = '';
 
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 5, vsync: this);
-    _meatImage = widget.meatData.heatedImage!;
   }
 
   List<List<String>> text = [
@@ -83,177 +79,157 @@ class _HeatedMeatEvaluation extends State<HeatedMeatEvaluation>
         backButton: false,
         closeButton: true,
       ),
-      body: SingleChildScrollView(
-        child: Center(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text(
-                '가열육관능평가',
-                style: TextStyle(
-                  fontSize: 36.sp,
-                  fontWeight: FontWeight.w600,
-                ),
+      body: Center(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(
+              '가열육관능평가',
+              style: TextStyle(
+                fontSize: 36.sp,
+                fontWeight: FontWeight.w600,
               ),
-              SizedBox(height: 46.h),
-              Container(
-                width: 600.w,
-                height: 600.h,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: FileImage(
-                      File(_meatImage),
-                    ),
-                    fit: BoxFit.cover,
-                  ),
-                ),
+            ),
+            Spacer(),
+            Container(
+              margin: EdgeInsets.only(
+                left: 24.w,
+                right: 24.w,
               ),
-              SizedBox(
-                height: 10.h,
-              ),
-              Container(
-                margin: EdgeInsets.only(
-                  left: 24.w,
-                  right: 24.w,
+              child: TabBar(
+                controller: _tabController,
+                tabs: [
+                  Tab(
+                    text: '1',
+                  ),
+                  Tab(
+                    text: '2',
+                  ),
+                  Tab(
+                    text: '3',
+                  ),
+                  Tab(
+                    text: '4',
+                  ),
+                  Tab(
+                    text: '5',
+                  ),
+                ],
+                labelColor: Colors.black,
+                labelStyle: TextStyle(
+                  color: Colors.black,
                 ),
-                child: TabBar(
-                  controller: _tabController,
-                  tabs: [
-                    Tab(
-                      text: '1',
-                    ),
-                    Tab(
-                      text: '2',
-                    ),
-                    Tab(
-                      text: '3',
-                    ),
-                    Tab(
-                      text: '4',
-                    ),
-                    Tab(
-                      text: '5',
-                    ),
-                  ],
-                  labelColor: Colors.black,
-                  labelStyle: TextStyle(
-                    color: Colors.black,
-                  ),
-                  unselectedLabelStyle: TextStyle(
-                    fontSize: 30.sp,
-                    fontWeight: FontWeight.w400,
-                    color: Color.fromRGBO(120, 120, 120, 1),
-                  ),
-                  indicator: ShapeDecoration(
-                    shape: Border(
-                      bottom: BorderSide(
-                        color: Colors.black,
-                        width: 3.0.sp,
-                      ),
+                unselectedLabelStyle: TextStyle(
+                  fontSize: 30.sp,
+                  fontWeight: FontWeight.w400,
+                  color: Color.fromRGBO(120, 120, 120, 1),
+                ),
+                indicator: ShapeDecoration(
+                  shape: Border(
+                    bottom: BorderSide(
+                      color: Colors.black,
+                      width: 3.0.sp,
                     ),
                   ),
                 ),
               ),
-              SizedBox(
-                height: 10.h,
+            ),
+            SizedBox(
+              height: 10.h,
+            ),
+            SizedBox(
+              height: 300.h,
+              child: TabBarView(
+                controller: _tabController,
+                children: [
+                  // Tab1의 내용
+                  Center(
+                    child: PartEval(
+                      selectedText: text[0],
+                      value: _flavor,
+                      onChanged: (value) {
+                        setState(() {
+                          _flavor = double.parse(value.toStringAsFixed(1));
+                        });
+                      },
+                    ),
+                  ),
+                  // Tab2의 내용
+                  Center(
+                    child: PartEval(
+                      selectedText: text[1],
+                      value: _juiciness,
+                      onChanged: (value) {
+                        setState(() {
+                          _juiciness = double.parse(value.toStringAsFixed(1));
+                        });
+                      },
+                    ),
+                  ),
+                  // Tab3의 내용
+                  Center(
+                    child: PartEval(
+                      selectedText: text[2],
+                      value: _tenderness,
+                      onChanged: (value) {
+                        setState(() {
+                          _tenderness = double.parse(value.toStringAsFixed(1));
+                        });
+                      },
+                    ),
+                  ),
+                  // Tab4의 내용
+                  Center(
+                    child: PartEval(
+                      selectedText: text[3],
+                      value: _umami,
+                      onChanged: (value) {
+                        setState(() {
+                          _umami = double.parse(value.toStringAsFixed(1));
+                        });
+                      },
+                    ),
+                  ),
+                  // Tab5의 내용
+                  Center(
+                    child: PartEval(
+                      selectedText: text[4],
+                      value: _palatability,
+                      onChanged: (value) {
+                        setState(() {
+                          _palatability =
+                              double.parse(value.toStringAsFixed(1));
+                        });
+                      },
+                    ),
+                  ),
+                ],
               ),
-              SizedBox(
-                height: 300.h,
-                child: TabBarView(
-                  controller: _tabController,
-                  children: [
-                    // Tab1의 내용
-                    Center(
-                      child: PartEval(
-                        selectedText: text[0],
-                        value: _flavor,
-                        onChanged: (value) {
-                          setState(() {
-                            _flavor = double.parse(value.toStringAsFixed(1));
-                          });
-                        },
-                      ),
-                    ),
-                    // Tab2의 내용
-                    Center(
-                      child: PartEval(
-                        selectedText: text[1],
-                        value: _juiciness,
-                        onChanged: (value) {
-                          setState(() {
-                            _juiciness = double.parse(value.toStringAsFixed(1));
-                          });
-                        },
-                      ),
-                    ),
-                    // Tab3의 내용
-                    Center(
-                      child: PartEval(
-                        selectedText: text[2],
-                        value: _tenderness,
-                        onChanged: (value) {
-                          setState(() {
-                            _tenderness =
-                                double.parse(value.toStringAsFixed(1));
-                          });
-                        },
-                      ),
-                    ),
-                    // Tab4의 내용
-                    Center(
-                      child: PartEval(
-                        selectedText: text[3],
-                        value: _umami,
-                        onChanged: (value) {
-                          setState(() {
-                            _umami = double.parse(value.toStringAsFixed(1));
-                          });
-                        },
-                      ),
-                    ),
-                    // Tab5의 내용
-                    Center(
-                      child: PartEval(
-                        selectedText: text[4],
-                        value: _palatability,
-                        onChanged: (value) {
-                          setState(() {
-                            _palatability =
-                                double.parse(value.toStringAsFixed(1));
-                          });
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(
-                height: 80.h,
-              ),
-              Container(
-                margin: EdgeInsets.only(bottom: 18.h),
-                child: SaveButton(
-                  onPressed: _isAllInserted()
-                      ? () async {
-                          // 데이터 저장
-                          saveMeatData();
+            ),
+            Spacer(),
+            Container(
+              margin: EdgeInsets.only(bottom: 18.h),
+              child: SaveButton(
+                onPressed: _isAllInserted()
+                    ? () async {
+                        // 데이터 저장
+                        saveMeatData();
 
-                          // 데이터 서버로 전송
-                          await ApiServices.sendMeatData('heatedmeat_eval',
-                              widget.meatData.convertHeatedMeatToJson());
+                        // 데이터 서버로 전송
+                        await ApiServices.sendMeatData('heatedmeat_eval',
+                            widget.meatData.convertHeatedMeatToJson());
 
-                          if (!mounted) return;
-                          Navigator.pop(context);
-                        }
-                      : null,
-                  text: '저장',
-                  width: 658.w,
-                  heigh: 104.h,
-                  isWhite: false,
-                ),
+                        if (!mounted) return;
+                        Navigator.pop(context);
+                      }
+                    : null,
+                text: '저장',
+                width: 658.w,
+                heigh: 104.h,
+                isWhite: false,
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
