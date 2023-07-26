@@ -4,49 +4,30 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class EvalButton extends StatelessWidget {
-  final bool isSelected;
   final Color backgroundColor;
-  final VoidCallback onPressed;
 
   const EvalButton({
     super.key,
-    required this.isSelected,
     required this.backgroundColor,
-    required this.onPressed,
   });
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return Container(
       width: 106.w,
       height: 106.h,
-      child: OutlinedButton(
-        style: OutlinedButton.styleFrom(
-          side: BorderSide(
-            color: isSelected ? Colors.black : Colors.transparent,
-            width: 2,
-          ),
-          backgroundColor: backgroundColor,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.zero,
-          ),
-        ),
-        onPressed: onPressed,
-        child: Container(),
+      decoration: BoxDecoration(
+        color: backgroundColor,
       ),
     );
   }
 }
 
 class EvalRow extends StatefulWidget {
-  final List<bool> isSelected;
-  final Function(int) onEvalButtonPressed;
   final List<String> text;
 
   const EvalRow({
     super.key,
-    required this.isSelected,
-    required this.onEvalButtonPressed,
     required this.text,
   });
 
@@ -66,7 +47,6 @@ class _EvalRowState extends State<EvalRow> {
               Container(
                 margin: EdgeInsets.symmetric(horizontal: 8.5.w),
                 child: EvalButton(
-                  isSelected: widget.isSelected[i],
                   backgroundColor: [
                     Color(0xFFEFEFEF),
                     Color(0xFFD9D9D9),
@@ -74,7 +54,6 @@ class _EvalRowState extends State<EvalRow> {
                     Color(0xFF6F6F6F),
                     Color(0xFF363636),
                   ][i],
-                  onPressed: () => widget.onEvalButtonPressed(i),
                 ),
               ),
           ],
@@ -95,6 +74,9 @@ class _EvalRowState extends State<EvalRow> {
                 ),
               ),
           ],
+        ),
+        SizedBox(
+          height: 45.h,
         ),
       ],
     );

@@ -1,6 +1,6 @@
 import 'package:deep_plant_app/models/meat_data_model.dart';
 import 'package:deep_plant_app/models/user_data_model.dart';
-import 'package:deep_plant_app/pages/maet-registration/basic-data/freshmeat_evaluation_page.dart';
+import 'package:deep_plant_app/pages/maet-registration/basic-data/fresh_meat_evaluation_page.dart';
 import 'package:deep_plant_app/pages/maet-registration/basic-data/get_trace_num_page.dart';
 import 'package:deep_plant_app/pages/maet-registration/basic-data/insertion_meat_image.dart';
 import 'package:deep_plant_app/widgets/custom_appbar.dart';
@@ -162,7 +162,7 @@ class _ShowStepState extends State<ShowStep> {
                   ? Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => FreshmeatEvaluation(
+                        builder: (context) => FreshMeatEvaluation(
                           meatData: widget.meatData,
                         ),
                       ),
