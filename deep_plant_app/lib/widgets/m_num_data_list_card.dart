@@ -57,7 +57,7 @@ class MNumDataListCard extends StatelessWidget {
                         children: [
                           Icon(
                             Icons.add,
-                            size: 19.5.w,
+                            size: 20.5.w,
                           ),
                           Text(
                             ' 추가',
@@ -66,7 +66,7 @@ class MNumDataListCard extends StatelessWidget {
                         ],
                       ),
                       onPress: buttonAction,
-                      width: 141.w,
+                      width: 151.w,
                       height: 63.h,
                       bgColor: Color.fromRGBO(178, 178, 178, 1),
                     )
@@ -75,8 +75,7 @@ class MNumDataListCard extends StatelessWidget {
                     ),
             ],
           ),
-          Container(
-              margin: EdgeInsets.only(top: 18.h), height: 0, child: Divider()),
+          Container(margin: EdgeInsets.only(top: 18.h), height: 0, child: Divider()),
         ],
       ),
     );

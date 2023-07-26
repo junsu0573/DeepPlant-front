@@ -20,11 +20,24 @@ class NumCallDialog extends StatefulWidget {
 
 class _NumCallDialogState extends State<NumCallDialog> {
   final TextEditingController _controller = TextEditingController();
+  bool isButtonEnabled = false;
   List<String> mNumList = [];
   @override
   void dispose() {
     _controller.dispose();
     super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _controller.addListener(_onTextChanged); // 텍스트 필드의 값이 변경될 때 호출할 메서드 등록
+  }
+
+  void _onTextChanged() {
+    setState(() {
+      isButtonEnabled = _controller.text.isNotEmpty; // 텍스트 필드 값이 비어있는지 확인하여 버튼 상태 업데이트
+    });
   }
 
   Future<void> fetchData(String text) async {
@@ -73,7 +86,10 @@ class _NumCallDialogState extends State<NumCallDialog> {
                         ),
                       ),
                       SizedBox(
-                        height: 41.h,
+                        height: 29.h,
+                      ),
+                      SizedBox(
+                        height: 29.h,
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
@@ -138,21 +154,22 @@ class _NumCallDialogState extends State<NumCallDialog> {
                                   borderRadius: BorderRadius.circular(42.5.sp),
                                   borderSide: BorderSide.none,
                                 ),
-                                contentPadding:
-                                    EdgeInsets.only(bottom: 10, left: 10),
+                                contentPadding: EdgeInsets.only(bottom: 10, left: 10),
                               ),
                             ),
                           ),
                           Spacer(),
                           CommonButton(
-                              text: Text('검색'),
-                              onPress: _controller.text.isNotEmpty
-                                  ? () {
-                                      fetchData(_controller.text);
-                                    }
-                                  : null,
-                              width: 161.w,
-                              height: 63.h),
+                            text: Text('검색'),
+                            onPress: isButtonEnabled
+                                ? () {
+                                    fetchData(_controller.text);
+                                    FocusScope.of(context).unfocus();
+                                  }
+                                : null,
+                            width: 161.w,
+                            height: 63.h,
+                          ),
                         ],
                       ),
                       SizedBox(
@@ -169,7 +186,6 @@ class _NumCallDialogState extends State<NumCallDialog> {
                           itemCount: mNumList.length,
                           itemBuilder: (BuildContext context, int index) {
                             String mNum = mNumList[index];
-
                             return MNumDataListCard(
                               idx: index + 1,
                               mNum: mNum,
@@ -180,7 +196,9 @@ class _NumCallDialogState extends State<NumCallDialog> {
                           },
                         ),
                       ),
-                      Spacer(),
+                      SizedBox(
+                        height: 15.h,
+                      ),
                       SaveButton(
                         onPressed: () {
                           context.pop();

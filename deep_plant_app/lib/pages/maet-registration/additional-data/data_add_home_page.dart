@@ -14,8 +14,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class DataAddHome extends StatefulWidget {
   final MeatData meatData;
   final UserData userData;
-  const DataAddHome(
-      {super.key, required this.meatData, required this.userData});
+  const DataAddHome({super.key, required this.meatData, required this.userData});
 
   @override
   State<DataAddHome> createState() => _DataAddHomeState();
@@ -47,8 +46,7 @@ class _DataAddHomeState extends State<DataAddHome> {
     // 시간을 분으로 통합 | 전달 형식에 맞게 '년월일/분'으로 변환
     // 최종적으로 데이터를 객체에 전달하는 함수이다.
 
-    String temp =
-        '${objects[i].selectedYear}${objects[i].selectedMonth}${objects[i].selectedDay}/$totalMinute';
+    String temp = '${objects[i].selectedYear}${objects[i].selectedMonth}${objects[i].selectedDay}/$totalMinute';
     if (widget.meatData.deepAging == null) {
       widget.meatData.deepAging = [temp];
     } else {
@@ -84,10 +82,7 @@ class _DataAddHomeState extends State<DataAddHome> {
 
   void checkFresh() {
     // 신선육 데이터가 온전히 입력 되었을 경우에 사용되는 기능이다.
-    if (widget.meatData.heatedImage != null &&
-        widget.meatData.heatedmeat != null &&
-        widget.meatData.tongueData != null &&
-        widget.meatData.labData != null) {
+    if (widget.meatData.heatedImage != null && widget.meatData.heatedmeat != null && widget.meatData.tongueData != null && widget.meatData.labData != null) {
       isFreshEnd = true;
     } else {
       isFreshEnd = false;
@@ -96,11 +91,7 @@ class _DataAddHomeState extends State<DataAddHome> {
   }
 
   void checkDeep(dynamic data, int index) {
-    if (data.deepAgedImage != null ||
-        data.deepAgedFreshmeat != null ||
-        data.heatedmeat != null ||
-        data.tongueData != null ||
-        data.labData != null) {
+    if (data.deepAgedImage != null || data.deepAgedFreshmeat != null || data.heatedmeat != null || data.tongueData != null || data.labData != null) {
       isDeepEnd[index] = true;
     } else {
       isDeepEnd[index] = false;
@@ -202,28 +193,29 @@ class _DataAddHomeState extends State<DataAddHome> {
         },
         child: Row(
           children: [
-            Padding(
-              padding: EdgeInsets.only(right: 6.0),
-              child: Text(
-                '${widgetIndex + 1}차',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 20.sp,
-                  fontWeight: FontWeight.bold,
+            SizedBox(
+              width: 52.w,
+              child: Center(
+                child: Text(
+                  '${widgetIndex + 1}차',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 20.sp,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(6.0),
+            SizedBox(
+              width: 54.w,
               child: VerticalDivider(
                 thickness: 2,
                 width: 1,
                 color: Colors.grey[300],
               ),
             ),
-            Container(
-              width: 190.w,
-              padding: EdgeInsets.only(left: 6.0),
+            SizedBox(
+              width: 128.w,
               child: Text(
                 '${objects[widgetIndex].insertedMinute}분',
                 style: TextStyle(
@@ -232,8 +224,8 @@ class _DataAddHomeState extends State<DataAddHome> {
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(right: 6.0),
+            SizedBox(
+              width: 186.w,
               child: Text(
                 '${objects[widgetIndex].selectedYear}.${objects[widgetIndex].selectedMonth}.${objects[widgetIndex].selectedDay}',
                 style: TextStyle(
@@ -243,14 +235,9 @@ class _DataAddHomeState extends State<DataAddHome> {
               ),
             ),
             SizedBox(
-              width: 40.w,
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 8.0),
+              width: 80.w,
               child: Text(
-                (isDeepEnd[widgetIndex] == true)
-                    ? '완료'
-                    : '미완료', // 임시 지정, 후에 수정해야 함!
+                (isDeepEnd[widgetIndex] == true) ? '완료' : '미완료', // 임시 지정, 후에 수정해야 함!
                 style: TextStyle(color: Colors.black),
               ),
             )
@@ -323,7 +310,7 @@ class _DataAddHomeState extends State<DataAddHome> {
               Container(
                 width: 588.w,
                 height: 36.h,
-                padding: EdgeInsets.symmetric(horizontal: 22.w),
+                padding: EdgeInsets.symmetric(horizontal: 32.w),
                 decoration: BoxDecoration(
                   color: Palette.textFieldColor,
                 ),
@@ -338,9 +325,7 @@ class _DataAddHomeState extends State<DataAddHome> {
                       '부위',
                       style: TextStyle(fontSize: 24.sp),
                     ),
-                    Spacer(
-                      flex: 2,
-                    ),
+                    Spacer(),
                     Text(
                       '도축일자',
                       style: TextStyle(fontSize: 24.sp),
@@ -374,28 +359,29 @@ class _DataAddHomeState extends State<DataAddHome> {
                   },
                   child: Row(
                     children: [
-                      Padding(
-                        padding: EdgeInsets.only(right: 6.0),
-                        child: Text(
-                          widget.meatData.speciesValue!,
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 20.sp,
-                            fontWeight: FontWeight.bold,
+                      SizedBox(
+                        width: 38.w,
+                        child: Center(
+                          child: Text(
+                            widget.meatData.speciesValue!,
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 20.sp,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.all(6.0),
+                      SizedBox(
+                        width: 48.w,
                         child: VerticalDivider(
                           thickness: 2,
                           width: 1,
                           color: Colors.grey[300],
                         ),
                       ),
-                      Container(
-                        width: 180.w,
-                        padding: EdgeInsets.only(left: 6.0),
+                      SizedBox(
+                        width: 128.w,
                         child: Text(
                           widget.meatData.secondaryValue!,
                           style: TextStyle(
@@ -404,8 +390,8 @@ class _DataAddHomeState extends State<DataAddHome> {
                           ),
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(right: 6.0),
+                      SizedBox(
+                        width: 218.w,
                         child: Text(
                           (intoYmd(widget.meatData.butcheryYmd!)),
                           style: TextStyle(
@@ -415,10 +401,7 @@ class _DataAddHomeState extends State<DataAddHome> {
                         ),
                       ),
                       SizedBox(
-                        width: 40.w,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 15.0),
+                        width: 60.w,
                         child: Text(
                           isFreshEnd ? '완료' : '미완료',
                           style: TextStyle(color: Colors.black),
@@ -467,7 +450,7 @@ class _DataAddHomeState extends State<DataAddHome> {
               Container(
                 width: 588.w,
                 height: 36.h,
-                padding: EdgeInsets.symmetric(horizontal: 22.w),
+                padding: EdgeInsets.symmetric(horizontal: 32.w),
                 decoration: BoxDecoration(color: Palette.textFieldColor),
                 child: Row(
                   children: [
@@ -480,9 +463,7 @@ class _DataAddHomeState extends State<DataAddHome> {
                       '처리시간',
                       style: TextStyle(fontSize: 24.sp),
                     ),
-                    Spacer(
-                      flex: 2,
-                    ),
+                    Spacer(),
                     Text(
                       '처리일자',
                       style: TextStyle(fontSize: 24.sp),
@@ -582,7 +563,7 @@ class _DataAddHomeState extends State<DataAddHome> {
                 ],
               ),
               SizedBox(
-                height: 60.h,
+                height: 40.h,
               ),
               Padding(
                 padding: EdgeInsets.only(bottom: 17.h),
