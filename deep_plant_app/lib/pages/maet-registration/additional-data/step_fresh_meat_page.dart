@@ -1,6 +1,6 @@
 import 'package:deep_plant_app/models/meat_data_model.dart';
 import 'package:deep_plant_app/models/user_data_model.dart';
-import 'package:deep_plant_app/pages/maet-registration/additional-data/heated_meat_eveluation_page.dart';
+import 'package:deep_plant_app/pages/maet-registration/additional-data/heated_meat_evaluation_page.dart';
 import 'package:deep_plant_app/pages/maet-registration/additional-data/lab_data_input_page.dart';
 import 'package:deep_plant_app/pages/maet-registration/additional-data/tongue_data_input_page.dart';
 import 'package:deep_plant_app/pages/maet-registration/basic-data/insertion_meat_image.dart';

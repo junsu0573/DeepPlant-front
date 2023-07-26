@@ -3,12 +3,12 @@ import 'package:deep_plant_app/models/meat_data_model.dart';
 import 'package:deep_plant_app/models/user_data_model.dart';
 import 'package:deep_plant_app/pages/data-management/data_management_page_2.dart';
 import 'package:deep_plant_app/pages/data-management/reading_data_page.dart';
+import 'package:deep_plant_app/pages/home_page.dart';
 import 'package:deep_plant_app/pages/maet-registration/additional-data/complete_additional_registration_page.dart';
 import 'package:deep_plant_app/pages/maet-registration/additional-data/data_add_home_page.dart';
 import 'package:deep_plant_app/pages/maet-registration/basic-data/complete_registration_page.dart';
 import 'package:deep_plant_app/pages/maet-registration/basic-data/complete_registration_page_2.dart';
 import 'package:deep_plant_app/pages/maet-registration/basic-data/show_step_page.dart';
-import 'package:deep_plant_app/pages/new_freshmeat_insertion_page.dart';
 import 'package:deep_plant_app/pages/show_error_page.dart';
 import 'package:deep_plant_app/pages/sign-up/add_user_info_page.dart';
 import 'package:deep_plant_app/pages/my-page/my_page.dart';
@@ -52,7 +52,7 @@ final _router = GoRouter(
   routes: [
     GoRoute(
       path: '/',
-      builder: (context, state) => NewFreshMeatInsertion(),
+      builder: (context, state) => HomePage(),
       routes: [
         GoRoute(
           path: 'sign-in',

@@ -90,7 +90,9 @@ class _DataAddState extends State<DataAdd> {
                     context,
                     MaterialPageRoute(
                       builder: (context) => DataAddHome(
-                          meatData: widget.meatData, userData: widget.userData),
+                        meatData: widget.meatData,
+                        userData: widget.userData,
+                      ),
                     ),
                   );
                 },

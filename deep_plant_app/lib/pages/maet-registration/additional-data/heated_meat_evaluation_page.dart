@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:deep_plant_app/models/meat_data_model.dart';
+import 'package:deep_plant_app/source/api_services.dart';
 import 'package:deep_plant_app/source/get_date.dart';
 import 'package:deep_plant_app/source/pallete.dart';
 import 'package:deep_plant_app/widgets/custom_appbar.dart';
@@ -8,69 +11,67 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:syncfusion_flutter_sliders/sliders.dart';
 
-class NewFreshMeatInsertion extends StatefulWidget {
+class HeatedMeatEvaluation extends StatefulWidget {
   final MeatData meatData;
-  final bool? isDeepAged;
-  const NewFreshMeatInsertion({
+
+  const HeatedMeatEvaluation({
     super.key,
     required this.meatData,
-    this.isDeepAged,
   });
 
   @override
-  State<NewFreshMeatInsertion> createState() => _NewFreshMeatInsertionState();
+  State<HeatedMeatEvaluation> createState() => _HeatedMeatEvaluation();
 }
 
-class _NewFreshMeatInsertionState extends State<NewFreshMeatInsertion>
+class _HeatedMeatEvaluation extends State<HeatedMeatEvaluation>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
+  String _meatImage = '';
+
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 5, vsync: this);
+    _meatImage = widget.meatData.heatedImage!;
   }
 
   List<List<String>> text = [
-    ['Mabling', '마블링 정도', '없음', '', '보통', '', '많음'],
-    ['Color', '육색', '없음', '', '보통', '', '어둡고 진함'],
-    ['Texture', '조직감', '흐물함', '', '보통', '', '단단함'],
-    ['Surface Moisture', '표면육즙', '없음', '', '보통', '', '많음'],
-    ['Overall', '종합기호도', '나쁨', '', '보통', '', '좋음'],
+    ['Flavor', '풍미', '약간', '', '약간 풍부함', '', '풍부함'],
+    ['Juiciness', '다즙성', '퍽퍽함', '', '보통', '', '다즙합'],
+    ['Tenderness', '연도', '질김', '', '보통', '', '연함'],
+    ['Umami', '표면육즙', '약함', '', '보통', '', '좋음'],
+    ['Palatability', '기호도', '나쁨', '', '보통', '', '좋음'],
   ];
 
-  double _marbling = 0;
-  double _color = 0;
-  double _texture = 0;
-  double _surface = 0;
-  double _overall = 0;
+  double _flavor = 0;
+  double _juiciness = 0;
+  double _tenderness = 0;
+  double _umami = 0;
+  double _palatability = 0;
 
   bool _isAllInserted() {
-    if (_marbling > 0 &&
-        _color > 0 &&
-        _texture > 0 &&
-        _surface > 0 &&
-        _overall > 0) return true;
+    if (_flavor > 0 &&
+        _juiciness > 0 &&
+        _tenderness > 0 &&
+        _umami > 0 &&
+        _palatability > 0) return true;
     return false;
   }
 
   void saveMeatData() {
-    //데이터를 Map 형식으로 저장
-    Map<String, dynamic> freshData = {
+    // 데이터 생성
+    Map<String, dynamic> heatedData = {
       'createdAt': GetDate.getCurrentDate(),
       'period': widget.meatData.getPeriod(),
-      'marbling': _marbling,
-      'color': _color,
-      'texture': _texture,
-      'surfaceMoisture': _surface,
-      'overall': _overall,
+      'flavor': _flavor,
+      'juiciness': _juiciness,
+      'tenderness': _tenderness,
+      'umami': _umami,
+      'palability': _palatability,
     };
 
     // 데이터를 객체에 저장
-    if (widget.isDeepAged != null) {
-      widget.meatData.deepAgedFreshmeat = freshData;
-    } else {
-      widget.meatData.freshmeat = freshData;
-    }
+    widget.meatData.heatedmeat = heatedData;
   }
 
   @override
@@ -88,7 +89,7 @@ class _NewFreshMeatInsertionState extends State<NewFreshMeatInsertion>
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
-                '신선육관능평가',
+                '가열육관능평가',
                 style: TextStyle(
                   fontSize: 36.sp,
                   fontWeight: FontWeight.w600,
@@ -99,7 +100,12 @@ class _NewFreshMeatInsertionState extends State<NewFreshMeatInsertion>
                 width: 600.w,
                 height: 600.h,
                 decoration: BoxDecoration(
-                  color: Palette.greyTextColor,
+                  image: DecorationImage(
+                    image: FileImage(
+                      File(_meatImage),
+                    ),
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
               SizedBox(
@@ -160,10 +166,10 @@ class _NewFreshMeatInsertionState extends State<NewFreshMeatInsertion>
                     Center(
                       child: PartEval(
                         selectedText: text[0],
-                        value: _marbling,
+                        value: _flavor,
                         onChanged: (value) {
                           setState(() {
-                            _marbling = double.parse(value.toStringAsFixed(1));
+                            _flavor = double.parse(value.toStringAsFixed(1));
                           });
                         },
                       ),
@@ -172,10 +178,10 @@ class _NewFreshMeatInsertionState extends State<NewFreshMeatInsertion>
                     Center(
                       child: PartEval(
                         selectedText: text[1],
-                        value: _color,
+                        value: _juiciness,
                         onChanged: (value) {
                           setState(() {
-                            _color = double.parse(value.toStringAsFixed(1));
+                            _juiciness = double.parse(value.toStringAsFixed(1));
                           });
                         },
                       ),
@@ -184,10 +190,11 @@ class _NewFreshMeatInsertionState extends State<NewFreshMeatInsertion>
                     Center(
                       child: PartEval(
                         selectedText: text[2],
-                        value: _texture,
+                        value: _tenderness,
                         onChanged: (value) {
                           setState(() {
-                            _texture = double.parse(value.toStringAsFixed(1));
+                            _tenderness =
+                                double.parse(value.toStringAsFixed(1));
                           });
                         },
                       ),
@@ -196,10 +203,10 @@ class _NewFreshMeatInsertionState extends State<NewFreshMeatInsertion>
                     Center(
                       child: PartEval(
                         selectedText: text[3],
-                        value: _surface,
+                        value: _umami,
                         onChanged: (value) {
                           setState(() {
-                            _surface = double.parse(value.toStringAsFixed(1));
+                            _umami = double.parse(value.toStringAsFixed(1));
                           });
                         },
                       ),
@@ -208,10 +215,11 @@ class _NewFreshMeatInsertionState extends State<NewFreshMeatInsertion>
                     Center(
                       child: PartEval(
                         selectedText: text[4],
-                        value: _overall,
+                        value: _palatability,
                         onChanged: (value) {
                           setState(() {
-                            _overall = double.parse(value.toStringAsFixed(1));
+                            _palatability =
+                                double.parse(value.toStringAsFixed(1));
                           });
                         },
                       ),
@@ -226,12 +234,16 @@ class _NewFreshMeatInsertionState extends State<NewFreshMeatInsertion>
                 margin: EdgeInsets.only(bottom: 18.h),
                 child: SaveButton(
                   onPressed: _isAllInserted()
-                      ? () {
+                      ? () async {
+                          // 데이터 저장
                           saveMeatData();
-                          if (widget.isDeepAged != null &&
-                              widget.isDeepAged == true) {
-                            // post 신선육 관능평가
-                          }
+
+                          // 데이터 서버로 전송
+                          await ApiServices.sendMeatData('heatedmeat_eval',
+                              widget.meatData.convertHeatedMeatToJson());
+
+                          if (!mounted) return;
+                          Navigator.pop(context);
                         }
                       : null,
                   text: '저장',
