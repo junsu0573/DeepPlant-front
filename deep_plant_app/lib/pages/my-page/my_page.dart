@@ -1,16 +1,42 @@
 import 'package:deep_plant_app/models/user_data_model.dart';
+import 'package:deep_plant_app/source/api_services.dart';
 import 'package:deep_plant_app/widgets/common_button.dart';
 import 'package:deep_plant_app/widgets/custom_appbar.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
-class MyPage extends StatelessWidget {
+class MyPage extends StatefulWidget {
   final UserData userData;
   const MyPage({
     super.key,
     required this.userData,
   });
+
+  @override
+  State<MyPage> createState() => _MyPageState();
+}
+
+class _MyPageState extends State<MyPage> {
+  void _signOut(BuildContext context) async {
+    try {
+      // 파이어베이스 로그아웃
+      await FirebaseAuth.instance.signOut();
+
+      // 로그아웃 API 호출
+      final response = await ApiServices.signOut(widget.userData.userId!);
+      if (response == null) {
+        throw Error();
+      }
+
+      // home 화면으로 이동
+      if (!mounted) return;
+      context.go('/');
+    } catch (e) {
+      print('로그아웃 에러: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -82,7 +108,7 @@ class MyPage extends StatelessWidget {
                 Column(
                   children: [
                     Text(
-                      '${userData.name}',
+                      '${widget.userData.name}',
                       style: TextStyle(
                         fontSize: 30.sp,
                         fontWeight: FontWeight.w400,
@@ -92,7 +118,7 @@ class MyPage extends StatelessWidget {
                       height: 33.h,
                     ),
                     Text(
-                      '${userData.userId}',
+                      '${widget.userData.userId}',
                       style: TextStyle(
                         fontSize: 30.sp,
                         fontWeight: FontWeight.w400,
@@ -102,7 +128,7 @@ class MyPage extends StatelessWidget {
                       height: 33.h,
                     ),
                     Text(
-                      '${userData.type}',
+                      '${widget.userData.type}',
                       style: TextStyle(
                         fontSize: 30.sp,
                         fontWeight: FontWeight.w400,
@@ -112,7 +138,7 @@ class MyPage extends StatelessWidget {
                       height: 33.h,
                     ),
                     Text(
-                      '${userData.createdAt}',
+                      '${widget.userData.createdAt}',
                       style: TextStyle(
                         fontSize: 30.sp,
                         fontWeight: FontWeight.w400,
@@ -149,7 +175,7 @@ class MyPage extends StatelessWidget {
             ),
             Spacer(),
             TextButton(
-              onPressed: () {},
+              onPressed: () => _signOut(context),
               child: Text(
                 '로그아웃',
                 style: TextStyle(

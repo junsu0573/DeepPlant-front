@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class TextFieldWithTitle extends StatelessWidget {
@@ -6,6 +7,7 @@ class TextFieldWithTitle extends StatelessWidget {
   late final String secondText;
   final String? unit;
   final TextEditingController controller;
+  final bool? isPercent;
 
   TextFieldWithTitle({
     super.key,
@@ -13,6 +15,7 @@ class TextFieldWithTitle extends StatelessWidget {
     required this.secondText,
     this.unit,
     required this.controller,
+    this.isPercent,
   });
 
   @override
@@ -41,6 +44,14 @@ class TextFieldWithTitle extends StatelessWidget {
               child: TextField(
                 textAlign: TextAlign.center,
                 controller: controller,
+                inputFormatters: isPercent != null && isPercent == true
+                    ? [
+                        _PercentageInputFormatter(),
+                      ]
+                    : [
+                        FilteringTextInputFormatter.allow(
+                            RegExp(r'^-?\d{0,8}(\.\d{0,4})?')),
+                      ],
                 decoration: InputDecoration(
                   focusedBorder: UnderlineInputBorder(
                     borderSide: BorderSide(color: Colors.black, width: 5.w),
@@ -72,5 +83,20 @@ class TextFieldWithTitle extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+class _PercentageInputFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(
+      TextEditingValue oldValue, TextEditingValue newValue) {
+    double parsedValue = double.tryParse(newValue.text) ?? 0.0;
+
+    if (parsedValue < 0 || parsedValue > 100 || newValue.text.length > 7) {
+      // 입력이 0부터 100 사이의 퍼센트 값이 아닌 경우, 입력을 무시합니다.
+      return oldValue;
+    }
+
+    return newValue;
   }
 }

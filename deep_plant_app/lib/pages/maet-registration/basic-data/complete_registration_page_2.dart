@@ -140,7 +140,8 @@ class _CompleteResgistration2State extends State<CompleteResgistration2> {
         null, widget.meatData.convertNewMeatToJson());
     final response2 = await ApiServices.sendMeatData(
         'sensory_eval', widget.meatData.convertFreshMeatToJson(0));
-    if (response1 == null || response2 == null) {
+    final response3 = await ApiServices.confirmMeatData(widget.meatData.id!);
+    if (response1 == null || response2 == null || response3 == null) {
       if (!mounted) return;
       context.go('/option/error');
     } else {

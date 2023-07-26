@@ -33,9 +33,11 @@ class _FreshMeatEvaluationState extends State<FreshMeatEvaluation>
   void initState() {
     super.initState();
     _tabController = TabController(length: 5, vsync: this);
-    if (widget.isDeepAged != null && widget.isDeepAged == true) {
+    if (widget.isDeepAged != null &&
+        widget.isDeepAged == true &&
+        widget.meatData.deepAgedImage != null) {
       _meatImage = widget.meatData.deepAgedImage!;
-    } else {
+    } else if (widget.meatData.imagePath != null) {
       _meatImage = widget.meatData.imagePath!;
     }
   }
@@ -120,6 +122,51 @@ class _FreshMeatEvaluationState extends State<FreshMeatEvaluation>
               SizedBox(
                 height: 10.h,
               ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    width: 70.w,
+                  ),
+                  Icon(
+                    Icons.check,
+                    color: _marbling > 0
+                        ? Palette.mainButtonColor
+                        : Colors.transparent,
+                  ),
+                  Spacer(),
+                  Icon(
+                    Icons.check,
+                    color: _color > 0
+                        ? Palette.mainButtonColor
+                        : Colors.transparent,
+                  ),
+                  Spacer(),
+                  Icon(
+                    Icons.check,
+                    color: _texture > 0
+                        ? Palette.mainButtonColor
+                        : Colors.transparent,
+                  ),
+                  Spacer(),
+                  Icon(
+                    Icons.check,
+                    color: _surface > 0
+                        ? Palette.mainButtonColor
+                        : Colors.transparent,
+                  ),
+                  Spacer(),
+                  Icon(
+                    Icons.check,
+                    color: _overall > 0
+                        ? Palette.mainButtonColor
+                        : Colors.transparent,
+                  ),
+                  SizedBox(
+                    width: 70.w,
+                  ),
+                ],
+              ),
               Container(
                 margin: EdgeInsets.only(
                   left: 24.w,
@@ -129,19 +176,44 @@ class _FreshMeatEvaluationState extends State<FreshMeatEvaluation>
                   controller: _tabController,
                   tabs: [
                     Tab(
-                      text: '1',
+                      child: Text(
+                        '마블링',
+                        style: TextStyle(
+                          fontSize: 27.sp,
+                        ),
+                      ),
                     ),
                     Tab(
-                      text: '2',
+                      child: Text(
+                        '육색',
+                        style: TextStyle(
+                          fontSize: 27.sp,
+                        ),
+                      ),
                     ),
                     Tab(
-                      text: '3',
+                      child: Text(
+                        '조직감',
+                        style: TextStyle(
+                          fontSize: 27.sp,
+                        ),
+                      ),
                     ),
                     Tab(
-                      text: '4',
+                      child: Text(
+                        '육즙',
+                        style: TextStyle(
+                          fontSize: 27.sp,
+                        ),
+                      ),
                     ),
                     Tab(
-                      text: '5',
+                      child: Text(
+                        '기호도',
+                        style: TextStyle(
+                          fontSize: 27.sp,
+                        ),
+                      ),
                     ),
                   ],
                   labelColor: Colors.black,

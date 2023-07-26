@@ -1,5 +1,14 @@
+import 'package:deep_plant_app/source/api_services.dart';
+
 class MeatInfoSource {
-  final orders = ['소', '돼지'];
+  final List<String> orders = [];
+
+  static Future<dynamic> getDiv(String species) async {
+    Map<String, dynamic> data = await ApiServices.getMeatSpecies();
+
+    return data[species];
+  }
+
   final largeOrders_1 = [
     '안심',
     '등심',

@@ -188,20 +188,26 @@ class _LabDataInputState extends State<LabDataInput> {
               TextFieldWithTitle(
                   firstText: 'b황색도', secondText: '', unit: '', controller: b),
               TextFieldWithTitle(
-                  firstText: 'DL육즙감량',
-                  secondText: '',
-                  unit: '%',
-                  controller: dl),
+                firstText: 'DL육즙감량',
+                secondText: '',
+                unit: '%',
+                controller: dl,
+                isPercent: true,
+              ),
               TextFieldWithTitle(
-                  firstText: 'CL가열감량',
-                  secondText: '',
-                  unit: '%',
-                  controller: cl),
+                firstText: 'CL가열감량',
+                secondText: '',
+                unit: '%',
+                controller: cl,
+                isPercent: true,
+              ),
               TextFieldWithTitle(
-                  firstText: 'RW압착감량',
-                  secondText: '',
-                  unit: '%',
-                  controller: rw),
+                firstText: 'RW압착감량',
+                secondText: '',
+                unit: '%',
+                controller: rw,
+                isPercent: true,
+              ),
               TextFieldWithTitle(
                   firstText: 'PH', secondText: '', controller: ph),
               TextFieldWithTitle(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class TongueFiled extends StatelessWidget {
@@ -41,6 +42,10 @@ class TongueFiled extends StatelessWidget {
             height: 50.h,
             child: TextField(
               controller: controller,
+              inputFormatters: [
+                FilteringTextInputFormatter.allow(
+                    RegExp(r'^-?\d{0,8}(\.\d{0,4})?')),
+              ],
               textAlign: TextAlign.center,
               decoration: InputDecoration(
                 focusedBorder: UnderlineInputBorder(
