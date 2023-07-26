@@ -2,7 +2,6 @@ import 'package:deep_plant_app/models/data_management_filter_model.dart';
 import 'package:deep_plant_app/models/meat_data_model.dart';
 import 'package:deep_plant_app/models/user_data_model.dart';
 import 'package:deep_plant_app/pages/data-management/data_confirm_page.dart';
-import 'package:deep_plant_app/pages/data-management/data_view_page.dart';
 import 'package:deep_plant_app/widgets/custom_appbar.dart';
 import 'package:deep_plant_app/pages/data-management/data_add_page.dart';
 import 'package:flutter/material.dart';
@@ -23,13 +22,12 @@ class DataManagement2 extends StatefulWidget {
   State<DataManagement2> createState() => _DataManagement2State();
 }
 
-class _DataManagement2State extends State<DataManagement2>
-    with SingleTickerProviderStateMixin {
+class _DataManagement2State extends State<DataManagement2> with SingleTickerProviderStateMixin {
   late TabController _tabController;
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 3, vsync: this);
+    _tabController = TabController(length: 2, vsync: this);
   }
 
   @override
@@ -68,11 +66,6 @@ class _DataManagement2State extends State<DataManagement2>
                       userData: widget.userData,
                       filter: widget.filter,
                     ),
-                    // Tab3의 내용
-                    DataView(
-                      userData: widget.userData,
-                      filter: widget.filter,
-                    ),
                   ],
                 ),
               ),
@@ -101,9 +94,6 @@ class _DataManagement2State extends State<DataManagement2>
                 ),
                 Tab(
                   text: '데이터 확인',
-                ),
-                Tab(
-                  text: '데이터 열람',
                 ),
               ],
               labelColor: Colors.black,

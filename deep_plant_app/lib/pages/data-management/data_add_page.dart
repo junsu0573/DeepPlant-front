@@ -85,14 +85,12 @@ class _DataAddState extends State<DataAdd> {
                 onTap: () async {
                   final data = await ApiServices.getMeatData(dataList[index]);
                   widget.meatData.fetchData(data);
+                  widget.meatData.fetchDataForOrigin();
                   if (!mounted) return;
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => DataAddHome(
-                        meatData: widget.meatData,
-                        userData: widget.userData,
-                      ),
+                      builder: (context) => DataAddHome(meatData: widget.meatData, userData: widget.userData),
                     ),
                   );
                 },

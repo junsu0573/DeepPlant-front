@@ -6,6 +6,7 @@ import 'package:deep_plant_app/widgets/save_button.dart';
 import 'package:flutter/material.dart';
 import 'package:deep_plant_app/source/meat_info_source.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 
 class InsertionMeatInfo extends StatefulWidget {
   final MeatData meatData;
@@ -101,6 +102,18 @@ class _InsertionMeatInfoState extends State<InsertionMeatInfo> {
   }
 
   @override
+  void initState() {
+    if (widget.meatData.speciesValue == '돼지') {
+      selectedOrder = '돼지';
+      setOrder(selectedOrder!, source);
+    } else {
+      selectedOrder = '소';
+      setOrder(selectedOrder!, source);
+    }
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     List<String> orders = source.orders;
     List<String> largeOrders_1 = source.largeOrders_1;
@@ -149,23 +162,17 @@ class _InsertionMeatInfoState extends State<InsertionMeatInfo> {
                     height: 20.0,
                   ),
                   CustomDropdown(
-                    hintText: Text(
-                      '종류 선택',
-                      style: TextStyle(
-                        fontSize: 30.sp,
-                        fontWeight: FontWeight.w400,
-                        color: Palette.greyTextColor,
+                      hintText: Text(
+                        '종류 선택',
+                        style: TextStyle(
+                          fontSize: 30.sp,
+                          fontWeight: FontWeight.w400,
+                          color: Palette.greyTextColor,
+                        ),
                       ),
-                    ),
-                    value: selectedOrder,
-                    itemList: orders,
-                    onChanged: (value) {
-                      setState(() {
-                        selectedOrder = value!;
-                        setOrder(selectedOrder!, source);
-                      });
-                    },
-                  ),
+                      value: selectedOrder,
+                      itemList: orders,
+                      onChanged: null),
                   SizedBox(
                     height: 42.0.h,
                   ),
@@ -216,9 +223,7 @@ class _InsertionMeatInfoState extends State<InsertionMeatInfo> {
                       ),
                     ),
                     value: selectedLittle,
-                    itemList: orderNum == 0
-                        ? tableData_1[largeNum]
-                        : tableData_2[largeNum],
+                    itemList: orderNum == 0 ? tableData_1[largeNum] : tableData_2[largeNum],
                     onChanged: isselectedlarge
                         ? (value) {
                             setState(() {
@@ -238,7 +243,7 @@ class _InsertionMeatInfoState extends State<InsertionMeatInfo> {
                 onPressed: isFinal
                     ? () {
                         saveMeatData(MeatInfoSource());
-                        Navigator.pop(context);
+                        context.go('/option/show-step');
                       }
                     : null,
                 text: '저장',

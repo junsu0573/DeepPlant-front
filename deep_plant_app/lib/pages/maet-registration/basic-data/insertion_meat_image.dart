@@ -76,8 +76,7 @@ class _InsertionMeatImageState extends State<InsertionMeatImage> {
     } else if (widget.imageIdx == 1) {
       // 가열육 사진
       widget.meatData.heatedImage = imagePath;
-      dynamic response = await FirebaseServices.sendImageToFirebase(imagePath!,
-          'heatedmeat_sensory_evals/${widget.meatData.id}-${widget.meatData.seqno}');
+      dynamic response = await FirebaseServices.sendImageToFirebase(imagePath!, 'heatedmeat_sensory_evals/${widget.meatData.id}-${widget.meatData.seqno}');
       if (response == null) {
         if (!mounted) return;
         Navigator.push(
@@ -91,8 +90,7 @@ class _InsertionMeatImageState extends State<InsertionMeatImage> {
       // 처리육 사진
       widget.meatData.deepAgedImage = imagePath;
 
-      dynamic response = await FirebaseServices.sendImageToFirebase(imagePath!,
-          'sensory_evals/${widget.meatData.id}-${widget.meatData.seqno}');
+      dynamic response = await FirebaseServices.sendImageToFirebase(imagePath!, 'sensory_evals/${widget.meatData.id}-${widget.meatData.seqno}');
       if (response == null) {
         if (!mounted) return;
         Navigator.push(
@@ -128,31 +126,28 @@ class _InsertionMeatImageState extends State<InsertionMeatImage> {
               fontWeight: FontWeight.w600,
             ),
           ),
-          SizedBox(
-            height: 5.h,
-          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              IconButton(
-                onPressed: () {
-                  setState(() {
-                    showFirst(context);
-                  });
-                },
-                icon: Icon(
-                  Icons.info_outline,
-                  color: Colors.grey[600],
-                  size: 45.w,
+              SizedBox(
+                height: 69.h,
+                child: IconButton(
+                  onPressed: () {
+                    setState(() {
+                      showFirst(context);
+                    });
+                  },
+                  icon: Icon(
+                    Icons.info_outline,
+                    color: Colors.grey[600],
+                    size: 45.w,
+                  ),
                 ),
               ),
               SizedBox(
                 width: 40.w,
               ),
             ],
-          ),
-          SizedBox(
-            height: 6.h,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -180,9 +175,7 @@ class _InsertionMeatImageState extends State<InsertionMeatImage> {
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15.sp),
-                  color: isImageAssigned
-                      ? Palette.deepOptionColor
-                      : Palette.lightOptionColor,
+                  color: isImageAssigned ? Palette.deepOptionColor : Palette.lightOptionColor,
                 ),
                 width: 158.w,
                 height: 73.h,
@@ -203,9 +196,7 @@ class _InsertionMeatImageState extends State<InsertionMeatImage> {
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15.sp),
-                  color: isImageAssigned
-                      ? Palette.deepOptionColor
-                      : Palette.lightOptionColor,
+                  color: isImageAssigned ? Palette.deepOptionColor : Palette.lightOptionColor,
                 ),
                 width: 158.w,
                 height: 73.h,
@@ -226,9 +217,7 @@ class _InsertionMeatImageState extends State<InsertionMeatImage> {
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15.sp),
-                  color: isImageAssigned
-                      ? Palette.deepOptionColor
-                      : Palette.lightOptionColor,
+                  color: isImageAssigned ? Palette.deepOptionColor : Palette.lightOptionColor,
                 ),
                 width: 238.w,
                 height: 73.h,
@@ -288,7 +277,7 @@ class _InsertionMeatImageState extends State<InsertionMeatImage> {
             children: [
               SizedBox(
                 width: 585.w,
-                height: 585.h,
+                height: 615.h,
                 child: pickedImage != null
                     ? Image.file(
                         pickedImage!,
@@ -316,7 +305,7 @@ class _InsertionMeatImageState extends State<InsertionMeatImage> {
               if (pickedImage != null)
                 Positioned(
                   top: 10,
-                  right: 40,
+                  right: 10,
                   child: GestureDetector(
                     onTap: () {
                       setState(() {

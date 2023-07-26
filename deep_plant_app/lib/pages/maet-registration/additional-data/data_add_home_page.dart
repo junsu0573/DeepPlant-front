@@ -14,46 +14,39 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class DataAddHome extends StatefulWidget {
   final MeatData meatData;
   final UserData userData;
-  const DataAddHome(
-      {super.key, required this.meatData, required this.userData});
+  const DataAddHome({super.key, required this.meatData, required this.userData});
 
   @override
   State<DataAddHome> createState() => _DataAddHomeState();
 }
 
 class _DataAddHomeState extends State<DataAddHome> {
-  // deepagingdata 객체가 모인다.
+  // 입력된 데이터를 보관하게 된다.
   List<DeepAgingData> objects = [];
 
-  // model로 보낼 변환된 string이 보관된다.
-  final List<String> deepAgingModel = [];
-
-  // 작동을 진행할 버튼 위젯이 보관된다.
+  // 진행 과정에서의 버튼 위젯이 보관된다.
   List<Widget> widgets = [];
 
-  // 작업 진행 중 사용될 딥에이징 데이터 객체
+  // 작업 진행 중 사용될 딥에이징 데이터 임시 객체
   DeepAgingData data = DeepAgingData();
 
   int totalMinute = 0;
-  int totalHour = 0;
+  int lastHour = 0;
+  int lastMinute = 0;
   // 객체와 위젯의 index를 표현한다.
   int index = 0;
   // 객체 중 시간 요소를 담게 된다.
-  List<int> hour = List<int>.filled(3, 0);
-  List<int> minute = List<int>.filled(3, 0);
+  List<int> minute = [];
 
   // 추가 정보의 입력이 온전한지를 판별해준다.
   bool isFreshEnd = false;
-  List<bool> isDeepEnd = [false, false, false];
+  List<bool> isDeepEnd = [];
 
-  void intoString(int i) {
+  void intoModel(int i) {
     // 시간을 분으로 통합 | 전달 형식에 맞게 '년월일/분'으로 변환
+    // 최종적으로 데이터를 객체에 전달하는 함수이다.
 
-    String timeTemp = ((int.parse(objects[i].insertedHour!) * 60) +
-            (int.parse(objects[i].insertedMinute!)))
-        .toString();
-    String temp =
-        '${objects[i].selectedYear}${objects[i].selectedMonth}${objects[i].selectedDay}/$timeTemp';
+    String temp = '${objects[i].selectedYear}${objects[i].selectedMonth}${objects[i].selectedDay}/$totalMinute';
     if (widget.meatData.deepAging == null) {
       widget.meatData.deepAging = [temp];
     } else {
@@ -64,23 +57,20 @@ class _DataAddHomeState extends State<DataAddHome> {
   void calTime(DeepAgingData data, int index, bool edit) {
     // 시간 계산이 진행되며, 데이터 수정시에는 기존 값을 제거한다.
     if (edit == true) {
-      totalHour -= hour[index];
       totalMinute -= minute[index];
     }
-    hour[index] = int.parse(data.insertedHour!);
     minute[index] = int.parse(data.insertedMinute!);
-    totalHour += hour[index];
     totalMinute += minute[index];
     if (totalMinute >= 60) {
       int q = totalMinute ~/ 60;
       int r = totalMinute % 60;
-      totalHour += q;
-      totalMinute = r;
+      lastHour = q;
+      lastMinute = r;
     }
   }
 
   void editing(int index, dynamic value) {
-    // 위젯을 수정, 객체의 값이 변할 때 작동한다.
+    // 위젯을 수정, 객체의 값이 변할 때 작동한다. -> 아직은 사용되지 않는다.
     setState(() {
       objects[index] = value;
       calTime(objects[index], index, true);
@@ -89,45 +79,46 @@ class _DataAddHomeState extends State<DataAddHome> {
   }
 
   void checkFresh() {
-    if (widget.meatData.imagePath != null &&
-        widget.meatData.heatedmeat != null &&
-        widget.meatData.tongueData != null &&
-        widget.meatData.labData != null) {
+    // 신선육 데이터가 온전히 입력 되었을 경우에 사용되는 기능이다.
+    if (widget.meatData.heatedImage != null && widget.meatData.heatedmeat != null && widget.meatData.tongueData != null && widget.meatData.labData != null) {
       isFreshEnd = true;
     } else {
       isFreshEnd = false;
     }
+    setState(() {});
   }
 
-  void intoObject(List<String> objects) {
-    for (int i = 0; i < objects.length; i++) {
-      String part = objects[i].replaceAll(RegExp(r'\D'), '');
-      String part1 = part.substring(0, 4);
-      String part2 = part.substring(4, 6);
-      String part3 = part.substring(6, 8);
-      String part4 = part.substring(8, part.length);
-      if (int.parse(part4) >= 60) {
-        data.insertedHour = (int.parse(part4) ~/ 60).toString();
-        data.insertedMinute = (int.parse(part4) % 60).toString();
-      }
-      data.selectedYear = part1;
-      data.selectedMonth = part2;
-      data.selectedDay = part3;
-
-      intoData();
+  void checkDeep(dynamic data, int index) {
+    if (data.deepAgedImage != null || data.deepAgedFreshmeat != null || data.heatedmeat != null || data.tongueData != null || data.labData != null) {
+      isDeepEnd[index] = true;
+    } else {
+      isDeepEnd[index] = false;
     }
+    setState(() {});
+    print(isDeepEnd[index]);
+  }
+
+  String intoYmd(String temp) {
+    String part1 = temp.substring(0, 4);
+    String part2 = temp.substring(4, 6);
+    String part3 = temp.substring(6, 8);
+
+    String formattedString = "$part1.$part2.$part3";
+
+    return formattedString;
   }
 
   void intoData() {
+    // 딥에이징 데이터를 추가할 때 호출된다.
     setState(() {
-      if (data.insertedHour != null) {
+      if (data.insertedMinute != null) {
+        minute.add(0);
         objects.insert(index, data);
         widgets.insert(index, widgetCreate(index));
         // 데이터 fetch
-        intoString(index);
-
+        intoModel(index);
+        // 시간 계산
         calTime(data, index++, false);
-
         // 객체를 초기화 해준다.
         data = DeepAgingData();
       }
@@ -138,16 +129,18 @@ class _DataAddHomeState extends State<DataAddHome> {
   void initState() {
     super.initState();
     initialize();
+    checkFresh();
   }
 
   void initialize() {
+    // 초기 데이터를 불러오기 위해 사용된다.
     List<String>? deepAging = widget.meatData.deepAging;
 
     if (deepAging != null) {
-      objects = [];
       List<Widget> temp = [];
       for (index = 0; index < deepAging.length; index++) {
         objects.add(DeepAgingData());
+        minute.add(0);
 
         // 정규표현식을 사용하여 연도, 월, 일, 분 값을 추출
         RegExp regex = RegExp(r"(\d{4})(\d{2})(\d{2})/(\d+)");
@@ -158,22 +151,13 @@ class _DataAddHomeState extends State<DataAddHome> {
           String month = match.group(2)!;
           String day = match.group(3)!;
           int minutes = int.parse(match.group(4)!);
-          int hours = minutes ~/ 60;
-          int remainingMinutes = minutes % 60;
 
           objects[index].selectedYear = year;
           objects[index].selectedMonth = month;
           objects[index].selectedDay = day;
-          objects[index].insertedHour = '$hours';
-          objects[index].insertedMinute = '$remainingMinutes';
-          totalHour += hours;
-          totalMinute += remainingMinutes;
-          if (totalMinute >= 60) {
-            totalHour += remainingMinutes ~/ 60;
-            totalMinute = remainingMinutes % 60;
-          }
+          objects[index].insertedMinute = '$minutes';
         }
-
+        calTime(objects[index], index, false);
         temp.add(widgetCreate(index));
         widgets = temp;
       }
@@ -181,6 +165,7 @@ class _DataAddHomeState extends State<DataAddHome> {
   }
 
   Widget widgetCreate(int widgetIndex) {
+    isDeepEnd.add(false);
     return Container(
       padding: EdgeInsets.only(
         top: 5.0,
@@ -202,7 +187,7 @@ class _DataAddHomeState extends State<DataAddHome> {
                 meatData: widget.meatData,
               ),
             ),
-          );
+          ).then((_) => checkDeep(widget.meatData, widgetIndex));
         },
         child: Row(
           children: [
@@ -229,7 +214,7 @@ class _DataAddHomeState extends State<DataAddHome> {
               width: 190.w,
               padding: EdgeInsets.only(left: 6.0),
               child: Text(
-                '${objects[widgetIndex].insertedHour}시간 ${objects[widgetIndex].insertedMinute}분',
+                '${objects[widgetIndex].insertedMinute}분',
                 style: TextStyle(
                   color: Colors.black,
                   fontSize: 32.sp,
@@ -252,7 +237,7 @@ class _DataAddHomeState extends State<DataAddHome> {
             Padding(
               padding: const EdgeInsets.only(left: 8.0),
               child: Text(
-                isDeepEnd[widgetIndex] ? '완료' : '미완료',
+                (isDeepEnd[widgetIndex] == true) ? '완료' : '미완료', // 임시 지정, 후에 수정해야 함!
                 style: TextStyle(color: Colors.black),
               ),
             )
@@ -409,7 +394,7 @@ class _DataAddHomeState extends State<DataAddHome> {
                       Padding(
                         padding: const EdgeInsets.only(right: 6.0),
                         child: Text(
-                          widget.meatData.butcheryYmd!,
+                          (intoYmd(widget.meatData.butcheryYmd!)),
                           style: TextStyle(
                             color: Colors.grey[400],
                             fontSize: 12.0,
@@ -461,31 +446,6 @@ class _DataAddHomeState extends State<DataAddHome> {
                     ),
                   ),
                   Spacer(),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      ElevatedButton(
-                        onPressed: () {},
-                        style: ElevatedButton.styleFrom(
-                            side: BorderSide(
-                              width: 0.5,
-                            ),
-                            elevation: 0,
-                            backgroundColor: Colors.white,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(25.0),
-                            )),
-                        child: Text(
-                          // 이는 엑셀 파일을 업로드 하기 위한 버튼이다.
-                          '엑셀파일 업로드',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 15.0,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
                 ],
               ),
               SizedBox(
@@ -534,47 +494,47 @@ class _DataAddHomeState extends State<DataAddHome> {
               SizedBox(
                 height: 50.h,
               ),
-              // 만일 버튼 위젯이 3개가 된다면, 추가 버튼은 사라질 것이다.
-              if (widgets.length < 3)
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    SizedBox(
-                      height: 103.h,
-                      width: 588.w,
-                      child: OutlinedButton.icon(
-                        onPressed: () async {
-                          widget.meatData.seqno = widgets.length + 1;
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => InsertDeepAgingData(
-                                        agingdata: data,
-                                        meatData: widget.meatData,
-                                      ))).then((_) async {
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  SizedBox(
+                    height: 103.h,
+                    width: 588.w,
+                    child: OutlinedButton.icon(
+                      onPressed: () async {
+                        widget.meatData.seqno = widgets.length + 1;
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => InsertDeepAgingData(
+                                      agingdata: data,
+                                      meatData: widget.meatData,
+                                    ))).then((_) async {
+                          if (data.insertedMinute != null) {
                             intoData();
                             await ApiServices.sendMeatData(
                               'deep_aging_data',
                               widget.meatData.convertDeepAgingToJson(),
                             );
-                          });
-                        },
-                        icon: Icon(
-                          Icons.add,
-                          size: 30.0,
+                          }
+                        });
+                      },
+                      icon: Icon(
+                        Icons.add,
+                        size: 30.0,
+                        color: Colors.grey[400],
+                      ),
+                      label: Text(
+                        '추가하기',
+                        style: TextStyle(
                           color: Colors.grey[400],
-                        ),
-                        label: Text(
-                          '추가하기',
-                          style: TextStyle(
-                            color: Colors.grey[400],
-                            fontSize: 20.0,
-                          ),
+                          fontSize: 20.0,
                         ),
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
+              ),
               SizedBox(
                 height: 30.h,
               ),
@@ -600,7 +560,7 @@ class _DataAddHomeState extends State<DataAddHome> {
                     ),
                     child: Center(
                       child: Text(
-                        '${widgets.length}회/ $totalHour시간 $totalMinute분',
+                        '${widgets.length}회/ $lastHour시간 $lastMinute분',
                         textAlign: TextAlign.center,
                         style: TextStyle(fontSize: 19),
                       ),
