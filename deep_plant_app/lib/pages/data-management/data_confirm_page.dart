@@ -1,5 +1,6 @@
 import 'package:deep_plant_app/models/data_management_filter_model.dart';
 import 'package:deep_plant_app/models/user_data_model.dart';
+import 'package:deep_plant_app/source/api_services.dart';
 import 'package:deep_plant_app/widgets/data_table_widget.dart';
 import 'package:deep_plant_app/widgets/save_button.dart';
 import 'package:flutter/cupertino.dart';
@@ -9,7 +10,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
-import 'package:http/http.dart' as http;
 
 class DataConfirm extends StatefulWidget {
   final UserData userData;
@@ -52,8 +52,8 @@ class DataConfirmState extends State<DataConfirm> {
     Text('전체'),
   ];
   List<Widget> options3 = [
-    Text('소고기'),
-    Text('돼지고기'),
+    Text('소'),
+    Text('돼지'),
   ];
 
   void setting() {
@@ -87,7 +87,12 @@ class DataConfirmState extends State<DataConfirm> {
       widget.filter.resetCon();
     }
     setting();
-    // fetchJsonData();
+    initialize('Normal', '', '');
+  }
+
+  void initialize(String type, String time, String species) async {
+    final data = await ApiServices.getUserTypeData(type);
+    print(data);
   }
 
   DateTime _focusedDay = DateTime.now();
@@ -125,28 +130,6 @@ class DataConfirmState extends State<DataConfirm> {
       }
     }
     return ids;
-  }
-
-  Future<void> fetchJsonData() async {
-    var apiUrl = 'http://10.221.71.228:8080/user?id=junsu030401@gmail.com';
-
-    try {
-      var response = await http.get(Uri.parse(apiUrl));
-
-      if (response.statusCode == 200) {
-        // var jsonData = jsonDecode(response.body)['meatList'] as List<String>;
-        // var ids = extractIds(jsonData);
-        // for (int i = 0; i < ids.length; i++) {
-        //   userData.add('${ids[i]},${widget.user.name}, ');
-        // }
-      } else {
-        // Error handling
-        print('Request failed with status: ${response.statusCode}.');
-      }
-    } catch (e) {
-      // Exception handling
-      print('Error: $e');
-    }
   }
 
   @override

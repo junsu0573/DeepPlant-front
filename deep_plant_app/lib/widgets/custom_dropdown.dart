@@ -32,7 +32,7 @@ class CustomDropdown extends StatelessWidget {
         underline: Container(),
         borderRadius: BorderRadius.circular(42.5.sp),
         dropdownColor: Colors.white,
-        menuMaxHeight: 242.h,
+        menuMaxHeight: 310.h,
         icon: Container(
           width: 34.w,
           margin: EdgeInsets.only(right: 30.w),
@@ -41,6 +41,7 @@ class CustomDropdown extends StatelessWidget {
         isExpanded: true,
         hint: hintText,
         value: value,
+        iconDisabledColor: Colors.transparent,
         items: itemList
             .map((e) => DropdownMenuItem(
                   value: e,

@@ -41,11 +41,7 @@ class _DeepAgingState extends State<DeepAging> {
   void intoString() {
     // 시간을 분으로 통합 | 전달 형식에 맞게 '년월일/분'으로 변환
     for (int i = 0; i < objects.length; i++) {
-      String timeTemp = ((int.parse(objects[i].insertedHour!) * 60) +
-              (int.parse(objects[i].insertedMinute!)))
-          .toString();
-      String temp =
-          '${objects[i].selectedYear}${objects[i].selectedMonth}${objects[i].selectedDay}/$timeTemp';
+      String temp = '${objects[i].selectedYear}${objects[i].selectedMonth}${objects[i].selectedDay}/$totalMinute';
       deepAgingModel.add(temp);
     }
     // 객체에 데이터 저장
@@ -58,7 +54,6 @@ class _DeepAgingState extends State<DeepAging> {
       totalHour -= hour[index];
       totalMinute -= minute[index];
     }
-    hour[index] = int.parse(data.insertedHour!);
     minute[index] = int.parse(data.insertedMinute!);
     totalHour += hour[index];
     totalMinute += minute[index];
@@ -81,7 +76,7 @@ class _DeepAgingState extends State<DeepAging> {
 
   void intoData() {
     setState(() {
-      if (data.insertedHour != null) {
+      if (data.insertedMinute != null) {
         objects.insert(index, data);
         widgets.insert(index, widgetCreate(index));
         calTime(data, index++, false);
@@ -151,7 +146,7 @@ class _DeepAgingState extends State<DeepAging> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                '${objects[index].insertedHour}시간 ${objects[index].insertedMinute}분',
+                '${objects[index].insertedMinute}분',
                 style: TextStyle(
                   color: Colors.black,
                   fontSize: 32.sp,
@@ -291,8 +286,7 @@ class _DeepAgingState extends State<DeepAging> {
               ],
             ),
           Padding(
-            padding: const EdgeInsets.only(
-                top: 25.0, left: 25.0, right: 25.0, bottom: 5.0),
+            padding: const EdgeInsets.only(top: 25.0, left: 25.0, right: 25.0, bottom: 5.0),
             child: Row(
               children: [
                 Text(
@@ -303,8 +297,7 @@ class _DeepAgingState extends State<DeepAging> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(
-                left: 25.0, right: 25.0, top: 5.0, bottom: 20.0),
+            padding: const EdgeInsets.only(left: 25.0, right: 25.0, top: 5.0, bottom: 20.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
@@ -326,8 +319,7 @@ class _DeepAgingState extends State<DeepAging> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(
-                left: 20.0, right: 20.0, top: 20.0, bottom: 20.0),
+            padding: const EdgeInsets.only(left: 20.0, right: 20.0, top: 20.0, bottom: 20.0),
             child: Transform.translate(
               offset: Offset(0, 0),
               child: SizedBox(

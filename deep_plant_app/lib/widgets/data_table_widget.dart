@@ -71,8 +71,7 @@ void sortUserData(List<String> source, bool sortDecending) {
   });
 }
 
-List<String> setDay(List<String> source, String option1, DateTime? start,
-    DateTime? end, bool selectedEtc) {
+List<String> setDay(List<String> source, String option1, DateTime? start, DateTime? end, bool selectedEtc) {
   if (option1 == '3일') {
     source = source.where((data) {
       List<String> parts = data.split(',');
@@ -107,15 +106,7 @@ List<String> setDay(List<String> source, String option1, DateTime? start,
   return source;
 }
 
-List<DataRow> getRows(
-    List<String> userData,
-    String text,
-    Function data,
-    bool sortDscending,
-    String option1,
-    DateTime? start,
-    DateTime? end,
-    bool selectedEtc) {
+List<DataRow> getRows(List<String> userData, String text, Function data, bool sortDscending, String option1, DateTime? start, DateTime? end, bool selectedEtc) {
   data();
   List<String> source = userData;
 
@@ -127,8 +118,7 @@ List<DataRow> getRows(
   // 이 과정은 기존 source에 담긴 데이터를 textfield를 통해 입력받는 'text' 변수와 비교하게 된다.
   // source에 담긴 data 값을 text의 시작과 비교하고, controller를 통해 실시간적으로 정보를 교류하게 된다.
   // contains는 중간 아무 요소나 비교, startwith는 시작부터, endwith는 끝부터 비교하는 기능임을 기억해두자.
-  List<String> filteredData =
-      source.where((data) => data.contains(text)).toList();
+  List<String> filteredData = source.where((data) => data.contains(text)).toList();
 
   for (var i = 0; i < filteredData.length; i++) {
     var csvDataCells = filteredData[i].split(',');
@@ -193,23 +183,14 @@ List<DataRow> getRows(
   return dataRow;
 }
 
-Widget getDataTable(
-    List<String> userData,
-    String text,
-    Function data,
-    bool sortDscending,
-    String option1,
-    DateTime? start,
-    DateTime? end,
-    bool selectedEtc) {
+Widget getDataTable(List<String> userData, String text, Function data, bool sortDscending, String option1, DateTime? start, DateTime? end, bool selectedEtc) {
   return DataTable(
     showBottomBorder: true,
     headingRowColor: MaterialStateProperty.all(Colors.grey[200]),
     headingRowHeight: 40.0,
     columnSpacing: 35.0,
     columns: getColumns(),
-    rows: getRows(
-        userData, text, data, sortDscending, option1, start, end, selectedEtc),
+    rows: getRows(userData, text, data, sortDscending, option1, start, end, selectedEtc),
   );
 }
 
@@ -253,140 +234,8 @@ List<String> setType(List<String> source, String option3) {
   return source;
 }
 
-List<DataRow> getRowView(
-    List<String> userData,
-    String text,
-    Function data,
-    String option1,
-    String option2,
-    String option3,
-    DateTime? start,
-    DateTime? end,
-    bool selectedEtc) {
-  data();
-  List<String> source = userData;
-
-  source = setDay(source, option1, start, end, selectedEtc);
-  source = setUser(source, option2);
-  source = setType(source, option3);
-
-  List<DataRow> dataRow = [];
-
-  // 이 과정은 기존 source에 담긴 데이터를 textfield를 통해 입력받는 'text' 변수와 비교하게 된다.
-  // source에 담긴 data 값을 text의 시작과 비교하고, controller를 통해 실시간적으로 정보를 교류하게 된다.
-  // contains는 중간 아무 요소나 비교, startwith는 시작부터, endwith는 끝부터 비교하는 기능임을 기억해두자.
-  List<String> filteredData =
-      source.where((data) => data.contains(text)).toList();
-
-  for (var i = 0; i < filteredData.length; i++) {
-    var csvDataCells = filteredData[i].split(',');
-    List<DataCell> cells = [];
-    cells.add(
-      DataCell(
-        SizedBox(
-          width: 300.w,
-          child: SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Text(
-              csvDataCells[0],
-              style: TextStyle(
-                fontSize: 15.0,
-                color: Colors.black,
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-    cells.add(
-      DataCell(
-        SizedBox(
-          width: 80.w,
-          child: SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Text(
-              csvDataCells[1],
-              style: TextStyle(
-                fontSize: 15.0,
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-    // if (csvDataCells[1] == '${widget.user.name}') {
-    if (csvDataCells[1] == '전수현') {
-      cells.add(
-        DataCell(
-          ElevatedButton(
-            onPressed: () {},
-            style: ElevatedButton.styleFrom(
-                foregroundColor: Colors.black,
-                backgroundColor: Colors.grey[300],
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(35.0),
-                )),
-            child: Text(
-              '수정',
-            ),
-          ),
-        ),
-      );
-    } else {
-      cells.add(
-        DataCell(
-          ElevatedButton(
-            onPressed: () {},
-            style: ElevatedButton.styleFrom(
-                foregroundColor: Colors.black,
-                backgroundColor: Colors.grey[300],
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(35.0),
-                )),
-            child: Text(
-              '열람',
-            ),
-          ),
-        ),
-      );
-    }
-
-    dataRow.add(DataRow(cells: cells));
-  }
-  return dataRow;
-}
-
-Widget getDataView(
-    List<String> userData,
-    String text,
-    Function data,
-    String option1,
-    String option2,
-    String option3,
-    DateTime? start,
-    DateTime? end,
-    bool selectedEtc) {
-  return DataTable(
-    showBottomBorder: true,
-    headingRowColor: MaterialStateProperty.all(Colors.grey[200]),
-    headingRowHeight: 40.0,
-    columnSpacing: 25.0,
-    columns: getColumns(),
-    rows: getRowView(userData, text, data, option1, option2, option3, start,
-        end, selectedEtc),
-  );
-}
-
 List<DataRow> getRowConfirm(
-    List<String> userData,
-    String text,
-    Function data,
-    String option1,
-    String option2,
-    String option3,
-    DateTime? start,
-    DateTime? end,
-    bool selectedEtc) {
+    List<String> userData, String text, Function data, String option1, String option2, String option3, DateTime? start, DateTime? end, bool selectedEtc) {
   data();
   List<String> source = userData;
 
@@ -399,8 +248,7 @@ List<DataRow> getRowConfirm(
   // 이 과정은 기존 source에 담긴 데이터를 textfield를 통해 입력받는 'text' 변수와 비교하게 된다.
   // source에 담긴 data 값을 text의 시작과 비교하고, controller를 통해 실시간적으로 정보를 교류하게 된다.
   // contains는 중간 아무 요소나 비교, startwith는 시작부터, endwith는 끝부터 비교하는 기능임을 기억해두자.
-  List<String> filteredData =
-      source.where((data) => data.contains(text)).toList();
+  List<String> filteredData = source.where((data) => data.contains(text)).toList();
 
   for (var i = 0; i < filteredData.length; i++) {
     var csvDataCells = filteredData[i].split(',');
@@ -491,22 +339,13 @@ List<DataRow> getRowConfirm(
 }
 
 Widget getDataConfirm(
-    List<String> userData,
-    String text,
-    Function data,
-    String option1,
-    String option2,
-    String option3,
-    DateTime? start,
-    DateTime? end,
-    bool selectedEtc) {
+    List<String> userData, String text, Function data, String option1, String option2, String option3, DateTime? start, DateTime? end, bool selectedEtc) {
   return DataTable(
     showBottomBorder: true,
     headingRowColor: MaterialStateProperty.all(Colors.grey[200]),
     headingRowHeight: 40.0,
     columnSpacing: 25.0,
     columns: getColumns(),
-    rows: getRowConfirm(userData, text, data, option1, option2, option3, start,
-        end, selectedEtc),
+    rows: getRowConfirm(userData, text, data, option1, option2, option3, start, end, selectedEtc),
   );
 }

@@ -25,11 +25,14 @@ class InsertDeepAgingData extends StatefulWidget {
 
 class _InsertDeepAgingDataState extends State<InsertDeepAgingData> {
   // 두 개의 textfield를 제어하기 위해 사용
-  final TextEditingController textEditingController1 = TextEditingController();
   final TextEditingController textEditingController2 = TextEditingController();
 
   // 시간 변수의 초기 값 -> 변경 금지!
-  DateTime selected = DateTime.utc(2022, 12, 1);
+  DateTime selected = DateTime(
+    DateTime.utc(2022, 12, 1).year,
+    DateTime.utc(2022, 12, 1).month,
+    DateTime.now().day,
+  );
   DateTime focusedDay = DateTime.utc(2022, 12, 1);
 
   // 년, 월, 일 필드의 on/off 상태를 제어함.
@@ -38,39 +41,23 @@ class _InsertDeepAgingDataState extends State<InsertDeepAgingData> {
   bool year = false;
 
   // 대상 값들이 들어오게 될 변수
-  String? selectedMonth;
-  String? selectedDay;
-  String? selectedYear;
-  String? selectedHour;
+  String selectedMonth = DateTime.now().month.toString();
+  String selectedDay = DateTime.now().day.toString();
+  String selectedYear = DateTime.now().year.toString();
   String? selectedMinute;
 
   // 대상 값들이 입력되었는지 확인
-  bool isInsertedHour = false;
   bool isInsertedMinute = false;
-  bool isInsertedMonth = false;
-  bool isInsertedDay = false;
-  bool isInsertedYear = false;
+  bool isInsertedMonth = true;
+  bool isInsertedDay = true;
+  bool isInsertedYear = true;
 
   // 최종 상태를 결정짓는 변수
   bool isFinal = false;
 
-  List<String> monthData = [
-    '1월',
-    '2월',
-    '3월',
-    '4월',
-    '5월',
-    '6월',
-    '7월',
-    '8월',
-    '9월',
-    '10월',
-    '11월',
-    '12월'
-  ];
+  List<String> monthData = ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'];
   // 2023 ~ 2003 까지의 연도 필드
-  List<int> yearData =
-      List<int>.generate(2023 - 2003 + 1, (int index) => 2023 - index);
+  List<int> yearData = List<int>.generate(2023 - 2003 + 1, (int index) => 2023 - index);
   // 연도의 현재 위치를 결정 지음
   int yearFieldValue = 0;
 
@@ -80,21 +67,18 @@ class _InsertDeepAgingDataState extends State<InsertDeepAgingData> {
   @override
   void initState() {
     super.initState();
-    if (widget.agingdata.insertedHour != null) {
+    if (widget.agingdata.insertedMinute != null) {
       // 여기에 0붙으면 때어버리게 추가
-      selectedMonth = widget.agingdata.selectedMonth;
-      selectedDay = widget.agingdata.selectedDay;
-      selectedYear = widget.agingdata.selectedYear;
-      selectedHour = widget.agingdata.insertedHour;
-      textEditingController1.text = widget.agingdata.insertedHour!;
+      selectedMonth = widget.agingdata.selectedMonth!;
+      selectedDay = widget.agingdata.selectedDay!;
+      selectedYear = widget.agingdata.selectedYear!;
       selectedMinute = widget.agingdata.insertedMinute;
       textEditingController2.text = widget.agingdata.insertedMinute!;
       isInsertedDay = true;
-      isInsertedHour = true;
       isInsertedMinute = true;
       isInsertedMonth = true;
       isInsertedYear = true;
-      successAssign();
+      isFinal = true;
     }
   }
 
@@ -103,38 +87,20 @@ class _InsertDeepAgingDataState extends State<InsertDeepAgingData> {
     deepData.selectedMonth = selectedMonth;
     deepData.selectedDay = selectedDay;
     deepData.selectedYear = selectedYear;
-    deepData.insertedHour = selectedHour;
     deepData.insertedMinute = selectedMinute;
   }
 
   void setting() {
     // 최종적으로 '월, 일'에 들어갈 때 10 이하의 경우 앞에 0을 추가해준다.
-    if (int.parse(selectedMonth!) < 10 && !selectedMonth!.startsWith('0')) {
+    if (int.parse(selectedMonth) < 10 && !selectedMonth.startsWith('0')) {
       selectedMonth = '0$selectedMonth';
     } else {
-      selectedMonth = selectedMonth!.substring(1, selectedMonth!.length);
+      selectedMonth = selectedMonth.substring(1, selectedMonth.length);
     }
-    if (int.parse(selectedDay!) < 10 && !selectedDay!.startsWith('0')) {
+    if (int.parse(selectedDay) < 10 && !selectedDay.startsWith('0')) {
       selectedDay = '0$selectedDay';
     } else {
-      selectedDay = selectedDay!.substring(1, selectedDay!.length);
-    }
-  }
-
-  void successAssign() {
-    // 최종적으로 판별을 진행한다. 각 field의 입력이 끝나면, 매번 호출된다. -> 수정의 경우도 존재하기 때문.
-    if (isInsertedDay &&
-        isInsertedHour &&
-        isInsertedMinute &&
-        isInsertedYear &&
-        isInsertedMonth) {
-      setState(() {
-        isFinal = true;
-      });
-    } else {
-      setState(() {
-        isFinal = false;
-      });
+      selectedDay = selectedDay.substring(1, selectedDay.length);
     }
   }
 
@@ -202,17 +168,13 @@ class _InsertDeepAgingDataState extends State<InsertDeepAgingData> {
                                   });
                                 },
                                 style: ElevatedButton.styleFrom(
-                                  backgroundColor: (selectedMonth == null)
-                                      ? Colors.grey[400]
-                                      : Colors.grey[800],
+                                  backgroundColor: Colors.grey[800],
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(10.0),
                                   ),
                                 ),
                                 child: Text(
-                                  (selectedMonth != null)
-                                      ? '$selectedMonth월'
-                                      : '월',
+                                  '$selectedMonth월',
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                     color: Colors.white,
@@ -241,16 +203,14 @@ class _InsertDeepAgingDataState extends State<InsertDeepAgingData> {
                                   });
                                 },
                                 style: ElevatedButton.styleFrom(
-                                  backgroundColor: (selectedDay == null)
-                                      ? Colors.grey[400]
-                                      : Colors.grey[800],
+                                  backgroundColor: Colors.grey[800],
                                   disabledBackgroundColor: Colors.grey[400],
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(10.0),
                                   ),
                                 ),
                                 child: Text(
-                                  (selectedDay != null) ? '$selectedDay일' : '일',
+                                  '$selectedDay일',
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                     color: Colors.white,
@@ -279,18 +239,14 @@ class _InsertDeepAgingDataState extends State<InsertDeepAgingData> {
                                   });
                                 },
                                 style: ElevatedButton.styleFrom(
-                                  backgroundColor: (selectedYear == null)
-                                      ? Colors.grey[400]
-                                      : Colors.grey[800],
+                                  backgroundColor: Colors.grey[800],
                                   disabledBackgroundColor: Colors.grey[400],
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(10.0),
                                   ),
                                 ),
                                 child: Text(
-                                  (selectedYear != null)
-                                      ? '$selectedYear'
-                                      : '년도',
+                                  selectedYear,
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                     color: Colors.white,
@@ -326,7 +282,6 @@ class _InsertDeepAgingDataState extends State<InsertDeepAgingData> {
                                   selectedMonth = selected;
                                   month = false;
                                   isInsertedMonth = true;
-                                  successAssign();
                                 });
                               },
                             ),
@@ -362,7 +317,6 @@ class _InsertDeepAgingDataState extends State<InsertDeepAgingData> {
                                     selectedYear = yearData[i].toString();
                                     yearFieldValue = yearData[i];
                                     isInsertedYear = true;
-                                    successAssign();
                                   });
                                 },
                                 itemBuilder: (context, index) {
@@ -401,15 +355,13 @@ class _InsertDeepAgingDataState extends State<InsertDeepAgingData> {
                               rowHeight: 35.0,
                               headerVisible: false,
                               daysOfWeekVisible: false,
-                              onDaySelected:
-                                  (DateTime selected, DateTime focusedDay) {
+                              onDaySelected: (DateTime selected, DateTime focusedDay) {
                                 setState(() {
                                   this.selected = selected;
                                   this.focusedDay = focusedDay;
                                   selectedDay = selected.day.toString();
                                   day = false;
                                   isInsertedDay = true;
-                                  successAssign();
                                 });
                               },
                               selectedDayPredicate: (DateTime day) {
@@ -464,80 +416,27 @@ class _InsertDeepAgingDataState extends State<InsertDeepAgingData> {
                               onChanged: (value) {
                                 setState(() {
                                   if (num.hasMatch(value)) {
-                                    selectedHour = value;
-                                    isInsertedHour = true;
-                                    successAssign();
-                                  }
-                                });
-                              },
-                              style: TextStyle(
-                                  fontSize: 25.0, fontWeight: FontWeight.bold),
-                              textAlign: TextAlign.end,
-                              inputFormatters: [
-                                FilteringTextInputFormatter.digitsOnly
-                              ],
-                              controller: textEditingController1,
-                              showCursor: false,
-                              keyboardType: TextInputType.number,
-                              decoration: InputDecoration(
-                                contentPadding:
-                                    EdgeInsets.only(right: 5.0, top: 10.0),
-                                enabledBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: Colors.grey.shade300, width: 2.5),
-                                ),
-                                focusedBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: Colors.grey.shade300, width: 2.5),
-                                ),
-                                filled: false,
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 2,
-                            child: Padding(
-                              padding: const EdgeInsets.only(
-                                left: 8.0,
-                                top: 8.0,
-                              ),
-                              child: Text(
-                                '시간',
-                                style: TextStyle(fontSize: 18.0),
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 3,
-                            child: TextField(
-                              onChanged: (value) {
-                                setState(() {
-                                  if (num.hasMatch(value)) {
                                     selectedMinute = value;
                                     isInsertedMinute = true;
-                                    successAssign();
+                                    isFinal = true;
+                                  } else {
+                                    isFinal = false;
                                   }
                                 });
                               },
                               textAlign: TextAlign.end,
-                              style: TextStyle(
-                                  fontSize: 25.0, fontWeight: FontWeight.bold),
-                              inputFormatters: [
-                                FilteringTextInputFormatter.digitsOnly
-                              ],
+                              style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.bold),
+                              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                               controller: textEditingController2,
                               showCursor: false,
                               keyboardType: TextInputType.number,
                               decoration: InputDecoration(
-                                contentPadding:
-                                    EdgeInsets.only(right: 5.0, top: 10.0),
+                                contentPadding: EdgeInsets.only(right: 5.0, top: 10.0),
                                 enabledBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: Colors.grey.shade300, width: 2.5),
+                                  borderSide: BorderSide(color: Colors.grey.shade300, width: 2.5),
                                 ),
                                 focusedBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: Colors.grey.shade300, width: 2.5),
+                                  borderSide: BorderSide(color: Colors.grey.shade300, width: 2.5),
                                 ),
                                 filled: false,
                               ),

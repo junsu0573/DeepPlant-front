@@ -65,8 +65,7 @@ class _StepDeepagingMeatState extends State<StepDeepagingMeat> {
                 mainText: '처리육 단면 촬영',
                 subText: '데이터를 입력해주세요',
                 step: '1',
-                isCompleted:
-                    widget.meatData.deepAgedImage != null ? true : false,
+                isCompleted: widget.meatData.deepAgedImage != null ? true : false,
               ),
             ),
             InkWell(
@@ -87,32 +86,7 @@ class _StepDeepagingMeatState extends State<StepDeepagingMeat> {
                 mainText: '처리육 관능평가',
                 subText: '데이터를 입력해주세요',
                 step: '2',
-                isCompleted: widget.meatData.deepAgedFreshmeat != null &&
-                        widget.meatData.deepAgedFreshmeat!['marbling'] != null
-                    ? true
-                    : false,
-              ),
-            ),
-            InkWell(
-              onTap: () => widget.meatData.deepAgedFreshmeat != null
-                  ? Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => InsertionMeatImage(
-                          meatData: widget.meatData,
-                          userData: widget.userData,
-                          imageIdx: 1,
-                        ),
-                      ),
-                    ).then((value) {
-                      setState(() {});
-                    })
-                  : null,
-              child: StepCard(
-                mainText: '가열육 단면 촬영',
-                subText: '데이터를 입력해주세요',
-                step: '3',
-                isCompleted: widget.meatData.heatedImage != null ? true : false,
+                isCompleted: widget.meatData.deepAgedFreshmeat != null && widget.meatData.deepAgedFreshmeat!['marbling'] != null ? true : false,
               ),
             ),
             InkWell(
@@ -131,7 +105,7 @@ class _StepDeepagingMeatState extends State<StepDeepagingMeat> {
               child: StepCard(
                 mainText: '가열육 관능평가',
                 subText: '데이터를 입력해주세요',
-                step: '4',
+                step: '3',
                 isCompleted: widget.meatData.heatedmeat != null ? true : false,
               ),
             ),
@@ -140,8 +114,7 @@ class _StepDeepagingMeatState extends State<StepDeepagingMeat> {
                   ? Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) =>
-                            TongueDataInputPage(meatData: widget.meatData),
+                        builder: (context) => TongueDataInputPage(meatData: widget.meatData),
                       ),
                     ).then((value) {
                       setState(() {});
@@ -150,11 +123,8 @@ class _StepDeepagingMeatState extends State<StepDeepagingMeat> {
               child: StepCard(
                 mainText: '전자혀 데이터',
                 subText: '데이터를 입력해주세요',
-                step: '5',
-                isCompleted: widget.meatData.tongueData != null &&
-                        !widget.meatData.tongueData!.containsValue(null)
-                    ? true
-                    : false,
+                step: '4',
+                isCompleted: widget.meatData.tongueData != null && !widget.meatData.tongueData!.containsValue(null) ? true : false,
               ),
             ),
             GestureDetector(
@@ -173,11 +143,8 @@ class _StepDeepagingMeatState extends State<StepDeepagingMeat> {
               child: StepCard(
                 mainText: '실험 데이터',
                 subText: '데이터를 입력해주세요',
-                step: '6',
-                isCompleted: widget.meatData.labData != null &&
-                        !widget.meatData.labData!.containsValue(null)
-                    ? true
-                    : false,
+                step: '5',
+                isCompleted: widget.meatData.labData != null && !widget.meatData.labData!.containsValue(null) ? true : false,
               ),
             ),
             Spacer(),

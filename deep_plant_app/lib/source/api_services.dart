@@ -13,8 +13,7 @@ class ApiServices {
     String requestBody = jsonData;
 
     try {
-      final response = await http.post(Uri.parse(apiUrl),
-          headers: headers, body: requestBody);
+      final response = await http.post(Uri.parse(apiUrl), headers: headers, body: requestBody);
       if (response.statusCode == 200) {
         print('POST 요청 성공');
         print(response.body);
@@ -89,6 +88,12 @@ class ApiServices {
     }
 
     print(await _getApi(endPoint));
+  }
+
+  // 등록자 필터 정보 조회(GET)
+  static Future<dynamic> getUserTypeData(String type) async {
+    dynamic data = await _getApi('meat/user?userType=$type');
+    return data;
   }
 
   // 유저 회원가입 (POST)
