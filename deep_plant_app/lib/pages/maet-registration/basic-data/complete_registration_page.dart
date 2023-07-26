@@ -49,7 +49,7 @@ class _CompleteResgistrationState extends State<CompleteResgistration> {
     await sendImageToFirebase();
 
     // 데이터 전송
-    await sendMeatData(widget.meatData);
+    await sendMeatData();
   }
 
   // 관리번호 생성
@@ -129,13 +129,12 @@ class _CompleteResgistrationState extends State<CompleteResgistration> {
   }
 
   // 육류 정보를 서버로 전송
-  Future<void> sendMeatData(MeatData meatData) async {
-    // 데이터 전송
-
-    final response1 =
-        await ApiServices.sendMeatData(null, meatData.convertNewMeatToJson());
+  Future<void> sendMeatData() async {
+    widget.meatData.createUser = widget.meatData.userId;
+    final response1 = await ApiServices.sendMeatData(
+        null, widget.meatData.convertNewMeatToJson());
     final response2 = await ApiServices.sendMeatData(
-        'sensory_eval', meatData.convertFreshMeatToJson(0));
+        'sensory_eval', widget.meatData.convertFreshMeatToJson(0));
     if (response1 == null || response2 == null) {
       if (!mounted) return;
       context.go('/option/error');

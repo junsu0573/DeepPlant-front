@@ -14,7 +14,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class DataAddHome extends StatefulWidget {
   final MeatData meatData;
   final UserData userData;
-  const DataAddHome({super.key, required this.meatData, required this.userData});
+  const DataAddHome(
+      {super.key, required this.meatData, required this.userData});
 
   @override
   State<DataAddHome> createState() => _DataAddHomeState();
@@ -46,7 +47,8 @@ class _DataAddHomeState extends State<DataAddHome> {
     // 시간을 분으로 통합 | 전달 형식에 맞게 '년월일/분'으로 변환
     // 최종적으로 데이터를 객체에 전달하는 함수이다.
 
-    String temp = '${objects[i].selectedYear}${objects[i].selectedMonth}${objects[i].selectedDay}/$totalMinute';
+    String temp =
+        '${objects[i].selectedYear}${objects[i].selectedMonth}${objects[i].selectedDay}/$totalMinute';
     if (widget.meatData.deepAging == null) {
       widget.meatData.deepAging = [temp];
     } else {
@@ -66,6 +68,8 @@ class _DataAddHomeState extends State<DataAddHome> {
       int r = totalMinute % 60;
       lastHour = q;
       lastMinute = r;
+    } else {
+      lastMinute = totalMinute;
     }
   }
 
@@ -80,7 +84,10 @@ class _DataAddHomeState extends State<DataAddHome> {
 
   void checkFresh() {
     // 신선육 데이터가 온전히 입력 되었을 경우에 사용되는 기능이다.
-    if (widget.meatData.heatedImage != null && widget.meatData.heatedmeat != null && widget.meatData.tongueData != null && widget.meatData.labData != null) {
+    if (widget.meatData.heatedImage != null &&
+        widget.meatData.heatedmeat != null &&
+        widget.meatData.tongueData != null &&
+        widget.meatData.labData != null) {
       isFreshEnd = true;
     } else {
       isFreshEnd = false;
@@ -89,7 +96,11 @@ class _DataAddHomeState extends State<DataAddHome> {
   }
 
   void checkDeep(dynamic data, int index) {
-    if (data.deepAgedImage != null || data.deepAgedFreshmeat != null || data.heatedmeat != null || data.tongueData != null || data.labData != null) {
+    if (data.deepAgedImage != null ||
+        data.deepAgedFreshmeat != null ||
+        data.heatedmeat != null ||
+        data.tongueData != null ||
+        data.labData != null) {
       isDeepEnd[index] = true;
     } else {
       isDeepEnd[index] = false;
@@ -237,7 +248,9 @@ class _DataAddHomeState extends State<DataAddHome> {
             Padding(
               padding: const EdgeInsets.only(left: 8.0),
               child: Text(
-                (isDeepEnd[widgetIndex] == true) ? '완료' : '미완료', // 임시 지정, 후에 수정해야 함!
+                (isDeepEnd[widgetIndex] == true)
+                    ? '완료'
+                    : '미완료', // 임시 지정, 후에 수정해야 함!
                 style: TextStyle(color: Colors.black),
               ),
             )
@@ -295,7 +308,7 @@ class _DataAddHomeState extends State<DataAddHome> {
                     width: 12.w,
                   ),
                   Text(
-                    widget.meatData.userId!,
+                    widget.meatData.createUser!,
                     style: TextStyle(
                       fontSize: 24.sp,
                       fontWeight: FontWeight.w500,
@@ -569,7 +582,7 @@ class _DataAddHomeState extends State<DataAddHome> {
                 ],
               ),
               SizedBox(
-                height: 40.h,
+                height: 60.h,
               ),
               Padding(
                 padding: EdgeInsets.only(bottom: 17.h),

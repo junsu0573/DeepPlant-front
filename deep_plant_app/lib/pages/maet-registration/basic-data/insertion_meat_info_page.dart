@@ -161,17 +161,18 @@ class _InsertionMeatInfoState extends State<InsertionMeatInfo> {
                     height: 20.0,
                   ),
                   CustomDropdown(
-                      hintText: Text(
-                        '종류 선택',
-                        style: TextStyle(
-                          fontSize: 30.sp,
-                          fontWeight: FontWeight.w400,
-                          color: Palette.greyTextColor,
-                        ),
+                    hintText: Text(
+                      selectedOrder!,
+                      style: TextStyle(
+                        fontSize: 30.sp,
+                        fontWeight: FontWeight.w400,
+                        color: Colors.black,
                       ),
-                      value: selectedOrder,
-                      itemList: orders,
-                      onChanged: null),
+                    ),
+                    value: null,
+                    itemList: orders,
+                    onChanged: null,
+                  ),
                   SizedBox(
                     height: 42.0.h,
                   ),

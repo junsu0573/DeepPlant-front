@@ -5,9 +5,11 @@ import 'package:deep_plant_app/source/get_date.dart';
 import 'package:path_provider/path_provider.dart';
 
 class MeatData {
+  String? userId;
+
   // 관리 번호 생성 시 저장
   String? id;
-  String? userId;
+  String? createUser;
   String? createdAt;
 
   // 육류 오픈 API 데이터
@@ -48,6 +50,7 @@ class MeatData {
   MeatData({
     // 관리 번호 생성 시 저장
     this.id,
+    this.createUser,
     this.userId,
     this.createdAt,
     this.traceNum,
@@ -206,7 +209,7 @@ class MeatData {
   String convertNewMeatToJson() {
     Map<String, dynamic> jsonData = {
       "id": id,
-      "userId": userId,
+      "userId": createUser,
       "createdAt": GetDate.getCurrentDate(),
       "traceNum": traceNum,
       "farmAddr": farmAddr,
@@ -377,7 +380,7 @@ class MeatData {
     sexType = jsonData['sexType'];
     speciesValue = jsonData['specieValue'];
     traceNum = jsonData['traceNum'];
-    userId = jsonData['userId'];
+    createUser = jsonData['userId'];
   }
 
   // 원육 데이터 fetch

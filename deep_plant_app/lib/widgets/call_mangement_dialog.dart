@@ -80,33 +80,6 @@ class _NumCallDialogState extends State<NumCallDialog> {
                         children: [
                           CommonButton(
                             text: Text(
-                              '엑셀파일 업로드',
-                              style: TextStyle(fontSize: 27.sp),
-                            ),
-                            onPress: () {},
-                            width: 250.w,
-                            height: 63.h,
-                            bgColor: Colors.white,
-                            fgColor: Colors.black,
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 29.h,
-                      ),
-                      Divider(
-                        height: 0,
-                        thickness: 3.sp,
-                        color: Color.fromRGBO(228, 228, 228, 1),
-                      ),
-                      SizedBox(
-                        height: 29.h,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          CommonButton(
-                            text: Text(
                               'QR 스캔',
                               style: TextStyle(fontSize: 28.sp),
                             ),
@@ -191,7 +164,7 @@ class _NumCallDialogState extends State<NumCallDialog> {
                         color: Colors.black,
                       ),
                       SizedBox(
-                        height: 200.h,
+                        height: 300.h,
                         child: ListView.builder(
                           itemCount: mNumList.length,
                           itemBuilder: (BuildContext context, int index) {
@@ -207,9 +180,7 @@ class _NumCallDialogState extends State<NumCallDialog> {
                           },
                         ),
                       ),
-                      SizedBox(
-                        height: 15.h,
-                      ),
+                      Spacer(),
                       SaveButton(
                         onPressed: () {
                           context.pop();
