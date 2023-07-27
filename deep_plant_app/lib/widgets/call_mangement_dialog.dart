@@ -1,3 +1,7 @@
+import 'dart:convert';
+import 'dart:io';
+
+import 'package:deep_plant_app/models/user_data_model.dart';
 import 'package:deep_plant_app/pages/get_qr_page.dart';
 import 'package:deep_plant_app/source/api_services.dart';
 import 'package:deep_plant_app/widgets/common_button.dart';
@@ -6,12 +10,15 @@ import 'package:deep_plant_app/widgets/save_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:path_provider/path_provider.dart';
 
 class NumCallDialog extends StatefulWidget {
-  final List data;
+  final Set dataList;
+  final UserData userData;
   const NumCallDialog({
     super.key,
-    required this.data,
+    required this.dataList,
+    required this.userData,
   });
 
   @override
@@ -36,7 +43,8 @@ class _NumCallDialogState extends State<NumCallDialog> {
 
   void _onTextChanged() {
     setState(() {
-      isButtonEnabled = _controller.text.isNotEmpty; // 텍스트 필드 값이 비어있는지 확인하여 버튼 상태 업데이트
+      isButtonEnabled =
+          _controller.text.isNotEmpty; // 텍스트 필드 값이 비어있는지 확인하여 버튼 상태 업데이트
     });
   }
 
@@ -51,6 +59,25 @@ class _NumCallDialogState extends State<NumCallDialog> {
       setState(() {
         mNumList = meatData.cast<String>();
       });
+    }
+  }
+
+  Future<void> saveData() async {
+    try {
+      final directory = await getApplicationDocumentsDirectory();
+      final file =
+          File('${directory.path}/${widget.userData.userId}-data-list.json');
+
+      if (!await directory.exists()) {
+        await directory.create(recursive: true); // 디렉토리를 먼저 생성
+      }
+
+      dynamic data = widget.dataList.toList();
+
+      await file.writeAsString(jsonEncode(data));
+      print('임시저장 성공');
+    } catch (e) {
+      print('임시저장 실패: $e');
     }
   }
 
@@ -104,7 +131,7 @@ class _NumCallDialogState extends State<NumCallDialog> {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => GetQrPage(
-                                    data: widget.data,
+                                    dataList: widget.dataList,
                                   ),
                                 ),
                               ).then((value) {
@@ -154,7 +181,8 @@ class _NumCallDialogState extends State<NumCallDialog> {
                                   borderRadius: BorderRadius.circular(42.5.sp),
                                   borderSide: BorderSide.none,
                                 ),
-                                contentPadding: EdgeInsets.only(bottom: 10, left: 10),
+                                contentPadding:
+                                    EdgeInsets.only(bottom: 10, left: 10),
                               ),
                             ),
                           ),
@@ -189,8 +217,9 @@ class _NumCallDialogState extends State<NumCallDialog> {
                             return MNumDataListCard(
                               idx: index + 1,
                               mNum: mNum,
-                              buttonAction: () {
-                                widget.data.add(mNum);
+                              buttonAction: () async {
+                                widget.dataList.add(mNum);
+                                await saveData();
                               },
                             );
                           },

@@ -11,10 +11,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class DataAdd extends StatefulWidget {
   final UserData userData;
   final MeatData meatData;
+  final Set dataList;
   const DataAdd({
     super.key,
     required this.userData,
     required this.meatData,
+    required this.dataList,
   });
 
   @override
@@ -22,8 +24,6 @@ class DataAdd extends StatefulWidget {
 }
 
 class _DataAddState extends State<DataAdd> {
-  List<String> dataList = [];
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -54,7 +54,8 @@ class _DataAddState extends State<DataAdd> {
                   context: context,
                   builder: (BuildContext context) {
                     return NumCallDialog(
-                      data: dataList,
+                      dataList: widget.dataList,
+                      userData: widget.userData,
                     );
                   },
                 ).then((value) {
@@ -79,24 +80,26 @@ class _DataAddState extends State<DataAdd> {
         ),
         Expanded(
           child: ListView.builder(
-            itemCount: dataList.length,
+            itemCount: widget.dataList.length,
             itemBuilder: (context, index) {
               return InkWell(
                 onTap: () async {
-                  final data = await ApiServices.getMeatData(dataList[index]);
+                  final data = await ApiServices.getMeatData(
+                      widget.dataList.toList()[index]);
                   widget.meatData.fetchData(data);
                   widget.meatData.fetchDataForOrigin();
                   if (!mounted) return;
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => DataAddHome(meatData: widget.meatData, userData: widget.userData),
+                      builder: (context) => DataAddHome(
+                          meatData: widget.meatData, userData: widget.userData),
                     ),
                   );
                 },
                 child: MNumDataListCard(
                   idx: index + 1,
-                  mNum: dataList[index],
+                  mNum: widget.dataList.toList()[index],
                   noButton: true,
                 ),
               );

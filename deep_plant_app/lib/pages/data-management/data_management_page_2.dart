@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:deep_plant_app/models/data_management_filter_model.dart';
 import 'package:deep_plant_app/models/meat_data_model.dart';
 import 'package:deep_plant_app/models/user_data_model.dart';
@@ -6,6 +9,7 @@ import 'package:deep_plant_app/widgets/custom_appbar.dart';
 import 'package:deep_plant_app/pages/data-management/data_add_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:path_provider/path_provider.dart';
 
 class DataManagement2 extends StatefulWidget {
   final UserData userData;
@@ -22,19 +26,37 @@ class DataManagement2 extends StatefulWidget {
   State<DataManagement2> createState() => _DataManagement2State();
 }
 
-class _DataManagement2State extends State<DataManagement2> with SingleTickerProviderStateMixin {
+class _DataManagement2State extends State<DataManagement2>
+    with SingleTickerProviderStateMixin {
   late TabController _tabController;
+  Set<String> dataList = {};
+
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
     widget.filter.resetCon();
+
+    initialize();
   }
 
   @override
   void dispose() {
     _tabController.dispose();
     super.dispose();
+  }
+
+  void initialize() async {
+    final directory = await getApplicationDocumentsDirectory();
+    final file =
+        File('${directory.path}/${widget.userData.userId}-data-list.json');
+    if (await file.exists()) {
+      final jsonData = await file.readAsString();
+      final data = jsonDecode(jsonData);
+      setState(() {
+        dataList = data.whereType<String>().toSet();
+      });
+    }
   }
 
   @override
@@ -61,6 +83,7 @@ class _DataManagement2State extends State<DataManagement2> with SingleTickerProv
                     DataAdd(
                       userData: widget.userData,
                       meatData: widget.meatData,
+                      dataList: dataList,
                     ),
                     // Tab2의 내용
                     DataConfirm(
