@@ -30,6 +30,8 @@ class DataCellIconButton extends StatelessWidget {
           padding: EdgeInsets.zero,
           foregroundColor: fgColor,
           backgroundColor: bgColor,
+          disabledForegroundColor: fgColor,
+          disabledBackgroundColor: bgColor,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(35.0),
           ),

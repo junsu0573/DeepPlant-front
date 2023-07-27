@@ -1,6 +1,7 @@
 import 'package:deep_plant_app/models/user_data_model.dart';
+import 'package:deep_plant_app/source/api_services.dart';
 import 'package:deep_plant_app/widgets/custom_appbar.dart';
-import 'package:deep_plant_app/widgets/data_table_widget.dart';
+import 'package:deep_plant_app/source/data_table_widget.dart';
 import 'package:deep_plant_app/widgets/save_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +10,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
-import 'package:http/http.dart' as http;
 
 class ReadingData extends StatefulWidget {
   final UserData userData;
@@ -29,11 +29,11 @@ class ReadingDataState extends State<ReadingData> {
   String text = '';
   String temp1 = '';
   String temp2 = '';
-  List<bool> selections1 = [false, true, false, false];
-  List<bool> tempSelections1 = [false, true, false, false];
+  List<bool> selections1 = [true, false, false, false];
+  List<bool> tempSelections1 = [true, false, false, false];
   List<bool> selections2 = [true, false];
   List<bool> tempSelections2 = [true, false];
-  String option1 = '1개월';
+  String option1 = '3일';
   String tempOption1 = '1개월';
   String option2 = '최신순';
   String tempOption2 = '최신순';
@@ -51,7 +51,7 @@ class ReadingDataState extends State<ReadingData> {
   void initState() {
     super.initState();
     _selectedDay = _focusedDay;
-    // fetchJsonData();
+    initialize();
   }
 
   DateTime _focusedDay = DateTime.now();
@@ -65,13 +65,8 @@ class ReadingDataState extends State<ReadingData> {
   bool selectedEtc = false;
   bool selectedFinal = true;
 
-  final List<String> userData = [
-    '000189843795,test,2023-01-22 20:44:25',
-    '000189843895,test,2023-05-11 14:23:32',
-    '000189843995-cattle-tenderloin-ribeye_roll,전수현,2023-07-01 14:22:23',
-    '000189843595-cattle-sirloin-boneless_short_rib,전수현,2023-07-09 15:54:25',
-    '000189843495-cattle-blade-tirmmed_rib,전수현,2023-07-10 02:23:32',
-    '000189843695,test,2023-07-11 01:20:20',
+  List<String> userData = [
+    '883e812d532e,전수현,2023-07-20 10:19:48',
   ];
 
   manageDataState() {
@@ -82,36 +77,16 @@ class ReadingDataState extends State<ReadingData> {
     });
   }
 
-  List<String> extractIds(List<dynamic> jsonData) {
-    List<String> ids = [];
-    for (var item in jsonData) {
-      if (item is Map<String, dynamic> && item.containsKey('id')) {
-        ids.add(item['id']);
-      }
-    }
-    return ids;
-  }
-
-  Future<void> fetchJsonData() async {
-    var apiUrl = 'http://10.221.71.228:8080/user?id=junsu030401@gmail.com';
-
-    try {
-      var response = await http.get(Uri.parse(apiUrl));
-
-      if (response.statusCode == 200) {
-        // var jsonData = jsonDecode(response.body)['meatList'] as List<String>;
-        // var ids = extractIds(jsonData);
-        // for (int i = 0; i < ids.length; i++) {
-        //   userData.add('${ids[i]},${widget.user.name}, ');
-        // }
-      } else {
-        // Error handling
-        print('Request failed with status: ${response.statusCode}.');
-      }
-    } catch (e) {
-      // Exception handling
-      print('Error: $e');
-    }
+  void initialize() async {
+    final data = await ApiServices.getMyData(widget.userData.userId!);
+    List<String> extracted = data.map((item) {
+      String id = item['id'];
+      String createdAt = item['createdAt'];
+      createdAt = createdAt.replaceFirst('T', ' ');
+      String name = '${widget.userData.name}';
+      return '$id,$name,$createdAt';
+    }).toList();
+    userData = extracted;
   }
 
   @override
@@ -668,7 +643,7 @@ class ReadingDataState extends State<ReadingData> {
             ),
             Expanded(
               child: SingleChildScrollView(
-                child: getDataTable(userData, text, manageDataState, sortDscending, option1, _rangeStart, _rangeEnd, selectedEtc),
+                child: getDataTable(userData, text, manageDataState, sortDscending, option1, _rangeStart, _rangeEnd, selectedEtc, widget.userData),
               ),
             ),
           ],

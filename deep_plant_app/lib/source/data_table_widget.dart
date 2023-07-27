@@ -1,3 +1,4 @@
+import 'package:deep_plant_app/models/user_data_model.dart';
 import 'package:deep_plant_app/widgets/data_cell_icon_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -11,7 +12,7 @@ List<DataColumn> getColumns() {
       dataColumn.add(
         DataColumn(
           label: SizedBox(
-            width: 155,
+            width: 150,
             child: Align(
               alignment: Alignment.center,
               child: Text(
@@ -106,7 +107,8 @@ List<String> setDay(List<String> source, String option1, DateTime? start, DateTi
   return source;
 }
 
-List<DataRow> getRows(List<String> userData, String text, Function data, bool sortDscending, String option1, DateTime? start, DateTime? end, bool selectedEtc) {
+List<DataRow> getRows(
+    List<String> userData, String text, Function data, bool sortDscending, String option1, DateTime? start, DateTime? end, bool selectedEtc, UserData user) {
   data();
   List<String> source = userData;
 
@@ -122,6 +124,8 @@ List<DataRow> getRows(List<String> userData, String text, Function data, bool so
 
   for (var i = 0; i < filteredData.length; i++) {
     var csvDataCells = filteredData[i].split(',');
+    String dateTimeString = csvDataCells[2];
+    DateTime dateTime = DateTime.parse(dateTimeString);
     List<DataCell> cells = [];
     cells.add(
       DataCell(
@@ -156,8 +160,7 @@ List<DataRow> getRows(List<String> userData, String text, Function data, bool so
         ),
       ),
     );
-    // if (csvDataCells[1] == '${widget.user.name}') {
-    if (csvDataCells[1] == '전수현') {
+    if (csvDataCells[1] == '${user.name}' && dateTime.isAfter(threeDaysAgo) && dateTime.isBefore(toDay)) {
       cells.add(
         DataCell(
           ElevatedButton(
@@ -183,64 +186,41 @@ List<DataRow> getRows(List<String> userData, String text, Function data, bool so
   return dataRow;
 }
 
-Widget getDataTable(List<String> userData, String text, Function data, bool sortDscending, String option1, DateTime? start, DateTime? end, bool selectedEtc) {
+Widget getDataTable(
+    List<String> userData, String text, Function data, bool sortDscending, String option1, DateTime? start, DateTime? end, bool selectedEtc, UserData user) {
   return DataTable(
     showBottomBorder: true,
     headingRowColor: MaterialStateProperty.all(Colors.grey[200]),
     headingRowHeight: 40.0,
     columnSpacing: 35.0,
     columns: getColumns(),
-    rows: getRows(userData, text, data, sortDscending, option1, start, end, selectedEtc),
+    rows: getRows(userData, text, data, sortDscending, option1, start, end, selectedEtc, user),
   );
 }
 
-List<String> setUser(List<String> source, String option2) {
-  if (option2 == '나의 데이터') {
-    source = source.where((data) {
-      List<String> parts = data.split(',');
-      String dataUser = parts[1];
-      return (dataUser == '전수현');
-    }).toList();
-  } else if (option2 == '일반 데이터') {
-    source = source.where((data) {
-      List<String> parts = data.split(',');
-      String dataUser = parts[3];
-      return (dataUser == 'normal');
-    }).toList();
-  } else if (option2 == '연구 데이터') {
-    source = source.where((data) {
-      List<String> parts = data.split(',');
-      String dataUser = parts[3];
-      return (dataUser == 'experiment');
-    }).toList();
-  } else {}
-  return source;
-}
-
 List<String> setType(List<String> source, String option3) {
-  if (option3 == '소고기') {
+  if (option3 == '소') {
     source = source.where((data) {
       List<String> parts = data.split(',');
       String dataUser = parts[4];
-      return (dataUser == 'cattle');
+      return (dataUser == '소');
     }).toList();
-  } else if (option3 == '돼지고기') {
+  } else if (option3 == '돼지') {
     source = source.where((data) {
       List<String> parts = data.split(',');
       String dataUser = parts[4];
-      return (dataUser == 'pig');
+      return (dataUser == '돼지');
     }).toList();
   } else {}
   return source;
 }
 
 List<DataRow> getRowConfirm(
-    List<String> userData, String text, Function data, String option1, String option2, String option3, DateTime? start, DateTime? end, bool selectedEtc) {
+    List<String> userData, String text, Function data, String option1, String option3, DateTime? start, DateTime? end, bool selectedEtc, UserData user) {
   data();
   List<String> source = userData;
 
   source = setDay(source, option1, start, end, selectedEtc);
-  source = setUser(source, option2);
   source = setType(source, option3);
 
   List<DataRow> dataRow = [];
@@ -286,13 +266,12 @@ List<DataRow> getRowConfirm(
         ),
       ),
     );
-    // if (csvDataCells[1] == '${widget.user.name}') {
-    if (csvDataCells[1] == '가가가') {
+    if (csvDataCells[5] == '대기중') {
       cells.add(
         DataCell(
           DataCellIconButton(
-            text: '미정',
-            onPress: () {},
+            text: '대기',
+            onPress: null,
             width: 115.w,
             height: 55.h,
             bgColor: Colors.grey[300],
@@ -301,12 +280,12 @@ List<DataRow> getRowConfirm(
           ),
         ),
       );
-    } else if (csvDataCells[1] == '전수현') {
+    } else if (csvDataCells[5] == '승인') {
       cells.add(
         DataCell(
           DataCellIconButton(
             text: '승인',
-            onPress: () {},
+            onPress: null,
             width: 115.w,
             height: 55.h,
             bgColor: Colors.grey[300],
@@ -315,12 +294,12 @@ List<DataRow> getRowConfirm(
           ),
         ),
       );
-    } else if (csvDataCells[1] == '다다다') {
+    } else if (csvDataCells[5] == '반려') {
       cells.add(
         DataCell(
           DataCellIconButton(
             text: '반려',
-            onPress: () {},
+            onPress: null,
             width: 115.w,
             height: 55.h,
             bgColor: Colors.grey[300],
@@ -339,13 +318,13 @@ List<DataRow> getRowConfirm(
 }
 
 Widget getDataConfirm(
-    List<String> userData, String text, Function data, String option1, String option2, String option3, DateTime? start, DateTime? end, bool selectedEtc) {
+    List<String> userData, String text, Function data, String option1, String option3, DateTime? start, DateTime? end, bool selectedEtc, UserData user) {
   return DataTable(
     showBottomBorder: true,
     headingRowColor: MaterialStateProperty.all(Colors.grey[200]),
     headingRowHeight: 40.0,
     columnSpacing: 25.0,
     columns: getColumns(),
-    rows: getRowConfirm(userData, text, data, option1, option2, option3, start, end, selectedEtc),
+    rows: getRowConfirm(userData, text, data, option1, option3, start, end, selectedEtc, user),
   );
 }

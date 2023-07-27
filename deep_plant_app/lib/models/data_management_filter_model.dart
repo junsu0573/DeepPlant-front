@@ -11,13 +11,26 @@ class FilterModel {
 
   List<Widget>? confirmOptions1;
 
+  DateTime? rangeStart;
+  DateTime? rangeEnd;
+
+  String? temp1;
+  String? temp2;
+
+  bool? flag;
+
   void resetCon() {
-    confirmSelections1 = [false, true, false, false];
+    confirmSelections1 = [true, false, false, false];
     confirmSelections2 = [true, false, false, false];
-    confirmSelections3 = [true, false];
-    confirmOption1 = '1개월';
+    confirmSelections3 = [false, false, true];
+    confirmOption1 = '3일';
     confirmOption2 = '나의 데이터';
-    confirmOption3 = '소';
+    confirmOption3 = '전체';
+    rangeStart = null;
+    rangeEnd = null;
+    flag = false;
+    temp1 = '';
+    temp2 = '';
     confirmOptions1 = [
       Text('3일'),
       Text('1개월'),
@@ -34,5 +47,10 @@ class FilterModel {
     this.confirmOption2,
     this.confirmOption3,
     this.confirmOptions1,
+    this.rangeStart,
+    this.rangeEnd,
+    this.temp1,
+    this.temp2,
+    this.flag,
   });
 }

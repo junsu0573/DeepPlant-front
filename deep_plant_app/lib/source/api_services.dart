@@ -4,7 +4,7 @@ import 'package:deep_plant_app/models/user_data_model.dart';
 import 'package:http/http.dart' as http;
 
 class ApiServices {
-  static String baseUrl = 'http://10.221.71.163:8080';
+  static String baseUrl = 'http://10.221.71.143:8080';
 
   // API POST
   static Future<dynamic> _postApi(String endPoint, String jsonData) async {
@@ -58,25 +58,23 @@ class ApiServices {
 
   // 육류 정보 조회 (GET)
   static Future<dynamic> receiveMeatData(String? dest) async {
-    String endPoint = 'meat/get';
+    dynamic endPoint = 'meat/get';
     if (dest != null) {
       endPoint = 'meat/get/$dest';
     }
 
-    print(await _getApi(endPoint));
+    return await _getApi(endPoint);
   }
 
   // 관리번호 육류 정보 조회 (GET)
   static Future<dynamic> getMeatData(String id) async {
     dynamic data = await _getApi('meat/get?id=$id');
-    print(data);
     return data;
   }
 
   // 승인된 관리번호 부분 검색 (GET)
   static Future<dynamic> searchMeatId(String text) async {
     dynamic jsonData = await _getApi('meat/get?part_id=$text');
-    print(jsonData);
     return jsonData;
   }
 
@@ -93,6 +91,12 @@ class ApiServices {
   // 등록자 필터 정보 조회(GET)
   static Future<dynamic> getUserTypeData(String type) async {
     dynamic data = await _getApi('meat/user?userType=$type');
+    return data;
+  }
+
+  // 등록자 필터 정보 조회(GET)
+  static Future<dynamic> getMyData(String id) async {
+    dynamic data = await _getApi('meat/user?userId=$id');
     return data;
   }
 
