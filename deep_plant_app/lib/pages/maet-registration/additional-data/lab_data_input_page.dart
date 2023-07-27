@@ -182,43 +182,43 @@ class _LabDataInputState extends State<LabDataInput> {
                 height: 90.h,
               ),
               TextFieldWithTitle(
-                  firstText: 'L명도', secondText: '', controller: l),
+                  firstText: 'L', secondText: '명도', controller: l),
               TextFieldWithTitle(
-                  firstText: 'a적색도', secondText: '', unit: '', controller: a),
+                  firstText: 'a', secondText: '적색도', unit: '', controller: a),
               TextFieldWithTitle(
-                  firstText: 'b황색도', secondText: '', unit: '', controller: b),
+                  firstText: 'b', secondText: '황색도', unit: '', controller: b),
               TextFieldWithTitle(
-                firstText: 'DL육즙감량',
-                secondText: '',
+                firstText: 'DL',
+                secondText: '육즙감량',
                 unit: '%',
                 controller: dl,
                 isPercent: true,
               ),
               TextFieldWithTitle(
-                firstText: 'CL가열감량',
-                secondText: '',
+                firstText: 'CL',
+                secondText: '가열감량',
                 unit: '%',
                 controller: cl,
                 isPercent: true,
               ),
               TextFieldWithTitle(
-                firstText: 'RW압착감량',
-                secondText: '',
+                firstText: 'RW',
+                secondText: '압착감량',
                 unit: '%',
                 controller: rw,
                 isPercent: true,
               ),
               TextFieldWithTitle(
-                  firstText: 'PH', secondText: '', controller: ph),
+                  firstText: 'pH', secondText: '산도', controller: ph),
               TextFieldWithTitle(
-                  firstText: 'WBSF전단가',
-                  secondText: '',
+                  firstText: 'WBSF',
+                  secondText: '전단가',
                   unit: 'kgf',
                   controller: wbsf),
               TextFieldWithTitle(
                   firstText: '카텝신활성도', secondText: '', controller: ct),
               TextFieldWithTitle(
-                  firstText: 'MFI근소편화지수', secondText: '', controller: mfi),
+                  firstText: 'MFI', secondText: '근소편화지수', controller: mfi),
               SizedBox(
                 height: 16.h,
               ),

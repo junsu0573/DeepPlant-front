@@ -1,3 +1,4 @@
+import 'package:deep_plant_app/source/pallete.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -30,13 +31,26 @@ class TextFieldWithTitle extends StatelessWidget {
           children: [
             SizedBox(
               width: 278.w,
-              child: Text(
-                firstText,
-                style: TextStyle(
-                  color: Color(0xFF000000),
-                  fontSize: 36.sp,
-                  fontFamily: 'Inter',
-                ),
+              child: Row(
+                children: [
+                  Text(
+                    firstText,
+                    style: TextStyle(
+                      color: Color(0xFF000000),
+                      fontSize: 36.sp,
+                    ),
+                  ),
+                  SizedBox(
+                    width: 20.w,
+                  ),
+                  Text(
+                    secondText,
+                    style: TextStyle(
+                      color: Palette.greyTextColor,
+                      fontSize: 30.sp,
+                    ),
+                  ),
+                ],
               ),
             ),
             SizedBox(
