@@ -54,6 +54,7 @@ dependencies:
   flutter_local_notifications: ^15.1.0+1
   crypto: ^3.0.3
   syncfusion_flutter_sliders: ^22.1.39
+  kpostal: ^0.5.1
 
 dev_dependencies:
   flutter_test:

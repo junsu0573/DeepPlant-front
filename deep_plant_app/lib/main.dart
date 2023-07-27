@@ -1,11 +1,11 @@
 import 'package:deep_plant_app/models/data_management_filter_model.dart';
 import 'package:deep_plant_app/models/meat_data_model.dart';
 import 'package:deep_plant_app/models/user_data_model.dart';
+import 'package:deep_plant_app/pages/adress_search_test.dart';
 import 'package:deep_plant_app/pages/data-management/data_management_page_2.dart';
 import 'package:deep_plant_app/pages/data-management/reading_data_page.dart';
 import 'package:deep_plant_app/pages/maet-registration/additional-data/complete_additional_registration_page.dart';
 import 'package:deep_plant_app/pages/maet-registration/additional-data/data_add_home_page.dart';
-import 'package:deep_plant_app/pages/maet-registration/additional-data/heated_meat_evaluation_page.dart';
 import 'package:deep_plant_app/pages/maet-registration/basic-data/complete_registration_page.dart';
 import 'package:deep_plant_app/pages/maet-registration/basic-data/complete_registration_page_2.dart';
 import 'package:deep_plant_app/pages/maet-registration/basic-data/show_step_page.dart';
@@ -52,9 +52,7 @@ final _router = GoRouter(
   routes: [
     GoRoute(
       path: '/',
-      builder: (context, state) => HeatedMeatEvaluation(
-        meatData: newMeat,
-      ),
+      builder: (context, state) => AdressSearchTest(),
       routes: [
         GoRoute(
           path: 'sign-in',
