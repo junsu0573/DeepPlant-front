@@ -28,6 +28,7 @@ class _DataManagement2State extends State<DataManagement2> with SingleTickerProv
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
+    widget.filter.resetCon();
   }
 
   @override
