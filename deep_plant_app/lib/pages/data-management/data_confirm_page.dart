@@ -1,6 +1,7 @@
 import 'package:deep_plant_app/models/data_management_filter_model.dart';
 import 'package:deep_plant_app/models/user_data_model.dart';
-import 'package:deep_plant_app/widgets/data_table_widget.dart';
+import 'package:deep_plant_app/source/api_services.dart';
+import 'package:deep_plant_app/source/data_table_widget.dart';
 import 'package:deep_plant_app/widgets/save_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -53,6 +54,7 @@ class DataConfirmState extends State<DataConfirm> {
   List<Widget> options3 = [
     Text('소'),
     Text('돼지'),
+    Text('전체'),
   ];
 
   void setting() {
@@ -66,6 +68,13 @@ class DataConfirmState extends State<DataConfirm> {
     option3 = widget.filter.confirmOption3!;
     tempOption3 = option3;
     options1 = widget.filter.confirmOptions1!;
+    _rangeStart = widget.filter.rangeStart;
+    tempRangeStart = _rangeStart;
+    _rangeEnd = widget.filter.rangeEnd;
+    tempRangeEnd = _rangeEnd;
+    temp1 = widget.filter.temp1!;
+    temp2 = widget.filter.temp2!;
+    selectedEtc = widget.filter.flag!;
   }
 
   void editing() {
@@ -76,6 +85,11 @@ class DataConfirmState extends State<DataConfirm> {
     widget.filter.confirmOption2 = option2;
     widget.filter.confirmOption3 = option3;
     widget.filter.confirmOptions1 = options1;
+    widget.filter.rangeStart = _rangeStart;
+    widget.filter.rangeEnd = _rangeEnd;
+    widget.filter.temp1 = temp1;
+    widget.filter.temp2 = temp2;
+    widget.filter.flag = selectedEtc;
   }
 
   @override
@@ -86,10 +100,56 @@ class DataConfirmState extends State<DataConfirm> {
       widget.filter.resetCon();
     }
     setting();
-    initialize('Researcher', '', '');
   }
 
-  void initialize(String type, String time, String species) async {}
+  Future<List<String>> initialize(String type) async {
+    List<String> temp;
+    if (type == '나의 데이터') {
+      final data = await ApiServices.getMyData(widget.userData.userId!);
+      temp = extractedData(data);
+    } else if (type == '전체') {
+      final data = await ApiServices.receiveMeatData(null);
+      temp = extractedData(data);
+    } else {
+      if (type == '일반 데이터') {
+        type = 'Normal';
+      } else if (type == '연구 데이터') {
+        type = 'Researcher';
+      }
+      final data = await ApiServices.getUserTypeData(type);
+      temp = extractedData(data);
+    }
+    return temp;
+  }
+
+  List<String> extractedData(dynamic data) {
+    List<String> extracted = [];
+
+    if (data is List<dynamic>) {
+      extracted = data.map<String>((item) {
+        String id = item['id'];
+        String createdAt = item['createdAt'];
+        createdAt = createdAt.replaceFirst('T', ' ');
+        String specieValue = item['specieValue'];
+        String userId = item['userId'];
+        String name = '전수현';
+        String statusType = item['statusType'];
+        return '$id,$name,$createdAt,$userId,$specieValue,$statusType';
+      }).toList();
+    } else if (data is Map<dynamic, dynamic>) {
+      data.forEach((key, item) {
+        String id = item['id'];
+        String createdAt = item['createdAt'];
+        createdAt = createdAt.replaceFirst('T', ' ');
+        String specieValue = item['specieValue'];
+        String userId = item['userId'];
+        String name = '전수현';
+        String statusType = item['statusType'];
+        extracted.add('$id,$name,$createdAt,$userId,$specieValue,$statusType');
+      });
+    }
+    return extracted;
+  }
 
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
@@ -101,31 +161,12 @@ class DataConfirmState extends State<DataConfirm> {
   bool selectedEtc = false;
   bool selectedFinal = true;
 
-  final List<String> userData = [
-    '000189843795,가가가,2023-01-22 20:44:25,normal,pig',
-    '000189843895,가가가,2023-05-11 14:23:32,normal,pig',
-    '000189843995-cattle-tenderloin-ribeye_roll,전수현,2023-07-01 14:22:23,experiment,cattle',
-    '000189843595-cattle-sirloin-boneless_short_rib,전수현,2023-07-09 15:54:25,experiment,cattle',
-    '000189843495-cattle-blade-tirmmed_rib,다다다,2023-07-10 02:23:32,experiment,cattle',
-    '000189843695,다다다,2023-07-11 01:20:20,experiment,pig',
-  ];
-
   manageDataState() {
     search.addListener(() {
       setState(() {
         text = search.text;
       });
     });
-  }
-
-  List<String> extractIds(List<dynamic> jsonData) {
-    List<String> ids = [];
-    for (var item in jsonData) {
-      if (item is Map<String, dynamic> && item.containsKey('id')) {
-        ids.add(item['id']);
-      }
-    }
-    return ids;
   }
 
   @override
@@ -190,22 +231,19 @@ class DataConfirmState extends State<DataConfirm> {
                                   icon: Icon(Icons.search),
                                 ),
                           focusedBorder: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(width: 0.2, color: Colors.grey),
+                            borderSide: BorderSide(width: 0.2, color: Colors.grey),
                             borderRadius: BorderRadius.all(
                               Radius.circular(25.0),
                             ),
                           ),
                           enabledBorder: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(width: 0.2, color: Colors.grey),
+                            borderSide: BorderSide(width: 0.2, color: Colors.grey),
                             borderRadius: BorderRadius.all(
                               Radius.circular(25.0),
                             ),
                           ),
                           border: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(width: 0.2, color: Colors.grey),
+                            borderSide: BorderSide(width: 0.2, color: Colors.grey),
                             borderRadius: BorderRadius.all(
                               Radius.circular(25.0),
                             ),
@@ -234,15 +272,13 @@ class DataConfirmState extends State<DataConfirm> {
                               ),
                               builder: (BuildContext context) {
                                 return StatefulBuilder(
-                                  builder: (BuildContext context,
-                                      StateSetter bottomState1) {
+                                  builder: (BuildContext context, StateSetter bottomState1) {
                                     return Container(
                                       margin: EdgeInsets.all(10.0),
                                       height: 400,
                                       child: Center(
                                         child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
+                                          mainAxisAlignment: MainAxisAlignment.center,
                                           mainAxisSize: MainAxisSize.min,
                                           children: <Widget>[
                                             Text(
@@ -259,43 +295,27 @@ class DataConfirmState extends State<DataConfirm> {
                                                     showModalBottomSheet(
                                                         context: context,
                                                         isDismissible: false,
-                                                        isScrollControlled:
-                                                            true,
-                                                        shape:
-                                                            RoundedRectangleBorder(
-                                                          borderRadius:
-                                                              BorderRadius.only(
-                                                            topLeft:
-                                                                Radius.circular(
-                                                                    15.0),
-                                                            topRight:
-                                                                Radius.circular(
-                                                                    15.0),
+                                                        isScrollControlled: true,
+                                                        shape: RoundedRectangleBorder(
+                                                          borderRadius: BorderRadius.only(
+                                                            topLeft: Radius.circular(15.0),
+                                                            topRight: Radius.circular(15.0),
                                                           ),
                                                         ),
-                                                        builder: (BuildContext
-                                                            context) {
-                                                          return StatefulBuilder(
-                                                              builder: (BuildContext
-                                                                      context,
-                                                                  StateSetter
-                                                                      bottomState2) {
+                                                        builder: (BuildContext context) {
+                                                          return StatefulBuilder(builder: (BuildContext context, StateSetter bottomState2) {
                                                             return Container(
-                                                              margin: EdgeInsets
-                                                                  .all(18.0),
+                                                              margin: EdgeInsets.all(18.0),
                                                               height: 375,
                                                               child: Column(
                                                                 children: [
                                                                   Row(
-                                                                    mainAxisAlignment:
-                                                                        MainAxisAlignment
-                                                                            .spaceBetween,
+                                                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                                     children: [
                                                                       Row(
                                                                         children: [
                                                                           TextButton(
-                                                                            onPressed:
-                                                                                () {
+                                                                            onPressed: () {
                                                                               showModalBottomSheet(
                                                                                   context: context,
                                                                                   isDismissible: true,
@@ -328,10 +348,8 @@ class DataConfirmState extends State<DataConfirm> {
                                                                                                   onPressed: () {
                                                                                                     bottomState2(
                                                                                                       () {
-                                                                                                        setState(() {
-                                                                                                          tempRangeStart = selectDate;
-                                                                                                          temp1 = DateFormat('MM/dd').format(tempRangeStart!);
-                                                                                                        });
+                                                                                                        tempRangeStart = selectDate;
+                                                                                                        temp1 = DateFormat('MM/dd').format(tempRangeStart!);
                                                                                                       },
                                                                                                     );
                                                                                                     Navigator.pop(context);
@@ -356,14 +374,18 @@ class DataConfirmState extends State<DataConfirm> {
                                                                                             child: CupertinoTheme(
                                                                                               data: CupertinoThemeData(
                                                                                                 textTheme: CupertinoTextThemeData(
-                                                                                                  dateTimePickerTextStyle: TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.bold),
+                                                                                                  dateTimePickerTextStyle: TextStyle(
+                                                                                                      color: Colors.black,
+                                                                                                      fontSize: 20,
+                                                                                                      fontWeight: FontWeight.bold),
                                                                                                 ),
                                                                                               ),
                                                                                               //Cupertino형 날짜 선택 위젯
                                                                                               child: CupertinoDatePicker(
                                                                                                 backgroundColor: Colors.white,
                                                                                                 //현재 날짜
-                                                                                                initialDateTime: (tempRangeStart == null) ? DateTime.now() : tempRangeStart,
+                                                                                                initialDateTime:
+                                                                                                    (tempRangeStart == null) ? DateTime.now() : tempRangeStart,
                                                                                                 //끝 연도
                                                                                                 maximumYear: DateTime.now().year,
                                                                                                 //끝날짜
@@ -383,20 +405,17 @@ class DataConfirmState extends State<DataConfirm> {
                                                                                     );
                                                                                   });
                                                                             },
-                                                                            child:
-                                                                                Text(
+                                                                            child: Text(
                                                                               temp1,
                                                                               style: TextStyle(color: Colors.black),
                                                                             ),
                                                                           ),
                                                                           Text(
                                                                             '-',
-                                                                            style:
-                                                                                TextStyle(fontSize: 30.0),
+                                                                            style: TextStyle(fontSize: 30.0),
                                                                           ),
                                                                           TextButton(
-                                                                            onPressed:
-                                                                                () {
+                                                                            onPressed: () {
                                                                               showModalBottomSheet(
                                                                                   context: context,
                                                                                   isDismissible: true,
@@ -429,10 +448,8 @@ class DataConfirmState extends State<DataConfirm> {
                                                                                                   onPressed: () {
                                                                                                     bottomState2(
                                                                                                       () {
-                                                                                                        setState(() {
-                                                                                                          tempRangeEnd = selectDate;
-                                                                                                          temp2 = DateFormat('MM/dd').format(tempRangeEnd!);
-                                                                                                        });
+                                                                                                        tempRangeEnd = selectDate;
+                                                                                                        temp2 = DateFormat('MM/dd').format(tempRangeEnd!);
                                                                                                       },
                                                                                                     );
                                                                                                     Navigator.pop(context);
@@ -457,14 +474,18 @@ class DataConfirmState extends State<DataConfirm> {
                                                                                             child: CupertinoTheme(
                                                                                               data: CupertinoThemeData(
                                                                                                 textTheme: CupertinoTextThemeData(
-                                                                                                  dateTimePickerTextStyle: TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.bold),
+                                                                                                  dateTimePickerTextStyle: TextStyle(
+                                                                                                      color: Colors.black,
+                                                                                                      fontSize: 20,
+                                                                                                      fontWeight: FontWeight.bold),
                                                                                                 ),
                                                                                               ),
                                                                                               //Cupertino형 날짜 선택 위젯
                                                                                               child: CupertinoDatePicker(
                                                                                                 backgroundColor: Colors.white,
                                                                                                 //현재 날짜
-                                                                                                initialDateTime: (tempRangeEnd == null) ? DateTime.now() : tempRangeEnd,
+                                                                                                initialDateTime:
+                                                                                                    (tempRangeEnd == null) ? DateTime.now() : tempRangeEnd,
                                                                                                 //끝 연도
                                                                                                 maximumYear: DateTime.now().year,
                                                                                                 //끝날짜
@@ -484,8 +505,7 @@ class DataConfirmState extends State<DataConfirm> {
                                                                                     );
                                                                                   });
                                                                             },
-                                                                            child:
-                                                                                Text(
+                                                                            child: Text(
                                                                               temp2,
                                                                               style: TextStyle(color: Colors.black),
                                                                             ),
@@ -493,139 +513,69 @@ class DataConfirmState extends State<DataConfirm> {
                                                                         ],
                                                                       ),
                                                                       InkWell(
-                                                                        onTap:
-                                                                            () {
-                                                                          bottomState1(
-                                                                            () {
-                                                                              setState(
-                                                                                () {
-                                                                                  if (tempRangeEnd != null && tempRangeStart != null) {
-                                                                                    tempOption1 = '$temp1-$temp2';
-                                                                                    options1![3] = Text(tempOption1!);
-                                                                                    selectedFinal = true;
-                                                                                  } else {
-                                                                                    tempOption1 = '직접설정';
-                                                                                    options1![3] = Text(tempOption1!);
-                                                                                    selectedFinal = false;
-                                                                                  }
-                                                                                },
-                                                                              );
-                                                                            },
-                                                                          );
-                                                                          context
-                                                                              .pop();
+                                                                        onTap: () {
+                                                                          bottomState1(() {
+                                                                            if (tempRangeEnd != null && tempRangeStart != null) {
+                                                                              tempOption1 = '$temp1-$temp2';
+                                                                              options1![3] = Text(tempOption1!);
+                                                                              selectedFinal = true;
+                                                                            } else {
+                                                                              tempOption1 = '직접설정';
+                                                                              options1![3] = Text(tempOption1!);
+                                                                              selectedFinal = false;
+                                                                            }
+                                                                          });
+                                                                          context.pop();
                                                                         },
-                                                                        child:
-                                                                            SizedBox(
-                                                                          width:
-                                                                              48.w,
-                                                                          height:
-                                                                              48.h,
-                                                                          child:
-                                                                              Image(
-                                                                            image:
-                                                                                AssetImage('assets/images/close.png'),
+                                                                        child: SizedBox(
+                                                                          width: 48.w,
+                                                                          height: 48.h,
+                                                                          child: Image(
+                                                                            image: AssetImage('assets/images/close.png'),
                                                                           ),
                                                                         ),
                                                                       ),
                                                                     ],
                                                                   ),
                                                                   TableCalendar(
-                                                                    locale:
-                                                                        'ko_KR',
-                                                                    firstDay:
-                                                                        DateTime.utc(
-                                                                            2023,
-                                                                            1,
-                                                                            1),
-                                                                    lastDay:
-                                                                        DateTime.utc(
-                                                                            2023,
-                                                                            12,
-                                                                            31),
-                                                                    focusedDay:
-                                                                        _focusedDay,
-                                                                    rangeStartDay:
-                                                                        tempRangeStart,
-                                                                    rangeEndDay:
-                                                                        tempRangeEnd,
-                                                                    rangeSelectionMode:
-                                                                        _rangeSelectionMode,
-                                                                    rowHeight:
-                                                                        40.0,
-                                                                    // onDaySelected: (selectedDay, focusedDay) {
-                                                                    //   bottomState2(
-                                                                    //     () {
-                                                                    //       if (!isSameDay(_selectedDay, selectedDay)) {
-                                                                    //         setState(() {
-                                                                    //           _selectedDay = selectedDay;
-                                                                    //           _focusedDay = focusedDay;
-                                                                    //           _rangeStart = null;
-                                                                    //           _rangeEnd = null;
-                                                                    //           _rangeSelectionMode = RangeSelectionMode.toggledOff;
-                                                                    //         });
-                                                                    //       }
-                                                                    //     },
-                                                                    //   );
-                                                                    // },
-                                                                    onRangeSelected:
-                                                                        (startDay,
-                                                                            endDay,
-                                                                            focusedDay) {
+                                                                    locale: 'ko_KR',
+                                                                    firstDay: DateTime.utc(2023, 1, 1),
+                                                                    lastDay: DateTime.utc(2023, 12, 31),
+                                                                    focusedDay: _focusedDay,
+                                                                    rangeStartDay: tempRangeStart,
+                                                                    rangeEndDay: tempRangeEnd,
+                                                                    rangeSelectionMode: _rangeSelectionMode,
+                                                                    rowHeight: 40.0,
+                                                                    onRangeSelected: (startDay, endDay, focusedDay) {
                                                                       bottomState2(
                                                                         () {
-                                                                          setState(
-                                                                              () {
-                                                                            _selectedDay =
-                                                                                null;
-                                                                            _focusedDay =
-                                                                                focusedDay;
-                                                                            tempRangeStart =
-                                                                                startDay;
-                                                                            tempRangeEnd =
-                                                                                endDay;
-                                                                            if (tempRangeEnd != null &&
-                                                                                tempRangeStart != null) {
-                                                                              temp1 = DateFormat('MM/dd').format(tempRangeStart!);
-                                                                              temp2 = DateFormat('MM/dd').format(tempRangeEnd!);
-                                                                            } else if (tempRangeEnd == null) {
-                                                                              temp1 = DateFormat('MM/dd').format(tempRangeStart!);
-                                                                              temp2 = "";
-                                                                            } else if (tempRangeStart == null) {
-                                                                              temp2 = DateFormat('MM/dd').format(tempRangeEnd!);
-                                                                              temp1 = "";
-                                                                            }
-                                                                          });
+                                                                          _selectedDay = null;
+                                                                          _focusedDay = focusedDay;
+                                                                          tempRangeStart = startDay;
+                                                                          tempRangeEnd = endDay;
+                                                                          if (tempRangeEnd != null && tempRangeStart != null) {
+                                                                            temp1 = DateFormat('MM/dd').format(tempRangeStart!);
+                                                                            temp2 = DateFormat('MM/dd').format(tempRangeEnd!);
+                                                                          } else if (tempRangeEnd == null) {
+                                                                            temp1 = DateFormat('MM/dd').format(tempRangeStart!);
+                                                                            temp2 = "";
+                                                                          } else if (tempRangeStart == null) {
+                                                                            temp2 = DateFormat('MM/dd').format(tempRangeEnd!);
+                                                                            temp1 = "";
+                                                                          }
                                                                         },
                                                                       );
                                                                     },
-                                                                    selectedDayPredicate: (day) =>
-                                                                        isSameDay(
-                                                                            _selectedDay,
-                                                                            day),
-                                                                    headerStyle:
-                                                                        HeaderStyle(
-                                                                      formatButtonVisible:
-                                                                          false,
-                                                                      titleCentered:
-                                                                          true,
-                                                                      titleTextStyle:
-                                                                          TextStyle(
-                                                                        fontSize:
-                                                                            17.0,
-                                                                        fontWeight:
-                                                                            FontWeight.bold,
+                                                                    selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
+                                                                    headerStyle: HeaderStyle(
+                                                                      formatButtonVisible: false,
+                                                                      titleCentered: true,
+                                                                      titleTextStyle: TextStyle(
+                                                                        fontSize: 17.0,
+                                                                        fontWeight: FontWeight.bold,
                                                                       ),
-                                                                      leftChevronMargin: EdgeInsets.only(
-                                                                          left:
-                                                                              65.0,
-                                                                          top:
-                                                                              5.0),
-                                                                      rightChevronMargin: EdgeInsets.only(
-                                                                          right:
-                                                                              65.0,
-                                                                          top:
-                                                                              5.0),
+                                                                      leftChevronMargin: EdgeInsets.only(left: 65.0, top: 5.0),
+                                                                      rightChevronMargin: EdgeInsets.only(right: 65.0, top: 5.0),
                                                                     ),
                                                                     calendarStyle: CalendarStyle(
                                                                         outsideDaysVisible: true,
@@ -634,28 +584,20 @@ class DataConfirmState extends State<DataConfirm> {
                                                                         withinRangeDecoration: const BoxDecoration(shape: BoxShape.circle),
                                                                         outsideTextStyle: const TextStyle(color: Colors.transparent),
                                                                         rangeStartDecoration: const BoxDecoration(
-                                                                          color:
-                                                                              Colors.grey,
-                                                                          shape:
-                                                                              BoxShape.circle,
+                                                                          color: Colors.grey,
+                                                                          shape: BoxShape.circle,
                                                                         ),
                                                                         rangeEndDecoration: const BoxDecoration(
-                                                                          color:
-                                                                              Colors.grey,
-                                                                          shape:
-                                                                              BoxShape.circle,
+                                                                          color: Colors.grey,
+                                                                          shape: BoxShape.circle,
                                                                         ),
                                                                         todayDecoration: const BoxDecoration(
-                                                                          color:
-                                                                              Colors.black54,
-                                                                          shape:
-                                                                              BoxShape.circle,
+                                                                          color: Colors.black54,
+                                                                          shape: BoxShape.circle,
                                                                         ),
                                                                         selectedDecoration: const BoxDecoration(
-                                                                          color:
-                                                                              Colors.grey,
-                                                                          shape:
-                                                                              BoxShape.circle,
+                                                                          color: Colors.grey,
+                                                                          shape: BoxShape.circle,
                                                                         )),
                                                                   ),
                                                                 ],
@@ -664,24 +606,15 @@ class DataConfirmState extends State<DataConfirm> {
                                                           });
                                                         });
                                                   }
-                                                  for (int i = 0;
-                                                      i <
-                                                          tempSelections1!
-                                                              .length;
-                                                      i++) {
+                                                  for (int i = 0; i < tempSelections1!.length; i++) {
                                                     if (i == index) {
-                                                      tempSelections1![i] =
-                                                          true;
-                                                      tempOption1 =
-                                                          (options1![i] as Text)
-                                                              .data
-                                                              .toString();
+                                                      tempSelections1![i] = true;
+                                                      tempOption1 = (options1![i] as Text).data.toString();
                                                       if (index != 3) {
                                                         selectedFinal = true;
                                                       }
                                                     } else {
-                                                      tempSelections1![i] =
-                                                          false;
+                                                      tempSelections1![i] = false;
                                                     }
                                                   }
                                                 });
@@ -701,21 +634,12 @@ class DataConfirmState extends State<DataConfirm> {
                                             ToggleButton(
                                               onPressed: (index) {
                                                 bottomState1(() {
-                                                  for (int i = 0;
-                                                      i <
-                                                          tempSelections2!
-                                                              .length;
-                                                      i++) {
+                                                  for (int i = 0; i < tempSelections2!.length; i++) {
                                                     if (i == index) {
-                                                      tempSelections2![i] =
-                                                          true;
-                                                      tempOption2 =
-                                                          (options2[i] as Text)
-                                                              .data
-                                                              .toString();
+                                                      tempSelections2![i] = true;
+                                                      tempOption2 = (options2[i] as Text).data.toString();
                                                     } else {
-                                                      tempSelections2![i] =
-                                                          false;
+                                                      tempSelections2![i] = false;
                                                     }
                                                   }
                                                 });
@@ -735,21 +659,12 @@ class DataConfirmState extends State<DataConfirm> {
                                             ToggleButton(
                                               onPressed: (index) {
                                                 bottomState1(() {
-                                                  for (int i = 0;
-                                                      i <
-                                                          tempSelections3!
-                                                              .length;
-                                                      i++) {
+                                                  for (int i = 0; i < tempSelections3!.length; i++) {
                                                     if (i == index) {
-                                                      tempSelections3![i] =
-                                                          true;
-                                                      tempOption3 =
-                                                          (options3[i] as Text)
-                                                              .data
-                                                              .toString();
+                                                      tempSelections3![i] = true;
+                                                      tempOption3 = (options3[i] as Text).data.toString();
                                                     } else {
-                                                      tempSelections3![i] =
-                                                          false;
+                                                      tempSelections3![i] = false;
                                                     }
                                                   }
                                                 });
@@ -758,7 +673,7 @@ class DataConfirmState extends State<DataConfirm> {
                                               isSelected: tempSelections3!,
                                               isRadius: false,
                                               minHeight: 30.0,
-                                              minWidth: 160.0,
+                                              minWidth: 105.0,
                                             ),
                                             SaveButton(
                                                 text: '확인',
@@ -769,32 +684,21 @@ class DataConfirmState extends State<DataConfirm> {
                                                     ? () {
                                                         Navigator.pop(context);
                                                         setState(() {
-                                                          selections1 = List.from(
-                                                              tempSelections1!);
-                                                          selections2 = List.from(
-                                                              tempSelections2!);
-                                                          selections3 = List.from(
-                                                              tempSelections3!);
+                                                          selections1 = List.from(tempSelections1!);
+                                                          selections2 = List.from(tempSelections2!);
+                                                          selections3 = List.from(tempSelections3!);
                                                           option1 = tempOption1;
                                                           option2 = tempOption2;
                                                           option3 = tempOption3;
-                                                          _rangeStart =
-                                                              tempRangeStart;
-                                                          _rangeEnd =
-                                                              tempRangeEnd;
-                                                          if (option1 == '3일' ||
-                                                              option1 ==
-                                                                  '1개월' ||
-                                                              option1 ==
-                                                                  '3개월') {
+                                                          _rangeStart = tempRangeStart;
+                                                          _rangeEnd = tempRangeEnd;
+                                                          if (option1 == '3일' || option1 == '1개월' || option1 == '3개월') {
                                                             selectedEtc = false;
                                                             tempRangeEnd = null;
-                                                            tempRangeStart =
-                                                                null;
+                                                            tempRangeStart = null;
                                                             temp1 = '';
                                                             temp2 = '';
-                                                            options1![3] =
-                                                                Text('직접설정');
+                                                            options1![3] = Text('직접설정');
                                                           }
                                                           editing();
                                                         });
@@ -821,10 +725,7 @@ class DataConfirmState extends State<DataConfirm> {
                                   ))),
                           child: Text(
                             '필터',
-                            style: TextStyle(
-                                fontWeight: FontWeight.w700,
-                                color: Colors.black,
-                                fontSize: 23.sp),
+                            style: TextStyle(fontWeight: FontWeight.w700, color: Colors.black, fontSize: 23.sp),
                           ),
                         ),
                       ),
@@ -834,10 +735,19 @@ class DataConfirmState extends State<DataConfirm> {
               ),
             ),
             Expanded(
-              child: SingleChildScrollView(
-                child: getDataConfirm(userData, text, manageDataState, option1!,
-                    option2!, option3!, _rangeStart, _rangeEnd, selectedEtc),
-              ),
+              child: FutureBuilder<List<String>>(
+                  future: initialize(option2!),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData == false) {
+                      return Center(child: CircularProgressIndicator());
+                    } else if (snapshot.hasError) {
+                      return Text('Error: ${snapshot.error}\n에러가 발생했습니다!');
+                    } else {
+                      return SingleChildScrollView(
+                        child: getDataConfirm(snapshot.data!, text, manageDataState, option1!, option3!, _rangeStart, _rangeEnd, selectedEtc, widget.userData),
+                      );
+                    }
+                  }),
             ),
           ],
         ),
