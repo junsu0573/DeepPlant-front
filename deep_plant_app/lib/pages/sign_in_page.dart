@@ -116,15 +116,6 @@ class _SignInState extends State<SignIn> {
 
       return;
     }
-
-    // 로딩 상태를 비활성화
-    setState(() {
-      isLoading = false;
-    });
-
-    // 데이터 fetch 성공시 다음 페이지로 go
-    if (!mounted) return;
-    context.go('/option');
   }
 
   // 유저의 이메일 valid 검사
@@ -145,11 +136,27 @@ class _SignInState extends State<SignIn> {
   Future<void> saveUserInfo() async {
     // 로그인 API 호출
     dynamic userInfo = await ApiServices.signIn(_userId);
+    if (userInfo == null) {
+      // 에러 메시지 호출
+      setState(() {
+        isLoading = false;
+      });
+      return;
+    }
 
     // 데이터 fetch
     if (userInfo != null) {
       widget.userData.fetchData(userInfo);
     }
+
+    // 로딩 상태를 비활성화
+    setState(() {
+      isLoading = false;
+    });
+
+    // 데이터 fetch 성공시 다음 페이지로 go
+    if (!mounted) return;
+    context.go('/option');
   }
 
   @override

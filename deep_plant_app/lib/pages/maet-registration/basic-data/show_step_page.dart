@@ -126,7 +126,7 @@ class _ShowStepState extends State<ShowStep> {
                 subText: '데이터를 입력해 주세요.',
                 step: '1',
                 isCompleted:
-                    widget.meatData.speciesValue != null ? true : false,
+                    widget.meatData.secondaryValue != null ? true : false,
               ),
             ),
             SizedBox(
@@ -205,7 +205,7 @@ class _ShowStepState extends State<ShowStep> {
                   SaveButton(
                     onPressed: _isAllCompleted()
                         ? () async {
-                            //await widget.meatData.resetTempData();
+                            await widget.meatData.resetTempData();
                             if (!mounted) return;
 
                             widget.userData.type == 'Normal'

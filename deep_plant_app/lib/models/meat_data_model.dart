@@ -106,8 +106,9 @@ class MeatData {
       final directory = await getApplicationDocumentsDirectory();
       final file = File('${directory.path}/$path.json');
 
-      // 파일을 저장할 디렉토리가 없으면 새로 생성
-      await Directory(directory.path).create(recursive: true);
+      if (!await directory.exists()) {
+        await directory.create(recursive: true); // 디렉토리를 먼저 생성
+      }
 
       await file.writeAsString(jsonEncode(data));
       print('임시저장 성공');
@@ -119,7 +120,7 @@ class MeatData {
   // 객체 데이터를 임시 저장 데이터로 초기화
   Future<void> initMeatData(String path) async {
     final directory = await getApplicationDocumentsDirectory();
-    final file = File('${directory.path}/$path/basic-data.json');
+    final file = File('${directory.path}/$path-basic-data.json');
     if (await file.exists()) {
       final jsonData = await file.readAsString();
       final data = jsonDecode(jsonData);
@@ -174,7 +175,8 @@ class MeatData {
       // 신선육 관능평가
       'freshmeat': freshmeat,
     };
-    await saveDataToLocal(tempData, '${userId!}/basic-data');
+
+    await saveDataToLocal(tempData, '${userId!}-basic-data');
   }
 
   // 임시저장 데이터 리셋
@@ -202,7 +204,7 @@ class MeatData {
       'freshmeat': null,
     };
 
-    await saveDataToLocal(tempData, '${userId!}/basic-data');
+    await saveDataToLocal(tempData, '${userId!}-basic-data');
   }
 
   // 신규 육류 데이터를 json 형식으로 변환

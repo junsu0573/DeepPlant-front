@@ -1,9 +1,9 @@
 import 'package:deep_plant_app/models/data_management_filter_model.dart';
 import 'package:deep_plant_app/models/meat_data_model.dart';
 import 'package:deep_plant_app/models/user_data_model.dart';
-import 'package:deep_plant_app/pages/adress_search_test.dart';
 import 'package:deep_plant_app/pages/data-management/data_management_page_2.dart';
 import 'package:deep_plant_app/pages/data-management/reading_data_page.dart';
+import 'package:deep_plant_app/pages/home_page.dart';
 import 'package:deep_plant_app/pages/maet-registration/additional-data/complete_additional_registration_page.dart';
 import 'package:deep_plant_app/pages/maet-registration/additional-data/data_add_home_page.dart';
 import 'package:deep_plant_app/pages/maet-registration/basic-data/complete_registration_page.dart';
@@ -52,7 +52,7 @@ final _router = GoRouter(
   routes: [
     GoRoute(
       path: '/',
-      builder: (context, state) => AdressSearchTest(),
+      builder: (context, state) => HomePage(),
       routes: [
         GoRoute(
           path: 'sign-in',
@@ -198,7 +198,8 @@ class DeepPlatinApp extends StatelessWidget {
       // 기본 색상
       theme: ThemeData(
         primaryColor: const Color.fromRGBO(51, 51, 51, 1),
-        buttonTheme: const ButtonThemeData(buttonColor: Color.fromRGBO(51, 51, 51, 1)),
+        buttonTheme:
+            const ButtonThemeData(buttonColor: Color.fromRGBO(51, 51, 51, 1)),
       ),
       routerConfig: _router,
       builder: (context, child) {
