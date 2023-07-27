@@ -23,12 +23,9 @@ class HeatedMeatEvaluation extends StatefulWidget {
 
 class _HeatedMeatEvaluation extends State<HeatedMeatEvaluation>
     with SingleTickerProviderStateMixin {
-  late TabController _tabController;
-
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 5, vsync: this);
   }
 
   List<List<String>> text = [
@@ -79,7 +76,7 @@ class _HeatedMeatEvaluation extends State<HeatedMeatEvaluation>
         backButton: false,
         closeButton: true,
       ),
-      body: Center(
+      body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -90,123 +87,69 @@ class _HeatedMeatEvaluation extends State<HeatedMeatEvaluation>
                 fontWeight: FontWeight.w600,
               ),
             ),
-            Spacer(),
-            Container(
-              margin: EdgeInsets.only(
-                left: 24.w,
-                right: 24.w,
-              ),
-              child: TabBar(
-                controller: _tabController,
-                tabs: [
-                  Tab(
-                    text: '1',
-                  ),
-                  Tab(
-                    text: '2',
-                  ),
-                  Tab(
-                    text: '3',
-                  ),
-                  Tab(
-                    text: '4',
-                  ),
-                  Tab(
-                    text: '5',
-                  ),
-                ],
-                labelColor: Colors.black,
-                labelStyle: TextStyle(
-                  color: Colors.black,
-                ),
-                unselectedLabelStyle: TextStyle(
-                  fontSize: 30.sp,
-                  fontWeight: FontWeight.w400,
-                  color: Color.fromRGBO(120, 120, 120, 1),
-                ),
-                indicator: ShapeDecoration(
-                  shape: Border(
-                    bottom: BorderSide(
-                      color: Colors.black,
-                      width: 3.0.sp,
-                    ),
-                  ),
-                ),
-              ),
+            SizedBox(
+              height: 30.h,
+            ),
+            PartEval(
+              selectedText: text[0],
+              value: _flavor,
+              onChanged: (value) {
+                setState(() {
+                  _flavor = double.parse(value.toStringAsFixed(1));
+                });
+              },
             ),
             SizedBox(
-              height: 10.h,
+              height: 50.h,
+            ),
+            PartEval(
+              selectedText: text[1],
+              value: _juiciness,
+              onChanged: (value) {
+                setState(() {
+                  _juiciness = double.parse(value.toStringAsFixed(1));
+                });
+              },
             ),
             SizedBox(
-              height: 300.h,
-              child: TabBarView(
-                controller: _tabController,
-                children: [
-                  // Tab1의 내용
-                  Center(
-                    child: PartEval(
-                      selectedText: text[0],
-                      value: _flavor,
-                      onChanged: (value) {
-                        setState(() {
-                          _flavor = double.parse(value.toStringAsFixed(1));
-                        });
-                      },
-                    ),
-                  ),
-                  // Tab2의 내용
-                  Center(
-                    child: PartEval(
-                      selectedText: text[1],
-                      value: _juiciness,
-                      onChanged: (value) {
-                        setState(() {
-                          _juiciness = double.parse(value.toStringAsFixed(1));
-                        });
-                      },
-                    ),
-                  ),
-                  // Tab3의 내용
-                  Center(
-                    child: PartEval(
-                      selectedText: text[2],
-                      value: _tenderness,
-                      onChanged: (value) {
-                        setState(() {
-                          _tenderness = double.parse(value.toStringAsFixed(1));
-                        });
-                      },
-                    ),
-                  ),
-                  // Tab4의 내용
-                  Center(
-                    child: PartEval(
-                      selectedText: text[3],
-                      value: _umami,
-                      onChanged: (value) {
-                        setState(() {
-                          _umami = double.parse(value.toStringAsFixed(1));
-                        });
-                      },
-                    ),
-                  ),
-                  // Tab5의 내용
-                  Center(
-                    child: PartEval(
-                      selectedText: text[4],
-                      value: _palatability,
-                      onChanged: (value) {
-                        setState(() {
-                          _palatability =
-                              double.parse(value.toStringAsFixed(1));
-                        });
-                      },
-                    ),
-                  ),
-                ],
-              ),
+              height: 50.h,
             ),
-            Spacer(),
+            PartEval(
+              selectedText: text[2],
+              value: _tenderness,
+              onChanged: (value) {
+                setState(() {
+                  _tenderness = double.parse(value.toStringAsFixed(1));
+                });
+              },
+            ),
+            SizedBox(
+              height: 50.h,
+            ),
+            PartEval(
+              selectedText: text[3],
+              value: _umami,
+              onChanged: (value) {
+                setState(() {
+                  _umami = double.parse(value.toStringAsFixed(1));
+                });
+              },
+            ),
+            SizedBox(
+              height: 50.h,
+            ),
+            PartEval(
+              selectedText: text[4],
+              value: _palatability,
+              onChanged: (value) {
+                setState(() {
+                  _palatability = double.parse(value.toStringAsFixed(1));
+                });
+              },
+            ),
+            SizedBox(
+              height: 120.h,
+            ),
             Container(
               margin: EdgeInsets.only(bottom: 18.h),
               child: SaveButton(
