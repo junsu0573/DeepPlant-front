@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:deep_plant_app/models/meat_data_model.dart';
 import 'package:deep_plant_app/pages/maet-registration/basic-data/insertion_meat_info_page.dart';
 import 'package:deep_plant_app/source/pallete.dart';
@@ -7,6 +9,7 @@ import 'package:deep_plant_app/widgets/save_button.dart';
 import 'package:deep_plant_app/widgets/text_insertion_field.dart';
 import 'package:flutter/material.dart';
 import 'package:deep_plant_app/source/oepn_api_source.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 
@@ -22,6 +25,14 @@ class GetTraceNum extends StatefulWidget {
 }
 
 class _GetTraceNumState extends State<GetTraceNum> {
+  // 바코드 이벤트 채널
+  EventChannel? _eventChannel;
+
+  // 바코드 스트림 구독
+  StreamSubscription<dynamic>? _eventSubscription;
+
+  String _barcodeData = 'No Data';
+
   var apikey =
       "%2FuEP%2BvIjYfPTyaHNlxRx2Ry5cVUer92wa6lHcxnXEEekVjUCZ1N41traj3s8sGhHpKS54SVDbg9m4sHOEuMNuw%3D%3D";
 
@@ -60,6 +71,20 @@ class _GetTraceNumState extends State<GetTraceNum> {
   void initState() {
     super.initState();
     initialize();
+    _eventChannel = EventChannel('com.example.deep_plant_app/barcode');
+    _eventSubscription =
+        _eventChannel!.receiveBroadcastStream().listen((dynamic event) {
+      setState(() {
+        _barcodeData = event.toString();
+        textEditingController.text = _barcodeData;
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    _eventSubscription?.cancel();
+    super.dispose();
   }
 
   void initialize() {
