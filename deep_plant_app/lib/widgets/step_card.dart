@@ -6,22 +6,24 @@ class StepCard extends StatelessWidget {
   final String subText;
   final String step;
   final bool isCompleted;
+  final bool isBefore;
   StepCard({
     super.key,
     required this.mainText,
     required this.subText,
     required this.step,
     required this.isCompleted,
+    required this.isBefore,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 24.w),
+      padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 18.h),
       width: 588.w,
       height: 149.h,
       decoration: BoxDecoration(
-        color: isCompleted ? Color(0xFFE1E1E1) : Colors.white,
+        color: (isCompleted || isBefore) ? Color(0xFFE1E1E1) : Colors.white,
         border: Border.all(
           color: Color(0xFFE1E1E1),
           width: 3.sp,

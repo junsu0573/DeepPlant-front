@@ -24,8 +24,7 @@ class FreshMeatEvaluation extends StatefulWidget {
   State<FreshMeatEvaluation> createState() => _FreshMeatEvaluationState();
 }
 
-class _FreshMeatEvaluationState extends State<FreshMeatEvaluation>
-    with SingleTickerProviderStateMixin {
+class _FreshMeatEvaluationState extends State<FreshMeatEvaluation> with SingleTickerProviderStateMixin {
   late TabController _tabController;
   String _meatImage = '';
 
@@ -33,13 +32,13 @@ class _FreshMeatEvaluationState extends State<FreshMeatEvaluation>
   void initState() {
     super.initState();
     _tabController = TabController(length: 5, vsync: this);
-    if (widget.isDeepAged != null &&
-        widget.isDeepAged == true &&
-        widget.meatData.deepAgedImage != null) {
+    if (widget.isDeepAged != null && widget.isDeepAged == true && widget.meatData.deepAgedImage != null) {
       _meatImage = widget.meatData.deepAgedImage!;
     } else if (widget.meatData.imagePath != null) {
       _meatImage = widget.meatData.imagePath!;
     }
+    initialize();
+    setState(() {});
   }
 
   List<List<String>> text = [
@@ -57,12 +56,24 @@ class _FreshMeatEvaluationState extends State<FreshMeatEvaluation>
   double _overall = 0;
 
   bool _isAllInserted() {
-    if (_marbling > 0 &&
-        _color > 0 &&
-        _texture > 0 &&
-        _surface > 0 &&
-        _overall > 0) return true;
+    if (_marbling > 0 && _color > 0 && _texture > 0 && _surface > 0 && _overall > 0) return true;
     return false;
+  }
+
+  void initialize() {
+    if (widget.isDeepAged != null) {
+      _marbling = widget.meatData.deepAgedFreshmeat!['marbling'];
+      _color = widget.meatData.deepAgedFreshmeat!['color'];
+      _texture = widget.meatData.deepAgedFreshmeat!['texture'];
+      _surface = widget.meatData.deepAgedFreshmeat!['surfaceMoisture'];
+      _overall = widget.meatData.deepAgedFreshmeat!['overall'];
+    } else if (widget.meatData.freshmeat != null) {
+      _marbling = widget.meatData.freshmeat!['marbling'];
+      _color = widget.meatData.freshmeat!['color'];
+      _texture = widget.meatData.freshmeat!['texture'];
+      _surface = widget.meatData.freshmeat!['surfaceMoisture'];
+      _overall = widget.meatData.freshmeat!['overall'];
+    }
   }
 
   void saveMeatData() {
@@ -130,37 +141,27 @@ class _FreshMeatEvaluationState extends State<FreshMeatEvaluation>
                   ),
                   Icon(
                     Icons.check,
-                    color: _marbling > 0
-                        ? Palette.mainButtonColor
-                        : Colors.transparent,
+                    color: _marbling > 0 ? Palette.mainButtonColor : Colors.transparent,
                   ),
                   Spacer(),
                   Icon(
                     Icons.check,
-                    color: _color > 0
-                        ? Palette.mainButtonColor
-                        : Colors.transparent,
+                    color: _color > 0 ? Palette.mainButtonColor : Colors.transparent,
                   ),
                   Spacer(),
                   Icon(
                     Icons.check,
-                    color: _texture > 0
-                        ? Palette.mainButtonColor
-                        : Colors.transparent,
+                    color: _texture > 0 ? Palette.mainButtonColor : Colors.transparent,
                   ),
                   Spacer(),
                   Icon(
                     Icons.check,
-                    color: _surface > 0
-                        ? Palette.mainButtonColor
-                        : Colors.transparent,
+                    color: _surface > 0 ? Palette.mainButtonColor : Colors.transparent,
                   ),
                   Spacer(),
                   Icon(
                     Icons.check,
-                    color: _overall > 0
-                        ? Palette.mainButtonColor
-                        : Colors.transparent,
+                    color: _overall > 0 ? Palette.mainButtonColor : Colors.transparent,
                   ),
                   SizedBox(
                     width: 70.w,
@@ -316,12 +317,9 @@ class _FreshMeatEvaluationState extends State<FreshMeatEvaluation>
                       ? () async {
                           // 데이터 저장
                           saveMeatData();
-
-                          if (widget.isDeepAged != null &&
-                              widget.isDeepAged == true) {
+                          if (widget.isDeepAged != null && widget.isDeepAged == true) {
                             // 서버로 전송
-                            await ApiServices.sendMeatData('sensory_eval',
-                                widget.meatData.convertFreshMeatToJson(1));
+                            await ApiServices.sendMeatData('sensory_eval', widget.meatData.convertFreshMeatToJson(1));
                           }
                           if (!mounted) return;
                           Navigator.pop(context);

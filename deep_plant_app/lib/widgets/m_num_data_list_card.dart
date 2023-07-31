@@ -7,12 +7,14 @@ class MNumDataListCard extends StatelessWidget {
   final String mNum;
   final bool? noButton;
   final VoidCallback? buttonAction;
+  final bool? isInserted;
   const MNumDataListCard({
     super.key,
     required this.idx,
     required this.mNum,
     this.noButton,
     this.buttonAction,
+    this.isInserted,
   });
 
   @override
@@ -52,20 +54,22 @@ class MNumDataListCard extends StatelessWidget {
               Spacer(),
               noButton == null
                   ? CommonButton(
-                      text: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.add,
-                            size: 20.5.w,
-                          ),
-                          Text(
-                            ' 추가',
-                            style: TextStyle(fontSize: 30.sp),
-                          ),
-                        ],
-                      ),
-                      onPress: buttonAction,
+                      text: !isInserted!
+                          ? Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.add,
+                                  size: 20.5.w,
+                                ),
+                                Text(
+                                  ' 추가',
+                                  style: TextStyle(fontSize: 30.sp),
+                                ),
+                              ],
+                            )
+                          : Icon(Icons.check),
+                      onPress: !isInserted! ? buttonAction : null,
                       width: 151.w,
                       height: 63.h,
                       bgColor: Color.fromRGBO(178, 178, 178, 1),

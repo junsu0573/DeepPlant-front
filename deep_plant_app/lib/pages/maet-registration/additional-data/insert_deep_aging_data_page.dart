@@ -68,18 +68,22 @@ class _InsertDeepAgingDataState extends State<InsertDeepAgingData> {
   void initState() {
     super.initState();
     if (widget.agingdata.insertedMinute != null) {
-      // 여기에 0붙으면 때어버리게 추가
-      selectedMonth = widget.agingdata.selectedMonth!;
-      selectedDay = widget.agingdata.selectedDay!;
-      selectedYear = widget.agingdata.selectedYear!;
-      selectedMinute = widget.agingdata.insertedMinute;
-      textEditingController2.text = widget.agingdata.insertedMinute!;
-      isInsertedDay = true;
-      isInsertedMinute = true;
-      isInsertedMonth = true;
-      isInsertedYear = true;
-      isFinal = true;
+      initialize();
     }
+  }
+
+  void initialize() {
+// 여기에 0붙으면 때어버리게 추가
+    selectedMonth = widget.agingdata.selectedMonth!;
+    selectedDay = widget.agingdata.selectedDay!;
+    selectedYear = widget.agingdata.selectedYear!;
+    selectedMinute = widget.agingdata.insertedMinute;
+    textEditingController2.text = widget.agingdata.insertedMinute!;
+    isInsertedDay = true;
+    isInsertedMinute = true;
+    isInsertedMonth = true;
+    isInsertedYear = true;
+    isFinal = true;
   }
 
   void saveData(DeepAgingData deepData) {
@@ -94,14 +98,16 @@ class _InsertDeepAgingDataState extends State<InsertDeepAgingData> {
     // 최종적으로 '월, 일'에 들어갈 때 10 이하의 경우 앞에 0을 추가해준다.
     if (int.parse(selectedMonth) < 10 && !selectedMonth.startsWith('0')) {
       selectedMonth = '0$selectedMonth';
-    } else {
-      selectedMonth = selectedMonth.substring(1, selectedMonth.length);
     }
+    // else {
+    //   selectedMonth = selectedMonth.substring(1, selectedMonth.length);
+    // }
     if (int.parse(selectedDay) < 10 && !selectedDay.startsWith('0')) {
       selectedDay = '0$selectedDay';
-    } else {
-      selectedDay = selectedDay.substring(1, selectedDay.length);
     }
+    //  else {
+    //   selectedDay = selectedDay.substring(1, selectedDay.length);
+    // }
   }
 
   @override
@@ -415,7 +421,7 @@ class _InsertDeepAgingDataState extends State<InsertDeepAgingData> {
                             child: TextField(
                               onChanged: (value) {
                                 setState(() {
-                                  if (num.hasMatch(value)) {
+                                  if (num.hasMatch(value) && int.parse(value) != 0) {
                                     selectedMinute = value;
                                     isInsertedMinute = true;
                                     isFinal = true;

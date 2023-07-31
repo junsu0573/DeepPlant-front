@@ -71,6 +71,7 @@ class _ShowStep2State extends State<ShowStep2> {
                 subText: '데이터를 입력해 주세요.',
                 step: '1',
                 isCompleted: widget.meatData.deepAging != null ? true : false,
+                isBefore: false,
               ),
             ),
             GestureDetector(
@@ -80,6 +81,7 @@ class _ShowStep2State extends State<ShowStep2> {
                 subText: '데이터를 입력해 주세요.',
                 step: '2',
                 isCompleted: widget.meatData.freshmeat != null ? true : false,
+                isBefore: false,
               ),
             ),
             GestureDetector(
@@ -89,6 +91,7 @@ class _ShowStep2State extends State<ShowStep2> {
                 subText: '데이터를 입력해 주세요.',
                 step: '3',
                 isCompleted: widget.meatData.heatedmeat != null ? true : false,
+                isBefore: false,
               ),
             ),
             GestureDetector(
@@ -98,6 +101,7 @@ class _ShowStep2State extends State<ShowStep2> {
                 subText: '데이터를 입력해 주세요.',
                 step: '4',
                 isCompleted: widget.meatData.tongueData != null ? true : false,
+                isBefore: false,
               ),
             ),
             GestureDetector(
@@ -107,6 +111,7 @@ class _ShowStep2State extends State<ShowStep2> {
                 subText: '데이터를 입력해 주세요.',
                 step: '5',
                 isCompleted: widget.meatData.labData != null ? true : false,
+                isBefore: false,
               ),
             ),
             Spacer(),
