@@ -26,14 +26,18 @@ class DataManagement2 extends StatefulWidget {
   State<DataManagement2> createState() => _DataManagement2State();
 }
 
-class _DataManagement2State extends State<DataManagement2>
-    with SingleTickerProviderStateMixin {
+class _DataManagement2State extends State<DataManagement2> with SingleTickerProviderStateMixin {
   late TabController _tabController;
   Set<String> dataList = {};
 
   @override
   void initState() {
     super.initState();
+
+    // 유저 아이디 저장
+    if (widget.userData.userId != null) {
+      widget.meatData.userId = widget.userData.userId;
+    }
     _tabController = TabController(length: 2, vsync: this);
     widget.filter.resetCon();
 
@@ -48,8 +52,7 @@ class _DataManagement2State extends State<DataManagement2>
 
   void initialize() async {
     final directory = await getApplicationDocumentsDirectory();
-    final file =
-        File('${directory.path}/${widget.userData.userId}-data-list.json');
+    final file = File('${directory.path}/${widget.userData.userId}-data-list.json');
     if (await file.exists()) {
       final jsonData = await file.readAsString();
       final data = jsonDecode(jsonData);

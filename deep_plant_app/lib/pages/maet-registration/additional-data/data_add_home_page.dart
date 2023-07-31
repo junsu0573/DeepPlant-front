@@ -116,6 +116,7 @@ class _DataAddHomeState extends State<DataAddHome> {
         minute.add(0);
         objects.insert(index, data);
         widgets.insert(index, widgetCreate(index));
+
         // 데이터 fetch
         intoModel(index);
         // 시간 계산
@@ -504,7 +505,7 @@ class _DataAddHomeState extends State<DataAddHome> {
                           if (data.insertedMinute != null) {
                             intoData();
                             await ApiServices.sendMeatData(
-                              'sensory_eval',
+                              'deep_aging_data',
                               widget.meatData.convertDeepAgingToJson(),
                             );
                             // 객체를 초기화 해준다.

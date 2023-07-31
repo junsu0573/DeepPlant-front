@@ -4,7 +4,7 @@ import 'package:deep_plant_app/models/user_data_model.dart';
 import 'package:http/http.dart' as http;
 
 class ApiServices {
-  static String baseUrl = 'http://172.30.1.9:8080';
+  static String baseUrl = 'http://10.221.71.143:8080';
 
   // API POST
   static Future<dynamic> _postApi(String endPoint, String jsonData) async {
