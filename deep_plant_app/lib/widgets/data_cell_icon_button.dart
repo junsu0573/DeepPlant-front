@@ -38,7 +38,7 @@ class DataCellIconButton extends StatelessWidget {
         ),
         label: Text(
           text,
-          style: TextStyle(fontSize: 27.sp, fontWeight: FontWeight.w500),
+          style: TextStyle(fontSize: 27.sp, fontWeight: FontWeight.w500, color: Colors.black),
         ),
         icon: Icon(
           icon,

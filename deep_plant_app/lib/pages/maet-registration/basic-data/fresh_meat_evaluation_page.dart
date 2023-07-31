@@ -37,8 +37,7 @@ class _FreshMeatEvaluationState extends State<FreshMeatEvaluation> with SingleTi
     } else if (widget.meatData.imagePath != null) {
       _meatImage = widget.meatData.imagePath!;
     }
-    print(widget.meatData.deepAging);
-    // initialize();
+    initialize();
     setState(() {});
   }
 
@@ -62,13 +61,13 @@ class _FreshMeatEvaluationState extends State<FreshMeatEvaluation> with SingleTi
   }
 
   void initialize() {
-    if (widget.meatData.deepAgedFreshmeat!['marbling'] != null) {
+    if (widget.meatData.deepAgedFreshmeat?['marbling'] != null) {
       _marbling = widget.meatData.deepAgedFreshmeat?['marbling'];
       _color = widget.meatData.deepAgedFreshmeat?['color'];
       _texture = widget.meatData.deepAgedFreshmeat?['texture'];
       _surface = widget.meatData.deepAgedFreshmeat?['surfaceMoisture'];
       _overall = widget.meatData.deepAgedFreshmeat?['overall'];
-    } else if (widget.meatData.freshmeat != null) {
+    } else if (widget.meatData.freshmeat?['marbling'] != null) {
       _marbling = widget.meatData.freshmeat?['marbling'];
       _color = widget.meatData.freshmeat?['color'];
       _texture = widget.meatData.freshmeat?['texture'];
@@ -181,7 +180,7 @@ class _FreshMeatEvaluationState extends State<FreshMeatEvaluation> with SingleTi
                       child: Text(
                         '마블링',
                         style: TextStyle(
-                          fontSize: 27.sp,
+                          fontSize: 25.sp,
                         ),
                       ),
                     ),
@@ -189,7 +188,7 @@ class _FreshMeatEvaluationState extends State<FreshMeatEvaluation> with SingleTi
                       child: Text(
                         '육색',
                         style: TextStyle(
-                          fontSize: 27.sp,
+                          fontSize: 25.sp,
                         ),
                       ),
                     ),
@@ -197,7 +196,7 @@ class _FreshMeatEvaluationState extends State<FreshMeatEvaluation> with SingleTi
                       child: Text(
                         '조직감',
                         style: TextStyle(
-                          fontSize: 27.sp,
+                          fontSize: 25.sp,
                         ),
                       ),
                     ),
@@ -205,7 +204,7 @@ class _FreshMeatEvaluationState extends State<FreshMeatEvaluation> with SingleTi
                       child: Text(
                         '육즙',
                         style: TextStyle(
-                          fontSize: 27.sp,
+                          fontSize: 25.sp,
                         ),
                       ),
                     ),
@@ -213,7 +212,7 @@ class _FreshMeatEvaluationState extends State<FreshMeatEvaluation> with SingleTi
                       child: Text(
                         '기호도',
                         style: TextStyle(
-                          fontSize: 27.sp,
+                          fontSize: 25.sp,
                         ),
                       ),
                     ),

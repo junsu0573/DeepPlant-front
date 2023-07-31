@@ -57,6 +57,16 @@ class DataConfirmState extends State<DataConfirm> {
     Text('전체'),
   ];
 
+  @override
+  void initState() {
+    super.initState();
+    _selectedDay = _focusedDay;
+    if (widget.filter.confirmOption1 == null) {
+      widget.filter.resetCon();
+    }
+    setting();
+  }
+
   void setting() {
     selections1 = widget.filter.confirmSelections1!;
     selections2 = widget.filter.confirmSelections2!;
@@ -90,16 +100,6 @@ class DataConfirmState extends State<DataConfirm> {
     widget.filter.temp1 = temp1;
     widget.filter.temp2 = temp2;
     widget.filter.flag = selectedEtc;
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _selectedDay = _focusedDay;
-    if (widget.filter.confirmOption1 == null) {
-      widget.filter.resetCon();
-    }
-    setting();
   }
 
   Future<List<String>> initialize(String type) async {
@@ -743,9 +743,7 @@ class DataConfirmState extends State<DataConfirm> {
                     } else if (snapshot.hasError) {
                       return Text('Error: ${snapshot.error}\n에러가 발생했습니다!');
                     } else {
-                      return SingleChildScrollView(
-                        child: getDataConfirm(snapshot.data!, text, manageDataState, option1!, option3!, _rangeStart, _rangeEnd, selectedEtc, widget.userData),
-                      );
+                      return getConfirmTable(snapshot.data!, text, manageDataState, option1!, option3!, _rangeStart, _rangeEnd, selectedEtc, widget.userData);
                     }
                   }),
             ),

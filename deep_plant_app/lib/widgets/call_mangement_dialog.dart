@@ -133,7 +133,9 @@ class _NumCallDialogState extends State<NumCallDialog> {
                                   ),
                                 ),
                               ).then((value) {
-                                setState(() {});
+                                setState(() {
+                                  context.pop();
+                                });
                               });
                             },
                             width: 245.w,

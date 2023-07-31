@@ -1,3 +1,4 @@
+import 'package:deep_plant_app/source/pallete.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -23,7 +24,11 @@ class StepCard extends StatelessWidget {
       width: 588.w,
       height: 149.h,
       decoration: BoxDecoration(
-        color: (isCompleted || isBefore) ? Color(0xFFE1E1E1) : Colors.white,
+        color: (isCompleted)
+            ? Color(0xFFE1E1E1)
+            : (isBefore)
+                ? Palette.inactiveButtonColor
+                : Colors.white,
         border: Border.all(
           color: Color(0xFFE1E1E1),
           width: 3.sp,

@@ -84,17 +84,15 @@ class _StepFreshMeatState extends State<StepFreshMeat> {
               ),
             ),
             InkWell(
-              onTap: widget.meatData.heatedmeat != null
-                  ? () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => TongueDataInputPage(
-                                  meatData: widget.meatData,
-                                )),
-                      ).then((_) {
-                        setState(() {});
-                      })
-                  : null,
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => TongueDataInputPage(
+                          meatData: widget.meatData,
+                        )),
+              ).then((_) {
+                setState(() {});
+              }),
               child: StepCard(
                 mainText: '전자혀 데이터',
                 subText: '전자혀 측정 데이터를 입력해주세요',
@@ -104,17 +102,15 @@ class _StepFreshMeatState extends State<StepFreshMeat> {
               ),
             ),
             InkWell(
-              onTap: widget.meatData.heatedmeat != null
-                  ? () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => LabDataInput(
-                                  meatData: widget.meatData,
-                                )),
-                      ).then((_) {
-                        setState(() {});
-                      })
-                  : null,
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => LabDataInput(
+                          meatData: widget.meatData,
+                        )),
+              ).then((_) {
+                setState(() {});
+              }),
               child: StepCard(
                 mainText: '실험 데이터',
                 subText: '실험 결과 데이터를 입력해주세요',

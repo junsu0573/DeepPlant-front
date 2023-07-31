@@ -255,13 +255,6 @@ class _AppManagerState extends State<AppManager> with WidgetsBindingObserver {
   }
 
   @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (state == AppLifecycleState.paused) {
-      deleteFile();
-    }
-  }
-
-  @override
   Widget build(BuildContext context) {
     return widget.child;
   }

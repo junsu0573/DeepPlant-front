@@ -54,6 +54,18 @@ class ReadingDataState extends State<ReadingData> {
     initialize();
   }
 
+  Future<List<String>> initialize() async {
+    final data = await ApiServices.getMyData(widget.userData.userId!);
+    List<String> extracted = data.map((item) {
+      String id = item['id'];
+      String createdAt = item['createdAt'];
+      createdAt = createdAt.replaceFirst('T', ' ');
+      String name = '${widget.userData.name}';
+      return '$id,$name,$createdAt';
+    }).toList();
+    return extracted;
+  }
+
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
   DateTime? _rangeStart;
@@ -65,28 +77,12 @@ class ReadingDataState extends State<ReadingData> {
   bool selectedEtc = false;
   bool selectedFinal = true;
 
-  List<String> userData = [
-    '883e812d532e,전수현,2023-07-20 10:19:48',
-  ];
-
   manageDataState() {
     search.addListener(() {
       setState(() {
         text = search.text;
       });
     });
-  }
-
-  void initialize() async {
-    final data = await ApiServices.getMyData(widget.userData.userId!);
-    List<String> extracted = data.map((item) {
-      String id = item['id'];
-      String createdAt = item['createdAt'];
-      createdAt = createdAt.replaceFirst('T', ' ');
-      String name = '${widget.userData.name}';
-      return '$id,$name,$createdAt';
-    }).toList();
-    userData = extracted;
   }
 
   @override
@@ -262,10 +258,8 @@ class ReadingDataState extends State<ReadingData> {
                                                                                                 onPressed: () {
                                                                                                   bottomState2(
                                                                                                     () {
-                                                                                                      setState(() {
-                                                                                                        tempRangeStart = selectDate;
-                                                                                                        temp1 = DateFormat('MM/dd').format(tempRangeStart!);
-                                                                                                      });
+                                                                                                      tempRangeStart = selectDate;
+                                                                                                      temp1 = DateFormat('MM/dd').format(tempRangeStart!);
                                                                                                     },
                                                                                                   );
                                                                                                   Navigator.pop(context);
@@ -364,10 +358,8 @@ class ReadingDataState extends State<ReadingData> {
                                                                                                 onPressed: () {
                                                                                                   bottomState2(
                                                                                                     () {
-                                                                                                      setState(() {
-                                                                                                        tempRangeEnd = selectDate;
-                                                                                                        temp2 = DateFormat('MM/dd').format(tempRangeEnd!);
-                                                                                                      });
+                                                                                                      tempRangeEnd = selectDate;
+                                                                                                      temp2 = DateFormat('MM/dd').format(tempRangeEnd!);
                                                                                                     },
                                                                                                   );
                                                                                                   Navigator.pop(context);
@@ -434,19 +426,15 @@ class ReadingDataState extends State<ReadingData> {
                                                                       onTap: () {
                                                                         bottomState1(
                                                                           () {
-                                                                            setState(
-                                                                              () {
-                                                                                if (tempRangeEnd != null && tempRangeStart != null) {
-                                                                                  tempOption1 = '$temp1-$temp2';
-                                                                                  options1[3] = Text(tempOption1);
-                                                                                  selectedFinal = true;
-                                                                                } else {
-                                                                                  tempOption1 = '직접설정';
-                                                                                  options1[3] = Text(tempOption1);
-                                                                                  selectedFinal = false;
-                                                                                }
-                                                                              },
-                                                                            );
+                                                                            if (tempRangeEnd != null && tempRangeStart != null) {
+                                                                              tempOption1 = '$temp1-$temp2';
+                                                                              options1[3] = Text(tempOption1);
+                                                                              selectedFinal = true;
+                                                                            } else {
+                                                                              tempOption1 = '직접설정';
+                                                                              options1[3] = Text(tempOption1);
+                                                                              selectedFinal = false;
+                                                                            }
                                                                           },
                                                                         );
                                                                         context.pop();
@@ -470,40 +458,23 @@ class ReadingDataState extends State<ReadingData> {
                                                                   rangeEndDay: tempRangeEnd,
                                                                   rangeSelectionMode: _rangeSelectionMode,
                                                                   rowHeight: 40.0,
-                                                                  // onDaySelected: (selectedDay, focusedDay) {
-                                                                  //   bottomState2(
-                                                                  //     () {
-                                                                  //       if (!isSameDay(_selectedDay, selectedDay)) {
-                                                                  //         setState(() {
-                                                                  //           _selectedDay = selectedDay;
-                                                                  //           _focusedDay = focusedDay;
-                                                                  //           _rangeStart = null;
-                                                                  //           _rangeEnd = null;
-                                                                  //           _rangeSelectionMode = RangeSelectionMode.toggledOff;
-                                                                  //         });
-                                                                  //       }
-                                                                  //     },
-                                                                  //   );
-                                                                  // },
                                                                   onRangeSelected: (startDay, endDay, focusedDay) {
                                                                     bottomState2(
                                                                       () {
-                                                                        setState(() {
-                                                                          _selectedDay = null;
-                                                                          _focusedDay = focusedDay;
-                                                                          tempRangeStart = startDay;
-                                                                          tempRangeEnd = endDay;
-                                                                          if (tempRangeEnd != null && tempRangeStart != null) {
-                                                                            temp1 = DateFormat('MM/dd').format(tempRangeStart!);
-                                                                            temp2 = DateFormat('MM/dd').format(tempRangeEnd!);
-                                                                          } else if (tempRangeEnd == null) {
-                                                                            temp1 = DateFormat('MM/dd').format(tempRangeStart!);
-                                                                            temp2 = "";
-                                                                          } else if (tempRangeStart == null) {
-                                                                            temp2 = DateFormat('MM/dd').format(tempRangeEnd!);
-                                                                            temp1 = "";
-                                                                          }
-                                                                        });
+                                                                        _selectedDay = null;
+                                                                        _focusedDay = focusedDay;
+                                                                        tempRangeStart = startDay;
+                                                                        tempRangeEnd = endDay;
+                                                                        if (tempRangeEnd != null && tempRangeStart != null) {
+                                                                          temp1 = DateFormat('MM/dd').format(tempRangeStart!);
+                                                                          temp2 = DateFormat('MM/dd').format(tempRangeEnd!);
+                                                                        } else if (tempRangeEnd == null) {
+                                                                          temp1 = DateFormat('MM/dd').format(tempRangeStart!);
+                                                                          temp2 = "";
+                                                                        } else if (tempRangeStart == null) {
+                                                                          temp2 = DateFormat('MM/dd').format(tempRangeEnd!);
+                                                                          temp1 = "";
+                                                                        }
                                                                       },
                                                                     );
                                                                   },
@@ -642,8 +613,19 @@ class ReadingDataState extends State<ReadingData> {
               ),
             ),
             Expanded(
-              child: SingleChildScrollView(
-                child: getDataTable(userData, text, manageDataState, sortDscending, option1, _rangeStart, _rangeEnd, selectedEtc, widget.userData),
+              child: FutureBuilder<List<String>>(
+                future: initialize(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData == false) {
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  } else if (snapshot.hasError) {
+                    return Text('Error: ${snapshot.error}\n에러가 발생했습니다!');
+                  } else {
+                    return getDataTable(snapshot.data!, text, manageDataState, sortDscending, option1, _rangeStart, _rangeEnd, selectedEtc, widget.userData);
+                  }
+                },
               ),
             ),
           ],

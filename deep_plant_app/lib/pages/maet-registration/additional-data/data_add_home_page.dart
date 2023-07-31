@@ -14,8 +14,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class DataAddHome extends StatefulWidget {
   final MeatData meatData;
   final UserData userData;
-  const DataAddHome(
-      {super.key, required this.meatData, required this.userData});
+  const DataAddHome({super.key, required this.meatData, required this.userData});
 
   @override
   State<DataAddHome> createState() => _DataAddHomeState();
@@ -71,10 +70,7 @@ class _DataAddHomeState extends State<DataAddHome> {
 
   void checkFresh() {
     // 신선육 데이터가 온전히 입력 되었을 경우에 사용되는 기능이다.
-    if (widget.meatData.heatedImage != null &&
-        widget.meatData.heatedmeat != null &&
-        widget.meatData.tongueData != null &&
-        widget.meatData.labData != null) {
+    if (widget.meatData.heatedImage != null && widget.meatData.heatedmeat != null && widget.meatData.tongueData != null && widget.meatData.labData != null) {
       isFreshEnd = true;
     } else {
       isFreshEnd = false;
@@ -83,11 +79,7 @@ class _DataAddHomeState extends State<DataAddHome> {
   }
 
   void checkDeep(dynamic data, int index) {
-    if (data.deepAgedImage != null ||
-        data.deepAgedFreshmeat != null ||
-        data.heatedmeat != null ||
-        data.tongueData != null ||
-        data.labData != null) {
+    if (data.deepAgedImage != null || data.deepAgedFreshmeat != null || data.heatedmeat != null || data.tongueData != null || data.labData != null) {
       isDeepEnd[index] = true;
     } else {
       isDeepEnd[index] = false;
@@ -112,8 +104,6 @@ class _DataAddHomeState extends State<DataAddHome> {
         minute.add(0);
         objects.insert(index, data);
         widgets.insert(index, widgetCreate(index));
-
-        print(widget.meatData.deepAging);
         // 시간 계산
         calTime(data, index++, false);
       }
@@ -230,9 +220,7 @@ class _DataAddHomeState extends State<DataAddHome> {
             SizedBox(
               width: 80.w,
               child: Text(
-                (isDeepEnd[widgetIndex] == true)
-                    ? '완료'
-                    : '미완료', // 임시 지정, 후에 수정해야 함!
+                (isDeepEnd[widgetIndex] == true) ? '완료' : '미완료', // 임시 지정, 후에 수정해야 함!
                 style: TextStyle(color: Colors.black),
               ),
             )
@@ -396,7 +384,7 @@ class _DataAddHomeState extends State<DataAddHome> {
                         ),
                       ),
                       SizedBox(
-                        width: 72.w,
+                        width: 82.w,
                         child: Text(
                           isFreshEnd ? '완료' : '미완료',
                           style: TextStyle(color: Colors.black),

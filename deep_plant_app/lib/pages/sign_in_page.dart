@@ -177,8 +177,7 @@ class _SignInState extends State<SignIn> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       ColorFiltered(
-                        colorFilter: const ColorFilter.mode(
-                            Colors.black, BlendMode.modulate),
+                        colorFilter: const ColorFilter.mode(Colors.black, BlendMode.modulate),
                         child: Image.asset(
                           'assets/images/logo.png',
                           height: 111.w,
@@ -244,6 +243,7 @@ class _SignInState extends State<SignIn> {
                         onPress: () {
                           _tryValidation();
                           signIn();
+                          FocusScope.of(context).unfocus();
                         },
                         width: 372.w,
                         height: 85.h,

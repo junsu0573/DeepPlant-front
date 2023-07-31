@@ -47,9 +47,7 @@ class _ShowStepState extends State<ShowStep> {
   }
 
   bool _isAllCompleted() {
-    if (widget.meatData.speciesValue != null &&
-        widget.meatData.imagePath != null &&
-        widget.meatData.freshmeat != null) {
+    if (widget.meatData.speciesValue != null && widget.meatData.imagePath != null && widget.meatData.freshmeat != null) {
       return true;
     }
     return false;
@@ -61,9 +59,7 @@ class _ShowStepState extends State<ShowStep> {
       setState(() {});
     });
 
-    if (widget.meatData.speciesValue != null ||
-        widget.meatData.imagePath != null &&
-            widget.meatData.freshmeat != null) {
+    if (widget.meatData.speciesValue != null || widget.meatData.imagePath != null && widget.meatData.freshmeat != null) {
       if (!mounted) return;
       // 임시저장 데이터가 null값이 아닐 때 다이얼로그 호출
       showDataRegisterDialog(context, () async {
@@ -141,8 +137,7 @@ class _ShowStepState extends State<ShowStep> {
                 mainText: '육류 기본정보 입력',
                 subText: '육류 정보를 입력해 주세요.',
                 step: '1',
-                isCompleted:
-                    widget.meatData.secondaryValue != null ? true : false,
+                isCompleted: widget.meatData.secondaryValue != null ? true : false,
                 isBefore: false,
               ),
             ),
@@ -166,9 +161,7 @@ class _ShowStepState extends State<ShowStep> {
                   : null,
               child: StepCard(
                 mainText: '육류 단면 촬영',
-                subText: widget.meatData.secondaryValue != null
-                    ? '육류 단면을 촬영해 주세요.'
-                    : '육류 기본정보 입력 후 진행해주세요.',
+                subText: widget.meatData.secondaryValue != null ? '육류 단면을 촬영해 주세요.' : '육류 기본정보 입력 후 진행해주세요.',
                 step: '2',
                 isCompleted: widget.meatData.imagePath != null ? true : false,
                 isBefore: widget.meatData.secondaryValue == null,
@@ -192,9 +185,7 @@ class _ShowStepState extends State<ShowStep> {
                   : null,
               child: StepCard(
                 mainText: '신선육 관능평가',
-                subText: widget.meatData.imagePath != null
-                    ? '육류 관능평가를 진행해 주세요.'
-                    : '육류 단면 촬영 완료 후 진행해주세요.',
+                subText: widget.meatData.imagePath != null ? '육류 관능평가를 진행해 주세요.' : '육류 단면 촬영 완료 후 진행해주세요.',
                 step: '3',
                 isCompleted: widget.meatData.freshmeat != null ? true : false,
                 isBefore: widget.meatData.imagePath == null,
@@ -230,9 +221,8 @@ class _ShowStepState extends State<ShowStep> {
                         ? () async {
                             await widget.meatData.resetTempData();
                             if (!mounted) return;
-                            widget.userData.type == 'Normal'
-                                ? context.go('/option/complete-register')
-                                : context.go('/option/complete-register-2');
+                            print(widget.meatData.createdAt);
+                            widget.userData.type == 'Normal' ? context.go('/option/complete-register') : context.go('/option/complete-register-2');
                           }
                         : null,
                     text: '저장',
