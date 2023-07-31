@@ -4,7 +4,7 @@ import 'package:deep_plant_app/models/user_data_model.dart';
 import 'package:http/http.dart' as http;
 
 class ApiServices {
-  static String baseUrl = 'http://10.221.71.143:8080';
+  static String baseUrl = 'http://10.221.71.107:8080';
 
   // API POST
   static Future<dynamic> _postApi(String endPoint, String jsonData) async {
@@ -13,7 +13,8 @@ class ApiServices {
     String requestBody = jsonData;
 
     try {
-      final response = await http.post(Uri.parse(apiUrl), headers: headers, body: requestBody);
+      final response = await http.post(Uri.parse(apiUrl),
+          headers: headers, body: requestBody);
       if (response.statusCode == 200) {
         print('POST 요청 성공');
         print(response.body);

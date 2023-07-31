@@ -55,9 +55,23 @@ class _InsertDeepAgingDataState extends State<InsertDeepAgingData> {
   // 최종 상태를 결정짓는 변수
   bool isFinal = false;
 
-  List<String> monthData = ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'];
+  List<String> monthData = [
+    '1월',
+    '2월',
+    '3월',
+    '4월',
+    '5월',
+    '6월',
+    '7월',
+    '8월',
+    '9월',
+    '10월',
+    '11월',
+    '12월'
+  ];
   // 2023 ~ 2003 까지의 연도 필드
-  List<int> yearData = List<int>.generate(2023 - 2003 + 1, (int index) => 2023 - index);
+  List<int> yearData =
+      List<int>.generate(2023 - 2003 + 1, (int index) => 2023 - index);
   // 연도의 현재 위치를 결정 지음
   int yearFieldValue = 0;
 
@@ -92,6 +106,12 @@ class _InsertDeepAgingDataState extends State<InsertDeepAgingData> {
     deepData.selectedDay = selectedDay;
     deepData.selectedYear = selectedYear;
     deepData.insertedMinute = selectedMinute;
+    String data = '$selectedYear$selectedMonth$selectedDay/$selectedMinute';
+    if (widget.meatData.deepAging != null) {
+      widget.meatData.deepAging!.add(data);
+    } else {
+      widget.meatData.deepAging = [data];
+    }
   }
 
   void setting() {
@@ -361,7 +381,8 @@ class _InsertDeepAgingDataState extends State<InsertDeepAgingData> {
                               rowHeight: 35.0,
                               headerVisible: false,
                               daysOfWeekVisible: false,
-                              onDaySelected: (DateTime selected, DateTime focusedDay) {
+                              onDaySelected:
+                                  (DateTime selected, DateTime focusedDay) {
                                 setState(() {
                                   this.selected = selected;
                                   this.focusedDay = focusedDay;
@@ -421,7 +442,8 @@ class _InsertDeepAgingDataState extends State<InsertDeepAgingData> {
                             child: TextField(
                               onChanged: (value) {
                                 setState(() {
-                                  if (num.hasMatch(value) && int.parse(value) != 0) {
+                                  if (num.hasMatch(value) &&
+                                      int.parse(value) != 0) {
                                     selectedMinute = value;
                                     isInsertedMinute = true;
                                     isFinal = true;
@@ -431,18 +453,24 @@ class _InsertDeepAgingDataState extends State<InsertDeepAgingData> {
                                 });
                               },
                               textAlign: TextAlign.end,
-                              style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.bold),
-                              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                              style: TextStyle(
+                                  fontSize: 25.0, fontWeight: FontWeight.bold),
+                              inputFormatters: [
+                                FilteringTextInputFormatter.digitsOnly
+                              ],
                               controller: textEditingController2,
                               showCursor: false,
                               keyboardType: TextInputType.number,
                               decoration: InputDecoration(
-                                contentPadding: EdgeInsets.only(right: 5.0, top: 10.0),
+                                contentPadding:
+                                    EdgeInsets.only(right: 5.0, top: 10.0),
                                 enabledBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.grey.shade300, width: 2.5),
+                                  borderSide: BorderSide(
+                                      color: Colors.grey.shade300, width: 2.5),
                                 ),
                                 focusedBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.grey.shade300, width: 2.5),
+                                  borderSide: BorderSide(
+                                      color: Colors.grey.shade300, width: 2.5),
                                 ),
                                 filled: false,
                               ),
