@@ -26,6 +26,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:deep_plant_app/models/deep_aging_data_model.dart';
+import 'dart:io';
+import 'package:path_provider/path_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -198,18 +200,69 @@ class DeepPlatinApp extends StatelessWidget {
       // 기본 색상
       theme: ThemeData(
         primaryColor: const Color.fromRGBO(51, 51, 51, 1),
-        buttonTheme:
-            const ButtonThemeData(buttonColor: Color.fromRGBO(51, 51, 51, 1)),
+        buttonTheme: const ButtonThemeData(buttonColor: Color.fromRGBO(51, 51, 51, 1)),
       ),
       routerConfig: _router,
       builder: (context, child) {
         return ScreenUtilInit(
           designSize: const Size(720, 1280),
           builder: (context, _) {
-            return child!;
+            return AppManager(child: child!);
           },
         );
       },
     );
+  }
+}
+
+void deleteFile() async {
+  try {
+    final directory = await getApplicationDocumentsDirectory();
+    final file = File('${directory.path}/${newUser.userId}-data-list.json');
+
+    if (await file.exists()) {
+      await file.delete();
+      print('File deleted successfully');
+    } else {
+      print('File does not exist');
+    }
+  } catch (e) {
+    print('Error while deleting file: $e');
+  }
+}
+
+class AppManager extends StatefulWidget {
+  final Widget child;
+
+  const AppManager({required this.child, super.key});
+
+  @override
+  State<AppManager> createState() => _AppManagerState();
+}
+
+class _AppManagerState extends State<AppManager> with WidgetsBindingObserver {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    deleteFile();
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.paused) {
+      deleteFile();
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return widget.child;
   }
 }

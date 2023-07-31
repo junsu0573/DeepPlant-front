@@ -68,8 +68,7 @@ class _InsertionMeatInfoState extends State<InsertionMeatInfo> {
     finalNumber = null;
     isFinal = false;
     littleNum = 0;
-    litteDiv = List<String>.from(
-        dataTable![large].map((element) => element.toString()));
+    litteDiv = List<String>.from(dataTable![large].map((element) => element.toString()));
   }
 
   void setLittle(String little, MeatInfoSource source) {
@@ -94,6 +93,7 @@ class _InsertionMeatInfoState extends State<InsertionMeatInfo> {
       setOrder(selectedOrder!, source);
     }
     initialize();
+    setState(() {});
   }
 
   void initialize() async {
@@ -106,6 +106,13 @@ class _InsertionMeatInfoState extends State<InsertionMeatInfo> {
     }
 
     largeDiv = lDiv;
+    if (widget.meatData.secondaryValue != null) {
+      selectedLarge = widget.meatData.primalValue;
+      setLarge(selectedLarge!, source);
+      selectedLittle = widget.meatData.secondaryValue;
+      setLittle(selectedLittle!, source);
+      setState(() {});
+    }
   }
 
   @override

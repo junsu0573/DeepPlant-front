@@ -43,8 +43,7 @@ class _NumCallDialogState extends State<NumCallDialog> {
 
   void _onTextChanged() {
     setState(() {
-      isButtonEnabled =
-          _controller.text.isNotEmpty; // 텍스트 필드 값이 비어있는지 확인하여 버튼 상태 업데이트
+      isButtonEnabled = _controller.text.isNotEmpty; // 텍스트 필드 값이 비어있는지 확인하여 버튼 상태 업데이트
     });
   }
 
@@ -65,8 +64,7 @@ class _NumCallDialogState extends State<NumCallDialog> {
   Future<void> saveData() async {
     try {
       final directory = await getApplicationDocumentsDirectory();
-      final file =
-          File('${directory.path}/${widget.userData.userId}-data-list.json');
+      final file = File('${directory.path}/${widget.userData.userId}-data-list.json');
 
       if (!await directory.exists()) {
         await directory.create(recursive: true); // 디렉토리를 먼저 생성
@@ -181,8 +179,7 @@ class _NumCallDialogState extends State<NumCallDialog> {
                                   borderRadius: BorderRadius.circular(42.5.sp),
                                   borderSide: BorderSide.none,
                                 ),
-                                contentPadding:
-                                    EdgeInsets.only(bottom: 10, left: 10),
+                                contentPadding: EdgeInsets.only(bottom: 10, left: 10),
                               ),
                             ),
                           ),
@@ -217,9 +214,11 @@ class _NumCallDialogState extends State<NumCallDialog> {
                             return MNumDataListCard(
                               idx: index + 1,
                               mNum: mNum,
+                              isInserted: widget.dataList.contains(mNum),
                               buttonAction: () async {
                                 widget.dataList.add(mNum);
                                 await saveData();
+                                setState(() {});
                               },
                             );
                           },

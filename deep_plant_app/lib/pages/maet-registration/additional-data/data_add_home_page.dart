@@ -97,7 +97,6 @@ class _DataAddHomeState extends State<DataAddHome> {
       isDeepEnd[index] = false;
     }
     setState(() {});
-    print(isDeepEnd[index]);
   }
 
   String intoYmd(String temp) {
@@ -117,12 +116,11 @@ class _DataAddHomeState extends State<DataAddHome> {
         minute.add(0);
         objects.insert(index, data);
         widgets.insert(index, widgetCreate(index));
+
         // 데이터 fetch
         intoModel(index);
         // 시간 계산
         calTime(data, index++, false);
-        // 객체를 초기화 해준다.
-        data = DeepAgingData();
       }
     });
   }
@@ -360,7 +358,7 @@ class _DataAddHomeState extends State<DataAddHome> {
                   child: Row(
                     children: [
                       SizedBox(
-                        width: 38.w,
+                        width: 32.w,
                         child: Center(
                           child: Text(
                             widget.meatData.speciesValue!,
@@ -373,7 +371,7 @@ class _DataAddHomeState extends State<DataAddHome> {
                         ),
                       ),
                       SizedBox(
-                        width: 48.w,
+                        width: 42.w,
                         child: VerticalDivider(
                           thickness: 2,
                           width: 1,
@@ -381,7 +379,7 @@ class _DataAddHomeState extends State<DataAddHome> {
                         ),
                       ),
                       SizedBox(
-                        width: 128.w,
+                        width: 140.w,
                         child: Text(
                           widget.meatData.secondaryValue!,
                           style: TextStyle(
@@ -391,7 +389,7 @@ class _DataAddHomeState extends State<DataAddHome> {
                         ),
                       ),
                       SizedBox(
-                        width: 218.w,
+                        width: 208.w,
                         child: Text(
                           (intoYmd(widget.meatData.butcheryYmd!)),
                           style: TextStyle(
@@ -401,7 +399,7 @@ class _DataAddHomeState extends State<DataAddHome> {
                         ),
                       ),
                       SizedBox(
-                        width: 60.w,
+                        width: 72.w,
                         child: Text(
                           isFreshEnd ? '완료' : '미완료',
                           style: TextStyle(color: Colors.black),
@@ -510,6 +508,8 @@ class _DataAddHomeState extends State<DataAddHome> {
                               'deep_aging_data',
                               widget.meatData.convertDeepAgingToJson(),
                             );
+                            // 객체를 초기화 해준다.
+                            data = DeepAgingData();
                           }
                         });
                       },

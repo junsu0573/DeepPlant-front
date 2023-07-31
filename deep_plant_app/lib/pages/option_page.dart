@@ -14,8 +14,8 @@ class OptionPage extends StatelessWidget {
 
   final String textForNormal1 = '육류 정보를 입력하고\n데이터를 전송합니다';
   final String textForNormal2 = '등록된 데이터를\n열람/수정합니다';
-  final String textForResearcher1 = '등록된 정보를 QR스캔을 통해\n불러옵니다';
-  final String textForResearcher2 = '육류 데이터를 불러오고\n정보를 추가/확인/열람합니다';
+  final String textForResearcher1 = '육류 정보를 입력하고\n데이터를 전송합니다';
+  final String textForResearcher2 = '육류 데이터를 불러오고\n정보를 추가/확인합니다';
 
   @override
   Widget build(BuildContext context) {
