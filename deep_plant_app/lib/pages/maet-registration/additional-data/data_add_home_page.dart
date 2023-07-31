@@ -36,20 +36,14 @@ class _DataAddHomeState extends State<DataAddHome> {
   int lastMinute = 0;
   // 객체와 위젯의 index를 표현한다.
   int index = 0;
-  // 객체 중 시간 요소를 담게 된다.
-  List<int> minute = [];
 
   // 추가 정보의 입력이 온전한지를 판별해준다.
   bool isFreshEnd = false;
   List<bool> isDeepEnd = [];
 
-  void calTime(DeepAgingData data, int index, bool edit) {
+  void calTime(DeepAgingData data, int index) {
     // 시간 계산이 진행되며, 데이터 수정시에는 기존 값을 제거한다.
-    if (edit == true) {
-      totalMinute -= minute[index];
-    }
-    minute[index] = int.parse(data.insertedMinute!);
-    totalMinute += minute[index];
+
     if (totalMinute >= 60) {
       int q = totalMinute ~/ 60;
       int r = totalMinute % 60;
@@ -58,15 +52,6 @@ class _DataAddHomeState extends State<DataAddHome> {
     } else {
       lastMinute = totalMinute;
     }
-  }
-
-  void editing(int index, dynamic value) {
-    // 위젯을 수정, 객체의 값이 변할 때 작동한다. -> 아직은 사용되지 않는다.
-    setState(() {
-      objects[index] = value;
-      calTime(objects[index], index, true);
-      widgets[index] = widgetCreate(index);
-    });
   }
 
   void checkFresh() {
@@ -105,20 +90,38 @@ class _DataAddHomeState extends State<DataAddHome> {
     return formattedString;
   }
 
-  void intoData() {
+  // 딥에이징 데이터 추가
+  void addDeepAgingData() {
     // 딥에이징 데이터를 추가할 때 호출된다.
     setState(() {
       if (data.insertedMinute != null) {
-        minute.add(0);
+        if (index >= 1) {
+          widgets[index - 1] = widgetCreate(index - 1, null);
+        }
         objects.insert(index, data);
-        widgets.insert(index, widgetCreate(index));
+        widgets.insert(index, widgetCreate(index, true));
 
-        print(widget.meatData.deepAging);
         // 시간 계산
-        calTime(data, index++, false);
+        calTime(data, index++);
       }
     });
   }
+
+  // 딥에이징 데이터 삭제
+  void deleteDeepAgingData() async {
+    final data = await ApiServices.deleteDeepAging(widget.meatData.id!, index);
+    if (data == null) {
+      print('딥에이징 데이터 삭제 실패');
+    } else {
+      setState(() {
+        objects.removeLast();
+        widgets.removeLast();
+        widget.meatData.deepAging!.removeLast();
+      });
+    }
+  }
+
+  Future<void> dataFetch() async {}
 
   @override
   void initState() {
@@ -135,7 +138,6 @@ class _DataAddHomeState extends State<DataAddHome> {
       List<Widget> temp = [];
       for (index = 0; index < deepAging.length; index++) {
         objects.add(DeepAgingData());
-        minute.add(0);
 
         // 정규표현식을 사용하여 연도, 월, 일, 분 값을 추출
         RegExp regex = RegExp(r"(\d{4})(\d{2})(\d{2})/(\d+)");
@@ -152,93 +154,118 @@ class _DataAddHomeState extends State<DataAddHome> {
           objects[index].selectedDay = day;
           objects[index].insertedMinute = '$minutes';
         }
-        calTime(objects[index], index, false);
-        temp.add(widgetCreate(index));
+        calTime(objects[index], index);
+        if (index == widget.meatData.deepAging!.length - 1) {
+          temp.add(widgetCreate(index, true));
+        } else {
+          temp.add(widgetCreate(index, null));
+        }
+
         widgets = temp;
       }
     }
   }
 
-  Widget widgetCreate(int widgetIndex) {
+  Widget widgetCreate(int widgetIndex, bool? isLast) {
     isDeepEnd.add(false);
-    return Container(
-      padding: EdgeInsets.only(
-        top: 5.0,
-        bottom: 5.0,
-      ),
-      height: 70.0,
-      child: OutlinedButton(
-        onPressed: () async {
-          widget.meatData.seqno = widgetIndex + 1;
-          final data = await ApiServices.getMeatData(widget.meatData.id!);
-          widget.meatData.fetchData(data);
-          widget.meatData.fetchDataForDeepAging();
-          if (!mounted) return;
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => StepDeepagingMeat(
-                userData: widget.userData,
-                meatData: widget.meatData,
-              ),
-            ),
-          ).then((_) => checkDeep(widget.meatData, widgetIndex));
-        },
-        child: Row(
-          children: [
-            SizedBox(
-              width: 52.w,
-              child: Center(
-                child: Text(
-                  '${widgetIndex + 1}차',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 20.sp,
-                    fontWeight: FontWeight.bold,
+    return Stack(
+      children: [
+        Container(
+          padding: EdgeInsets.only(
+            top: 5.0,
+            bottom: 5.0,
+          ),
+          height: 70.0,
+          child: OutlinedButton(
+            onPressed: () async {
+              widget.meatData.seqno = widgetIndex + 1;
+              final data = await ApiServices.getMeatData(widget.meatData.id!);
+              widget.meatData.fetchData(data);
+              await widget.meatData.fetchDataForDeepAging();
+              if (!mounted) return;
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => StepDeepagingMeat(
+                    userData: widget.userData,
+                    meatData: widget.meatData,
                   ),
                 ),
-              ),
-            ),
-            SizedBox(
-              width: 54.w,
-              child: VerticalDivider(
-                thickness: 2,
-                width: 1,
-                color: Colors.grey[300],
-              ),
-            ),
-            SizedBox(
-              width: 128.w,
-              child: Text(
-                '${objects[widgetIndex].insertedMinute}분',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 32.sp,
+              ).then((_) => checkDeep(widget.meatData, widgetIndex));
+            },
+            child: Row(
+              children: [
+                SizedBox(
+                  width: 52.w,
+                  child: Center(
+                    child: Text(
+                      '${widgetIndex + 1}차',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 20.sp,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
                 ),
-              ),
-            ),
-            SizedBox(
-              width: 186.w,
-              child: Text(
-                '${objects[widgetIndex].selectedYear}.${objects[widgetIndex].selectedMonth}.${objects[widgetIndex].selectedDay}',
-                style: TextStyle(
-                  color: Colors.grey[400],
-                  fontSize: 12.0,
+                SizedBox(
+                  width: 54.w,
+                  child: VerticalDivider(
+                    thickness: 2,
+                    width: 1,
+                    color: Colors.grey[300],
+                  ),
                 ),
-              ),
+                SizedBox(
+                  width: 128.w,
+                  child: Text(
+                    '${objects[widgetIndex].insertedMinute}분',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 32.sp,
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  width: 186.w,
+                  child: Text(
+                    '${objects[widgetIndex].selectedYear}.${objects[widgetIndex].selectedMonth}.${objects[widgetIndex].selectedDay}',
+                    style: TextStyle(
+                      color: Colors.grey[400],
+                      fontSize: 12.0,
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  width: 80.w,
+                  child: Text(
+                    (isDeepEnd[widgetIndex] == true)
+                        ? '완료'
+                        : '미완료', // 임시 지정, 후에 수정해야 함!
+                    style: TextStyle(color: Colors.black),
+                  ),
+                )
+              ],
             ),
-            SizedBox(
-              width: 80.w,
-              child: Text(
-                (isDeepEnd[widgetIndex] == true)
-                    ? '완료'
-                    : '미완료', // 임시 지정, 후에 수정해야 함!
-                style: TextStyle(color: Colors.black),
-              ),
-            )
-          ],
+          ),
         ),
-      ),
+        isLast != null && isLast == true
+            ? Positioned(
+                top: -5.h,
+                right: -10.w,
+                child: IconButton(
+                  onPressed: () {
+                    deleteDeepAgingData();
+                  },
+                  icon: Icon(
+                    Icons.delete,
+                    size: 30.sp,
+                    color: Palette.greyTextColor,
+                  ),
+                ),
+              )
+            : Container(),
+      ],
     );
   }
 
@@ -500,7 +527,7 @@ class _DataAddHomeState extends State<DataAddHome> {
                                       meatData: widget.meatData,
                                     ))).then((_) async {
                           if (data.insertedMinute != null) {
-                            intoData();
+                            addDeepAgingData();
                             await ApiServices.sendMeatData(
                               'deep_aging_data',
                               widget.meatData.convertDeepAgingToJson(),

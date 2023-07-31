@@ -84,14 +84,17 @@ class _DataAddState extends State<DataAdd> {
             itemBuilder: (context, index) {
               return InkWell(
                 onTap: () async {
-                  final data = await ApiServices.getMeatData(widget.dataList.toList()[index]);
+                  final data = await ApiServices.getMeatData(
+                      widget.dataList.toList()[index]);
                   widget.meatData.fetchData(data);
                   widget.meatData.fetchDataForOrigin();
+
                   if (!mounted) return;
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => DataAddHome(meatData: widget.meatData, userData: widget.userData),
+                      builder: (context) => DataAddHome(
+                          meatData: widget.meatData, userData: widget.userData),
                     ),
                   );
                 },

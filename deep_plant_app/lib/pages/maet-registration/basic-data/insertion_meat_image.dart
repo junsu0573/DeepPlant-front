@@ -40,6 +40,12 @@ class _InsertionMeatImageState extends State<InsertionMeatImage> {
   String month = '';
   String day = '';
 
+  @override
+  void initState() {
+    super.initState();
+    fetchImage();
+  }
+
   // 이미지 촬영을 위한 메소드
   void _pickImage() async {
     final imagePicker = ImagePicker();
@@ -67,6 +73,19 @@ class _InsertionMeatImageState extends State<InsertionMeatImage> {
     setState(() {
       isLoading = false; // 로딩 비활성화
     });
+  }
+
+  void fetchImage() {
+    if (widget.imageIdx == 0 && widget.meatData.imagePath != null) {
+      imagePath = widget.meatData.imagePath;
+      pickedImage = File(imagePath!);
+    } else if (widget.imageIdx == 1 && widget.meatData.heatedImage != null) {
+      imagePath = widget.meatData.heatedImage;
+      pickedImage = File(imagePath!);
+    } else if (widget.imageIdx == 2 && widget.meatData.deepAgedImage != null) {
+      imagePath = widget.meatData.deepAgedImage;
+      pickedImage = File(imagePath!);
+    }
   }
 
   Future<void> saveMeatData() async {

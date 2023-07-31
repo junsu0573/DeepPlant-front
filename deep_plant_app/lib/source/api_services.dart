@@ -1,10 +1,12 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:deep_plant_app/models/user_data_model.dart';
 import 'package:http/http.dart' as http;
+import 'package:path_provider/path_provider.dart';
 
 class ApiServices {
-  static String baseUrl = 'http://10.221.71.107:8080';
+  static String baseUrl = 'http://3.38.52.82';
 
   // API POST
   static Future<dynamic> _postApi(String endPoint, String jsonData) async {
@@ -48,6 +50,26 @@ class ApiServices {
     }
   }
 
+  // 육류 사진 저장
+  static Future<dynamic> getImage(String imageUrl) async {
+    try {
+      var response = await http.get(Uri.parse(imageUrl));
+      if (response.statusCode == 200) {
+        final appDir = await getTemporaryDirectory();
+        final filePath = '${appDir.path}/temp_image';
+        final file = File(filePath);
+        await file.writeAsBytes(response.bodyBytes);
+        return filePath;
+      } else {
+        print('이미지 저장 실패: (${response.statusCode})${response.body}');
+        return;
+      }
+    } catch (e) {
+      print('이미지 저장 중 예외 발생: $e');
+      return;
+    }
+  }
+
   // 육류 정보 전송 (POST)
   static Future<dynamic> sendMeatData(String? dest, String jsonData) async {
     String endPoint = 'meat/add';
@@ -77,6 +99,11 @@ class ApiServices {
   static Future<dynamic> searchMeatId(String text) async {
     dynamic jsonData = await _getApi('meat/get?part_id=$text');
     return jsonData;
+  }
+
+  // 딥에이징 데이터 삭제 (GET)
+  static Future<dynamic> deleteDeepAging(String id, int seqno) async {
+    return await _getApi('meat/delete/deep_aging?id=$id&seqno=$seqno');
   }
 
   // 유저가 등록한 관리번호 조회 (GET)

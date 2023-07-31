@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:deep_plant_app/source/api_services.dart';
 import 'package:deep_plant_app/source/get_date.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -359,7 +360,6 @@ class MeatData {
     farmerNm = jsonData['farmerNm'];
     gradeNum = jsonData['gradeNum'];
     id = jsonData['id'];
-    imagePath = jsonData['imagePath'];
     primalValue = jsonData['primalValue'];
 
     processedmeat = jsonData['processedmeat'];
@@ -374,9 +374,9 @@ class MeatData {
         tempDeepAging.add('${temp3['date']}/${temp3['minute']}');
       }
       deepAging = tempDeepAging;
+    } else {
+      deepAging = [];
     }
-
-    rawmeat = jsonData['rawmeat'];
 
     secondaryValue = jsonData['secondaryValue'];
     sexType = jsonData['sexType'];
@@ -391,6 +391,7 @@ class MeatData {
     Map<String, dynamic>? data = rawmeat;
     if (data == null) {
       heatedmeat = null;
+      imagePath = null;
     } else {
       // 실험데이터
       if (data['probexpt_data'] != null) {
@@ -417,15 +418,11 @@ class MeatData {
       // 가열육 데이터
       heatedmeat = data['heatedmeat_sensory_eval'];
       heatedImage = null;
-      if (heatedmeat != null) {
-        Map<String, dynamic> heatedTemp = data['heatedmeat_sensory_eval'];
-        heatedImage = heatedTemp['imagePath'];
-      }
     }
   }
 
   // 처리육 데이터 fetch
-  void fetchDataForDeepAging() {
+  Future<void> fetchDataForDeepAging() async {
     Map<String, dynamic> data = processedmeat!['$seqno회'];
 
     // 신선육 데이터
@@ -433,16 +430,16 @@ class MeatData {
     deepAgedImage = null;
     if (data['sensory_eval'] != null) {
       Map<String, dynamic> temp = data['sensory_eval'];
-      deepAgedImage = temp['imagePath'];
+      if (temp['imagePath'] != null) {
+        final response = await ApiServices.getImage(temp['imagePath']);
+        if (response != null) {
+          deepAgedImage = response;
+        }
+      }
     }
 
     // 가열육 데이터
     heatedmeat = data['heatedmeat_sensory_eval'];
-    heatedImage = null;
-    if (data['heatedmeat_sensory_eval'] != null) {
-      Map<String, dynamic> temp = data['heatedmeat_sensory_eval'];
-      heatedImage = temp['imagePath'];
-    }
 
     // 실험데이터
     if (data['probexpt_data'] != null) {
