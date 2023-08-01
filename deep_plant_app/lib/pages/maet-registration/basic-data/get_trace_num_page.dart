@@ -34,10 +34,8 @@ class _GetTraceNumState extends State<GetTraceNum> {
 
   String _barcodeData = 'No Data';
 
-
   var apikey =
       "%2FuEP%2BvIjYfPTyaHNlxRx2Ry5cVUer92wa6lHcxnXEEekVjUCZ1N41traj3s8sGhHpKS54SVDbg9m4sHOEuMNuw%3D%3D";
-
 
   final formkey = GlobalKey<FormState>();
   final TextEditingController textEditingController = TextEditingController();
@@ -72,7 +70,8 @@ class _GetTraceNumState extends State<GetTraceNum> {
     super.initState();
     initialize();
     _eventChannel = EventChannel('com.example.deep_plant_app/barcode');
-    _eventSubscription = _eventChannel!.receiveBroadcastStream().listen((dynamic event) {
+    _eventSubscription =
+        _eventChannel!.receiveBroadcastStream().listen((dynamic event) {
       setState(() {
         _barcodeData = parsingData(event.toString());
         textEditingController.text = _barcodeData;
@@ -85,7 +84,6 @@ class _GetTraceNumState extends State<GetTraceNum> {
     _eventSubscription?.cancel();
     super.dispose();
   }
-
 
   String parsingData(String input) {
     RegExp regExp = RegExp(r'\[.*?\]\s*(.*)');
@@ -104,18 +102,6 @@ class _GetTraceNumState extends State<GetTraceNum> {
       traceNum = widget.meatData.traceNum;
       isValue = true;
       start();
-    }
-  }
-
-  String parsingData(String input) {
-    RegExp regExp = RegExp(r'\[.*?\]\s*(.*)'); // 정규식 패턴
-
-    Match? match = regExp.firstMatch(input); // 정규식을 사용하여 매치 검색
-
-    if (match != null) {
-      return match.group(1)!; // 첫 번째 그룹인 'key'를 추출
-    } else {
-      return input;
     }
   }
 
@@ -174,7 +160,8 @@ class _GetTraceNumState extends State<GetTraceNum> {
         if (pigAPIData['response']['body']['items']['item'][0] == null) {
           traceNum = pigAPIData['response']['body']['items']['item']['pigNo'];
         } else {
-          traceNum = pigAPIData['response']['body']['items']['item'][0]['pigNo'];
+          traceNum =
+              pigAPIData['response']['body']['items']['item'][0]['pigNo'];
         }
       } catch (e) {
         tableData.clear();

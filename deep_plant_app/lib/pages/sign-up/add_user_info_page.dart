@@ -74,7 +74,6 @@ class _AddUserInfoState extends State<AddUserInfo> {
                       children: [
                         SizedBox(
                           width: 412.w,
-                          height: 50.h,
                           child: TextField(
                             controller: _mainAddressController,
                             readOnly: true,
@@ -117,17 +116,14 @@ class _AddUserInfoState extends State<AddUserInfo> {
                     SizedBox(
                       height: 34.h,
                     ),
-                    SizedBox(
-                      height: 50.h,
-                      child: TextField(
-                        onChanged: (value) {
-                          subHomeAdress = value;
-                        },
-                        enabled:
-                            _mainAddressController.text.isEmpty ? false : true,
-                        decoration: InputDecoration(
-                          hintText: '상세주소 (동/호수)',
-                        ),
+                    TextField(
+                      onChanged: (value) {
+                        subHomeAdress = value;
+                      },
+                      enabled:
+                          _mainAddressController.text.isEmpty ? false : true,
+                      decoration: InputDecoration(
+                        hintText: '상세주소 (동/호수)',
                       ),
                     ),
                     SizedBox(
@@ -143,17 +139,14 @@ class _AddUserInfoState extends State<AddUserInfo> {
                     SizedBox(
                       height: 27.h,
                     ),
-                    SizedBox(
-                      height: 50.h,
-                      child: TextField(
-                        onChanged: (value) {
-                          setState(() {
-                            company = value;
-                          });
-                        },
-                        decoration: InputDecoration(
-                          hintText: '회사명',
-                        ),
+                    TextField(
+                      onChanged: (value) {
+                        setState(() {
+                          company = value;
+                        });
+                      },
+                      decoration: InputDecoration(
+                        hintText: '회사명',
                       ),
                     ),
                     SizedBox(
@@ -163,7 +156,6 @@ class _AddUserInfoState extends State<AddUserInfo> {
                       children: [
                         SizedBox(
                           width: 240.w,
-                          height: 50.h,
                           child: TextField(
                             onChanged: (value) {
                               department = value;
@@ -176,7 +168,6 @@ class _AddUserInfoState extends State<AddUserInfo> {
                         Spacer(),
                         SizedBox(
                           width: 240.w,
-                          height: 50.h,
                           child: TextField(
                             onChanged: (value) {
                               jobTitle = value;
@@ -189,7 +180,7 @@ class _AddUserInfoState extends State<AddUserInfo> {
                       ],
                     ),
                     SizedBox(
-                      height: 34.h,
+                      height: 330.h,
                     ),
                   ],
                 ),
