@@ -21,7 +21,8 @@ class HeatedMeatEvaluation extends StatefulWidget {
   State<HeatedMeatEvaluation> createState() => _HeatedMeatEvaluation();
 }
 
-class _HeatedMeatEvaluation extends State<HeatedMeatEvaluation> with SingleTickerProviderStateMixin {
+class _HeatedMeatEvaluation extends State<HeatedMeatEvaluation>
+    with SingleTickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
@@ -43,7 +44,11 @@ class _HeatedMeatEvaluation extends State<HeatedMeatEvaluation> with SingleTicke
   double _palatability = 0;
 
   bool _isAllInserted() {
-    if (_flavor > 0 && _juiciness > 0 && _tenderness > 0 && _umami > 0 && _palatability > 0) return true;
+    if (_flavor > 0 &&
+        _juiciness > 0 &&
+        _tenderness > 0 &&
+        _umami > 0 &&
+        _palatability > 0) return true;
     return false;
   }
 
@@ -165,7 +170,8 @@ class _HeatedMeatEvaluation extends State<HeatedMeatEvaluation> with SingleTicke
                         saveMeatData();
 
                         // 데이터 서버로 전송
-                        await ApiServices.sendMeatData('heatedmeat_eval', widget.meatData.convertHeatedMeatToJson());
+                        await ApiServices.sendMeatData('heatedmeat_eval',
+                            widget.meatData.convertHeatedMeatToJson());
 
                         if (!mounted) return;
                         Navigator.pop(context);

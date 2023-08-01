@@ -361,6 +361,7 @@ class MeatData {
     gradeNum = jsonData['gradeNum'];
     id = jsonData['id'];
     primalValue = jsonData['primalValue'];
+    rawmeat = jsonData['rawmeat'];
 
     processedmeat = jsonData['processedmeat'];
     if (processedmeat != null && processedmeat!.isNotEmpty) {
@@ -417,7 +418,6 @@ class MeatData {
       }
       // 가열육 데이터
       heatedmeat = data['heatedmeat_sensory_eval'];
-      heatedImage = null;
     }
   }
 
