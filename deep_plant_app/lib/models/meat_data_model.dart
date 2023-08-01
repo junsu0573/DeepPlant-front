@@ -242,14 +242,22 @@ class MeatData {
   String convertFreshMeatToJson(int idx) {
     Map<String, dynamic> jsonData = {
       "id": id,
-      "createdAt": idx == 0 ? (freshmeat?["createdAt"]) : deepAgedFreshmeat?["createdAt"],
+      "createdAt": idx == 0
+          ? (freshmeat?["createdAt"])
+          : deepAgedFreshmeat?["createdAt"],
       "userId": userId,
-      "period": idx == 0 ? (freshmeat?["period"]) : deepAgedFreshmeat?["period"],
-      "marbling": idx == 0 ? (freshmeat?["marbling"]) : deepAgedFreshmeat?["marbling"],
+      "period":
+          idx == 0 ? (freshmeat?["period"]) : deepAgedFreshmeat?["period"],
+      "marbling":
+          idx == 0 ? (freshmeat?["marbling"]) : deepAgedFreshmeat?["marbling"],
       "color": idx == 0 ? (freshmeat?["color"]) : deepAgedFreshmeat?["color"],
-      "texture": idx == 0 ? (freshmeat?["texture"]) : deepAgedFreshmeat?["texture"],
-      "surfaceMoisture": idx == 0 ? (freshmeat?["surfaceMoisture"]) : deepAgedFreshmeat?["surfaceMoisture"],
-      "overall": idx == 0 ? (freshmeat?["overall"]) : deepAgedFreshmeat?["overall"],
+      "texture":
+          idx == 0 ? (freshmeat?["texture"]) : deepAgedFreshmeat?["texture"],
+      "surfaceMoisture": idx == 0
+          ? (freshmeat?["surfaceMoisture"])
+          : deepAgedFreshmeat?["surfaceMoisture"],
+      "overall":
+          idx == 0 ? (freshmeat?["overall"]) : deepAgedFreshmeat?["overall"],
       "seqno": seqno,
       "deepAging": _getDeepAging(seqno),
     };
@@ -388,7 +396,8 @@ class MeatData {
     // 데이터 입력 완료 체크
     rawmeatDataComplete = jsonData['rawmeat_data_complete'];
     if (jsonData["processedmeat_data_complete"] is! bool) {
-      processedmeatDataComplete = jsonData["processedmeat_data_complete"].values.cast<bool>().toList();
+      processedmeatDataComplete =
+          jsonData["processedmeat_data_complete"].values.cast<bool>().toList();
     }
   }
 
@@ -427,7 +436,8 @@ class MeatData {
           'ph': temp['ph'],
           'WBSF': temp['WBSF'],
           'cardepsin_activity': temp['cardepsin_activity'],
-          'MFI': temp['MFI']
+          'MFI': temp['MFI'],
+          'Collagen': temp['Collagen']
         };
       }
       // 가열육 데이터
@@ -474,7 +484,8 @@ class MeatData {
         'ph': temp['ph'],
         'WBSF': temp['WBSF'],
         'cardepsin_activity': temp['cardepsin_activity'],
-        'MFI': temp['MFI']
+        'MFI': temp['MFI'],
+        'Collagen': temp['Collagen']
       };
     } else {
       tongueData = null;
