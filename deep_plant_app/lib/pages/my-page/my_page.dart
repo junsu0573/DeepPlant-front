@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 
 class MyPage extends StatefulWidget {
   final UserData userData;
@@ -29,6 +30,14 @@ class _MyPageState extends State<MyPage> {
     } catch (e) {
       print('로그아웃 에러: $e');
     }
+  }
+
+  String _formatDate(String dateString) {
+    DateFormat format = DateFormat("E, dd MMM yyyy HH:mm:ss 'GMT'");
+    DateTime dateTime = format.parse(dateString);
+
+    String formattedDate = DateFormat("yyyy/MM/dd").format(dateTime);
+    return formattedDate;
   }
 
   @override
@@ -131,7 +140,7 @@ class _MyPageState extends State<MyPage> {
                       height: 33.h,
                     ),
                     Text(
-                      '${widget.userData.createdAt}',
+                      _formatDate(widget.userData.createdAt!),
                       style: TextStyle(
                         fontSize: 30.sp,
                         fontWeight: FontWeight.w400,

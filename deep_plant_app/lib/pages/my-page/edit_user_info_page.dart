@@ -204,7 +204,6 @@ class _EditUserInfoState extends State<EditUserInfo> {
                           children: [
                             SizedBox(
                               width: 412.w,
-                              height: 50.h,
                               child: TextField(
                                 onChanged: (value) {
                                   if (_mainAddressController.text.isEmpty) {
@@ -258,7 +257,6 @@ class _EditUserInfoState extends State<EditUserInfo> {
                           height: 34.h,
                         ),
                         SizedBox(
-                          height: 50.h,
                           child: TextField(
                             enabled: _isEditting,
                             controller: _subAddressController,
@@ -281,14 +279,11 @@ class _EditUserInfoState extends State<EditUserInfo> {
                           height: 27.h,
                         ),
 
-                        SizedBox(
-                          height: 50.h,
-                          child: TextField(
-                            controller: _companyController,
-                            enabled: _isEditting,
-                            decoration: InputDecoration(
-                              hintText: '회사명',
-                            ),
+                        TextField(
+                          controller: _companyController,
+                          enabled: _isEditting,
+                          decoration: InputDecoration(
+                            hintText: '회사명',
                           ),
                         ),
                         SizedBox(
@@ -298,7 +293,6 @@ class _EditUserInfoState extends State<EditUserInfo> {
                           children: [
                             SizedBox(
                               width: 235.w,
-                              height: 50.h,
                               child: TextField(
                                 enabled: _isEditting,
                                 controller: _departmentController,
@@ -310,7 +304,6 @@ class _EditUserInfoState extends State<EditUserInfo> {
                             Spacer(),
                             SizedBox(
                               width: 235.w,
-                              height: 50.h,
                               child: TextField(
                                 enabled: _isEditting,
                                 controller: _jobTitleController,
