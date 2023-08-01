@@ -239,12 +239,12 @@ class _LabDataInputState extends State<LabDataInput> {
                 height: 16.h,
               ),
               SaveButton(
-                onPressed: () {
+                onPressed: () async {
                   // 데이터 저장
                   saveMeatData();
 
                   // 데이터 서버로 전송
-                  ApiServices.sendMeatData(
+                  await ApiServices.sendMeatData(
                       'probexpt_data', widget.meatData.convertPorbexptToJson());
 
                   if (!mounted) return;
