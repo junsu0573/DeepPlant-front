@@ -78,14 +78,12 @@ class _InsertionMeatImageState extends State<InsertionMeatImage> {
 
   void fetchImage() {
     if (widget.imageIdx == 0 && widget.meatData.imagePath != null) {
+      isImageAssigned = true;
       fetchDate(widget.meatData.createdAt!);
       imagePath = widget.meatData.imagePath;
       pickedImage = File(imagePath!);
-    } else if (widget.imageIdx == 1 && widget.meatData.heatedImage != null) {
-      fetchDate(widget.meatData.createdAt!);
-      imagePath = widget.meatData.heatedImage;
-      pickedImage = File(imagePath!);
     } else if (widget.imageIdx == 2 && widget.meatData.deepAgedImage != null) {
+      isImageAssigned = true;
       fetchDate(widget.meatData.createdAt!);
       imagePath = widget.meatData.deepAgedImage;
       pickedImage = File(imagePath!);
@@ -93,16 +91,15 @@ class _InsertionMeatImageState extends State<InsertionMeatImage> {
   }
 
   void fetchDate(String dateString) {
-    isImageAssigned = true;
-    DateTime dateTime = DateTime.parse(dateString);
-
-    String yearString = dateTime.year.toString();
-    String monthString = dateTime.month.toString().padLeft(2, '0');
-    String dayString = dateTime.day.toString().padLeft(2, '0');
-
-    year = yearString;
-    month = monthString;
-    day = dayString;
+    DateTime? date = parseDate(dateString);
+    print(dateString);
+    if (date != null) {
+      year = date.year.toString();
+      month = date.month.toString();
+      day = date.day.toString();
+    } else {
+      print('Date1 format is not valid.');
+    }
   }
 
   Future<void> saveMeatData() async {
@@ -112,24 +109,11 @@ class _InsertionMeatImageState extends State<InsertionMeatImage> {
     if (widget.imageIdx == 0) {
       // 원육 사진
       widget.meatData.imagePath = imagePath;
-    } else if (widget.imageIdx == 1) {
-      // 가열육 사진
-      widget.meatData.heatedImage = imagePath;
-      dynamic response = await FirebaseServices.sendImageToFirebase(imagePath!,
-          'heatedmeat_sensory_evals/${widget.meatData.id}-${widget.meatData.seqno}');
-      if (response == null) {
-        if (!mounted) return;
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ShowError(),
-          ),
-        );
-      }
+      widget.meatData.createdAt =
+          '$year${month.padLeft(2, '0')}${day.padLeft(2, '0')}';
     } else if (widget.imageIdx == 2) {
       // 처리육 사진
       widget.meatData.deepAgedImage = imagePath;
-
       dynamic response = await FirebaseServices.sendImageToFirebase(imagePath!,
           'sensory_evals/${widget.meatData.id}-${widget.meatData.seqno}');
       if (response == null) {
@@ -147,6 +131,14 @@ class _InsertionMeatImageState extends State<InsertionMeatImage> {
     setState(() {
       isSaving = false;
     });
+  }
+
+  DateTime? parseDate(String dateString) {
+    try {
+      return DateTime.parse(dateString);
+    } catch (e) {
+      return null;
+    }
   }
 
   @override
