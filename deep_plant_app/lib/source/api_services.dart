@@ -15,8 +15,7 @@ class ApiServices {
     String requestBody = jsonData;
 
     try {
-      final response = await http.post(Uri.parse(apiUrl),
-          headers: headers, body: requestBody);
+      final response = await http.post(Uri.parse(apiUrl), headers: headers, body: requestBody);
       if (response.statusCode == 200) {
         print('POST 요청 성공');
         print(response.body);
@@ -131,6 +130,12 @@ class ApiServices {
   // 등록자 필터 정보 조회(GET)
   static Future<dynamic> getMyData(String id) async {
     dynamic data = await _getApi('meat/user?userId=$id');
+    return data;
+  }
+
+  // 기간 내 데이터 조회
+  static Future<dynamic> getCreatedAtData(int count, String start, String end) async {
+    dynamic data = await _getApi('meat/get?offset=0&count=$count&start=$start&end=$end');
     return data;
   }
 

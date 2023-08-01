@@ -1,7 +1,8 @@
 import 'package:deep_plant_app/models/data_management_filter_model.dart';
+import 'package:deep_plant_app/models/meat_data_model.dart';
 import 'package:deep_plant_app/models/user_data_model.dart';
 import 'package:deep_plant_app/source/api_services.dart';
-import 'package:deep_plant_app/source/data_table_widget.dart';
+import 'package:deep_plant_app/source/data_table_confirm_widget.dart';
 import 'package:deep_plant_app/widgets/save_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -14,10 +15,12 @@ import 'package:table_calendar/table_calendar.dart';
 class DataConfirm extends StatefulWidget {
   final UserData userData;
   final FilterModel filter;
+  final MeatData meatData;
   DataConfirm({
     super.key,
     required this.userData,
     required this.filter,
+    required this.meatData,
   });
 
   @override
@@ -57,6 +60,25 @@ class DataConfirmState extends State<DataConfirm> {
     Text('전체'),
   ];
 
+  DateTime? toDay;
+  DateTime? threeDaysAgo;
+  DateTime? monthsAgo;
+  DateTime? threeMonthsAgo;
+
+  String? start;
+  String? end;
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedDay = _focusedDay;
+    if (widget.filter.confirmOption1 == null) {
+      widget.filter.resetCon();
+    }
+    setting();
+    setTime();
+  }
+
   void setting() {
     selections1 = widget.filter.confirmSelections1!;
     selections2 = widget.filter.confirmSelections2!;
@@ -92,62 +114,48 @@ class DataConfirmState extends State<DataConfirm> {
     widget.filter.flag = selectedEtc;
   }
 
-  @override
-  void initState() {
-    super.initState();
-    _selectedDay = _focusedDay;
-    if (widget.filter.confirmOption1 == null) {
-      widget.filter.resetCon();
+  void setTime() {
+    toDay = DateTime.now();
+    threeDaysAgo = toDay!.subtract(Duration(days: 3));
+    monthsAgo = toDay!.subtract(Duration(days: 30));
+    threeMonthsAgo = toDay!.subtract(Duration(days: 30 * 3));
+
+    if (option1 == '3일') {
+      start = DateFormat('yyyy-MM-ddTHH:mm:ss').format(threeDaysAgo!);
+      end = DateFormat('yyyy-MM-ddTHH:mm:ss').format(toDay!);
+    } else if (option1 == '1개월') {
+      start = DateFormat('yyyy-MM-ddTHH:mm:ss').format(monthsAgo!);
+      end = DateFormat('yyyy-MM-ddTHH:mm:ss').format(toDay!);
+    } else if (option1 == '3개월') {
+      start = DateFormat('yyyy-MM-ddTHH:mm:ss').format(threeMonthsAgo!);
+      end = DateFormat('yyyy-MM-ddTHH:mm:ss').format(toDay!);
+    } else {
+      start = DateFormat('yyyy-MM-ddTHH:mm:ss').format(_rangeStart!);
+      end = DateFormat('yyyy-MM-ddTHH:mm:ss').format(_rangeEnd!);
     }
-    setting();
   }
 
-  Future<List<String>> initialize(String type) async {
+  Future<List<String>> initialize(int count, String start, String end) async {
     List<String> temp;
-    if (type == '나의 데이터') {
-      final data = await ApiServices.getMyData(widget.userData.userId!);
-      temp = extractedData(data);
-    } else if (type == '전체') {
-      final data = await ApiServices.receiveMeatData(null);
-      temp = extractedData(data);
-    } else {
-      if (type == '일반 데이터') {
-        type = 'Normal';
-      } else if (type == '연구 데이터') {
-        type = 'Researcher';
-      }
-      final data = await ApiServices.getUserTypeData(type);
-      temp = extractedData(data);
-    }
+    final data = await ApiServices.getCreatedAtData(count, start, end);
+    temp = extractedData(data['meat_dict']);
     return temp;
   }
 
   List<String> extractedData(dynamic data) {
     List<String> extracted = [];
 
-    if (data is List<dynamic>) {
-      extracted = data.map<String>((item) {
-        String id = item['id'];
-        String createdAt = item['createdAt'];
-        createdAt = createdAt.replaceFirst('T', ' ');
-        String specieValue = item['specieValue'];
-        String userId = item['userId'];
-        String name = '전수현';
-        String statusType = item['statusType'];
-        return '$id,$name,$createdAt,$userId,$specieValue,$statusType';
-      }).toList();
-    } else if (data is Map<dynamic, dynamic>) {
-      data.forEach((key, item) {
-        String id = item['id'];
-        String createdAt = item['createdAt'];
-        createdAt = createdAt.replaceFirst('T', ' ');
-        String specieValue = item['specieValue'];
-        String userId = item['userId'];
-        String name = '전수현';
-        String statusType = item['statusType'];
-        extracted.add('$id,$name,$createdAt,$userId,$specieValue,$statusType');
-      });
-    }
+    data.forEach((key, item) {
+      String createdAt = item['createdAt'];
+      createdAt = createdAt.replaceFirst('T', ' ');
+      String name = item['name'];
+      String id = item['id'];
+      String specieValue = item['specieValue'];
+      String statusType = item['statusType'];
+      String type = item['type'];
+      String userId = item['userId'];
+      extracted.add('$createdAt,$name,$id,$specieValue,$statusType,$type,$userId');
+    });
     return extracted;
   }
 
@@ -701,6 +709,7 @@ class DataConfirmState extends State<DataConfirm> {
                                                             options1![3] = Text('직접설정');
                                                           }
                                                           editing();
+                                                          setTime();
                                                         });
                                                       }
                                                     : null),
@@ -736,15 +745,24 @@ class DataConfirmState extends State<DataConfirm> {
             ),
             Expanded(
               child: FutureBuilder<List<String>>(
-                  future: initialize(option2!),
+                  future: initialize(5, start!, end!),
                   builder: (context, snapshot) {
                     if (snapshot.hasData == false) {
                       return Center(child: CircularProgressIndicator());
                     } else if (snapshot.hasError) {
                       return Text('Error: ${snapshot.error}\n에러가 발생했습니다!');
                     } else {
-                      return SingleChildScrollView(
-                        child: getDataConfirm(snapshot.data!, text, manageDataState, option1!, option3!, _rangeStart, _rangeEnd, selectedEtc, widget.userData),
+                      return GetConfirmTable(
+                        userData: snapshot.data!,
+                        text: text,
+                        data: manageDataState,
+                        option2: option2!,
+                        option3: option3!,
+                        selectedEtc: selectedEtc,
+                        user: widget.userData,
+                        meat: widget.meatData,
+                        start: _rangeStart,
+                        end: _rangeEnd,
                       );
                     }
                   }),

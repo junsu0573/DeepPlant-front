@@ -167,6 +167,7 @@ final _router = GoRouter(
           path: 'reading-data',
           builder: (context, state) => ReadingData(
             userData: newUser,
+            meatData: newMeat,
           ),
         ),
         GoRoute(
@@ -253,13 +254,6 @@ class _AppManagerState extends State<AppManager> with WidgetsBindingObserver {
     WidgetsBinding.instance.removeObserver(this);
     deleteFile();
     super.dispose();
-  }
-
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (state == AppLifecycleState.paused) {
-      deleteFile();
-    }
   }
 
   @override

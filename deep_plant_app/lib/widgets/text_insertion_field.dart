@@ -15,12 +15,14 @@
 
 import 'package:deep_plant_app/source/pallete.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class TextInsertionField extends StatelessWidget {
   final String? Function(String?)? validateFunc;
   final void Function(String?)? onSaveFunc;
   final void Function(String?)? onChangeFunc;
+  final void Function(String?)? onFieldFunc;
   final String mainText;
   final String? hintText;
   final double width;
@@ -29,12 +31,15 @@ class TextInsertionField extends StatelessWidget {
   final bool? isCenter;
   final TextEditingController? controller;
   final int? maxLength;
+  final List<FilteringTextInputFormatter>? formatter;
+  final TextInputAction? action;
 
   const TextInsertionField({
     super.key,
     required this.validateFunc,
     required this.onSaveFunc,
     required this.onChangeFunc,
+    this.onFieldFunc,
     required this.mainText,
     this.hintText,
     required this.width,
@@ -43,6 +48,8 @@ class TextInsertionField extends StatelessWidget {
     this.isCenter,
     this.controller,
     this.maxLength,
+    this.formatter,
+    this.action,
   });
 
   @override
@@ -57,6 +64,9 @@ class TextInsertionField extends StatelessWidget {
         validator: validateFunc,
         onSaved: onSaveFunc,
         onChanged: onChangeFunc,
+        onFieldSubmitted: onFieldFunc,
+        inputFormatters: formatter,
+        textInputAction: action,
         obscureText: isObscure ?? false,
         decoration: InputDecoration(
             label: isCenter != null && isCenter == true

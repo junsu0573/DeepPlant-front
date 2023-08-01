@@ -92,6 +92,7 @@ class _DataManagement2State extends State<DataManagement2> with SingleTickerProv
                     DataConfirm(
                       userData: widget.userData,
                       filter: widget.filter,
+                      meatData: widget.meatData,
                     ),
                   ],
                 ),

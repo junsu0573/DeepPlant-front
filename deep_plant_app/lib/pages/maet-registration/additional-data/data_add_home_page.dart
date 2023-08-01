@@ -14,8 +14,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class DataAddHome extends StatefulWidget {
   final MeatData meatData;
   final UserData userData;
-  const DataAddHome(
-      {super.key, required this.meatData, required this.userData});
+  const DataAddHome({super.key, required this.meatData, required this.userData});
 
   @override
   State<DataAddHome> createState() => _DataAddHomeState();
@@ -56,10 +55,7 @@ class _DataAddHomeState extends State<DataAddHome> {
 
   void checkFresh() {
     // 신선육 데이터가 온전히 입력 되었을 경우에 사용되는 기능이다.
-    if (widget.meatData.heatedImage != null &&
-        widget.meatData.heatedmeat != null &&
-        widget.meatData.tongueData != null &&
-        widget.meatData.labData != null) {
+    if (widget.meatData.heatedImage != null && widget.meatData.heatedmeat != null && widget.meatData.tongueData != null && widget.meatData.labData != null) {
       isFreshEnd = true;
     } else {
       isFreshEnd = false;
@@ -68,11 +64,7 @@ class _DataAddHomeState extends State<DataAddHome> {
   }
 
   void checkDeep(dynamic data, int index) {
-    if (data.deepAgedImage != null ||
-        data.deepAgedFreshmeat != null ||
-        data.heatedmeat != null ||
-        data.tongueData != null ||
-        data.labData != null) {
+    if (data.deepAgedImage != null || data.deepAgedFreshmeat != null || data.heatedmeat != null || data.tongueData != null || data.labData != null) {
       isDeepEnd[index] = true;
     } else {
       isDeepEnd[index] = false;
@@ -99,8 +91,8 @@ class _DataAddHomeState extends State<DataAddHome> {
           widgets[index - 1] = widgetCreate(index - 1, null);
         }
         objects.insert(index, data);
-        widgets.insert(index, widgetCreate(index, true));
 
+        widgets.insert(index, widgetCreate(index, true));
         // 시간 계산
         calTime(data, index++);
       }
@@ -248,6 +240,7 @@ class _DataAddHomeState extends State<DataAddHome> {
               ],
             ),
           ),
+
         ),
         isLast != null && isLast == true
             ? Positioned(
@@ -423,7 +416,7 @@ class _DataAddHomeState extends State<DataAddHome> {
                         ),
                       ),
                       SizedBox(
-                        width: 72.w,
+                        width: 82.w,
                         child: Text(
                           isFreshEnd ? '완료' : '미완료',
                           style: TextStyle(color: Colors.black),

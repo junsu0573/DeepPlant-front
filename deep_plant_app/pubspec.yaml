@@ -92,6 +92,7 @@ flutter:
     - assets/images/fresh_meat_eval.png
     - assets/images/picture_save.png
     - assets/images/trash.png
+    - assets/images/warning.png
 
   # An image asset can refer to one or more resolution-specific "variants",  see
   # https://flutter.dev/assets-and-images/#resolution-aware
