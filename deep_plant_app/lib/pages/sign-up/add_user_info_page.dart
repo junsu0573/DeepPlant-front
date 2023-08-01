@@ -5,18 +5,41 @@ import 'package:deep_plant_app/widgets/save_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:kpostal/kpostal.dart';
 
-class AddUserInfo extends StatelessWidget {
+class AddUserInfo extends StatefulWidget {
   final UserData userData;
   const AddUserInfo({
     super.key,
     required this.userData,
   });
 
-  final String mainHomeAdress = '';
-  final String subHomeAdress = '';
-  final String company = '';
-  final String jobTitle = '';
+  @override
+  State<AddUserInfo> createState() => _AddUserInfoState();
+}
+
+class _AddUserInfoState extends State<AddUserInfo> {
+  final TextEditingController _mainAddressController = TextEditingController();
+
+  String subHomeAdress = '';
+
+  String company = '';
+
+  String department = '';
+
+  String jobTitle = '';
+
+  void saveUserData() {
+    if (_mainAddressController.text.isNotEmpty) {
+      widget.userData.homeAdress =
+          '${_mainAddressController.text}/$subHomeAdress';
+    }
+
+    widget.userData.company = company;
+    if (department.isNotEmpty || jobTitle.isNotEmpty) {
+      widget.userData.jobTitle = '$department/$jobTitle';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,6 +76,8 @@ class AddUserInfo extends StatelessWidget {
                           width: 412.w,
                           height: 50.h,
                           child: TextField(
+                            controller: _mainAddressController,
+                            readOnly: true,
                             decoration: InputDecoration(
                               hintText: '주소',
                             ),
@@ -67,7 +92,22 @@ class AddUserInfo extends StatelessWidget {
                               fontWeight: FontWeight.w400,
                             ),
                           ),
-                          onPress: () {},
+                          onPress: () async {
+                            await Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => KpostalView(
+                                  useLocalServer: false,
+                                  callback: (Kpostal result) {
+                                    setState(() {
+                                      _mainAddressController.text =
+                                          result.jibunAddress;
+                                    });
+                                  },
+                                ),
+                              ),
+                            );
+                          },
                           width: 125.w,
                           height: 75.h,
                           bgColor: Color.fromRGBO(46, 48, 62, 1),
@@ -80,6 +120,11 @@ class AddUserInfo extends StatelessWidget {
                     SizedBox(
                       height: 50.h,
                       child: TextField(
+                        onChanged: (value) {
+                          subHomeAdress = value;
+                        },
+                        enabled:
+                            _mainAddressController.text.isEmpty ? false : true,
                         decoration: InputDecoration(
                           hintText: '상세주소 (동/호수)',
                         ),
@@ -98,39 +143,14 @@ class AddUserInfo extends StatelessWidget {
                     SizedBox(
                       height: 27.h,
                     ),
-                    Row(
-                      children: [
-                        SizedBox(
-                          width: 412.w,
-                          height: 50.h,
-                          child: TextField(
-                            decoration: InputDecoration(
-                              hintText: '주소',
-                            ),
-                          ),
-                        ),
-                        Spacer(),
-                        CommonButton(
-                          text: Text(
-                            '검색',
-                            style: TextStyle(
-                              fontSize: 30.sp,
-                              fontWeight: FontWeight.w400,
-                            ),
-                          ),
-                          onPress: () {},
-                          width: 125.w,
-                          height: 75.h,
-                          bgColor: Color.fromRGBO(46, 48, 62, 1),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 34.h,
-                    ),
                     SizedBox(
                       height: 50.h,
                       child: TextField(
+                        onChanged: (value) {
+                          setState(() {
+                            company = value;
+                          });
+                        },
                         decoration: InputDecoration(
                           hintText: '회사명',
                         ),
@@ -142,9 +162,12 @@ class AddUserInfo extends StatelessWidget {
                     Row(
                       children: [
                         SizedBox(
-                          width: 235.w,
+                          width: 240.w,
                           height: 50.h,
                           child: TextField(
+                            onChanged: (value) {
+                              department = value;
+                            },
                             decoration: InputDecoration(
                               hintText: '부서명',
                             ),
@@ -152,9 +175,12 @@ class AddUserInfo extends StatelessWidget {
                         ),
                         Spacer(),
                         SizedBox(
-                          width: 235.w,
+                          width: 240.w,
                           height: 50.h,
                           child: TextField(
+                            onChanged: (value) {
+                              jobTitle = value;
+                            },
                             decoration: InputDecoration(
                               hintText: '직위',
                             ),
@@ -165,23 +191,14 @@ class AddUserInfo extends StatelessWidget {
                     SizedBox(
                       height: 34.h,
                     ),
-                    SizedBox(
-                      height: 50.h,
-                      child: TextField(
-                        decoration: InputDecoration(
-                          hintText: '전화번호',
-                        ),
-                        keyboardType: TextInputType.number,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 265.h,
-                    ),
                   ],
                 ),
               ),
               SaveButton(
-                onPressed: () => context.go('/sign-in/succeed-sign-up'),
+                onPressed: () {
+                  saveUserData();
+                  context.go('/sign-in/succeed-sign-up');
+                },
                 text: '다음',
                 width: 658.w,
                 heigh: 106.h,

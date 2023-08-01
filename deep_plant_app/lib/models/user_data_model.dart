@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:deep_plant_app/source/get_date.dart';
 import 'package:intl/intl.dart';
 
 class UserData {
@@ -46,9 +47,10 @@ class UserData {
     name = jsonData['name'];
     company = jsonData['company'];
     jobTitle = jsonData['jobTitle'];
-    homeAdress = jsonData['homeAdress'];
+    homeAdress = jsonData['homeAddr'];
     alarm = jsonData['alarm'];
     type = jsonData['type'];
+    print(jsonData);
   }
 
   // 유저 회원가입 시 json 변환
@@ -74,13 +76,10 @@ class UserData {
 
   // 유저 정보 업데이트 시 json 변환
   String convertUserUpdateToJson() {
-    DateTime now = DateTime.now();
-    String updatedAt = DateFormat('yyyy-MM-ddTHH:mm:ssZ').format(now);
     Map<String, dynamic> jsonData = {
       "userId": userId,
       "createdAt": createdAt,
-      "updatedAt": updatedAt,
-      "loginAt": null,
+      "updatedAt": GetDate.getCurrentDate(),
       "password": password,
       "name": name,
       "company": company,

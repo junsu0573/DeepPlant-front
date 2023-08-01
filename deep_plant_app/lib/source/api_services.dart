@@ -145,15 +145,9 @@ class ApiServices {
     return jsonData;
   }
 
-  // 유저 로그아웃 (GET)
-  static Future<dynamic> signOut(String userId) async {
-    dynamic jsonData = await _getApi('user/logout?id=$userId');
-    return jsonData;
-  }
-
   // 유저 업데이트 (POST)
   static Future<dynamic> updateUser(UserData user) async {
-    await _postApi('user/update', user.convertUserUpdateToJson());
+    return await _postApi('user/update', user.convertUserUpdateToJson());
   }
 
   // 유저 중복검사 (GET)

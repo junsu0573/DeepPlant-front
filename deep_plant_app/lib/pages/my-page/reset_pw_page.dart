@@ -1,4 +1,5 @@
 import 'package:deep_plant_app/models/user_data_model.dart';
+import 'package:deep_plant_app/source/api_services.dart';
 import 'package:deep_plant_app/widgets/save_button.dart';
 import 'package:deep_plant_app/widgets/text_insertion_field.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -123,12 +124,18 @@ class _ResetPWState extends State<ResetPW> {
   }
 
   // 비밀번호 변경
-  void changePassword(String newPassword) async {
+  Future<void> changePassword(String newPassword) async {
     try {
       User? user = FirebaseAuth.instance.currentUser;
       if (user != null) {
         await user.updatePassword(newPassword);
         widget.userData.password = newPassword;
+
+        final response = await ApiServices.updateUser(widget.userData);
+        if (response == null) {
+          throw Error();
+        }
+
         if (!mounted) {
           return;
         }
@@ -137,7 +144,7 @@ class _ResetPWState extends State<ResetPW> {
         print('User does not exist.');
       }
     } catch (e) {
-      print('error');
+      print('error: $e');
     }
   }
 
@@ -192,7 +199,7 @@ class _ResetPWState extends State<ResetPW> {
                         },
                         mainText: '',
                         hintText: '',
-                        width: 0,
+                        width: 600.w,
                         height: 30,
                         isObscure: true,
                         isCenter: true,
@@ -221,7 +228,7 @@ class _ResetPWState extends State<ResetPW> {
                         },
                         mainText: '영문 대/소문자+숫자+특수문자',
                         hintText: '',
-                        width: 0,
+                        width: 600.w,
                         height: 30,
                         isObscure: true,
                         isCenter: false,
@@ -254,7 +261,7 @@ class _ResetPWState extends State<ResetPW> {
                         },
                         mainText: '비밀번호 확인',
                         hintText: '',
-                        width: 0,
+                        width: 600.w,
                         height: 30,
                         isObscure: true,
                         isCenter: false,
