@@ -167,6 +167,7 @@ final _router = GoRouter(
           path: 'reading-data',
           builder: (context, state) => ReadingData(
             userData: newUser,
+            meatData: newMeat,
           ),
         ),
         GoRoute(

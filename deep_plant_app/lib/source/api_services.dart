@@ -106,6 +106,12 @@ class ApiServices {
     return data;
   }
 
+  // 기간 내 데이터 조회
+  static Future<dynamic> getCreatedAtData(int count, String start, String end) async {
+    dynamic data = await _getApi('meat/get?offset=0&count=$count&start=$start&end=$end');
+    return data;
+  }
+
   // 유저 회원가입 (POST)
   static Future<void> signUp(UserData user) async {
     await _postApi('user/register', user.convertUserSignUpToJson());

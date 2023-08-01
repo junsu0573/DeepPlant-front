@@ -43,6 +43,7 @@ class DataCellIconButton extends StatelessWidget {
         icon: Icon(
           icon,
           size: 25.h,
+          color: Colors.black,
         ),
       ),
     );

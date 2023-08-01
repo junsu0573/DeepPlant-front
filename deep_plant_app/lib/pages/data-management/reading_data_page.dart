@@ -1,7 +1,8 @@
+import 'package:deep_plant_app/models/meat_data_model.dart';
 import 'package:deep_plant_app/models/user_data_model.dart';
 import 'package:deep_plant_app/source/api_services.dart';
 import 'package:deep_plant_app/widgets/custom_appbar.dart';
-import 'package:deep_plant_app/source/data_table_widget.dart';
+import 'package:deep_plant_app/source/data_table_data_widget.dart';
 import 'package:deep_plant_app/widgets/save_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -13,9 +14,11 @@ import 'package:table_calendar/table_calendar.dart';
 
 class ReadingData extends StatefulWidget {
   final UserData userData;
+  final MeatData meatData;
   ReadingData({
     super.key,
     required this.userData,
+    required this.meatData,
   });
 
   @override
@@ -51,7 +54,6 @@ class ReadingDataState extends State<ReadingData> {
   void initState() {
     super.initState();
     _selectedDay = _focusedDay;
-    initialize();
   }
 
   Future<List<String>> initialize() async {
@@ -61,7 +63,8 @@ class ReadingDataState extends State<ReadingData> {
       String createdAt = item['createdAt'];
       createdAt = createdAt.replaceFirst('T', ' ');
       String name = '${widget.userData.name}';
-      return '$id,$name,$createdAt';
+      String statusType = item['statusType'];
+      return '$createdAt,$name,$id, ,$statusType';
     }).toList();
     return extracted;
   }
@@ -623,7 +626,18 @@ class ReadingDataState extends State<ReadingData> {
                   } else if (snapshot.hasError) {
                     return Text('Error: ${snapshot.error}\n에러가 발생했습니다!');
                   } else {
-                    return getDataTable(snapshot.data!, text, manageDataState, sortDscending, option1, _rangeStart, _rangeEnd, selectedEtc, widget.userData);
+                    return GetDataTable(
+                      userData: snapshot.data!,
+                      text: text,
+                      data: manageDataState,
+                      sortDscending: sortDscending,
+                      option1: option1,
+                      start: _rangeStart,
+                      end: _rangeEnd,
+                      selectedEtc: selectedEtc,
+                      user: widget.userData,
+                      meat: widget.meatData,
+                    );
                   }
                 },
               ),
