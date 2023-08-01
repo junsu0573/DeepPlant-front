@@ -30,6 +30,7 @@ class _LabDataInputState extends State<LabDataInput> {
   TextEditingController wbsf = TextEditingController();
   TextEditingController ct = TextEditingController();
   TextEditingController mfi = TextEditingController();
+  TextEditingController collagen = TextEditingController();
 
   @override
   void initState() {
@@ -65,6 +66,9 @@ class _LabDataInputState extends State<LabDataInput> {
       if (widget.meatData.labData!['MFI'] != null) {
         mfi.text = widget.meatData.labData!['MFI'].toString();
       }
+      if (widget.meatData.labData!['Collagen'] != null) {
+        collagen.text = widget.meatData.labData!['Collagen'].toString();
+      }
     }
   }
 
@@ -79,6 +83,8 @@ class _LabDataInputState extends State<LabDataInput> {
     final double? wbsfData;
     final double? ctData;
     final double? mfiData;
+    final double? collagenData;
+
     if (l.text.isNotEmpty) {
       lData = double.parse(l.text);
     } else {
@@ -129,6 +135,11 @@ class _LabDataInputState extends State<LabDataInput> {
     } else {
       mfiData = null;
     }
+    if (collagen.text.isNotEmpty) {
+      collagenData = double.parse(collagen.text);
+    } else {
+      collagenData = null;
+    }
 
     // 데이터 생성
     Map<String, dynamic> labData = {
@@ -141,7 +152,8 @@ class _LabDataInputState extends State<LabDataInput> {
       'ph': phData,
       'WBSF': wbsfData,
       'cardepsin_activity': ctData,
-      'MFI': mfiData
+      'MFI': mfiData,
+      'Collagen': collagenData
     };
 
     // 데이터를 객체에 저장
@@ -219,16 +231,20 @@ class _LabDataInputState extends State<LabDataInput> {
                   firstText: '카텝신활성도', secondText: '', controller: ct),
               TextFieldWithTitle(
                   firstText: 'MFI', secondText: '근소편화지수', controller: mfi),
+              TextFieldWithTitle(
+                  firstText: 'Collagen',
+                  secondText: '콜라겐',
+                  controller: collagen),
               SizedBox(
                 height: 16.h,
               ),
               SaveButton(
-                onPressed: () {
+                onPressed: () async {
                   // 데이터 저장
                   saveMeatData();
 
                   // 데이터 서버로 전송
-                  ApiServices.sendMeatData(
+                  await ApiServices.sendMeatData(
                       'probexpt_data', widget.meatData.convertPorbexptToJson());
 
                   if (!mounted) return;
