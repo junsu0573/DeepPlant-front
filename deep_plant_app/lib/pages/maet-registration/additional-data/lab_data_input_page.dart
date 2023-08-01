@@ -193,12 +193,9 @@ class _LabDataInputState extends State<LabDataInput> {
               SizedBox(
                 height: 90.h,
               ),
-              TextFieldWithTitle(
-                  firstText: 'L', secondText: '명도', controller: l),
-              TextFieldWithTitle(
-                  firstText: 'a', secondText: '적색도', unit: '', controller: a),
-              TextFieldWithTitle(
-                  firstText: 'b', secondText: '황색도', unit: '', controller: b),
+              TextFieldWithTitle(firstText: 'L', secondText: '명도', controller: l),
+              TextFieldWithTitle(firstText: 'a', secondText: '적색도', unit: '', controller: a),
+              TextFieldWithTitle(firstText: 'b', secondText: '황색도', unit: '', controller: b),
               TextFieldWithTitle(
                 firstText: 'DL',
                 secondText: '육즙감량',
@@ -220,21 +217,11 @@ class _LabDataInputState extends State<LabDataInput> {
                 controller: rw,
                 isPercent: true,
               ),
-              TextFieldWithTitle(
-                  firstText: 'pH', secondText: '산도', controller: ph),
-              TextFieldWithTitle(
-                  firstText: 'WBSF',
-                  secondText: '전단가',
-                  unit: 'kgf',
-                  controller: wbsf),
-              TextFieldWithTitle(
-                  firstText: '카텝신활성도', secondText: '', controller: ct),
-              TextFieldWithTitle(
-                  firstText: 'MFI', secondText: '근소편화지수', controller: mfi),
-              TextFieldWithTitle(
-                  firstText: 'Collagen',
-                  secondText: '콜라겐',
-                  controller: collagen),
+              TextFieldWithTitle(firstText: 'pH', secondText: '산도', controller: ph),
+              TextFieldWithTitle(firstText: 'WBSF', secondText: '전단가', unit: 'kgf', controller: wbsf),
+              TextFieldWithTitle(firstText: '카텝신활성도', secondText: '', controller: ct),
+              TextFieldWithTitle(firstText: 'MFI', secondText: '근소편화지수', controller: mfi),
+              TextFieldWithTitle(firstText: 'Collagen', secondText: '콜라겐', controller: collagen),
               SizedBox(
                 height: 16.h,
               ),
@@ -244,10 +231,10 @@ class _LabDataInputState extends State<LabDataInput> {
                   saveMeatData();
 
                   // 데이터 서버로 전송
-                  await ApiServices.sendMeatData(
-                      'probexpt_data', widget.meatData.convertPorbexptToJson());
+                  await ApiServices.sendMeatData('probexpt_data', widget.meatData.convertPorbexptToJson());
 
                   if (!mounted) return;
+                  FocusScope.of(context).unfocus();
                   context.pop();
                 },
                 text: '저장',

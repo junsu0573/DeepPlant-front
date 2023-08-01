@@ -158,7 +158,11 @@ class _DataAddHomeState extends State<DataAddHome> {
                     meatData: widget.meatData,
                   ),
                 ),
-              ).then((_) => null);
+              ).then((_) async {
+                final data = await ApiServices.getMeatData(widget.meatData.id!);
+                widget.meatData.fetchData(data);
+                widgets[index] = widgetCreate(index, null);
+              });
             },
             child: Row(
               children: [
@@ -206,7 +210,7 @@ class _DataAddHomeState extends State<DataAddHome> {
                 SizedBox(
                   width: 80.w,
                   child: Text(
-                    '미완료',
+                    widget.meatData.processedmeatDataComplete![widgetIndex] ? '완료' : '진행중',
                     style: TextStyle(color: Colors.black),
                   ),
                 )

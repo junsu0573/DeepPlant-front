@@ -137,8 +137,7 @@ class _IdPwInsertionState extends State<IdPwInsertion> {
   // 비밀번호 유효성 검사 (정규식)
   bool validatePassword(String password) {
     // 조건: 영문 대/소문자, 숫자, 특수문자 10자~15자
-    const pattern =
-        r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#$%^&*()\-_=+{};:,<.>]).{10,15}$';
+    const pattern = r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#$%^&*()\-_=+{};:,<.>]).{10,15}$';
     final regex = RegExp(pattern);
 
     return regex.hasMatch(password);
@@ -161,11 +160,7 @@ class _IdPwInsertionState extends State<IdPwInsertion> {
 
   // 모든 값이 올바르게 입력됐는지 확인
   bool isAllChecked() {
-    if (_isValidId &&
-        _isValidPw &&
-        _isValidPw &&
-        _isUnique &&
-        userName.isNotEmpty) {
+    if (_isValidId && _isValidPw && _isValidPw && _isUnique && userName.isNotEmpty) {
       return true;
     }
     return false;
@@ -249,12 +244,9 @@ class _IdPwInsertionState extends State<IdPwInsertion> {
                                   ? Icon(Icons.check)
                                   : Text(
                                       '중복확인',
-                                      style: TextStyle(fontSize: 30.sp),
+                                      style: TextStyle(fontSize: 27.sp),
                                     ),
-                              onPress: _isUnique
-                                  ? null
-                                  : () =>
-                                      _isValidId ? dupliCheck(userEmail) : {},
+                              onPress: _isUnique ? null : () => _isValidId ? dupliCheck(userEmail) : {},
                               width: 169.w,
                               height: 75.h),
                         ],
@@ -295,11 +287,7 @@ class _IdPwInsertionState extends State<IdPwInsertion> {
                       ),
                       Text(
                         '영문,숫자,특수문자를 모두 포함해 10자 이상으로 구성해주세요.',
-                        style: TextStyle(
-                            fontSize: 20.sp,
-                            color: isRedTextPw
-                                ? Colors.red
-                                : Color.fromRGBO(183, 183, 183, 1)),
+                        style: TextStyle(fontSize: 20.sp, color: isRedTextPw ? Colors.red : Color.fromRGBO(183, 183, 183, 1)),
                       ),
                       SizedBox(
                         height: 30.h,
