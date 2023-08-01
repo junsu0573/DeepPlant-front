@@ -14,10 +14,12 @@ import 'package:go_router/go_router.dart';
 class ShowStep extends StatefulWidget {
   final UserData userData;
   final MeatData meatData;
+  final bool isEdited;
   ShowStep({
     super.key,
     required this.userData,
     required this.meatData,
+    required this.isEdited,
   });
 
   @override
@@ -30,20 +32,28 @@ class _ShowStepState extends State<ShowStep> {
   @override
   void initState() {
     super.initState();
-    // 육류 정보 초기화
-    widget.meatData.resetData();
-    widget.meatData.seqno = 0;
+    if (widget.isEdited != true) {
+      // 육류 정보 초기화
+      widget.meatData.resetData();
+      widget.meatData.seqno = 0;
 
-    // 유저 아이디 저장
-    if (widget.userData.userId != null) {
-      _userId = widget.userData.userId!;
-      widget.meatData.userId = _userId;
+      // 유저 아이디 저장
+      if (widget.userData.userId != null) {
+        _userId = widget.userData.userId!;
+        widget.meatData.userId = _userId;
+      }
+
+      // 임시저장 처리
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        initialize();
+      });
+    } else {
+      // 유저 아이디 저장
+      if (widget.userData.userId != null) {
+        _userId = widget.userData.userId!;
+        widget.meatData.userId = _userId;
+      }
     }
-
-    // 임시저장 처리
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      initialize();
-    });
   }
 
   bool _isAllCompleted() {

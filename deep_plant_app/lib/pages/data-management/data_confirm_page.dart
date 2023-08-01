@@ -3,6 +3,7 @@ import 'package:deep_plant_app/models/meat_data_model.dart';
 import 'package:deep_plant_app/models/user_data_model.dart';
 import 'package:deep_plant_app/source/api_services.dart';
 import 'package:deep_plant_app/source/data_table_confirm_widget.dart';
+import 'package:deep_plant_app/widgets/data_table_guide.dart';
 import 'package:deep_plant_app/widgets/save_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -743,6 +744,7 @@ class DataConfirmState extends State<DataConfirm> {
                 ),
               ),
             ),
+            DataTableGuide(),
             Expanded(
               child: FutureBuilder<List<String>>(
                   future: initialize(5, start!, end!),
