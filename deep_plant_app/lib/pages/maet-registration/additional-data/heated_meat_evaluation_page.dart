@@ -36,24 +36,24 @@ class _HeatedMeatEvaluation extends State<HeatedMeatEvaluation> with SingleTicke
     ['Palatability', '기호도', '나쁨', '', '보통', '', '좋음'],
   ];
 
-  double _flavor = 0;
-  double _juiciness = 0;
-  double _tenderness = 0;
-  double _umami = 0;
-  double _palatability = 0;
+  double? _flavor = 0;
+  double? _juiciness = 0;
+  double? _tenderness = 0;
+  double? _umami = 0;
+  double? _palatability = 0;
 
   bool _isAllInserted() {
-    if (_flavor > 0 && _juiciness > 0 && _tenderness > 0 && _umami > 0 && _palatability > 0) return true;
+    if (_flavor! > 0 && _juiciness! > 0 && _tenderness! > 0 && _umami! > 0 && _palatability! > 0) return true;
     return false;
   }
 
   void initialize() {
-    if (widget.meatData.heatedmeat!['flavor'] != null) {
-      _flavor = widget.meatData.heatedmeat!['flavor'];
-      _juiciness = widget.meatData.heatedmeat!['juiciness'];
-      _tenderness = widget.meatData.heatedmeat!['tenderness'];
-      _umami = widget.meatData.heatedmeat!['umami'];
-      _palatability = widget.meatData.heatedmeat!['palability'];
+    if (widget.meatData.heatedmeat?['flavor'] != null) {
+      _flavor = widget.meatData.heatedmeat?['flavor'];
+      _juiciness = widget.meatData.heatedmeat?['juiciness'];
+      _tenderness = widget.meatData.heatedmeat?['tenderness'];
+      _umami = widget.meatData.heatedmeat?['umami'];
+      _palatability = widget.meatData.heatedmeat?['palability'];
     }
   }
 
@@ -98,7 +98,7 @@ class _HeatedMeatEvaluation extends State<HeatedMeatEvaluation> with SingleTicke
             ),
             PartEval(
               selectedText: text[0],
-              value: _flavor,
+              value: _flavor!,
               onChanged: (value) {
                 setState(() {
                   _flavor = double.parse(value.toStringAsFixed(1));
@@ -110,7 +110,7 @@ class _HeatedMeatEvaluation extends State<HeatedMeatEvaluation> with SingleTicke
             ),
             PartEval(
               selectedText: text[1],
-              value: _juiciness,
+              value: _juiciness!,
               onChanged: (value) {
                 setState(() {
                   _juiciness = double.parse(value.toStringAsFixed(1));
@@ -122,7 +122,7 @@ class _HeatedMeatEvaluation extends State<HeatedMeatEvaluation> with SingleTicke
             ),
             PartEval(
               selectedText: text[2],
-              value: _tenderness,
+              value: _tenderness!,
               onChanged: (value) {
                 setState(() {
                   _tenderness = double.parse(value.toStringAsFixed(1));
@@ -134,7 +134,7 @@ class _HeatedMeatEvaluation extends State<HeatedMeatEvaluation> with SingleTicke
             ),
             PartEval(
               selectedText: text[3],
-              value: _umami,
+              value: _umami!,
               onChanged: (value) {
                 setState(() {
                   _umami = double.parse(value.toStringAsFixed(1));
@@ -146,7 +146,7 @@ class _HeatedMeatEvaluation extends State<HeatedMeatEvaluation> with SingleTicke
             ),
             PartEval(
               selectedText: text[4],
-              value: _palatability,
+              value: _palatability!,
               onChanged: (value) {
                 setState(() {
                   _palatability = double.parse(value.toStringAsFixed(1));

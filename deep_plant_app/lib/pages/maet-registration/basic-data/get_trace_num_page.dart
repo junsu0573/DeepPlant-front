@@ -34,9 +34,7 @@ class _GetTraceNumState extends State<GetTraceNum> {
 
   String _barcodeData = 'No Data';
 
-  var apikey =
-      "%2FuEP%2BvIjYfPTyaHNlxRx2Ry5cVUer92wa6lHcxnXEEekVjUCZ1N41traj3s8sGhHpKS54SVDbg9m4sHOEuMNuw%3D%3D";
-
+  var apikey = "%2FuEP%2BvIjYfPTyaHNlxRx2Ry5cVUer92wa6lHcxnXEEekVjUCZ1N41traj3s8sGhHpKS54SVDbg9m4sHOEuMNuw%3D%3D";
 
   final formkey = GlobalKey<FormState>();
   final TextEditingController textEditingController = TextEditingController();
@@ -71,8 +69,7 @@ class _GetTraceNumState extends State<GetTraceNum> {
     super.initState();
     initialize();
     _eventChannel = EventChannel('com.example.deep_plant_app/barcode');
-    _eventSubscription =
-        _eventChannel!.receiveBroadcastStream().listen((dynamic event) {
+    _eventSubscription = _eventChannel!.receiveBroadcastStream().listen((dynamic event) {
       setState(() {
         _barcodeData = parsingData(event.toString());
         textEditingController.text = _barcodeData;
@@ -86,7 +83,6 @@ class _GetTraceNumState extends State<GetTraceNum> {
     super.dispose();
   }
 
-
   String parsingData(String input) {
     RegExp regExp = RegExp(r'\[.*?\]\s*(.*)');
 
@@ -98,7 +94,6 @@ class _GetTraceNumState extends State<GetTraceNum> {
       return input;
     }
   }
-
 
   void initialize() {
     if (widget.meatData.traceNum != null) {
@@ -162,8 +157,7 @@ class _GetTraceNumState extends State<GetTraceNum> {
         if (pigAPIData['response']['body']['items']['item'][0] == null) {
           traceNum = pigAPIData['response']['body']['items']['item']['pigNo'];
         } else {
-          traceNum =
-              pigAPIData['response']['body']['items']['item'][0]['pigNo'];
+          traceNum = pigAPIData['response']['body']['items']['item'][0]['pigNo'];
         }
       } catch (e) {
         tableData.clear();
@@ -214,7 +208,7 @@ class _GetTraceNumState extends State<GetTraceNum> {
         final meatAPIData4 = await source4.getJsonData();
         final meatAPIData3 = await source3.getJsonData();
 
-        gradeNum = meatAPIData4['response']['body']['items']['item']['gradeNm'] ?? "";
+        gradeNum = meatAPIData4['response']['body']['items']['item']['gradeNm'];
 
         String? time = meatAPIData3['response']['body']['items']['item']['butcheryYmd'] ?? "";
         butcheryYmd = DateFormat('yyyyMMdd').format(DateTime.parse(time!)).toString(); // 여기 형식을 yyyyMMdd로 변경
@@ -491,7 +485,7 @@ class View extends StatelessWidget {
                                   ),
                                 ),
                                 TextSpan(
-                                  text: tableData[index],
+                                  text: (tableData[index] != null) ? tableData[index] : "",
                                   style: TextStyle(
                                     fontSize: 18.0,
                                     color: Colors.black,

@@ -387,17 +387,27 @@ class MeatData {
 
     // 데이터 입력 완료 체크
     rawmeatDataComplete = jsonData['rawmeat_data_complete'];
-    processedmeatDataComplete = jsonData["processedmeat_data_complete"].values.cast<bool>().toList();
+    if (jsonData["processedmeat_data_complete"] is! bool) {
+      processedmeatDataComplete = jsonData["processedmeat_data_complete"].values.cast<bool>().toList();
+    }
   }
 
   // 원육 데이터 fetch
-  void fetchDataForOrigin() {
+  Future<void> fetchDataForOrigin() async {
     seqno = 0;
     Map<String, dynamic>? data = rawmeat;
     if (data == null) {
       heatedmeat = null;
       imagePath = null;
     } else {
+      // 원육 사진
+      freshmeat = data['sensory_eval'];
+      imagePath = freshmeat!['imagePath'];
+      final response = await ApiServices.getImage(imagePath!);
+      if (response != null) {
+        imagePath = response;
+      }
+
       // 실험데이터
       if (data['probexpt_data'] != null) {
         Map<String, dynamic> temp = data['probexpt_data'];
