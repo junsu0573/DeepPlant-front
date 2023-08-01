@@ -379,8 +379,6 @@ class MeatData {
       deepAging = [];
     }
 
-    rawmeat = jsonData['rawmeat'];
-
     secondaryValue = jsonData['secondaryValue'];
     sexType = jsonData['sexType'];
     speciesValue = jsonData['specieValue'];
@@ -389,6 +387,7 @@ class MeatData {
 
     // 데이터 입력 완료 체크
     rawmeatDataComplete = jsonData['rawmeat_data_complete'];
+    processedmeatDataComplete = jsonData["processedmeat_data_complete"].values.cast<bool>().toList();
   }
 
   // 원육 데이터 fetch

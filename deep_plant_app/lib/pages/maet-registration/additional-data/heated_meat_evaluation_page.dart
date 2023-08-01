@@ -21,8 +21,7 @@ class HeatedMeatEvaluation extends StatefulWidget {
   State<HeatedMeatEvaluation> createState() => _HeatedMeatEvaluation();
 }
 
-class _HeatedMeatEvaluation extends State<HeatedMeatEvaluation>
-    with SingleTickerProviderStateMixin {
+class _HeatedMeatEvaluation extends State<HeatedMeatEvaluation> with SingleTickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
@@ -44,16 +43,12 @@ class _HeatedMeatEvaluation extends State<HeatedMeatEvaluation>
   double _palatability = 0;
 
   bool _isAllInserted() {
-    if (_flavor > 0 &&
-        _juiciness > 0 &&
-        _tenderness > 0 &&
-        _umami > 0 &&
-        _palatability > 0) return true;
+    if (_flavor > 0 && _juiciness > 0 && _tenderness > 0 && _umami > 0 && _palatability > 0) return true;
     return false;
   }
 
   void initialize() {
-    if (widget.meatData.heatedmeat != null) {
+    if (widget.meatData.heatedmeat!['flavor'] != null) {
       _flavor = widget.meatData.heatedmeat!['flavor'];
       _juiciness = widget.meatData.heatedmeat!['juiciness'];
       _tenderness = widget.meatData.heatedmeat!['tenderness'];
@@ -170,10 +165,10 @@ class _HeatedMeatEvaluation extends State<HeatedMeatEvaluation>
                         saveMeatData();
 
                         // 데이터 서버로 전송
-                        await ApiServices.sendMeatData('heatedmeat_eval',
-                            widget.meatData.convertHeatedMeatToJson());
+                        await ApiServices.sendMeatData('heatedmeat_eval', widget.meatData.convertHeatedMeatToJson());
 
                         if (!mounted) return;
+                        FocusScope.of(context).unfocus();
                         Navigator.pop(context);
                       }
                     : null,
