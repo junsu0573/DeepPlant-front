@@ -1,6 +1,6 @@
 import 'package:deep_plant_app/models/meat_data_model.dart';
 import 'package:deep_plant_app/models/user_data_model.dart';
-import 'package:deep_plant_app/pages/maet-registration/basic-data/show_step_page.dart';
+import 'package:deep_plant_app/pages/maet-registration/additional-data/data_add_home_page.dart';
 import 'package:deep_plant_app/source/api_services.dart';
 import 'package:deep_plant_app/widgets/data_table_list_card.dart';
 import 'package:flutter/material.dart';
@@ -88,25 +88,29 @@ class _GetConfirmTableState extends State<GetConfirmTable> {
     // source에 담긴 data 값을 text의 시작과 비교하고, controller를 통해 실시간적으로 정보를 교류하게 된다.
     // contains는 중간 아무 요소나 비교, startwith는 시작부터, endwith는 끝부터 비교하는 기능임을 기억해두자.
 
-    List<String> filteredData = source.where((data) => data.contains(widget.text)).toList();
+    List<String> filteredData =
+        source.where((data) => data.contains(widget.text)).toList();
     return ListView.builder(
       itemCount: filteredData.length,
       itemBuilder: (context, index) {
         var dataCells = filteredData[index].split(',');
         return InkWell(
-          onTap:
-              // () async {
-              //   final data = await ApiServices.getMeatData(filteredData[index]);
-              //   widget.meat.fetchData(data);
-              //   if (!mounted) return;
-              //   Navigator.push(
-              //     context,
-              //     MaterialPageRoute(
-              //       builder: (context) => ShowStep(userData: widget.user, meatData: widget.meat),
-              //     ),
-              //   );
-              // },
-              null,
+          onTap: () async {
+            final data = await ApiServices.getMeatData(dataCells[2]);
+            widget.meat.fetchData(data);
+            widget.meat.fetchDataForOrigin();
+
+            if (!mounted) return;
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => DataAddHome(
+                  meatData: widget.meat,
+                  userData: widget.user,
+                ),
+              ),
+            );
+          },
           child: DataTableListCard(
             dataCells: dataCells,
           ),

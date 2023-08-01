@@ -26,7 +26,6 @@ class GetTraceNum extends StatefulWidget {
 }
 
 class _GetTraceNumState extends State<GetTraceNum> {
-
   // 바코드 이벤트 채널
   EventChannel? _eventChannel;
 
@@ -37,7 +36,6 @@ class _GetTraceNumState extends State<GetTraceNum> {
 
   var apikey =
       "%2FuEP%2BvIjYfPTyaHNlxRx2Ry5cVUer92wa6lHcxnXEEekVjUCZ1N41traj3s8sGhHpKS54SVDbg9m4sHOEuMNuw%3D%3D";
-
 
   final formkey = GlobalKey<FormState>();
   final TextEditingController textEditingController = TextEditingController();
@@ -75,7 +73,7 @@ class _GetTraceNumState extends State<GetTraceNum> {
     _eventSubscription =
         _eventChannel!.receiveBroadcastStream().listen((dynamic event) {
       setState(() {
-        _barcodeData = event.toString();
+        _barcodeData = parsingData(event.toString());
         textEditingController.text = _barcodeData;
       });
     });
@@ -87,9 +85,16 @@ class _GetTraceNumState extends State<GetTraceNum> {
     super.dispose();
   }
 
-  @override
-  void dispose() {
-    super.dispose();
+  String parsingData(String input) {
+    RegExp regExp = RegExp(r'\[.*?\]\s*(.*)');
+
+    Match? match = regExp.firstMatch(input);
+
+    if (match != null) {
+      return match.group(1)!;
+    } else {
+      return input;
+    }
   }
 
   void initialize() {
@@ -147,7 +152,8 @@ class _GetTraceNumState extends State<GetTraceNum> {
     if (historyNo.startsWith('L1')) {
       try {
         OpenApiSource source = OpenApiSource(
-            baseUrl: "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?serviceKey=$apikey&traceNo=$historyNo&optionNo=9");
+            baseUrl:
+                "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?serviceKey=$apikey&traceNo=$historyNo&optionNo=9");
 
         final pigAPIData = await source.getJsonData();
 
@@ -163,29 +169,46 @@ class _GetTraceNumState extends State<GetTraceNum> {
     if (traceNum!.startsWith('0')) {
       try {
         OpenApiSource source1 = OpenApiSource(
-            baseUrl: "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?serviceKey=$apikey&traceNo=$traceNum&optionNo=1");
+            baseUrl:
+                "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?serviceKey=$apikey&traceNo=$traceNum&optionNo=1");
         OpenApiSource source2 = OpenApiSource(
-            baseUrl: "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?serviceKey=$apikey&traceNo=$traceNum&optionNo=2");
+            baseUrl:
+                "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?serviceKey=$apikey&traceNo=$traceNum&optionNo=2");
         OpenApiSource source3 = OpenApiSource(
-            baseUrl: "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?serviceKey=$apikey&traceNo=$traceNum&optionNo=3");
+            baseUrl:
+                "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?serviceKey=$apikey&traceNo=$traceNum&optionNo=3");
 
         final meatAPIData1 = await source1.getJsonData();
         final meatAPIData2 = await source2.getJsonData();
         final meatAPIData3 = await source3.getJsonData();
 
-        String? date = meatAPIData1['response']['body']['items']['item']['birthYmd'] ?? "";
-        birthYmd = DateFormat('yyyyMMdd').format(DateTime.parse(date!)).toString(); // 여기 형식을 yyyyMMdd로 변경
+        String? date =
+            meatAPIData1['response']['body']['items']['item']['birthYmd'] ?? "";
+        birthYmd = DateFormat('yyyyMMdd')
+            .format(DateTime.parse(date!))
+            .toString(); // 여기 형식을 yyyyMMdd로 변경
 
-        species = meatAPIData1['response']['body']['items']['item']['lsTypeNm'] ?? "";
-        sexType = meatAPIData1['response']['body']['items']['item']['sexNm'] ?? ""; // 이건 그대로 string으로 주면 됨
+        species =
+            meatAPIData1['response']['body']['items']['item']['lsTypeNm'] ?? "";
+        sexType = meatAPIData1['response']['body']['items']['item']['sexNm'] ??
+            ""; // 이건 그대로 string으로 주면 됨
 
-        farmerNm = meatAPIData2['response']['body']['items']['item'][0]['farmerNm'] ?? "";
-        farmAddr = meatAPIData2['response']['body']['items']['item'][0]['farmAddr'] ?? "";
+        farmerNm = meatAPIData2['response']['body']['items']['item'][0]
+                ['farmerNm'] ??
+            "";
+        farmAddr = meatAPIData2['response']['body']['items']['item'][0]
+                ['farmAddr'] ??
+            "";
 
-        String? butDate = meatAPIData3['response']['body']['items']['item']['butcheryYmd'] ?? "";
-        butcheryYmd = DateFormat('yyyyMMdd').format(DateTime.parse(butDate!)).toString(); // 여기 형식을 yyyyMMdd로 변경
+        String? butDate = meatAPIData3['response']['body']['items']['item']
+                ['butcheryYmd'] ??
+            "";
+        butcheryYmd = DateFormat('yyyyMMdd')
+            .format(DateTime.parse(butDate!))
+            .toString(); // 여기 형식을 yyyyMMdd로 변경
 
-        gradeNum = meatAPIData3['response']['body']['items']['item']['gradeNm'] ?? "";
+        gradeNum =
+            meatAPIData3['response']['body']['items']['item']['gradeNm'] ?? "";
       } catch (e) {
         tableData.clear();
         isFinal = false;
@@ -194,17 +217,24 @@ class _GetTraceNumState extends State<GetTraceNum> {
     } else {
       try {
         OpenApiSource source4 = OpenApiSource(
-            baseUrl: "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?serviceKey=$apikey&traceNo=$traceNum&optionNo=4");
+            baseUrl:
+                "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?serviceKey=$apikey&traceNo=$traceNum&optionNo=4");
         OpenApiSource source3 = OpenApiSource(
-            baseUrl: "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?serviceKey=$apikey&traceNo=$traceNum&optionNo=3");
+            baseUrl:
+                "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?serviceKey=$apikey&traceNo=$traceNum&optionNo=3");
 
         final meatAPIData4 = await source4.getJsonData();
         final meatAPIData3 = await source3.getJsonData();
 
-        gradeNum = meatAPIData4['response']['body']['items']['item']['gradeNm'] ?? "";
+        gradeNum =
+            meatAPIData4['response']['body']['items']['item']['gradeNm'] ?? "";
 
-        String? time = meatAPIData3['response']['body']['items']['item']['butcheryYmd'] ?? "";
-        butcheryYmd = DateFormat('yyyyMMdd').format(DateTime.parse(time!)).toString(); // 여기 형식을 yyyyMMdd로 변경
+        String? time = meatAPIData3['response']['body']['items']['item']
+                ['butcheryYmd'] ??
+            "";
+        butcheryYmd = DateFormat('yyyyMMdd')
+            .format(DateTime.parse(time!))
+            .toString(); // 여기 형식을 yyyyMMdd로 변경
 
         species = '돼지';
       } catch (e) {
@@ -214,7 +244,16 @@ class _GetTraceNumState extends State<GetTraceNum> {
       }
     }
     if (butcheryYmd != null) {
-      tableData.addAll([traceNum, birthYmd, species, sexType, farmerNm, farmAddr, butcheryYmd, gradeNum]);
+      tableData.addAll([
+        traceNum,
+        birthYmd,
+        species,
+        sexType,
+        farmerNm,
+        farmAddr,
+        butcheryYmd,
+        gradeNum
+      ]);
       isFinal = true;
       isNull = false;
     } else {
@@ -283,7 +322,9 @@ class _GetTraceNumState extends State<GetTraceNum> {
                   child: TextInsertionField(
                     controller: textEditingController,
                     action: TextInputAction.search,
-                    formatter: [FilteringTextInputFormatter.allow(RegExp(r'[0-9L]'))],
+                    formatter: [
+                      FilteringTextInputFormatter.allow(RegExp(r'[0-9L]'))
+                    ],
                     validateFunc: (value) {
                       if (value!.isEmpty || value.length < 12) {
                         // 임시 지정!!
