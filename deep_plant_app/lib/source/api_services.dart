@@ -150,6 +150,12 @@ class ApiServices {
     return await _postApi('user/update', user.convertUserUpdateToJson());
   }
 
+  // 유저 비밀번호 변경 (POST)
+  static Future<dynamic> changeUserPw(UserData user, String password) async {
+    return await _postApi(
+        'user/update', user.convertChangeUserPwToJson(password));
+  }
+
   // 유저 중복검사 (GET)
   static Future<bool> dupliCheck(String userId) async {
     dynamic data = await _getApi('user/duplicate_check?id=$userId');
@@ -160,6 +166,12 @@ class ApiServices {
       // 200: !중복
       return false;
     }
+  }
+
+  // 유저 비밀번호 검사 (POST)
+  static Future<dynamic> checkUserPw(UserData user, String password) async {
+    return await _postApi(
+        'user/pwd_check', user.convertPwdCheckToJson(password));
   }
 
   // 종, 부위 조회 (GET)

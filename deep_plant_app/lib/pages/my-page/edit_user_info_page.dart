@@ -34,11 +34,13 @@ class _EditUserInfoState extends State<EditUserInfo> {
     super.initState();
     if (widget.user.homeAdress != null && widget.user.homeAdress!.isNotEmpty) {
       int index = widget.user.homeAdress!.indexOf('/');
-      if (widget.user.homeAdress!.substring(0, index).isNotEmpty) {
+      if (index != -1 &&
+          widget.user.homeAdress!.substring(0, index).isNotEmpty) {
         _mainAddressController.text =
             widget.user.homeAdress!.substring(0, index);
       }
-      if (widget.user.homeAdress!.substring(index + 1).isNotEmpty) {
+      if (index != -1 &&
+          widget.user.homeAdress!.substring(index + 1).isNotEmpty) {
         _subAddressController.text =
             widget.user.homeAdress!.substring(index + 1);
       }
@@ -48,10 +50,11 @@ class _EditUserInfoState extends State<EditUserInfo> {
     }
     if (widget.user.jobTitle != null && widget.user.jobTitle!.isNotEmpty) {
       int index = widget.user.jobTitle!.indexOf('/');
-      if (widget.user.jobTitle!.substring(0, index).isNotEmpty) {
+      if (index != -1 && widget.user.jobTitle!.substring(0, index).isNotEmpty) {
         _departmentController.text = widget.user.jobTitle!.substring(0, index);
       }
-      if (widget.user.jobTitle!.substring(index + 1).isNotEmpty) {
+      if (index != -1 &&
+          widget.user.jobTitle!.substring(index + 1).isNotEmpty) {
         _jobTitleController.text = widget.user.jobTitle!.substring(index + 1);
       }
     }
@@ -327,11 +330,11 @@ class _EditUserInfoState extends State<EditUserInfo> {
                   ),
                   SaveButton(
                     onPressed: !_isEditting
-                        ? () {
-                            saveUserData();
+                        ? () async {
+                            await saveUserData();
                           }
                         : null,
-                    text: '다음',
+                    text: '저장',
                     width: 658.w,
                     heigh: 106.h,
                     isWhite: false,

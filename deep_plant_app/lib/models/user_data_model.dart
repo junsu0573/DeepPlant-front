@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:deep_plant_app/source/get_date.dart';
 import 'package:intl/intl.dart';
 
 class UserData {
@@ -78,15 +77,32 @@ class UserData {
   String convertUserUpdateToJson() {
     Map<String, dynamic> jsonData = {
       "userId": userId,
-      "createdAt": createdAt,
-      "updatedAt": GetDate.getCurrentDate(),
-      "password": password,
       "name": name,
       "company": company,
       "jobTitle": jobTitle,
-      "homeAdress": homeAdress,
+      "homeAddr": homeAdress,
       "alarm": alarm,
       "type": type,
+    };
+
+    return jsonEncode(jsonData);
+  }
+
+  // 유저 비밀번호 변경 시 반환
+  String convertChangeUserPwToJson(String newPw) {
+    Map<String, dynamic> jsonData = {
+      "userId": userId,
+      "password": newPw,
+    };
+
+    return jsonEncode(jsonData);
+  }
+
+  // 유저 비밀번호 확인
+  String convertPwdCheckToJson(String pw) {
+    Map<String, dynamic> jsonData = {
+      "id": userId,
+      "password": pw,
     };
     return jsonEncode(jsonData);
   }

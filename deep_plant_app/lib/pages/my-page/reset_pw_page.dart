@@ -40,9 +40,6 @@ class _ResetPWState extends State<ResetPW> {
     if (value!.isEmpty) {
       _isValidPw = false;
       return null;
-    } else if (value != widget.userData.password) {
-      _isValidPw = false;
-      return '비밀번호를 확인하세요.';
     } else {
       _isValidPw = true;
       return null;
@@ -126,12 +123,32 @@ class _ResetPWState extends State<ResetPW> {
   // 비밀번호 변경
   Future<void> changePassword(String newPassword) async {
     try {
+      final response =
+          await ApiServices.checkUserPw(widget.userData, userPassword);
+
+      if (response == null) {
+        if (!mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('비밀번호를 확인하세요'),
+            backgroundColor: Colors.amber,
+          ),
+        );
+        return;
+      }
+
       User? user = FirebaseAuth.instance.currentUser;
       if (user != null) {
+        await FirebaseAuth.instance.currentUser?.reauthenticateWithCredential(
+          EmailAuthProvider.credential(
+            email: widget.userData.userId!,
+            password: userPassword,
+          ),
+        );
         await user.updatePassword(newPassword);
-        widget.userData.password = newPassword;
+        final response =
+            await ApiServices.changeUserPw(widget.userData, newPassword);
 
-        final response = await ApiServices.updateUser(widget.userData);
         if (response == null) {
           throw Error();
         }
@@ -289,8 +306,8 @@ class _ResetPWState extends State<ResetPW> {
               ),
               SaveButton(
                 onPressed: _isAllValid()
-                    ? () {
-                        changePassword(userNewPassword);
+                    ? () async {
+                        await changePassword(userNewPassword);
                       }
                     : null,
                 text: '저장',
