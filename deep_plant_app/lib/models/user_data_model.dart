@@ -46,9 +46,10 @@ class UserData {
     name = jsonData['name'];
     company = jsonData['company'];
     jobTitle = jsonData['jobTitle'];
-    homeAdress = jsonData['homeAdress'];
+    homeAdress = jsonData['homeAddr'];
     alarm = jsonData['alarm'];
     type = jsonData['type'];
+    print(jsonData);
   }
 
   // 유저 회원가입 시 json 변환
@@ -74,20 +75,34 @@ class UserData {
 
   // 유저 정보 업데이트 시 json 변환
   String convertUserUpdateToJson() {
-    DateTime now = DateTime.now();
-    String updatedAt = DateFormat('yyyy-MM-ddTHH:mm:ssZ').format(now);
     Map<String, dynamic> jsonData = {
       "userId": userId,
-      "createdAt": createdAt,
-      "updatedAt": updatedAt,
-      "loginAt": null,
-      "password": password,
       "name": name,
       "company": company,
       "jobTitle": jobTitle,
-      "homeAdress": homeAdress,
+      "homeAddr": homeAdress,
       "alarm": alarm,
       "type": type,
+    };
+
+    return jsonEncode(jsonData);
+  }
+
+  // 유저 비밀번호 변경 시 반환
+  String convertChangeUserPwToJson(String newPw) {
+    Map<String, dynamic> jsonData = {
+      "userId": userId,
+      "password": newPw,
+    };
+
+    return jsonEncode(jsonData);
+  }
+
+  // 유저 비밀번호 확인
+  String convertPwdCheckToJson(String pw) {
+    Map<String, dynamic> jsonData = {
+      "id": userId,
+      "password": pw,
     };
     return jsonEncode(jsonData);
   }

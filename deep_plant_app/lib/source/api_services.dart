@@ -1,7 +1,9 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:deep_plant_app/models/user_data_model.dart';
 import 'package:http/http.dart' as http;
+import 'package:path_provider/path_provider.dart';
 
 class ApiServices {
   static String baseUrl = 'http://3.38.52.82';
@@ -47,6 +49,26 @@ class ApiServices {
     }
   }
 
+  // 육류 사진 저장
+  static Future<dynamic> getImage(String imageUrl) async {
+    try {
+      var response = await http.get(Uri.parse(imageUrl));
+      if (response.statusCode == 200) {
+        final appDir = await getTemporaryDirectory();
+        final filePath = '${appDir.path}/temp_image';
+        final file = File(filePath);
+        await file.writeAsBytes(response.bodyBytes);
+        return filePath;
+      } else {
+        print('이미지 저장 실패: (${response.statusCode})${response.body}');
+        return;
+      }
+    } catch (e) {
+      print('이미지 저장 중 예외 발생: $e');
+      return;
+    }
+  }
+
   // 육류 정보 전송 (POST)
   static Future<dynamic> sendMeatData(String? dest, String jsonData) async {
     String endPoint = 'meat/add';
@@ -76,6 +98,11 @@ class ApiServices {
   static Future<dynamic> searchMeatId(String text) async {
     dynamic jsonData = await _getApi('meat/get?part_id=$text');
     return jsonData;
+  }
+
+  // 딥에이징 데이터 삭제 (GET)
+  static Future<dynamic> deleteDeepAging(String id, int seqno) async {
+    return await _getApi('meat/delete/deep_aging?id=$id&seqno=$seqno');
   }
 
   // 유저가 등록한 관리번호 조회 (GET)
@@ -123,15 +150,15 @@ class ApiServices {
     return jsonData;
   }
 
-  // 유저 로그아웃 (GET)
-  static Future<dynamic> signOut(String userId) async {
-    dynamic jsonData = await _getApi('user/logout?id=$userId');
-    return jsonData;
-  }
-
   // 유저 업데이트 (POST)
   static Future<dynamic> updateUser(UserData user) async {
-    await _postApi('user/update', user.convertUserUpdateToJson());
+    return await _postApi('user/update', user.convertUserUpdateToJson());
+  }
+
+  // 유저 비밀번호 변경 (POST)
+  static Future<dynamic> changeUserPw(UserData user, String password) async {
+    return await _postApi(
+        'user/update', user.convertChangeUserPwToJson(password));
   }
 
   // 유저 중복검사 (GET)
@@ -144,6 +171,12 @@ class ApiServices {
       // 200: !중복
       return false;
     }
+  }
+
+  // 유저 비밀번호 검사 (POST)
+  static Future<dynamic> checkUserPw(UserData user, String password) async {
+    return await _postApi(
+        'user/pwd_check', user.convertPwdCheckToJson(password));
   }
 
   // 종, 부위 조회 (GET)

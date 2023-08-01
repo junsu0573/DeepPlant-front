@@ -1,4 +1,5 @@
 import 'package:deep_plant_app/models/user_data_model.dart';
+import 'package:deep_plant_app/source/api_services.dart';
 import 'package:deep_plant_app/widgets/save_button.dart';
 import 'package:deep_plant_app/widgets/text_insertion_field.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -39,9 +40,6 @@ class _ResetPWState extends State<ResetPW> {
     if (value!.isEmpty) {
       _isValidPw = false;
       return null;
-    } else if (value != widget.userData.password) {
-      _isValidPw = false;
-      return '비밀번호를 확인하세요.';
     } else {
       _isValidPw = true;
       return null;
@@ -123,12 +121,38 @@ class _ResetPWState extends State<ResetPW> {
   }
 
   // 비밀번호 변경
-  void changePassword(String newPassword) async {
+  Future<void> changePassword(String newPassword) async {
     try {
+      final response =
+          await ApiServices.checkUserPw(widget.userData, userPassword);
+
+      if (response == null) {
+        if (!mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('비밀번호를 확인하세요'),
+            backgroundColor: Colors.amber,
+          ),
+        );
+        return;
+      }
+
       User? user = FirebaseAuth.instance.currentUser;
       if (user != null) {
+        await FirebaseAuth.instance.currentUser?.reauthenticateWithCredential(
+          EmailAuthProvider.credential(
+            email: widget.userData.userId!,
+            password: userPassword,
+          ),
+        );
         await user.updatePassword(newPassword);
-        widget.userData.password = newPassword;
+        final response =
+            await ApiServices.changeUserPw(widget.userData, newPassword);
+
+        if (response == null) {
+          throw Error();
+        }
+
         if (!mounted) {
           return;
         }
@@ -137,7 +161,7 @@ class _ResetPWState extends State<ResetPW> {
         print('User does not exist.');
       }
     } catch (e) {
-      print('error');
+      print('error: $e');
     }
   }
 
@@ -192,7 +216,7 @@ class _ResetPWState extends State<ResetPW> {
                         },
                         mainText: '',
                         hintText: '',
-                        width: 0,
+                        width: 600.w,
                         height: 30,
                         isObscure: true,
                         isCenter: true,
@@ -221,7 +245,7 @@ class _ResetPWState extends State<ResetPW> {
                         },
                         mainText: '영문 대/소문자+숫자+특수문자',
                         hintText: '',
-                        width: 0,
+                        width: 600.w,
                         height: 30,
                         isObscure: true,
                         isCenter: false,
@@ -254,7 +278,7 @@ class _ResetPWState extends State<ResetPW> {
                         },
                         mainText: '비밀번호 확인',
                         hintText: '',
-                        width: 0,
+                        width: 600.w,
                         height: 30,
                         isObscure: true,
                         isCenter: false,
@@ -282,8 +306,8 @@ class _ResetPWState extends State<ResetPW> {
               ),
               SaveButton(
                 onPressed: _isAllValid()
-                    ? () {
-                        changePassword(userNewPassword);
+                    ? () async {
+                        await changePassword(userNewPassword);
                       }
                     : null,
                 text: '저장',

@@ -4,6 +4,7 @@ import 'package:deep_plant_app/source/api_services.dart';
 import 'package:deep_plant_app/widgets/common_button.dart';
 import 'package:deep_plant_app/widgets/custom_appbar.dart';
 import 'package:deep_plant_app/widgets/save_button.dart';
+import 'package:deep_plant_app/widgets/show_custom_popup.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -149,6 +150,7 @@ class _IdPwInsertionState extends State<IdPwInsertion> {
     if (isDuplicated) {
       setState(() {
         _isUnique = false;
+        showDuplicateEmailPopup(context);
       });
     } else {
       setState(() {
@@ -275,6 +277,7 @@ class _IdPwInsertionState extends State<IdPwInsertion> {
                         width: 540.w,
                         // 패스워드 입력 필드
                         child: TextFormField(
+                          obscureText: true,
                           decoration: InputDecoration(
                             hintText: '영문 대/소문자+숫자+특수문자',
                           ),
@@ -305,6 +308,7 @@ class _IdPwInsertionState extends State<IdPwInsertion> {
                         width: 540.w,
                         // 패스워드 재입력 필드
                         child: TextFormField(
+                          obscureText: true,
                           decoration: InputDecoration(
                             hintText: '패스워드 확인',
                           ),

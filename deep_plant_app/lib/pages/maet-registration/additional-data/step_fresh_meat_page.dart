@@ -13,7 +13,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class StepFreshMeat extends StatefulWidget {
   final MeatData meatData;
   final UserData userData;
-  const StepFreshMeat({super.key, required this.meatData, required this.userData});
+  const StepFreshMeat(
+      {super.key, required this.meatData, required this.userData});
 
   @override
   State<StepFreshMeat> createState() => _StepFreshMeatState();
@@ -63,6 +64,9 @@ class _StepFreshMeatState extends State<StepFreshMeat> {
                 isBefore: false,
               ),
             ),
+            SizedBox(
+              height: 18.h,
+            ),
             InkWell(
               onTap: widget.meatData.heatedImage != null
                   ? () => Navigator.push(
@@ -77,11 +81,19 @@ class _StepFreshMeatState extends State<StepFreshMeat> {
                   : null,
               child: StepCard(
                 mainText: '가열육 관능평가',
-                subText: widget.meatData.heatedmeat != null ? '육류 관능평가를 진행해 주세요' : '육류 단면 촬영 완료 후 진행해주세요',
+                subText: widget.meatData.heatedmeat != null
+                    ? '육류 관능평가를 진행해 주세요'
+                    : '육류 단면 촬영 완료 후 진행해주세요',
                 step: '2',
-                isCompleted: widget.meatData.heatedmeat != null && widget.meatData.heatedmeat!['flavor'] != null ? true : false,
+                isCompleted: widget.meatData.heatedmeat != null &&
+                        widget.meatData.heatedmeat!['flavor'] != null
+                    ? true
+                    : false,
                 isBefore: widget.meatData.heatedImage == null,
               ),
+            ),
+            SizedBox(
+              height: 18.h,
             ),
             InkWell(
               onTap: () => Navigator.push(
@@ -97,9 +109,15 @@ class _StepFreshMeatState extends State<StepFreshMeat> {
                 mainText: '전자혀 데이터',
                 subText: '전자혀 측정 데이터를 입력해주세요',
                 step: '3',
-                isCompleted: widget.meatData.tongueData != null && !widget.meatData.tongueData!.containsValue(null) ? true : false,
+                isCompleted: widget.meatData.tongueData != null &&
+                        !widget.meatData.tongueData!.containsValue(null)
+                    ? true
+                    : false,
                 isBefore: false,
               ),
+            ),
+            SizedBox(
+              height: 18.h,
             ),
             InkWell(
               onTap: () => Navigator.push(
@@ -115,7 +133,10 @@ class _StepFreshMeatState extends State<StepFreshMeat> {
                 mainText: '실험 데이터',
                 subText: '실험 결과 데이터를 입력해주세요',
                 step: '4',
-                isCompleted: widget.meatData.labData != null && !widget.meatData.labData!.containsValue(null) ? true : false,
+                isCompleted: widget.meatData.labData != null &&
+                        !widget.meatData.labData!.containsValue(null)
+                    ? true
+                    : false,
                 isBefore: false,
               ),
             ),

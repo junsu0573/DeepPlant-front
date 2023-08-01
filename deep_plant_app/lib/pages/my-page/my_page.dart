@@ -1,5 +1,4 @@
 import 'package:deep_plant_app/models/user_data_model.dart';
-import 'package:deep_plant_app/source/api_services.dart';
 import 'package:deep_plant_app/widgets/common_button.dart';
 import 'package:deep_plant_app/widgets/custom_appbar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -23,12 +22,6 @@ class _MyPageState extends State<MyPage> {
     try {
       // 파이어베이스 로그아웃
       await FirebaseAuth.instance.signOut();
-
-      // 로그아웃 API 호출
-      final response = await ApiServices.signOut(widget.userData.userId!);
-      if (response == null) {
-        throw Error();
-      }
 
       // home 화면으로 이동
       if (!mounted) return;
