@@ -36,10 +36,6 @@ class _DataAddHomeState extends State<DataAddHome> {
   // 객체와 위젯의 index를 표현한다.
   int index = 0;
 
-  // 추가 정보의 입력이 온전한지를 판별해준다.
-  bool isFreshEnd = false;
-  List<bool> isDeepEnd = [];
-
   void calTime(DeepAgingData data, int index) {
     // 시간 계산이 진행되며, 데이터 수정시에는 기존 값을 제거한다.
 
@@ -51,25 +47,6 @@ class _DataAddHomeState extends State<DataAddHome> {
     } else {
       lastMinute = totalMinute;
     }
-  }
-
-  void checkFresh() {
-    // 신선육 데이터가 온전히 입력 되었을 경우에 사용되는 기능이다.
-    if (widget.meatData.heatedImage != null && widget.meatData.heatedmeat != null && widget.meatData.tongueData != null && widget.meatData.labData != null) {
-      isFreshEnd = true;
-    } else {
-      isFreshEnd = false;
-    }
-    setState(() {});
-  }
-
-  void checkDeep(dynamic data, int index) {
-    if (data.deepAgedImage != null || data.deepAgedFreshmeat != null || data.heatedmeat != null || data.tongueData != null || data.labData != null) {
-      isDeepEnd[index] = true;
-    } else {
-      isDeepEnd[index] = false;
-    }
-    setState(() {});
   }
 
   String intoYmd(String temp) {
@@ -119,7 +96,6 @@ class _DataAddHomeState extends State<DataAddHome> {
   void initState() {
     super.initState();
     initialize();
-    checkFresh();
   }
 
   void initialize() {
@@ -159,7 +135,6 @@ class _DataAddHomeState extends State<DataAddHome> {
   }
 
   Widget widgetCreate(int widgetIndex, bool? isLast) {
-    isDeepEnd.add(false);
     return Stack(
       children: [
         Container(
@@ -183,7 +158,7 @@ class _DataAddHomeState extends State<DataAddHome> {
                     meatData: widget.meatData,
                   ),
                 ),
-              ).then((_) => checkDeep(widget.meatData, widgetIndex));
+              ).then((_) => null);
             },
             child: Row(
               children: [
@@ -231,16 +206,13 @@ class _DataAddHomeState extends State<DataAddHome> {
                 SizedBox(
                   width: 80.w,
                   child: Text(
-                    (isDeepEnd[widgetIndex] == true)
-                        ? '완료'
-                        : '미완료', // 임시 지정, 후에 수정해야 함!
+                    '미완료',
                     style: TextStyle(color: Colors.black),
                   ),
                 )
               ],
             ),
           ),
-
         ),
         isLast != null && isLast == true
             ? Positioned(
@@ -370,7 +342,11 @@ class _DataAddHomeState extends State<DataAddHome> {
                           userData: widget.userData,
                         ),
                       ),
-                    ).then((_) => checkFresh());
+                    ).then((_) async {
+                      final data = await ApiServices.getMeatData(widget.meatData.id!);
+                      widget.meatData.fetchData(data);
+                      setState(() {});
+                    });
                   },
                   child: Row(
                     children: [
@@ -418,7 +394,7 @@ class _DataAddHomeState extends State<DataAddHome> {
                       SizedBox(
                         width: 82.w,
                         child: Text(
-                          isFreshEnd ? '완료' : '미완료',
+                          widget.meatData.rawmeatDataComplete! ? '완료' : '진행중',
                           style: TextStyle(color: Colors.black),
                         ),
                       )

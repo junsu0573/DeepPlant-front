@@ -3,7 +3,7 @@ import 'package:deep_plant_app/models/user_data_model.dart';
 import 'package:deep_plant_app/pages/maet-registration/basic-data/show_step_page.dart';
 import 'package:deep_plant_app/source/api_services.dart';
 import 'package:deep_plant_app/widgets/data_table_list_card.dart';
-import 'package:deep_plant_app/widgets/show_custom_dialog.dart';
+import 'package:deep_plant_app/widgets/show_custom_popup.dart';
 import 'package:flutter/material.dart';
 
 class GetDataTable extends StatefulWidget {
@@ -121,18 +121,26 @@ class _GetDataTableState extends State<GetDataTable> {
 
         return InkWell(
           onTap: () async {
-            if (dTime.isAfter(threeDaysAgo!) && dTime.isBefore(toDay!)) {
+            if ((dTime.isAfter(threeDaysAgo!) && dTime.isBefore(toDay!)) && dataCells[4] == '대기중') {
               final data = await ApiServices.getMeatData(dataCells[2]);
               widget.meat.fetchData(data);
               if (!mounted) return;
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => ShowStep(userData: widget.user, meatData: widget.meat),
+                  builder: (context) => ShowStep(
+                    userData: widget.user,
+                    meatData: widget.meat,
+                    isEdited: true,
+                  ),
                 ),
               );
+            } else if ((dataCells[4] == '승인')) {
+              showDataManageSucceedPopup(context);
+            } else if ((dataCells[4] == '반려')) {
+              showDataManageFailurePopup(context);
             } else {
-              showDataManageErrorDialog(context);
+              showDataManageLatePopup(context);
             }
           },
           child: DataTableListCard(

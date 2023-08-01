@@ -56,23 +56,6 @@ void showTemporarySaveDialog(
   );
 }
 
-void showDataManageErrorDialog(
-  BuildContext context,
-) {
-  showCustomDialog(
-    context,
-    'assets/images/warning.png',
-    '데이터를 수정할 수 없습니다!',
-    '작성 후 3일이 경과하였습니다!',
-    '',
-    '확인',
-    null,
-    () {
-      Navigator.pop(context);
-    },
-  );
-}
-
 // 다이얼로그 형식입니다.
 void showCustomDialog(
   BuildContext context,

@@ -48,6 +48,10 @@ class MeatData {
   Map<String, dynamic>? processedmeat;
   Map<String, dynamic>? rawmeat;
 
+  // 데이터 입력 완료 체크
+  bool? rawmeatDataComplete;
+  List<bool>? processedmeatDataComplete;
+
   MeatData({
     // 관리 번호 생성 시 저장
     this.id,
@@ -80,6 +84,10 @@ class MeatData {
     // 데이터 fetch 시 저장
     this.processedmeat,
     this.rawmeat,
+
+    // // 데이터 입력 완료시 저장
+    this.rawmeatDataComplete,
+    this.processedmeatDataComplete,
   });
 
   // 변수 초기화
@@ -234,22 +242,14 @@ class MeatData {
   String convertFreshMeatToJson(int idx) {
     Map<String, dynamic> jsonData = {
       "id": id,
-      "createdAt": idx == 0
-          ? (freshmeat?["createdAt"])
-          : deepAgedFreshmeat?["createdAt"],
+      "createdAt": idx == 0 ? (freshmeat?["createdAt"]) : deepAgedFreshmeat?["createdAt"],
       "userId": userId,
-      "period":
-          idx == 0 ? (freshmeat?["period"]) : deepAgedFreshmeat?["period"],
-      "marbling":
-          idx == 0 ? (freshmeat?["marbling"]) : deepAgedFreshmeat?["marbling"],
+      "period": idx == 0 ? (freshmeat?["period"]) : deepAgedFreshmeat?["period"],
+      "marbling": idx == 0 ? (freshmeat?["marbling"]) : deepAgedFreshmeat?["marbling"],
       "color": idx == 0 ? (freshmeat?["color"]) : deepAgedFreshmeat?["color"],
-      "texture":
-          idx == 0 ? (freshmeat?["texture"]) : deepAgedFreshmeat?["texture"],
-      "surfaceMoisture": idx == 0
-          ? (freshmeat?["surfaceMoisture"])
-          : deepAgedFreshmeat?["surfaceMoisture"],
-      "overall":
-          idx == 0 ? (freshmeat?["overall"]) : deepAgedFreshmeat?["overall"],
+      "texture": idx == 0 ? (freshmeat?["texture"]) : deepAgedFreshmeat?["texture"],
+      "surfaceMoisture": idx == 0 ? (freshmeat?["surfaceMoisture"]) : deepAgedFreshmeat?["surfaceMoisture"],
+      "overall": idx == 0 ? (freshmeat?["overall"]) : deepAgedFreshmeat?["overall"],
       "seqno": seqno,
       "deepAging": _getDeepAging(seqno),
     };
@@ -379,11 +379,16 @@ class MeatData {
       deepAging = [];
     }
 
+    rawmeat = jsonData['rawmeat'];
+
     secondaryValue = jsonData['secondaryValue'];
     sexType = jsonData['sexType'];
     speciesValue = jsonData['specieValue'];
     traceNum = jsonData['traceNum'];
     createUser = jsonData['userId'];
+
+    // 데이터 입력 완료 체크
+    rawmeatDataComplete = jsonData['rawmeat_data_complete'];
   }
 
   // 원육 데이터 fetch
