@@ -68,13 +68,13 @@ class _FreshMeatEvaluationState extends State<FreshMeatEvaluation>
   }
 
   void initialize() {
-    if (widget.meatData.deepAgedFreshmeat?['marbling'] != null) {
+    if (widget.meatData.deepAgedFreshmeat?['marbling'] != null && widget.isDeepAged == true) {
       _marbling = widget.meatData.deepAgedFreshmeat?['marbling'];
       _color = widget.meatData.deepAgedFreshmeat?['color'];
       _texture = widget.meatData.deepAgedFreshmeat?['texture'];
       _surface = widget.meatData.deepAgedFreshmeat?['surfaceMoisture'];
       _overall = widget.meatData.deepAgedFreshmeat?['overall'];
-    } else if (widget.meatData.freshmeat?['marbling'] != null) {
+    } else if (widget.meatData.freshmeat?['marbling'] != null && widget.isDeepAged == null) {
       _marbling = widget.meatData.freshmeat?['marbling'];
       _color = widget.meatData.freshmeat?['color'];
       _texture = widget.meatData.freshmeat?['texture'];

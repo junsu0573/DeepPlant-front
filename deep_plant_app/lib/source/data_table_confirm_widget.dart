@@ -88,8 +88,7 @@ class _GetConfirmTableState extends State<GetConfirmTable> {
     // source에 담긴 data 값을 text의 시작과 비교하고, controller를 통해 실시간적으로 정보를 교류하게 된다.
     // contains는 중간 아무 요소나 비교, startwith는 시작부터, endwith는 끝부터 비교하는 기능임을 기억해두자.
 
-    List<String> filteredData =
-        source.where((data) => data.contains(widget.text)).toList();
+    List<String> filteredData = source.where((data) => data.contains(widget.text)).toList();
     return ListView.builder(
       itemCount: filteredData.length,
       itemBuilder: (context, index) {
