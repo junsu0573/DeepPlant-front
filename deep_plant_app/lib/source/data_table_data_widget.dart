@@ -124,6 +124,7 @@ class _GetDataTableState extends State<GetDataTable> {
             if ((dTime.isAfter(threeDaysAgo!) && dTime.isBefore(toDay!)) && dataCells[4] == '대기중') {
               final data = await ApiServices.getMeatData(dataCells[2]);
               widget.meat.fetchData(data);
+              await widget.meat.fetchDataForOrigin();
               if (!mounted) return;
               Navigator.push(
                 context,

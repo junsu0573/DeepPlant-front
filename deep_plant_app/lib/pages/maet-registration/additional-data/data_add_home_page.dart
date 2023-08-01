@@ -38,6 +38,7 @@ class _DataAddHomeState extends State<DataAddHome> {
 
   void calTime(DeepAgingData data, int index) {
     // 시간 계산이 진행되며, 데이터 수정시에는 기존 값을 제거한다.
+    totalMinute += int.parse(data.insertedMinute!);
 
     if (totalMinute >= 60) {
       int q = totalMinute ~/ 60;
@@ -161,7 +162,7 @@ class _DataAddHomeState extends State<DataAddHome> {
               ).then((_) async {
                 final data = await ApiServices.getMeatData(widget.meatData.id!);
                 widget.meatData.fetchData(data);
-                widgets[index] = widgetCreate(index, null);
+                widgets[widgetIndex] = widgetCreate(widgetIndex, null);
               });
             },
             child: Row(
@@ -500,11 +501,13 @@ class _DataAddHomeState extends State<DataAddHome> {
                                       meatData: widget.meatData,
                                     ))).then((_) async {
                           if (data.insertedMinute != null) {
-                            addDeepAgingData();
                             await ApiServices.sendMeatData(
                               'deep_aging_data',
                               widget.meatData.convertDeepAgingToJson(),
                             );
+                            final response = await ApiServices.getMeatData(widget.meatData.id!);
+                            widget.meatData.fetchData(response);
+                            addDeepAgingData();
                             // 객체를 초기화 해준다.
                             data = DeepAgingData();
                           }
