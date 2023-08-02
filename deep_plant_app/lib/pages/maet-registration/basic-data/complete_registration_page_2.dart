@@ -6,6 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crypto/crypto.dart';
 import 'package:deep_plant_app/models/meat_data_model.dart';
 import 'package:deep_plant_app/models/user_data_model.dart';
+import 'package:deep_plant_app/pages/maet-registration/additional-data/data_add_home_page.dart';
 import 'package:deep_plant_app/source/api_services.dart';
 import 'package:deep_plant_app/source/get_date.dart';
 import 'package:deep_plant_app/source/pallete.dart';
@@ -97,9 +98,7 @@ class _CompleteResgistration2State extends State<CompleteResgistration2> {
   Future<void> sendImageToFirebase() async {
     try {
       // fire storage에 육류 이미지 저장
-      final refMeatImage = FirebaseStorage.instance
-          .ref()
-          .child('sensory_evals/$managementNum-0.png');
+      final refMeatImage = FirebaseStorage.instance.ref().child('sensory_evals/$managementNum-0.png');
 
       await refMeatImage.putFile(
         File(widget.meatData.imagePath!),
@@ -128,18 +127,15 @@ class _CompleteResgistration2State extends State<CompleteResgistration2> {
     final bytes = byteData!.buffer.asUint8List();
 
     // fire storage에 저장
-    final storageRef =
-        FirebaseStorage.instance.ref().child('qr_codes/$data.png');
+    final storageRef = FirebaseStorage.instance.ref().child('qr_codes/$data.png');
     await storageRef.putData(bytes);
   }
 
   // 육류 정보를 서버로 전송
   Future<void> sendMeatData() async {
     widget.meatData.createUser = widget.meatData.userId;
-    final response1 = await ApiServices.sendMeatData(
-        null, widget.meatData.convertNewMeatToJson());
-    final response2 = await ApiServices.sendMeatData(
-        'sensory_eval', widget.meatData.convertFreshMeatToJson(0));
+    final response1 = await ApiServices.sendMeatData(null, widget.meatData.convertNewMeatToJson());
+    final response2 = await ApiServices.sendMeatData('sensory_eval', widget.meatData.convertFreshMeatToJson(0));
     final response3 = await ApiServices.confirmMeatData(widget.meatData.id!);
     if (response1 == null || response2 == null || response3 == null) {
       if (!mounted) return;
@@ -264,7 +260,19 @@ class _CompleteResgistration2State extends State<CompleteResgistration2> {
                           width: 46.w,
                         ),
                         SaveButton(
-                          onPressed: () => context.go('/option/data-add-home'),
+                          onPressed: () async {
+                            final data = await ApiServices.getMeatData(managementNum);
+                            widget.meatData.fetchData(data);
+                            widget.meatData.fetchDataForOrigin();
+
+                            if (!mounted) return;
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => DataAddHome(meatData: widget.meatData, userData: widget.userData),
+                              ),
+                            );
+                          },
                           text: '추가정보 입력',
                           width: 305.w,
                           heigh: 104.h,

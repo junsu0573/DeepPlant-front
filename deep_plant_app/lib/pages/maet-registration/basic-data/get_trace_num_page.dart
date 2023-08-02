@@ -107,6 +107,9 @@ class _GetTraceNumState extends State<GetTraceNum> {
   }
 
   void start() async {
+    setState(() {
+      FocusScope.of(context).unfocus();
+    });
     tableData.clear();
     if (widget.meatData.traceNum == null) {
       _tryValidation();
@@ -115,7 +118,6 @@ class _GetTraceNumState extends State<GetTraceNum> {
       await fetchData(traceNum!);
     }
     setState(() {
-      FocusScope.of(context).unfocus();
       textEditingController.clear();
     });
   }

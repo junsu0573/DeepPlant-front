@@ -109,13 +109,11 @@ class _InsertionMeatImageState extends State<InsertionMeatImage> {
     if (widget.imageIdx == 0) {
       // 원육 사진
       widget.meatData.imagePath = imagePath;
-      widget.meatData.createdAt =
-          '$year${month.padLeft(2, '0')}${day.padLeft(2, '0')}';
+      widget.meatData.createdAt = '$year${month.padLeft(2, '0')}${day.padLeft(2, '0')}';
     } else if (widget.imageIdx == 2) {
       // 처리육 사진
       widget.meatData.deepAgedImage = imagePath;
-      dynamic response = await FirebaseServices.sendImageToFirebase(imagePath!,
-          'sensory_evals/${widget.meatData.id}-${widget.meatData.seqno}');
+      dynamic response = await FirebaseServices.sendImageToFirebase(imagePath!, 'sensory_evals/${widget.meatData.id}-${widget.meatData.seqno}');
       if (response == null) {
         if (!mounted) return;
         Navigator.push(
@@ -214,9 +212,7 @@ class _InsertionMeatImageState extends State<InsertionMeatImage> {
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15.sp),
-                      color: isImageAssigned
-                          ? Palette.deepOptionColor
-                          : Palette.lightOptionColor,
+                      color: isImageAssigned ? Palette.deepOptionColor : Palette.lightOptionColor,
                     ),
                     width: 158.w,
                     height: 73.h,
@@ -237,9 +233,7 @@ class _InsertionMeatImageState extends State<InsertionMeatImage> {
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15.sp),
-                      color: isImageAssigned
-                          ? Palette.deepOptionColor
-                          : Palette.lightOptionColor,
+                      color: isImageAssigned ? Palette.deepOptionColor : Palette.lightOptionColor,
                     ),
                     width: 158.w,
                     height: 73.h,
@@ -260,9 +254,7 @@ class _InsertionMeatImageState extends State<InsertionMeatImage> {
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15.sp),
-                      color: isImageAssigned
-                          ? Palette.deepOptionColor
-                          : Palette.lightOptionColor,
+                      color: isImageAssigned ? Palette.deepOptionColor : Palette.lightOptionColor,
                     ),
                     width: 238.w,
                     height: 73.h,
@@ -374,7 +366,6 @@ class _InsertionMeatImageState extends State<InsertionMeatImage> {
                     ),
                 ],
               ),
-              isLoading ? const CircularProgressIndicator() : Container(),
               Spacer(),
               Container(
                 margin: EdgeInsets.only(bottom: 28.h),
