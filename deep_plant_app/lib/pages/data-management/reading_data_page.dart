@@ -37,7 +37,7 @@ class ReadingDataState extends State<ReadingData> {
   List<bool> selections2 = [true, false];
   List<bool> tempSelections2 = [true, false];
   String option1 = '3일';
-  String tempOption1 = '1개월';
+  String tempOption1 = '3일';
   String option2 = '최신순';
   String tempOption2 = '최신순';
   List<Widget> options1 = [

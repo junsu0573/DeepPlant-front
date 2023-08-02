@@ -42,6 +42,7 @@ class _GetTraceNumState extends State<GetTraceNum> {
   bool isNull = false;
   bool isFinal = false;
   bool isValue = false;
+  bool isEdit = false;
   String? traceNum;
   String? birthYmd;
   String? species;
@@ -72,6 +73,7 @@ class _GetTraceNumState extends State<GetTraceNum> {
     _eventSubscription = _eventChannel!.receiveBroadcastStream().listen((dynamic event) {
       setState(() {
         _barcodeData = parsingData(event.toString());
+        traceNum = _barcodeData;
         textEditingController.text = _barcodeData;
       });
     });
@@ -100,6 +102,7 @@ class _GetTraceNumState extends State<GetTraceNum> {
       traceNum = widget.meatData.traceNum;
       isValue = true;
       start();
+      isEdit = false;
     }
   }
 
@@ -127,6 +130,7 @@ class _GetTraceNumState extends State<GetTraceNum> {
     farmAddr = null;
     butcheryYmd = null;
     gradeNum = null;
+    isEdit = true;
   }
 
   void _tryValidation() {
@@ -248,6 +252,7 @@ class _GetTraceNumState extends State<GetTraceNum> {
       MaterialPageRoute(
         builder: (context) => InsertionMeatInfo(
           meatData: widget.meatData,
+          isEdit: isEdit,
         ),
       ),
     );

@@ -64,6 +64,7 @@ class _GetDataTableState extends State<GetDataTable> {
 
   List<String> setDay(List<String> source, String option1, DateTime? start, DateTime? end, bool selectedEtc) {
     if (option1 == '3일') {
+      print('3일');
       source = source.where((data) {
         List<String> parts = data.split(',');
         String dateTimeString = parts[0];
@@ -71,6 +72,7 @@ class _GetDataTableState extends State<GetDataTable> {
         return dateTime.isAfter(threeDaysAgo!) && dateTime.isBefore(toDay!);
       }).toList();
     } else if (option1 == '1개월') {
+      print('1개월');
       source = source.where((data) {
         List<String> parts = data.split(',');
         String dateTimeString = parts[0];
@@ -78,6 +80,7 @@ class _GetDataTableState extends State<GetDataTable> {
         return dateTime.isAfter(monthsAgo!) && dateTime.isBefore(toDay!);
       }).toList();
     } else if (option1 == '3개월') {
+      print('3개월');
       source = source.where((data) {
         List<String> parts = data.split(',');
         String dateTimeString = parts[0];
@@ -86,6 +89,7 @@ class _GetDataTableState extends State<GetDataTable> {
       }).toList();
     } else {
       if (selectedEtc == true) {
+        print('기타');
         source = source.where((data) {
           List<String> parts = data.split(',');
           String dateTimeString = parts[0];
@@ -102,9 +106,12 @@ class _GetDataTableState extends State<GetDataTable> {
     setTime();
     widget.data();
     List<String> source = widget.userData;
+    print(source);
 
     sortUserData(source, widget.sortDscending);
     source = setDay(source, widget.option1, widget.start, widget.end, widget.selectedEtc);
+
+    print(source);
 
     // 이 과정은 기존 source에 담긴 데이터를 textfield를 통해 입력받는 'text' 변수와 비교하게 된다.
     // source에 담긴 data 값을 text의 시작과 비교하고, controller를 통해 실시간적으로 정보를 교류하게 된다.

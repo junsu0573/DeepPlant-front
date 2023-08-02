@@ -9,10 +9,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class InsertionMeatInfo extends StatefulWidget {
   final MeatData meatData;
-  const InsertionMeatInfo({
-    super.key,
-    required this.meatData,
-  });
+  final bool isEdit;
+  const InsertionMeatInfo({super.key, required this.meatData, required this.isEdit});
 
   @override
   State<InsertionMeatInfo> createState() => _InsertionMeatInfoState();
@@ -106,7 +104,7 @@ class _InsertionMeatInfoState extends State<InsertionMeatInfo> {
     }
 
     largeDiv = lDiv;
-    if (widget.meatData.secondaryValue != null) {
+    if (widget.meatData.secondaryValue != null && widget.isEdit == false) {
       selectedLarge = widget.meatData.primalValue;
       setLarge(selectedLarge!, source);
       selectedLittle = widget.meatData.secondaryValue;

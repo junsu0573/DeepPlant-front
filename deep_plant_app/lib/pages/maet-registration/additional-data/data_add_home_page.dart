@@ -36,9 +36,13 @@ class _DataAddHomeState extends State<DataAddHome> {
   // 객체와 위젯의 index를 표현한다.
   int index = 0;
 
-  void calTime(DeepAgingData data, int index) {
+  void calTime(DeepAgingData data, int index, bool edit) {
     // 시간 계산이 진행되며, 데이터 수정시에는 기존 값을 제거한다.
-    totalMinute += int.parse(data.insertedMinute!);
+    if (edit == false) {
+      totalMinute += int.parse(data.insertedMinute!);
+    } else {
+      totalMinute -= int.parse(data.insertedMinute!);
+    }
 
     if (totalMinute >= 60) {
       int q = totalMinute ~/ 60;
@@ -46,6 +50,7 @@ class _DataAddHomeState extends State<DataAddHome> {
       lastHour = q;
       lastMinute = r;
     } else {
+      lastHour = 0;
       lastMinute = totalMinute;
     }
   }
@@ -72,7 +77,7 @@ class _DataAddHomeState extends State<DataAddHome> {
 
         widgets.insert(index, widgetCreate(index, true));
         // 시간 계산
-        calTime(data, index++);
+        calTime(data, index++, false);
       }
     });
   }
@@ -84,6 +89,7 @@ class _DataAddHomeState extends State<DataAddHome> {
       print('딥에이징 데이터 삭제 실패');
     } else {
       setState(() {
+        calTime(objects.last, index, true);
         objects.removeLast();
         widgets.removeLast();
         widget.meatData.deepAging!.removeLast();
@@ -123,7 +129,7 @@ class _DataAddHomeState extends State<DataAddHome> {
           objects[index].selectedDay = day;
           objects[index].insertedMinute = '$minutes';
         }
-        calTime(objects[index], index);
+        calTime(objects[index], index, false);
         if (index == widget.meatData.deepAging!.length - 1) {
           temp.add(widgetCreate(index, true));
         } else {
@@ -510,6 +516,7 @@ class _DataAddHomeState extends State<DataAddHome> {
                             addDeepAgingData();
                             // 객체를 초기화 해준다.
                             data = DeepAgingData();
+                            setState(() {});
                           }
                         });
                       },
