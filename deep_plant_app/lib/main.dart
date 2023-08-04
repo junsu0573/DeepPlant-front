@@ -26,8 +26,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:deep_plant_app/models/deep_aging_data_model.dart';
-import 'dart:io';
-import 'package:path_provider/path_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -217,22 +215,6 @@ class DeepPlatinApp extends StatelessWidget {
   }
 }
 
-void deleteFile() async {
-  try {
-    final directory = await getApplicationDocumentsDirectory();
-    final file = File('${directory.path}/${newUser.userId}-data-list.json');
-
-    if (await file.exists()) {
-      await file.delete();
-      print('File deleted successfully');
-    } else {
-      print('File does not exist');
-    }
-  } catch (e) {
-    print('Error while deleting file: $e');
-  }
-}
-
 class AppManager extends StatefulWidget {
   final Widget child;
 
@@ -245,15 +227,39 @@ class AppManager extends StatefulWidget {
 class _AppManagerState extends State<AppManager> with WidgetsBindingObserver {
   @override
   void initState() {
-    super.initState();
     WidgetsBinding.instance.addObserver(this);
+    super.initState();
   }
 
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
-    deleteFile();
     super.dispose();
+  }
+
+// 앱 상태 변경시 호출
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    switch (state) {
+      case AppLifecycleState.resumed:
+        // 최초 앱 실행때는 발생하지 않음.
+        print("resumed : 앱이 표시되고 사용자 입력에 응답합니다.");
+        break;
+      case AppLifecycleState.inactive:
+        // inactive가 발생되고 얼마후 pasued가 발생 -> 앱이 'home'키를 눌러 백그라운드로 내려갈 때.
+        print("inactive : 앱이 비활성화 상태이고 사용자의 입력을 받지 않습니다.");
+        break;
+      case AppLifecycleState.paused:
+        // 이 상황에서 다시 앱을 호출하면 resume로 전환.
+        print("paused : 앱이 현재 사용자에게 보이지 않고, 사용자의 입력을 받지 않으며, 백그라운드에서 동작 중입니다.");
+        break;
+      case AppLifecycleState.detached:
+        print("detached : 앱이 host View에서 분리됩니다. 여전히 flutter 엔진에서 호스팅 됩니다. 곧 앱이 종료됩니다.");
+        break;
+      default:
+        break;
+    }
   }
 
   @override

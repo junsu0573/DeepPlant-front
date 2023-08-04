@@ -132,6 +132,8 @@ class _ShowStepState extends State<ShowStep> {
             ),
             InkWell(
               onTap: () {
+                print(widget.meatData.imagePath);
+                print(widget.meatData.createdAt);
                 Navigator.push(
                   context,
                   MaterialPageRoute(

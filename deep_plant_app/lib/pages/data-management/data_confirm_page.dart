@@ -139,6 +139,8 @@ class DataConfirmState extends State<DataConfirm> {
   Future<List<String>> initialize(int count, String start, String end) async {
     List<String> temp;
     final data = await ApiServices.getCreatedAtData(count, start, end);
+    print(start);
+    print(end);
     temp = extractedData(data['meat_dict']);
     return temp;
   }
@@ -747,7 +749,7 @@ class DataConfirmState extends State<DataConfirm> {
             DataTableGuide(),
             Expanded(
               child: FutureBuilder<List<String>>(
-                  future: initialize(5, start!, end!),
+                  future: initialize(20, start!, end!),
                   builder: (context, snapshot) {
                     if (snapshot.hasData == false) {
                       return Center(child: CircularProgressIndicator());

@@ -150,6 +150,7 @@ class MeatData {
 
       // 육류 이미지 경로
       imagePath = data['imagePath'];
+      createdAt = data['createdAt'];
 
       // 신선육 관능평가
       freshmeat = data['freshmeat'];
@@ -180,6 +181,7 @@ class MeatData {
 
       // 육류 이미지 경로
       'imagePath': imagePath,
+      'createdAt': createdAt,
 
       // 신선육 관능평가
       'freshmeat': freshmeat,
@@ -208,6 +210,7 @@ class MeatData {
 
       // 육류 이미지 경로
       'imagePath': null,
+      'createdAt': null,
 
       // 신선육 관능평가
       'freshmeat': null,
@@ -242,24 +245,16 @@ class MeatData {
   String convertFreshMeatToJson(int idx) {
     Map<String, dynamic> jsonData = {
       "id": id,
-      "createdAt": idx == 0
-          ? (freshmeat?["createdAt"])
-          : deepAgedFreshmeat?["createdAt"],
+      "createdAt": idx == 0 ? (freshmeat?["createdAt"]) : deepAgedFreshmeat?["createdAt"],
       "userId": userId,
-      "period":
-          idx == 0 ? (freshmeat?["period"]) : deepAgedFreshmeat?["period"],
-      "marbling":
-          idx == 0 ? (freshmeat?["marbling"]) : deepAgedFreshmeat?["marbling"],
+      "period": idx == 0 ? (freshmeat?["period"]) : deepAgedFreshmeat?["period"],
+      "marbling": idx == 0 ? (freshmeat?["marbling"]) : deepAgedFreshmeat?["marbling"],
       "color": idx == 0 ? (freshmeat?["color"]) : deepAgedFreshmeat?["color"],
-      "texture":
-          idx == 0 ? (freshmeat?["texture"]) : deepAgedFreshmeat?["texture"],
-      "surfaceMoisture": idx == 0
-          ? (freshmeat?["surfaceMoisture"])
-          : deepAgedFreshmeat?["surfaceMoisture"],
-      "overall":
-          idx == 0 ? (freshmeat?["overall"]) : deepAgedFreshmeat?["overall"],
+      "texture": idx == 0 ? (freshmeat?["texture"]) : deepAgedFreshmeat?["texture"],
+      "surfaceMoisture": idx == 0 ? (freshmeat?["surfaceMoisture"]) : deepAgedFreshmeat?["surfaceMoisture"],
+      "overall": idx == 0 ? (freshmeat?["overall"]) : deepAgedFreshmeat?["overall"],
       "seqno": seqno,
-      "deepAging": _getDeepAging(seqno),
+      "deepAging": getDeepAging(seqno),
     };
     print(jsonData);
 
@@ -274,14 +269,14 @@ class MeatData {
       "userId": userId,
       "period": 0,
       "seqno": seqno,
-      "deepAging": _getDeepAging(seqno),
+      "deepAging": getDeepAging(seqno),
     };
     print(jsonData);
     return jsonEncode(jsonData);
   }
 
   // 딥에이징 데이터
-  Map? _getDeepAging(int? idx) {
+  Map? getDeepAging(int? idx) {
     if (idx == null || idx == 0) {
       return null;
     }
@@ -396,8 +391,7 @@ class MeatData {
     // 데이터 입력 완료 체크
     rawmeatDataComplete = jsonData['rawmeat_data_complete'];
     if (jsonData["processedmeat_data_complete"] is! bool) {
-      processedmeatDataComplete =
-          jsonData["processedmeat_data_complete"].values.cast<bool>().toList();
+      processedmeatDataComplete = jsonData["processedmeat_data_complete"].values.cast<bool>().toList();
     }
   }
 
@@ -439,6 +433,9 @@ class MeatData {
           'MFI': temp['MFI'],
           'Collagen': temp['Collagen']
         };
+      } else {
+        tongueData = null;
+        labData = null;
       }
       // 가열육 데이터
       heatedmeat = data['heatedmeat_sensory_eval'];
