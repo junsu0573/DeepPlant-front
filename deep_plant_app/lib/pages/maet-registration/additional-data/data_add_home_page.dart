@@ -93,6 +93,7 @@ class _DataAddHomeState extends State<DataAddHome> {
         objects.removeLast();
         widgets.removeLast();
         widget.meatData.deepAging!.removeLast();
+        index--;
       });
     }
   }
