@@ -38,4 +38,19 @@ class UserModel with ChangeNotifier {
       alarm: jsonData['alarm'],
     );
   }
+
+  // Data reset
+  factory UserModel.reset() {
+    return UserModel(
+      userId: null,
+      password: null,
+      name: null,
+      homeAdress: null,
+      company: null,
+      jobTitle: null,
+      type: null,
+      createdAt: null,
+      alarm: null,
+    );
+  }
 }

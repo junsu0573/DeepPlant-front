@@ -107,7 +107,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         onPress: () async {
                           await context
                               .read<SignInViewModel>()
-                              .clickedButton(context);
+                              .clickedSignInButton(context);
                         },
                         width: 372.w,
                         height: 85.h,
@@ -158,7 +158,9 @@ class _SignInScreenState extends State<SignInScreen> {
                       ),
                       // 회원가입 텍스트버튼
                       TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          // 페이지 이동
+                        },
                         child: Text(
                           '회원가입',
                           style: TextStyle(

@@ -125,4 +125,44 @@ class MeatModel with ChangeNotifier {
       processedmeatDataComplete: jsonData['processedmeatDataComplete'],
     );
   }
+
+  // Data reset
+  factory MeatModel.reset() {
+    return MeatModel(
+      id: null,
+      createUser: null,
+      userId: null,
+      createdAt: null,
+      traceNum: null,
+      farmAddr: null,
+      farmerNm: null,
+      butcheryYmd: null,
+      birthYmd: null,
+      sexType: null,
+      gradeNum: null,
+      speciesValue: null,
+      primalValue: null,
+      secondaryValue: null,
+      imagePath: null,
+      heatedImage: null,
+      deepAgedImage: null,
+      seqno: null,
+      freshmeat: null,
+      deepAgedFreshmeat: null,
+
+      // 연구 데이터 추가 입력 완료 시 저장
+      deepAging: null,
+      heatedmeat: null,
+      tongueData: null,
+      labData: null,
+
+      // 데이터 fetch 시 저장
+      processedmeat: null,
+      rawmeat: null,
+
+      // // 데이터 입력 완료시 저장
+      rawmeatDataComplete: null,
+      processedmeatDataComplete: null,
+    );
+  }
 }

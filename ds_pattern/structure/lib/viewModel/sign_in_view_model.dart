@@ -16,17 +16,11 @@ class SignInViewModel with ChangeNotifier {
 
   final formKey = GlobalKey<FormState>();
 
-// firbase authentic
+  // firbase authentic
   final _authentication = FirebaseAuth.instance;
 
-//   // @override
-//   // void initState() {
-//   //   super.initState();
-//   //   widget.userData.resetData();
-//   // }
-
   // 로그인 버튼 클릭 시
-  Future<void> clickedButton(BuildContext context) async {
+  Future<void> clickedSignInButton(BuildContext context) async {
     _tryValidation();
     await _signIn(context);
   }
