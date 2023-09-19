@@ -1,0 +1,82 @@
+{
+  "project_info": {
+    "project_number": "214163390785",
+    "project_id": "deepplant-e0416",
+    "storage_bucket": "deepplant-e0416.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:214163390785:android:86838087df6d6a8b66e1c0",
+        "android_client_info": {
+          "package_name": "com.example.deep_plant_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "214163390785-c02iq4r9n6b4djqp1pa2g7vdekjue1ku.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCxgTWcwRrgX8LUe3C7iMfurKcWdPwjdb0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "214163390785-c02iq4r9n6b4djqp1pa2g7vdekjue1ku.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "214163390785-kuh80ek953o9jspl39p2h4glihqhbotm.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.deepPlantApp.RunnerTests"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:214163390785:android:8ee400e8e6eb2fab66e1c0",
+        "android_client_info": {
+          "package_name": "com.example.structure"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "214163390785-c02iq4r9n6b4djqp1pa2g7vdekjue1ku.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCxgTWcwRrgX8LUe3C7iMfurKcWdPwjdb0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "214163390785-c02iq4r9n6b4djqp1pa2g7vdekjue1ku.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "214163390785-kuh80ek953o9jspl39p2h4glihqhbotm.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.deepPlantApp.RunnerTests"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
