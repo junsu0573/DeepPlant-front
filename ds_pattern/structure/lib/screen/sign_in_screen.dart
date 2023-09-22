@@ -174,7 +174,7 @@ class _SignInScreenState extends State<SignInScreen> {
             ),
             Center(
               child: // 데이터를 처리하는 동안 로딩 위젯 보여주기
-                  context.watch<SignInViewModel>().isLoading
+                  context.read<SignInViewModel>().isLoading
                       ? const CircularProgressIndicator()
                       : Container(),
             ),
