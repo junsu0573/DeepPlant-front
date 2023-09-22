@@ -24,6 +24,7 @@ void main() async {
 final _router = GoRouter(
   initialLocation: '/complete-sign-up',
   routes: [
+    // 로그인
     GoRoute(
       path: '/sign-in',
       builder: (context, state) => ChangeNotifierProvider(
@@ -31,6 +32,7 @@ final _router = GoRouter(
         child: const SignInScreen(),
       ),
     ),
+    // 회원가입
     GoRoute(
       path: '/sign-up',
       builder: (context, state) => ChangeNotifierProvider(
@@ -38,6 +40,7 @@ final _router = GoRouter(
         child: const InsertionUserInfoScreen(),
       ),
     ),
+    // 회원가입 완료
     GoRoute(
       path: '/complete-sign-up',
       builder: (context, state) => const CompleteSignUpScreen(),
