@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:structure/config/pallete.dart';
 
 class RoundButton extends StatelessWidget {
   final Widget text;
@@ -27,7 +28,7 @@ class RoundButton extends StatelessWidget {
         style: ElevatedButton.styleFrom(
           elevation: 0,
           foregroundColor: fgColor,
-          backgroundColor: bgColor ?? Theme.of(context).primaryColor,
+          backgroundColor: bgColor ?? Pallete.mainButtonColor,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(30),
             side: fgColor != null

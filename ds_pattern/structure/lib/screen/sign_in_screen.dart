@@ -3,15 +3,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:structure/components/main_text_field.dart';
 import 'package:structure/components/round_button.dart';
-import 'package:structure/model/user_model.dart';
 import 'package:structure/config/pallete.dart';
 import 'package:structure/viewModel/sign_in_view_model.dart';
 
 class SignInScreen extends StatefulWidget {
-  final UserModel userMdoel;
-
   const SignInScreen({
-    required this.userMdoel,
     super.key,
   });
 
