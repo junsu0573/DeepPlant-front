@@ -10,8 +10,7 @@ class InsertionUserInfoScreen extends StatefulWidget {
   const InsertionUserInfoScreen({super.key});
 
   @override
-  State<InsertionUserInfoScreen> createState() =>
-      _InsertionUserInfoScreenState();
+  State<InsertionUserInfoScreen> createState() => _InsertionUserInfoScreenState();
 }
 
 class _InsertionUserInfoScreenState extends State<InsertionUserInfoScreen> {
@@ -47,14 +46,10 @@ class _InsertionUserInfoScreenState extends State<InsertionUserInfoScreen> {
                             hintText: '이름',
                           ),
                           onSaved: (value) {
-                            context
-                                .read<InsertionUserInfoViewModel>()
-                                .userName = value!;
+                            context.read<InsertionUserInfoViewModel>().userName = value!;
                           },
                           onChanged: (value) {
-                            context
-                                .read<InsertionUserInfoViewModel>()
-                                .userName = value;
+                            context.read<InsertionUserInfoViewModel>().userName = value;
                           },
                         ),
                       ),
@@ -76,40 +71,26 @@ class _InsertionUserInfoScreenState extends State<InsertionUserInfoScreen> {
                                 hintText: '이메일',
                               ),
                               onSaved: (value) {
-                                context
-                                    .read<InsertionUserInfoViewModel>()
-                                    .userEmail = value!;
+                                context.read<InsertionUserInfoViewModel>().userEmail = value!;
                               },
-                              onChanged: (value) => context
-                                  .read<InsertionUserInfoViewModel>()
-                                  .insertedEmail(value),
-                              validator: (value) => context
-                                  .read<InsertionUserInfoViewModel>()
-                                  .idValidate(value),
+                              onChanged: (value) => context.read<InsertionUserInfoViewModel>().insertedEmail(value),
+                              validator: (value) => context.read<InsertionUserInfoViewModel>().idValidate(value),
                             ),
                           ),
                           const Spacer(),
 
                           // 중복확인 버튼
                           RoundButton(
-                              text: context
-                                      .read<InsertionUserInfoViewModel>()
-                                      .isUnique
+                              text: context.read<InsertionUserInfoViewModel>().isUnique
                                   ? const Icon(Icons.check)
                                   : Text(
                                       '중복확인',
                                       style: TextStyle(fontSize: 27.sp),
                                     ),
-                              onPress: context
-                                      .read<InsertionUserInfoViewModel>()
-                                      .isUnique
+                              onPress: context.read<InsertionUserInfoViewModel>().isUnique
                                   ? null
-                                  : () => context
-                                          .read<InsertionUserInfoViewModel>()
-                                          .isValidId
-                                      ? context
-                                          .read<InsertionUserInfoViewModel>()
-                                          .dupliCheck(context)
+                                  : () => context.read<InsertionUserInfoViewModel>().isValidId
+                                      ? context.read<InsertionUserInfoViewModel>().dupliCheck(context)
                                       : null,
                               width: 169.w,
                               height: 75.h),
@@ -119,11 +100,7 @@ class _InsertionUserInfoScreenState extends State<InsertionUserInfoScreen> {
                         '잘못된 이메일 형식입니다.',
                         style: TextStyle(
                           fontSize: 20.sp,
-                          color: context
-                                  .read<InsertionUserInfoViewModel>()
-                                  .isRedTextId
-                              ? Colors.red
-                              : Colors.white,
+                          color: context.read<InsertionUserInfoViewModel>().isRedTextId ? Colors.red : Colors.white,
                         ),
                       ),
                       SizedBox(
@@ -142,27 +119,17 @@ class _InsertionUserInfoScreenState extends State<InsertionUserInfoScreen> {
                             hintText: '영문 대/소문자+숫자+특수문자',
                           ),
                           onSaved: (value) {
-                            context
-                                .read<InsertionUserInfoViewModel>()
-                                .userPassword = value!;
+                            context.read<InsertionUserInfoViewModel>().userPassword = value!;
                           },
-                          onChanged: (value) => context
-                              .read<InsertionUserInfoViewModel>()
-                              .insertedPw(value),
-                          validator: (value) => context
-                              .read<InsertionUserInfoViewModel>()
-                              .pwValidate(value),
+                          onChanged: (value) => context.read<InsertionUserInfoViewModel>().insertedPw(value),
+                          validator: (value) => context.read<InsertionUserInfoViewModel>().pwValidate(value),
                         ),
                       ),
                       Text(
                         '영문,숫자,특수문자를 모두 포함해 10자 이상으로 구성해주세요.',
                         style: TextStyle(
                             fontSize: 20.sp,
-                            color: context
-                                    .read<InsertionUserInfoViewModel>()
-                                    .isRedTextPw
-                                ? Colors.red
-                                : const Color.fromRGBO(183, 183, 183, 1)),
+                            color: context.read<InsertionUserInfoViewModel>().isRedTextPw ? Colors.red : const Color.fromRGBO(183, 183, 183, 1)),
                       ),
                       SizedBox(
                         height: 30.h,
@@ -176,27 +143,17 @@ class _InsertionUserInfoScreenState extends State<InsertionUserInfoScreen> {
                             hintText: '패스워드 확인',
                           ),
                           onSaved: (value) {
-                            context
-                                .read<InsertionUserInfoViewModel>()
-                                .userCPassword = value!;
+                            context.read<InsertionUserInfoViewModel>().userCPassword = value!;
                           },
-                          onChanged: (value) => context
-                              .read<InsertionUserInfoViewModel>()
-                              .insertedCPw(value),
-                          validator: (value) => context
-                              .read<InsertionUserInfoViewModel>()
-                              .cPwValidate(value),
+                          onChanged: (value) => context.read<InsertionUserInfoViewModel>().insertedCPw(value),
+                          validator: (value) => context.read<InsertionUserInfoViewModel>().cPwValidate(value),
                         ),
                       ),
                       Text(
                         '비밀번호가 일치하지 않습니다.',
                         style: TextStyle(
                           fontSize: 20.sp,
-                          color: context
-                                  .read<InsertionUserInfoViewModel>()
-                                  .isRedTextCPw
-                              ? Colors.red
-                              : Colors.white,
+                          color: context.read<InsertionUserInfoViewModel>().isRedTextCPw ? Colors.red : Colors.white,
                         ),
                       ),
                       SizedBox(
@@ -209,12 +166,9 @@ class _InsertionUserInfoScreenState extends State<InsertionUserInfoScreen> {
                   height: 300.h,
                 ),
                 MainButton(
-                  onPressed:
-                      context.read<InsertionUserInfoViewModel>().isAllChecked()
-                          ? () => context
-                              .read<InsertionUserInfoViewModel>()
-                              .clickedNextButton(context)
-                          : null,
+                  onPressed: context.read<InsertionUserInfoViewModel>().isAllChecked()
+                      ? () => context.read<InsertionUserInfoViewModel>().clickedNextButton(context)
+                      : null,
                   text: '다음',
                   width: 658.w,
                   heigh: 104.h,

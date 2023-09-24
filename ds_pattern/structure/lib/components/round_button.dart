@@ -31,9 +31,7 @@ class RoundButton extends StatelessWidget {
           backgroundColor: bgColor ?? Pallete.mainButtonColor,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(30),
-            side: fgColor != null
-                ? const BorderSide(color: Colors.black)
-                : BorderSide.none,
+            side: fgColor != null ? const BorderSide(color: Colors.black) : BorderSide.none,
           ),
         ),
         child: text,
