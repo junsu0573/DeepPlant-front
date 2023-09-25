@@ -76,7 +76,7 @@ class _CertificationBottomScreenState extends State<CertificationBottomScreen> {
                         '보기',
                         style: TextStyle(
                           fontSize: 30.sp,
-                          color: Pallete.greyTextColor,
+                          color: Palette.greyTextColor,
                           decoration: TextDecoration.underline,
                         ),
                       ),
@@ -110,7 +110,7 @@ class _CertificationBottomScreenState extends State<CertificationBottomScreen> {
                         '보기',
                         style: TextStyle(
                           fontSize: 30.sp,
-                          color: Pallete.greyTextColor,
+                          color: Palette.greyTextColor,
                           decoration: TextDecoration.underline,
                         ),
                       ),

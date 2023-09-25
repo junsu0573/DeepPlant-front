@@ -34,9 +34,9 @@ class MainButton extends StatelessWidget {
       child: ElevatedButton(
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
-          disabledBackgroundColor: Pallete.disabledButtonColor,
+          disabledBackgroundColor: Palette.disabledButtonColor,
           backgroundColor:
-              isWhite ? Colors.white : color ?? Pallete.mainButtonColor,
+              isWhite ? Colors.white : color ?? Palette.mainButtonColor,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(19.sp),
           ),

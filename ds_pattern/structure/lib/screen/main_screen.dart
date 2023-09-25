@@ -79,7 +79,7 @@ class MainScreen extends StatelessWidget {
                           width: 494.w,
                           height: 240.h,
                           decoration: BoxDecoration(
-                            color: Pallete.subButtonColor,
+                            color: Palette.subButtonColor,
                             borderRadius: BorderRadius.circular(20.sp),
                           ),
                           child: Row(
@@ -135,7 +135,7 @@ class MainScreen extends StatelessWidget {
                           width: 494.w,
                           height: 240.h,
                           decoration: BoxDecoration(
-                            color: Pallete.mainButtonColor,
+                            color: Palette.mainButtonColor,
                             borderRadius: BorderRadius.circular(20.sp),
                           ),
                           child: Row(

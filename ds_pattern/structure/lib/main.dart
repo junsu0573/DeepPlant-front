@@ -6,10 +6,14 @@ import 'package:provider/provider.dart';
 import 'package:structure/model/meat_model.dart';
 import 'package:structure/model/user_model.dart';
 import 'package:structure/screen/complete_sign_up_screen.dart';
+import 'package:structure/screen/freshmeat_eval_screen.dart';
 import 'package:structure/screen/insertion_user_info_screen.dart';
 import 'package:structure/screen/main_screen.dart';
+import 'package:structure/screen/meat_registration_screen.dart';
 import 'package:structure/screen/sign_in_screen.dart';
+import 'package:structure/viewModel/freshmeat_eval_view_model.dart';
 import 'package:structure/viewModel/insertion_user_info_view_model.dart';
+import 'package:structure/viewModel/meat_registration_view_model.dart';
 import 'package:structure/viewModel/sign_in_view_model.dart';
 
 MeatModel meatModel = MeatModel();
@@ -23,7 +27,7 @@ void main() async {
 
 // 라우팅
 final _router = GoRouter(
-  initialLocation: '/main',
+  initialLocation: '/main/registration/freshmeat',
   routes: [
     // 로그인
     GoRoute(
@@ -46,9 +50,31 @@ final _router = GoRouter(
       path: '/complete-sign-up',
       builder: (context, state) => const CompleteSignUpScreen(),
     ),
+    // 메인 페이지
     GoRoute(
       path: '/main',
       builder: (context, state) => const MainScreen(),
+      routes: [
+        // 육류 등록 페이지
+        GoRoute(
+          path: 'registration',
+          builder: (context, state) => ChangeNotifierProvider(
+            create: (context) => MeatRegistrationViewModel(
+                meatModel: meatModel, userModel: userModel),
+            child: const MeatRegistrationScreen(),
+          ),
+          routes: [
+            GoRoute(
+              path: 'freshmeat',
+              builder: (context, state) => ChangeNotifierProvider(
+                create: (context) =>
+                    FreshMeatEvalViewModel(meatModel: meatModel),
+                child: const FreshMeatEvalScreen(),
+              ),
+            ),
+          ],
+        ),
+      ],
     )
   ],
 );

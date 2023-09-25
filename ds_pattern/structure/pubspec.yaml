@@ -44,6 +44,7 @@ dependencies:
   firebase_storage: ^11.2.6
   go_router: ^10.2.0
   email_validator: ^2.1.17
+  syncfusion_flutter_sliders: ^23.1.36
 
 dev_dependencies:
   flutter_test:

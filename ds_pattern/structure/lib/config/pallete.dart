@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class Pallete {
+class Palette {
   static const Color mainTextFieldColor = Color.fromRGBO(232, 232, 232, 1);
   static const Color mainButtonColor = Color.fromRGBO(81, 81, 81, 1);
   static const Color subButtonColor = Color.fromRGBO(175, 175, 175, 1);

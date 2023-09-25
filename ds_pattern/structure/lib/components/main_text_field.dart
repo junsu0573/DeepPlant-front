@@ -75,7 +75,7 @@ class MainTextField extends StatelessWidget {
                   )
                 : Text(mainText),
             filled: true,
-            fillColor: Pallete.mainTextFieldColor,
+            fillColor: Palette.mainTextFieldColor,
             hintText: hintText, // 입력 필드에 힌트로 표시될 텍스트
 
             suffixIcon: null, // 입력 필드 오른쪽에 표시될 아이콘
