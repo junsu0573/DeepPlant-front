@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:structure/dataSource/meat_info_source.dart';
+import 'package:structure/config/meat_info_config.dart';
 import 'package:structure/model/meat_model.dart';
 
 class InsertionMeatInfoViewModel with ChangeNotifier {

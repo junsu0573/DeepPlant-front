@@ -105,10 +105,8 @@ class _InsertionMeatInfoScreenState extends State<InsertionMeatInfoScreen> {
                     itemList: context.read<InsertionMeatInfoViewModel>().largeDiv,
                     onChanged: context.read<InsertionMeatInfoViewModel>().isSelectedSpecies
                         ? (value) {
-                            setState(() {
-                              context.read<InsertionMeatInfoViewModel>().primalValue = value as String;
-                              context.read<InsertionMeatInfoViewModel>().setPrimal();
-                            });
+                            context.read<InsertionMeatInfoViewModel>().primalValue = value as String;
+                            context.read<InsertionMeatInfoViewModel>().setPrimal();
                           }
                         : null,
                   ),
@@ -128,10 +126,8 @@ class _InsertionMeatInfoScreenState extends State<InsertionMeatInfoScreen> {
                     itemList: context.read<InsertionMeatInfoViewModel>().litteDiv,
                     onChanged: context.read<InsertionMeatInfoViewModel>().isSelectedPrimal
                         ? (value) {
-                            setState(() {
-                              context.read<InsertionMeatInfoViewModel>().secondaryValue = value as String;
-                              context.read<InsertionMeatInfoViewModel>().secondaryValue;
-                            });
+                            context.read<InsertionMeatInfoViewModel>().secondaryValue = value as String;
+                            context.read<InsertionMeatInfoViewModel>().secondaryValue;
                           }
                         : null,
                   ),

@@ -6,9 +6,11 @@ import 'package:provider/provider.dart';
 import 'package:structure/model/meat_model.dart';
 import 'package:structure/model/user_model.dart';
 import 'package:structure/screen/complete_sign_up_screen.dart';
+import 'package:structure/screen/insertion_meat_image_screen.dart';
 import 'package:structure/screen/insertion_trace_num_screen.dart';
 import 'package:structure/screen/insertion_user_info_screen.dart';
 import 'package:structure/screen/sign_in_screen.dart';
+import 'package:structure/viewModel/insertion_meat_image_view_model.dart';
 import 'package:structure/viewModel/insertion_trace_num_view_model.dart';
 import 'package:structure/viewModel/insertion_user_info_view_model.dart';
 import 'package:structure/viewModel/sign_in_view_model.dart';
@@ -53,7 +55,14 @@ final _router = GoRouter(
         create: (context) => InsertionTraceNumViewModel(meatModel: meatModel),
         child: const InsertionTraceNumScreen(),
       ),
-    )
+    ),
+    GoRoute(
+      path: '/insertion-meat-image',
+      builder: (context, state) => ChangeNotifierProvider(
+        create: (context) => InsertionMeatImageViewModel(meatModel: meatModel, userModel: userModel, imageIdx: 0),
+        child: const InsertionMeatImage(),
+      ),
+    ),
   ],
 );
 
