@@ -7,6 +7,7 @@ import 'package:structure/model/meat_model.dart';
 import 'package:structure/model/user_model.dart';
 import 'package:structure/screen/complete_sign_up_screen.dart';
 import 'package:structure/screen/insertion_user_info_screen.dart';
+import 'package:structure/screen/main_screen.dart';
 import 'package:structure/screen/sign_in_screen.dart';
 import 'package:structure/viewModel/insertion_user_info_view_model.dart';
 import 'package:structure/viewModel/sign_in_view_model.dart';
@@ -22,7 +23,7 @@ void main() async {
 
 // 라우팅
 final _router = GoRouter(
-  initialLocation: '/complete-sign-up',
+  initialLocation: '/main',
   routes: [
     // 로그인
     GoRoute(
@@ -45,6 +46,10 @@ final _router = GoRouter(
       path: '/complete-sign-up',
       builder: (context, state) => const CompleteSignUpScreen(),
     ),
+    GoRoute(
+      path: '/main',
+      builder: (context, state) => const MainScreen(),
+    )
   ],
 );
 
