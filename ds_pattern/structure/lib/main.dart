@@ -5,11 +5,11 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:structure/model/meat_model.dart';
 import 'package:structure/model/user_model.dart';
-import 'package:structure/screen/complete_sign_up_screen.dart';
-import 'package:structure/screen/freshmeat_eval_screen.dart';
-import 'package:structure/screen/insertion_user_info_screen.dart';
+import 'package:structure/screen/sign_up/complete_sign_up_screen.dart';
+import 'package:structure/screen/meat_registration/freshmeat_eval_screen.dart';
+import 'package:structure/screen/sign_up/insertion_user_info_screen.dart';
 import 'package:structure/screen/main_screen.dart';
-import 'package:structure/screen/meat_registration_screen.dart';
+import 'package:structure/screen/meat_registration/meat_registration_screen.dart';
 import 'package:structure/screen/sign_in_screen.dart';
 import 'package:structure/viewModel/freshmeat_eval_view_model.dart';
 import 'package:structure/viewModel/insertion_user_info_view_model.dart';
@@ -64,6 +64,7 @@ final _router = GoRouter(
             child: const MeatRegistrationScreen(),
           ),
           routes: [
+            // 신선육 관능평가
             GoRoute(
               path: 'freshmeat',
               builder: (context, state) => ChangeNotifierProvider(

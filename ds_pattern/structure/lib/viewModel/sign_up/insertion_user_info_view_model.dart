@@ -1,7 +1,7 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:structure/screen/certification_bottom_screen.dart';
+import 'package:structure/screen/sign_up/certification_bottom_screen.dart';
 import 'package:structure/components/custom_pop_up.dart';
 import 'package:structure/dataSource/remote_data_source.dart';
 import 'package:structure/model/user_model.dart';
