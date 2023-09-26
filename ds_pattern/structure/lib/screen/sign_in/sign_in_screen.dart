@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:structure/components/main_text_field.dart';
 import 'package:structure/components/round_button.dart';
 import 'package:structure/config/pallete.dart';
-import 'package:structure/viewModel/sign_in_view_model.dart';
+import 'package:structure/viewModel/sign_in/sign_in_view_model.dart';
 
 class SignInScreen extends StatelessWidget {
   const SignInScreen({super.key});

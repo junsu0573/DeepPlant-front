@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:structure/components/custom_app_bar.dart';
 import 'package:structure/components/main_button.dart';
 import 'package:structure/components/step_card.dart';
-import 'package:structure/viewModel/meat_registration_view_model.dart';
+import 'package:structure/viewModel/meat_registration/meat_registration_view_model.dart';
 
 class MeatRegistrationScreen extends StatefulWidget {
   const MeatRegistrationScreen({

@@ -7,7 +7,7 @@ import 'package:structure/components/custom_app_bar.dart';
 import 'package:structure/components/main_button.dart';
 import 'package:structure/components/part_eval.dart';
 import 'package:structure/config/pallete.dart';
-import 'package:structure/viewModel/freshmeat_eval_view_model.dart';
+import 'package:structure/viewModel/meat_registration/freshmeat_eval_view_model.dart';
 
 class FreshMeatEvalScreen extends StatefulWidget {
   const FreshMeatEvalScreen({

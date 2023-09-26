@@ -5,7 +5,7 @@ import 'package:structure/screen/sign_up/certification_bottom_screen.dart';
 import 'package:structure/components/custom_pop_up.dart';
 import 'package:structure/dataSource/remote_data_source.dart';
 import 'package:structure/model/user_model.dart';
-import 'package:structure/viewModel/certification_bottom_view_model.dart';
+import 'package:structure/viewModel/sign_up/certification_bottom_view_model.dart';
 
 class InsertionUserInfoViewModel with ChangeNotifier {
   final UserModel userModel;

@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:structure/components/custom_app_bar.dart';
 import 'package:structure/components/main_button.dart';
 import 'package:structure/components/round_button.dart';
-import 'package:structure/viewModel/insertion_user_info_view_model.dart';
+import 'package:structure/viewModel/sign_up/insertion_user_info_view_model.dart';
 
 class InsertionUserInfoScreen extends StatefulWidget {
   const InsertionUserInfoScreen({super.key});
