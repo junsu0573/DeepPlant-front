@@ -28,7 +28,7 @@ class RoundButton extends StatelessWidget {
         style: ElevatedButton.styleFrom(
           elevation: 0,
           foregroundColor: fgColor,
-          backgroundColor: bgColor ?? Pallete.mainButtonColor,
+          backgroundColor: bgColor ?? Palette.mainButtonColor,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(30),
             side: fgColor != null ? const BorderSide(color: Colors.black) : BorderSide.none,

@@ -98,7 +98,7 @@ class _InsertionMeatInfoScreenState extends State<InsertionMeatInfoScreen> {
                       style: TextStyle(
                         fontSize: 30.sp,
                         fontWeight: FontWeight.w400,
-                        color: Pallete.greyTextColor,
+                        color: Palette.greyTextColor,
                       ),
                     ),
                     value: context.read<InsertionMeatInfoViewModel>().primalValue,
@@ -119,7 +119,7 @@ class _InsertionMeatInfoScreenState extends State<InsertionMeatInfoScreen> {
                       style: TextStyle(
                         fontSize: 30.sp,
                         fontWeight: FontWeight.w400,
-                        color: Pallete.greyTextColor,
+                        color: Palette.greyTextColor,
                       ),
                     ),
                     value: context.read<InsertionMeatInfoViewModel>().secondaryValue,

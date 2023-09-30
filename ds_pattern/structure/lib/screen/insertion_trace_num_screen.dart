@@ -118,7 +118,7 @@ class _InsertionTraceNumScreenState extends State<InsertionTraceNumScreen> {
                   },
                   width: 161.w,
                   height: 85.h,
-                  bgColor: Pallete.mainButtonColor,
+                  bgColor: Palette.mainButtonColor,
                 ),
               ],
             ),

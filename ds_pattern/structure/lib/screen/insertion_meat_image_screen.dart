@@ -51,7 +51,7 @@ class _InsertionMeatImageState extends State<InsertionMeatImage> {
                     style: TextStyle(
                       fontSize: 24.sp,
                       fontWeight: FontWeight.w400,
-                      color: Pallete.greyTextColor,
+                      color: Palette.greyTextColor,
                     ),
                   ),
                   SizedBox(
@@ -62,7 +62,7 @@ class _InsertionMeatImageState extends State<InsertionMeatImage> {
                     style: TextStyle(
                       fontSize: 24.sp,
                       fontWeight: FontWeight.w400,
-                      color: Pallete.greyTextColor,
+                      color: Palette.greyTextColor,
                     ),
                   ),
                 ],
@@ -80,7 +80,7 @@ class _InsertionMeatImageState extends State<InsertionMeatImage> {
                     alignment: Alignment.centerLeft,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15.sp),
-                      color: Pallete.backgroundFieldColor,
+                      color: Palette.backgroundFieldColor,
                     ),
                     width: 315.w,
                     height: 88.h,
@@ -101,7 +101,7 @@ class _InsertionMeatImageState extends State<InsertionMeatImage> {
                     alignment: Alignment.centerLeft,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15.sp),
-                      color: Pallete.backgroundFieldColor,
+                      color: Palette.backgroundFieldColor,
                     ),
                     width: 315.w,
                     height: 88.h,
@@ -129,7 +129,7 @@ class _InsertionMeatImageState extends State<InsertionMeatImage> {
                     style: TextStyle(
                       fontSize: 24.sp,
                       fontWeight: FontWeight.w400,
-                      color: Pallete.greyTextColor,
+                      color: Palette.greyTextColor,
                     ),
                   ),
                 ],

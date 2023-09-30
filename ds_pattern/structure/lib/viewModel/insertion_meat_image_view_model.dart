@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:structure/components/show_error_view.dart';
 import 'package:structure/dataSource/firebase_services.dart';
 import 'package:structure/model/meat_model.dart';
 import 'package:structure/model/user_model.dart';

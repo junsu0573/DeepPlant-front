@@ -4,18 +4,11 @@ import 'package:provider/provider.dart';
 import 'package:structure/components/main_text_field.dart';
 import 'package:structure/components/round_button.dart';
 import 'package:structure/config/pallete.dart';
-import 'package:structure/viewModel/sign_in_view_model.dart';
+import 'package:structure/viewModel/sign_in/sign_in_view_model.dart';
 
-class SignInScreen extends StatefulWidget {
-  const SignInScreen({
-    super.key,
-  });
+class SignInScreen extends StatelessWidget {
+  const SignInScreen({super.key});
 
-  @override
-  State<SignInScreen> createState() => _SignInScreenState();
-}
-
-class _SignInScreenState extends State<SignInScreen> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -107,7 +100,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         },
                         width: 372.w,
                         height: 85.h,
-                        bgColor: Pallete.mainButtonColor,
+                        bgColor: Palette.mainButtonColor,
                       ),
                       SizedBox(
                         height: 36.h,
@@ -125,13 +118,11 @@ class _SignInScreenState extends State<SignInScreen> {
                               value:
                                   context.read<SignInViewModel>().isAutoLogin,
                               onChanged: (value) {
-                                setState(() {
-                                  context.read<SignInViewModel>().isAutoLogin =
-                                      value!;
-                                });
+                                context.read<SignInViewModel>().isAutoLogin =
+                                    value!;
                               },
                               side: BorderSide(
-                                color: Pallete.mainButtonColor,
+                                color: Palette.mainButtonColor,
                                 width: 1.sp,
                               ),
                             ),
@@ -144,7 +135,7 @@ class _SignInScreenState extends State<SignInScreen> {
                             style: TextStyle(
                               fontSize: 30.sp,
                               fontWeight: FontWeight.w400,
-                              color: Pallete.greyTextColor,
+                              color: Palette.greyTextColor,
                             ),
                           ),
                         ],

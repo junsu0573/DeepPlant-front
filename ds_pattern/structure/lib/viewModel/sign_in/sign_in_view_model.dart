@@ -78,7 +78,7 @@ class SignInViewModel with ChangeNotifier {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(errorMessage),
-          backgroundColor: Pallete.alertColor,
+          backgroundColor: Palette.alertColor,
         ),
       );
 

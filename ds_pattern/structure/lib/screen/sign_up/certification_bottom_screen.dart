@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:structure/components/main_button.dart';
 import 'package:structure/config/pallete.dart';
-import 'package:structure/viewModel/certification_bottom_view_model.dart';
+import 'package:structure/viewModel/sign_up/certification_bottom_view_model.dart';
 
 class CertificationBottomScreen extends StatefulWidget {
   const CertificationBottomScreen({
@@ -76,7 +76,7 @@ class _CertificationBottomScreenState extends State<CertificationBottomScreen> {
                         '보기',
                         style: TextStyle(
                           fontSize: 30.sp,
-                          color: Pallete.greyTextColor,
+                          color: Palette.greyTextColor,
                           decoration: TextDecoration.underline,
                         ),
                       ),
@@ -110,7 +110,7 @@ class _CertificationBottomScreenState extends State<CertificationBottomScreen> {
                         '보기',
                         style: TextStyle(
                           fontSize: 30.sp,
-                          color: Pallete.greyTextColor,
+                          color: Palette.greyTextColor,
                           decoration: TextDecoration.underline,
                         ),
                       ),

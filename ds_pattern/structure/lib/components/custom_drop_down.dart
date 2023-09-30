@@ -22,7 +22,7 @@ class CustomDropdown extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(42.5.sp),
         border: Border.all(
-          color: Pallete.mainTextFieldColor,
+          color: Palette.mainTextFieldColor,
           width: 1.0,
         ),
       ),
