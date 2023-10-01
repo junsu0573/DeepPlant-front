@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:structure/model/user_model.dart';
 
 class CertificationBottomViewModel with ChangeNotifier {
@@ -42,6 +43,7 @@ class CertificationBottomViewModel with ChangeNotifier {
   // 세 번째 체크박스 클릭 시
   void clicked3rdCheckBox(bool? value) {
     isChecked3 = value!;
+    _checkCheckBoxValues();
   }
 
   // 모두 동의 클릭 시
@@ -54,8 +56,8 @@ class CertificationBottomViewModel with ChangeNotifier {
   }
 
   // 다음 버튼 클릭 시
-  void clickedNextBotton() {
+  void clickedNextBotton(BuildContext context) {
     userModel.alarm = isChecked3;
-    // 페이지 이동 로직
+    context.go('/sign-in/sign-up/user-detail');
   }
 }

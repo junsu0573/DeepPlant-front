@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:structure/components/custom_app_bar.dart';
 import 'package:structure/components/round_button.dart';
@@ -93,7 +94,7 @@ class UserInfoScreen extends StatelessWidget {
                 Column(
                   children: [
                     Text(
-                      context.read<UserInfoViewModel>().userName ?? 'None',
+                      context.read<UserInfoViewModel>().userName,
                       style: TextStyle(
                         fontSize: 30.sp,
                         fontWeight: FontWeight.w400,
@@ -103,7 +104,7 @@ class UserInfoScreen extends StatelessWidget {
                       height: 33.h,
                     ),
                     Text(
-                      context.read<UserInfoViewModel>().userId ?? 'None',
+                      context.read<UserInfoViewModel>().userId,
                       style: TextStyle(
                         fontSize: 30.sp,
                         fontWeight: FontWeight.w400,
@@ -113,7 +114,7 @@ class UserInfoScreen extends StatelessWidget {
                       height: 33.h,
                     ),
                     Text(
-                      context.read<UserInfoViewModel>().userType ?? 'None',
+                      context.read<UserInfoViewModel>().userType,
                       style: TextStyle(
                         fontSize: 30.sp,
                         fontWeight: FontWeight.w400,
@@ -123,7 +124,7 @@ class UserInfoScreen extends StatelessWidget {
                       height: 33.h,
                     ),
                     Text(
-                      context.read<UserInfoViewModel>().createdAt ?? 'None',
+                      context.read<UserInfoViewModel>().createdAt,
                       style: TextStyle(
                         fontSize: 30.sp,
                         fontWeight: FontWeight.w400,
@@ -148,7 +149,7 @@ class UserInfoScreen extends StatelessWidget {
                       color: Colors.black,
                     ),
                   ),
-                  onPress: () {},
+                  onPress: () => context.go('/main/my-page/user-detail'),
                   width: 139.w,
                   height: 49.h,
                   bgColor: const Color.fromRGBO(217, 217, 217, 1),
@@ -160,7 +161,8 @@ class UserInfoScreen extends StatelessWidget {
             ),
             const Spacer(),
             TextButton(
-              onPressed: () => {},
+              onPressed: () async =>
+                  context.read<UserInfoViewModel>().clickedSignOut(context),
               child: Text(
                 '로그아웃',
                 style: TextStyle(

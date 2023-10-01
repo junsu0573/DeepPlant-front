@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:xml2json/xml2json.dart';
 
 class RemoteDataSource {
   static String baseUrl = 'http://3.38.52.82';
@@ -16,7 +17,7 @@ class RemoteDataSource {
   }
 
   // 유저 회원가입 (POST)
-  static Future<void> signUp(String jsonData) async {
+  static Future<dynamic> signUp(String jsonData) async {
     dynamic response = await _postApi('user/register', jsonData);
     return response;
   }
@@ -161,6 +162,29 @@ class RemoteDataSource {
     } catch (e) {
       print('GET 요청 중 예외 발생: $e');
       return;
+    }
+  }
+}
+
+class OpenApiSource {
+  String baseUrl;
+  OpenApiSource({
+    required this.baseUrl,
+  });
+
+  Future<dynamic> getJsonData() async {
+    final response = await http.get(Uri.parse(baseUrl));
+
+    if (response.statusCode == 200) {
+      final body = utf8.decode(response.bodyBytes);
+      final xml2JsonData = Xml2Json()..parse(body);
+      final jsonData = xml2JsonData.toParker();
+
+      final parsingData = jsonDecode(jsonData);
+
+      return parsingData;
+    } else {
+      print(response.statusCode);
     }
   }
 }

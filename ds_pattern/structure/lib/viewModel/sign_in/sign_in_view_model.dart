@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:structure/config/pallete.dart';
 import 'package:structure/dataSource/remote_data_source.dart';
 import 'package:structure/model/user_model.dart';
@@ -53,6 +54,7 @@ class SignInViewModel with ChangeNotifier {
           notifyListeners();
 
           // 페이지 이동
+          context.go('/main');
         } else {
           throw Error();
         }
@@ -138,7 +140,7 @@ class SignInViewModel with ChangeNotifier {
       } else {
         // 가져오기 성공
         // 데이터 fetch
-        UserModel.fromJson(userInfo);
+        userModel.fromJson(userInfo);
         return true;
       }
     } catch (e) {

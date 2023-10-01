@@ -25,32 +25,28 @@ class UserModel with ChangeNotifier {
   });
 
   // Data fetch
-  factory UserModel.fromJson(Map<String, dynamic> jsonData) {
-    return UserModel(
-      userId: jsonData['userId'],
-      password: jsonData['password'],
-      name: jsonData['name'],
-      homeAdress: jsonData['homeAddr'],
-      company: jsonData['company'],
-      jobTitle: jsonData['jobTitle'],
-      type: jsonData['type'],
-      createdAt: jsonData['createdAt'],
-      alarm: jsonData['alarm'],
-    );
+  void fromJson(Map<String, dynamic> jsonData) {
+    userId = jsonData['userId'];
+    password = jsonData['password'];
+    name = jsonData['name'];
+    homeAdress = jsonData['homeAddr'];
+    company = jsonData['company'];
+    jobTitle = jsonData['jobTitle'];
+    type = jsonData['type'];
+    createdAt = jsonData['createdAt'];
+    alarm = jsonData['alarm'];
   }
 
   // Data reset
-  factory UserModel.reset() {
-    return UserModel(
-      userId: null,
-      password: null,
-      name: null,
-      homeAdress: null,
-      company: null,
-      jobTitle: null,
-      type: null,
-      createdAt: null,
-      alarm: null,
-    );
+  void reset() {
+    userId = null;
+    password = null;
+    name = null;
+    homeAdress = null;
+    company = null;
+    jobTitle = null;
+    type = null;
+    createdAt = null;
+    alarm = null;
   }
 }

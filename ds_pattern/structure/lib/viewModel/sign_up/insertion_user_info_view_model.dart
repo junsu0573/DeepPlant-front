@@ -1,15 +1,16 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:structure/main.dart';
 import 'package:structure/screen/sign_up/certification_bottom_screen.dart';
-import 'package:structure/components/custom_pop_up.dart';
 import 'package:structure/dataSource/remote_data_source.dart';
 import 'package:structure/model/user_model.dart';
 import 'package:structure/viewModel/sign_up/certification_bottom_view_model.dart';
 
 class InsertionUserInfoViewModel with ChangeNotifier {
-  final UserModel userModel;
-  InsertionUserInfoViewModel({required this.userModel});
+  InsertionUserInfoViewModel(UserModel userModel) {
+    userModel.reset();
+  }
 
   // form
   final formKey = GlobalKey<FormState>();
@@ -137,13 +138,17 @@ class InsertionUserInfoViewModel with ChangeNotifier {
 
   // 이메일 중복 검사
   Future<void> dupliCheck(BuildContext context) async {
-    bool isDuplicated = await RemoteDataSource.dupliCheck(userEmail);
-    if (isDuplicated) {
-      isUnique = false;
-      notifyListeners();
-      // popup 창 띄우기
-      showDuplicateEmailPopup(context);
-    } else {
+    dynamic isDuplicated = await RemoteDataSource.dupliCheck(userEmail);
+    // if (isDuplicated) {
+    //   isUnique = false;
+    //   notifyListeners();
+    //   // popup 창 띄우기
+    //   showDuplicateEmailPopup(context);
+    // } else {
+    //   isUnique = true;
+    //   notifyListeners();
+    // }
+    if (isDuplicated != null) {
       isUnique = true;
       notifyListeners();
     }
@@ -162,16 +167,16 @@ class InsertionUserInfoViewModel with ChangeNotifier {
   }
 
   void saveUserInfo() {
-    // user의 이메일, 패스워드, 이름을 객체에 저장
     userModel.userId = userEmail;
     userModel.password = userPassword;
     userModel.name = userName;
   }
 
   void clickedNextButton(BuildContext context) {
+    saveUserInfo();
     showModalBottomSheet(
-      // isScrollControlled = true,
-      // colorScheme.background = Colors.transparent,
+      backgroundColor: Colors.transparent,
+      isScrollControlled: true,
       context: context,
       builder: (context) => ChangeNotifierProvider(
         create: (context) => CertificationBottomViewModel(userModel: userModel),

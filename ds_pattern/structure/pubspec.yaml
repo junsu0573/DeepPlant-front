@@ -46,6 +46,8 @@ dependencies:
   email_validator: ^2.1.17
   syncfusion_flutter_sliders: ^23.1.36
   intl: ^0.18.1
+  kpostal: ^0.5.1
+  xml2json: ^6.2.0
 
 dev_dependencies:
   flutter_test:

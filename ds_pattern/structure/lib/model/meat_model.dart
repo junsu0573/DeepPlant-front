@@ -87,82 +87,78 @@ class MeatModel with ChangeNotifier {
   });
 
   // Data fetch
-  factory MeatModel.fromJson(Map<String, dynamic> jsonData) {
-    return MeatModel(
-      id: jsonData['id'],
-      createUser: jsonData['createUser'],
-      userId: jsonData['userId'],
-      createdAt: jsonData['createdAt'],
-      traceNum: jsonData['traceNum'],
-      farmAddr: jsonData['farmAddr'],
-      farmerNm: jsonData['farmerNm'],
-      butcheryYmd: jsonData['butcheryYmd'],
-      birthYmd: jsonData['birthYmd'],
-      sexType: jsonData['sexType'],
-      gradeNum: jsonData['gradeNum'],
-      speciesValue: jsonData['speciesValue'],
-      primalValue: jsonData['primalValue'],
-      secondaryValue: jsonData['secondaryValue'],
-      imagePath: jsonData['imagePath'],
-      heatedImage: jsonData['heatedImage'],
-      deepAgedImage: jsonData['deepAgedImage'],
-      seqno: jsonData['seqno'],
-      freshmeat: jsonData['freshmeat'],
-      deepAgedFreshmeat: jsonData['deepAgedFreshmeat'],
+  void fromJson(Map<String, dynamic> jsonData) {
+    id = jsonData['id'];
+    createUser = jsonData['createUser'];
+    userId = jsonData['userId'];
+    createdAt = jsonData['createdAt'];
+    traceNum = jsonData['traceNum'];
+    farmAddr = jsonData['farmAddr'];
+    farmerNm = jsonData['farmerNm'];
+    butcheryYmd = jsonData['butcheryYmd'];
+    birthYmd = jsonData['birthYmd'];
+    sexType = jsonData['sexType'];
+    gradeNum = jsonData['gradeNum'];
+    speciesValue = jsonData['speciesValue'];
+    primalValue = jsonData['primalValue'];
+    secondaryValue = jsonData['secondaryValue'];
+    imagePath = jsonData['imagePath'];
+    heatedImage = jsonData['heatedImage'];
+    deepAgedImage = jsonData['deepAgedImage'];
+    seqno = jsonData['seqno'];
+    freshmeat = jsonData['freshmeat'];
+    deepAgedFreshmeat = jsonData['deepAgedFreshmeat'];
 
-      // 연구 데이터 추가 입력 완료 시 저장
-      deepAging: jsonData['deepAging'],
-      heatedmeat: jsonData['heatedmeat'],
-      tongueData: jsonData['tongueData'],
-      labData: jsonData['labData'],
+    // 연구 데이터 추가 입력 완료 시 저장
+    deepAging = jsonData['deepAging'];
+    heatedmeat = jsonData['heatedmeat'];
+    tongueData = jsonData['tongueData'];
+    labData = jsonData['labData'];
 
-      // 데이터 fetch 시 저장
-      processedmeat: jsonData['processedmeat'],
-      rawmeat: jsonData['rawmeat'],
+    // 데이터 fetch 시 저장
+    processedmeat = jsonData['processedmeat'];
+    rawmeat = jsonData['rawmeat'];
 
-      // // 데이터 입력 완료시 저장
-      rawmeatDataComplete: jsonData['rawmeatDataComplete'],
-      processedmeatDataComplete: jsonData['processedmeatDataComplete'],
-    );
+    // // 데이터 입력 완료시 저장
+    rawmeatDataComplete = jsonData['rawmeatDataComplete'];
+    processedmeatDataComplete = jsonData['processedmeatDataComplete'];
   }
 
   // Data reset
-  factory MeatModel.reset() {
-    return MeatModel(
-      id: null,
-      createUser: null,
-      userId: null,
-      createdAt: null,
-      traceNum: null,
-      farmAddr: null,
-      farmerNm: null,
-      butcheryYmd: null,
-      birthYmd: null,
-      sexType: null,
-      gradeNum: null,
-      speciesValue: null,
-      primalValue: null,
-      secondaryValue: null,
-      imagePath: null,
-      heatedImage: null,
-      deepAgedImage: null,
-      seqno: null,
-      freshmeat: null,
-      deepAgedFreshmeat: null,
+  void reset() {
+    id = null;
+    createUser = null;
+    userId = null;
+    createdAt = null;
+    traceNum = null;
+    farmAddr = null;
+    farmerNm = null;
+    butcheryYmd = null;
+    birthYmd = null;
+    sexType = null;
+    gradeNum = null;
+    speciesValue = null;
+    primalValue = null;
+    secondaryValue = null;
+    imagePath = null;
+    heatedImage = null;
+    deepAgedImage = null;
+    seqno = null;
+    freshmeat = null;
+    deepAgedFreshmeat = null;
 
-      // 연구 데이터 추가 입력 완료 시 저장
-      deepAging: null,
-      heatedmeat: null,
-      tongueData: null,
-      labData: null,
+    // 연구 데이터 추가 입력 완료 시 저장
+    deepAging = null;
+    heatedmeat = null;
+    tongueData = null;
+    labData = null;
 
-      // 데이터 fetch 시 저장
-      processedmeat: null,
-      rawmeat: null,
+    // 데이터 fetch 시 저장
+    processedmeat = null;
+    rawmeat = null;
 
-      // // 데이터 입력 완료시 저장
-      rawmeatDataComplete: null,
-      processedmeatDataComplete: null,
-    );
+    // // 데이터 입력 완료시 저장
+    rawmeatDataComplete = null;
+    processedmeatDataComplete = null;
   }
 }

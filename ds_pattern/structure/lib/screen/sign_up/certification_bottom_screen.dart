@@ -53,7 +53,7 @@ class _CertificationBottomScreenState extends State<CertificationBottomScreen> {
                   children: [
                     Checkbox(
                       value: context
-                          .read<CertificationBottomViewModel>()
+                          .watch<CertificationBottomViewModel>()
                           .isChecked1,
                       onChanged: (value) => context
                           .read<CertificationBottomViewModel>()
@@ -87,7 +87,7 @@ class _CertificationBottomScreenState extends State<CertificationBottomScreen> {
                   children: [
                     Checkbox(
                       value: context
-                          .read<CertificationBottomViewModel>()
+                          .watch<CertificationBottomViewModel>()
                           .isChecked2,
                       onChanged: (value) => context
                           .read<CertificationBottomViewModel>()
@@ -121,7 +121,7 @@ class _CertificationBottomScreenState extends State<CertificationBottomScreen> {
                   children: [
                     Checkbox(
                       value: context
-                          .read<CertificationBottomViewModel>()
+                          .watch<CertificationBottomViewModel>()
                           .isChecked3,
                       onChanged: (value) => context
                           .read<CertificationBottomViewModel>()
@@ -172,7 +172,7 @@ class _CertificationBottomScreenState extends State<CertificationBottomScreen> {
                   context.read<CertificationBottomViewModel>().isRequiredChecked
                       ? () => context
                           .read<CertificationBottomViewModel>()
-                          .clickedNextBotton()
+                          .clickedNextBotton(context)
                       : null,
               text: '다음',
               width: 658.w,

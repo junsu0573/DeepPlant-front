@@ -15,7 +15,7 @@ class MeatRegistrationViewModel with ChangeNotifier {
   // initState Function
   void initialize(BuildContext context) {
     // 육류 인스턴스 초기화
-    meatModel = MeatModel.reset();
+    meatModel.reset();
 
     // 육류 생성은 seqno: 0
     meatModel.seqno = 0;

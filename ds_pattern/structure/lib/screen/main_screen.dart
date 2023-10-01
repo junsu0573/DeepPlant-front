@@ -1,12 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:structure/components/custom_icon_button.dart';
 import 'package:structure/config/pallete.dart';
+import 'package:structure/model/user_model.dart';
 
-class MainScreen extends StatelessWidget {
+class MainScreen extends StatefulWidget {
+  final UserModel userModel;
   const MainScreen({
     super.key,
+    required this.userModel,
   });
+
+  @override
+  State<MainScreen> createState() => _MainScreenState();
+}
+
+class _MainScreenState extends State<MainScreen> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    print(widget.userModel.name);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +37,7 @@ class MainScreen extends StatelessWidget {
             children: [
               CustomIconButton(
                 image: const AssetImage('assets/images/person.png'),
-                onTap: () {},
+                onTap: () => context.go('/main/my-page'),
                 width: 63.w,
                 height: 63.h,
               ),
@@ -69,7 +85,7 @@ class MainScreen extends StatelessWidget {
               children: [
                 // 육류 등록 버튼
                 InkWell(
-                  onTap: () {},
+                  onTap: () => context.go('/main/registration'),
                   child: Padding(
                     padding: const EdgeInsets.all(5.0),
                     child: Stack(

@@ -101,7 +101,7 @@ class _InsertionUserInfoScreenState extends State<InsertionUserInfoScreen> {
                                       style: TextStyle(fontSize: 27.sp),
                                     ),
                               onPress: context
-                                      .read<InsertionUserInfoViewModel>()
+                                      .watch<InsertionUserInfoViewModel>()
                                       .isUnique
                                   ? null
                                   : () => context

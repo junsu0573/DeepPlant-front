@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:structure/components/main_text_field.dart';
 import 'package:structure/components/round_button.dart';
@@ -12,9 +13,7 @@ class SignInScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        FocusScope.of(context).unfocus(); // 키보드 unfocus
-      },
+      onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
         backgroundColor: Colors.white,
         body: Stack(
@@ -93,11 +92,9 @@ class SignInScreen extends StatelessWidget {
                             fontWeight: FontWeight.w400,
                           ),
                         ),
-                        onPress: () async {
-                          await context
-                              .read<SignInViewModel>()
-                              .clickedSignInButton(context);
-                        },
+                        onPress: () async => await context
+                            .read<SignInViewModel>()
+                            .clickedSignInButton(context),
                         width: 372.w,
                         height: 85.h,
                         bgColor: Palette.mainButtonColor,
@@ -145,9 +142,7 @@ class SignInScreen extends StatelessWidget {
                       ),
                       // 회원가입 텍스트버튼
                       TextButton(
-                        onPressed: () {
-                          // 페이지 이동
-                        },
+                        onPressed: () => context.go('/sign-in/sign-up'),
                         child: Text(
                           '회원가입',
                           style: TextStyle(
@@ -165,7 +160,7 @@ class SignInScreen extends StatelessWidget {
             ),
             Center(
               child: // 데이터를 처리하는 동안 로딩 위젯 보여주기
-                  context.read<SignInViewModel>().isLoading
+                  context.watch<SignInViewModel>().isLoading
                       ? const CircularProgressIndicator()
                       : Container(),
             ),

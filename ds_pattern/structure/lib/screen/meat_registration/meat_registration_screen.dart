@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:structure/components/custom_app_bar.dart';
 import 'package:structure/components/main_button.dart';
@@ -29,7 +30,7 @@ class _MeatRegistrationScreenState extends State<MeatRegistrationScreen> {
       backgroundColor: Colors.white,
       appBar: const CustomAppBar(
         title: '',
-        backButton: false,
+        backButton: true,
         closeButton: false,
       ),
       body: Center(
@@ -47,7 +48,7 @@ class _MeatRegistrationScreenState extends State<MeatRegistrationScreen> {
             ),
             // STEP 1
             InkWell(
-              onTap: () {},
+              onTap: () => context.go('/main/registration/trace-num'),
               child: StepCard(
                 mainText: '육류 기본정보 입력',
                 subText: '육류 정보를 입력해 주세요.',
