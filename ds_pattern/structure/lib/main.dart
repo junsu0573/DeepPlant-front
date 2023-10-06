@@ -24,6 +24,7 @@ import 'package:structure/viewModel/my_page/user_info_view_model.dart';
 import 'package:structure/viewModel/sign_up/insertion_user_info_view_model.dart';
 import 'package:structure/viewModel/meat_registration/meat_registration_view_model.dart';
 import 'package:structure/viewModel/sign_in/sign_in_view_model.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 MeatModel meatModel = MeatModel();
 UserModel userModel = UserModel();
@@ -31,6 +32,7 @@ UserModel userModel = UserModel();
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  await initializeDateFormatting();
   runApp(const DeepPlantApp());
 }
 

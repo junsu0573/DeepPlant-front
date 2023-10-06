@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:structure/dataSource/remote_data_source.dart';
+import 'package:structure/model/user_model.dart';
 
 class ManagementDataViewModel with ChangeNotifier {
   final TextEditingController controller = TextEditingController();
   final FocusNode focusNode = FocusNode();
   String search = '';
+  UserModel userModel = UserModel();
+  DateTime selected = DateTime.now();
+  DateTime focused = DateTime.now();
 
   // 필터의 요소들을 보관한다.
   List<bool>? selectionsDay;
@@ -20,7 +24,7 @@ class ManagementDataViewModel with ChangeNotifier {
   String? endDay;
 
   // 가능성을 제어한다.
-  bool isSelectedEtc = false; // 직접 설정이 지정되었는지 파악한다. + 직접 설정 날짜가 입력 되었는지도 확인!
+  bool isSelectedEnd = false; // 모든 작업이 완료됨을 알린다. - 특히 직접 설정 날짜가 입력됨을 알린다.
 
   // 필터에 들어갈 위젯을 보관한다.
   List<Widget> widgetsDay = [
@@ -47,10 +51,8 @@ class ManagementDataViewModel with ChangeNotifier {
   DateTime? monthsAgo;
   DateTime? threeMonthsAgo;
 
-  DateTime _focusedDay = DateTime.now();
-  DateTime _selectedDay = DateTime.now();
-  DateTime? _rangeStart;
-  DateTime? _rangeEnd;
+  DateTime? rangeStart;
+  DateTime? rangeEnd;
 
   // 필터를 초기화 한다.
   void reset() {
@@ -60,8 +62,8 @@ class ManagementDataViewModel with ChangeNotifier {
     textDay = '3일';
     textData = '나의 데이터';
     textSpecies = '전체';
-    _rangeStart = null;
-    _rangeEnd = null;
+    rangeStart = null;
+    rangeEnd = null;
     notifyListeners();
   }
 
@@ -69,6 +71,12 @@ class ManagementDataViewModel with ChangeNotifier {
     controller.addListener(() {
       search = controller.text;
     });
+    notifyListeners();
+  }
+
+  void textClear() {
+    controller.clear();
+    search = '';
     notifyListeners();
   }
 
@@ -88,9 +96,10 @@ class ManagementDataViewModel with ChangeNotifier {
       startDay = DateFormat('yyyy-MM-ddTHH:mm:ss').format(threeMonthsAgo!);
       endDay = DateFormat('yyyy-MM-ddTHH:mm:ss').format(toDay!);
     } else {
-      startDay = DateFormat('yyyy-MM-ddTHH:mm:ss').format(_rangeStart!);
-      endDay = DateFormat('yyyy-MM-ddTHH:mm:ss').format(_rangeEnd!);
+      startDay = DateFormat('yyyy-MM-ddTHH:mm:ss').format(rangeStart!);
+      endDay = DateFormat('yyyy-MM-ddTHH:mm:ss').format(rangeEnd!);
     }
+    notifyListeners();
   }
 
   Future<List<String>> initialize(int count, String start, String end) async {
@@ -116,5 +125,47 @@ class ManagementDataViewModel with ChangeNotifier {
       extracted.add('$createdAt,$name,$id,$specieValue,$statusType,$type,$userId');
     });
     return extracted;
+  }
+
+  List<String> setSpecies(List<String> source) {
+    if (textSpecies == '소') {
+      source = source.where((data) {
+        List<String> parts = data.split(',');
+        String dataSpecies = parts[3];
+        return (dataSpecies == '소');
+      }).toList();
+    } else if (textSpecies == '돼지') {
+      source = source.where((data) {
+        List<String> parts = data.split(',');
+        String dataSpecies = parts[3];
+        return (dataSpecies == '돼지');
+      }).toList();
+    } else {}
+    notifyListeners();
+    return source;
+  }
+
+  List<String> setStatus(List<String> source) {
+    if (textData == '나의 데이터') {
+      source = source.where((data) {
+        List<String> parts = data.split(',');
+        String dataStatus = parts[6];
+        return (dataStatus == userModel.userId);
+      }).toList();
+    } else if (textData == '일반 데이터') {
+      source = source.where((data) {
+        List<String> parts = data.split(',');
+        String dataStatus = parts[5];
+        return (dataStatus == 'Normal');
+      }).toList();
+    } else if (textData == '연구 데이터') {
+      source = source.where((data) {
+        List<String> parts = data.split(',');
+        String dataStatus = parts[5];
+        return (dataStatus == 'Researcher');
+      }).toList();
+    } else {}
+    notifyListeners();
+    return source;
   }
 }
