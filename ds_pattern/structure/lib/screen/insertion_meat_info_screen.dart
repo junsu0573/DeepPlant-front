@@ -92,44 +92,48 @@ class _InsertionMeatInfoScreenState extends State<InsertionMeatInfoScreen> {
                   SizedBox(
                     height: 16.0.h,
                   ),
-                  CustomDropdown(
-                    hintText: Text(
-                      '대분할',
-                      style: TextStyle(
-                        fontSize: 30.sp,
-                        fontWeight: FontWeight.w400,
-                        color: Palette.greyTextColor,
+                  Consumer<InsertionMeatInfoViewModel>(
+                    builder: (context, viewModel, child) => CustomDropdown(
+                      hintText: Text(
+                        '대분할',
+                        style: TextStyle(
+                          fontSize: 30.sp,
+                          fontWeight: FontWeight.w400,
+                          color: Palette.greyTextColor,
+                        ),
                       ),
+                      value: viewModel.primalValue,
+                      itemList: viewModel.largeDiv,
+                      onChanged: viewModel.isSelectedSpecies
+                          ? (value) {
+                              viewModel.primalValue = value as String;
+                              viewModel.setPrimal();
+                            }
+                          : null,
                     ),
-                    value: context.read<InsertionMeatInfoViewModel>().primalValue,
-                    itemList: context.read<InsertionMeatInfoViewModel>().largeDiv,
-                    onChanged: context.read<InsertionMeatInfoViewModel>().isSelectedSpecies
-                        ? (value) {
-                            context.read<InsertionMeatInfoViewModel>().primalValue = value as String;
-                            context.read<InsertionMeatInfoViewModel>().setPrimal();
-                          }
-                        : null,
                   ),
                   SizedBox(
                     height: 16.h,
                   ),
-                  CustomDropdown(
-                    hintText: Text(
-                      '소분할',
-                      style: TextStyle(
-                        fontSize: 30.sp,
-                        fontWeight: FontWeight.w400,
-                        color: Palette.greyTextColor,
+                  Consumer<InsertionMeatInfoViewModel>(
+                    builder: (context, viewModel, child) => CustomDropdown(
+                      hintText: Text(
+                        '소분할',
+                        style: TextStyle(
+                          fontSize: 30.sp,
+                          fontWeight: FontWeight.w400,
+                          color: Palette.greyTextColor,
+                        ),
                       ),
+                      value: viewModel.secondaryValue,
+                      itemList: viewModel.litteDiv,
+                      onChanged: viewModel.isSelectedPrimal
+                          ? (value) {
+                              viewModel.secondaryValue = value as String;
+                              viewModel.secondaryValue;
+                            }
+                          : null,
                     ),
-                    value: context.read<InsertionMeatInfoViewModel>().secondaryValue,
-                    itemList: context.read<InsertionMeatInfoViewModel>().litteDiv,
-                    onChanged: context.read<InsertionMeatInfoViewModel>().isSelectedPrimal
-                        ? (value) {
-                            context.read<InsertionMeatInfoViewModel>().secondaryValue = value as String;
-                            context.read<InsertionMeatInfoViewModel>().secondaryValue;
-                          }
-                        : null,
                   ),
                 ],
               ),

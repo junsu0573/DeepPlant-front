@@ -70,35 +70,37 @@ class _InsertionTraceNumScreenState extends State<InsertionTraceNumScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Form(
-                  key: context.read<InsertionTraceNumViewModel>().formKey,
-                  child: SizedBox(
-                    width: 479.w,
-                    height: 85.h,
-                    child: TextFormField(
-                      controller: context.read<InsertionTraceNumViewModel>().textEditingController,
-                      textInputAction: TextInputAction.search,
-                      inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'[0-9L]'))],
-                      validator: (value) {
-                        if (value!.isEmpty || value.length < 12) {
-                          return "유효하지 않습니다!";
-                        } else {
-                          return null;
-                        }
-                      },
-                      onSaved: (value) {
-                        context.read<InsertionTraceNumViewModel>().traceNum = value!;
-                      },
-                      onChanged: (value) {
-                        context.read<InsertionTraceNumViewModel>().traceNum = value;
-                      },
-                      onFieldSubmitted: (value) {
-                        context.read<InsertionTraceNumViewModel>().traceNum = value;
-                      },
-                      decoration: const InputDecoration(
-                        hintText: '이력번호/묶음번호 입력',
+                Consumer<InsertionTraceNumViewModel>(
+                  builder: (context, viewModel, child) => Form(
+                    key: viewModel.formKey,
+                    child: SizedBox(
+                      width: 479.w,
+                      height: 85.h,
+                      child: TextFormField(
+                        controller: viewModel.textEditingController,
+                        textInputAction: TextInputAction.search,
+                        inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'[0-9L]'))],
+                        validator: (value) {
+                          if (value!.isEmpty || value.length < 12) {
+                            return "유효하지 않습니다!";
+                          } else {
+                            return null;
+                          }
+                        },
+                        onSaved: (value) {
+                          viewModel.traceNum = value!;
+                        },
+                        onChanged: (value) {
+                          viewModel.traceNum = value;
+                        },
+                        onFieldSubmitted: (value) {
+                          viewModel.traceNum = value;
+                        },
+                        decoration: const InputDecoration(
+                          hintText: '이력번호/묶음번호 입력',
+                        ),
+                        maxLength: 15,
                       ),
-                      maxLength: 15,
                     ),
                   ),
                 ),
