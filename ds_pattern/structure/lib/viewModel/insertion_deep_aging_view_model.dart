@@ -3,7 +3,7 @@ import 'package:structure/model/meat_model.dart';
 import 'package:intl/intl.dart';
 
 class InsertionDeepAgingViewModel with ChangeNotifier {
-  MeatModel meatModel = MeatModel();
+  MeatModel meatModel;
 
   InsertionDeepAgingViewModel({required this.meatModel});
 

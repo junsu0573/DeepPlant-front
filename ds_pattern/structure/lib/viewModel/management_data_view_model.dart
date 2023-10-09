@@ -4,10 +4,13 @@ import 'package:structure/dataSource/remote_data_source.dart';
 import 'package:structure/model/user_model.dart';
 
 class ManagementDataViewModel with ChangeNotifier {
+  UserModel userModel;
+  ManagementDataViewModel({required this.userModel});
+
   final TextEditingController controller = TextEditingController();
   final FocusNode focusNode = FocusNode();
   String search = '';
-  UserModel userModel = UserModel();
+
   DateTime selected = DateTime.now();
   DateTime focused = DateTime.now();
 
@@ -25,6 +28,7 @@ class ManagementDataViewModel with ChangeNotifier {
 
   // 가능성을 제어한다.
   bool isSelectedEnd = false; // 모든 작업이 완료됨을 알린다. - 특히 직접 설정 날짜가 입력됨을 알린다.
+  bool isSelectedFilter = false; // 이후 ui 작업과 함께 진행될 예정이다.
 
   // 필터에 들어갈 위젯을 보관한다.
   List<Widget> widgetsDay = [

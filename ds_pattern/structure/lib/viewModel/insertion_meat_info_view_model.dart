@@ -4,7 +4,9 @@ import 'package:structure/model/meat_model.dart';
 
 class InsertionMeatInfoViewModel with ChangeNotifier {
   MeatInfoSource source = MeatInfoSource();
-  MeatModel meatModel = MeatModel();
+
+  InsertionMeatInfoViewModel({required this.meatModel});
+  MeatModel meatModel;
 
   String speciesValue = '';
   String primalValue = '';

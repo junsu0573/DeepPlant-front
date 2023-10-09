@@ -4,29 +4,28 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:structure/components/custom_app_bar.dart';
 import 'package:structure/components/custom_management_table.dart';
 import 'package:structure/components/custom_table_calendar.dart';
 import 'package:structure/components/custom_temp_widget.dart';
 import 'package:structure/components/custom_toggle_button.dart';
 import 'package:structure/components/main_button.dart';
 import 'package:structure/components/nonform_text_field.dart';
-import 'package:structure/viewModel/management_data_view_model.dart';
+import 'package:structure/viewModel/management_normal_view_model.dart';
 
-class ManagementDataScreen extends StatefulWidget {
-  const ManagementDataScreen({super.key});
+class ManagementNormalScreen extends StatefulWidget {
+  const ManagementNormalScreen({super.key});
 
   @override
-  State<ManagementDataScreen> createState() => _ManagementDataScreenState();
+  State<ManagementNormalScreen> createState() => _ManagementNormalScreenState();
 }
 
-class _ManagementDataScreenState extends State<ManagementDataScreen> {
+class _ManagementNormalScreenState extends State<ManagementNormalScreen> {
   List<bool> tempSelections1 = [true, false, false, false];
-  List<bool> tempSelections2 = [true, false, false, false];
-  List<bool> tempSelections3 = [false, false, true];
+  List<bool> tempSelections2 = [true, false];
 
   String tempOption1 = '3일';
-  String tempOption2 = '나의 데이터';
-  String tempOption3 = '전체';
+  String tempOption2 = '최신순';
 
   DateTime? tempRangeStart;
   DateTime? tempRangeEnd;
@@ -34,72 +33,62 @@ class _ManagementDataScreenState extends State<ManagementDataScreen> {
   String temp2 = '';
 
   @override
-  void setState(VoidCallback fn) {
-    context.read<ManagementDataViewModel>().reset();
-    super.setState(fn);
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: GestureDetector(
-        onTap: () => FocusScope.of(context).unfocus(),
-        child: Column(
-          children: [
-            Text(
-              '삭제 예정!',
-              style: TextStyle(
-                fontSize: 36.sp,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(
-                left: 10.0,
-                right: 10.0,
-                top: 15.0,
-                bottom: 15.0,
-              ),
-              child: SizedBox(
-                height: 35.0,
-                child: Row(
-                  children: [
-                    Expanded(
-                      flex: 4,
-                      child: Consumer<ManagementDataViewModel>(
-                        builder: (context, viewModel, child) => NonformTextField(
-                          focusNode: viewModel.focusNode,
-                          textStyle: TextStyle(fontSize: 13.5),
-                          textEditingController: viewModel.controller,
-                          textInputType: TextInputType.text,
-                          hintText: '관리번호 입력',
-                          labelColor: Colors.white,
-                          suffixIcon: viewModel.focusNode.hasFocus
-                              ? IconButton(
-                                  onPressed: viewModel.textClear,
-                                  icon: Icon(
-                                    Icons.cancel,
-                                    color: Colors.grey[400],
-                                  ),
-                                )
-                              : null,
+      appBar: CustomAppBar(
+        title: '',
+        backButton: true,
+        closeButton: false,
+      ),
+      body: Container(
+        margin: EdgeInsets.symmetric(horizontal: 20.w),
+        child: GestureDetector(
+          onTap: () => FocusScope.of(context).unfocus(),
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(
+                  left: 10.0,
+                  right: 10.0,
+                  top: 15.0,
+                  bottom: 15.0,
+                ),
+                child: SizedBox(
+                  height: 35.0,
+                  child: Row(
+                    children: [
+                      Expanded(
+                        flex: 4,
+                        child: Consumer<ManagementNormalViewModel>(
+                          builder: (context, viewModel, child) => NonformTextField(
+                            focusNode: viewModel.focusNode,
+                            textStyle: TextStyle(fontSize: 13.5),
+                            textEditingController: viewModel.controller,
+                            textInputType: TextInputType.text,
+                            hintText: '관리번호 입력',
+                            labelColor: Colors.white,
+                            suffixIcon: viewModel.focusNode.hasFocus
+                                ? IconButton(
+                                    onPressed: viewModel.textClear,
+                                    icon: Icon(
+                                      Icons.cancel,
+                                      color: Colors.grey[400],
+                                    ),
+                                  )
+                                : null,
+                          ),
                         ),
                       ),
-                    ),
-                    Consumer<ManagementDataViewModel>(
-                      builder: (context, viewModel, child) => Expanded(
-                        flex: 1,
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 10.0),
-                          child: ElevatedButton(
+                      Consumer<ManagementNormalViewModel>(
+                        builder: (context, viewModel, child) => Expanded(
+                          flex: 3,
+                          child: TextButton(
                             onPressed: () {
                               tempSelections1 = List<bool>.from(viewModel.selectionsDay!);
-                              tempSelections2 = List<bool>.from(viewModel.selectionsData!);
-                              tempSelections3 = List<bool>.from(viewModel.selectionsSpecies!);
+                              tempSelections2 = List<bool>.from(viewModel.selectionsSort!);
                               showModalBottomSheet(
                                 context: context,
-                                isScrollControlled: true,
                                 isDismissible: false,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.only(
@@ -112,7 +101,7 @@ class _ManagementDataScreenState extends State<ManagementDataScreen> {
                                     builder: (BuildContext context, StateSetter bottomState1) {
                                       return Container(
                                         margin: EdgeInsets.all(10.0),
-                                        height: 400,
+                                        height: 300,
                                         child: Center(
                                           child: Column(
                                             mainAxisAlignment: MainAxisAlignment.center,
@@ -129,9 +118,9 @@ class _ManagementDataScreenState extends State<ManagementDataScreen> {
                                                   bottomState1(() {
                                                     if (index == 3) {
                                                       showModalBottomSheet(
+                                                          isScrollControlled: true,
                                                           context: context,
                                                           isDismissible: false,
-                                                          isScrollControlled: true,
                                                           shape: RoundedRectangleBorder(
                                                             borderRadius: BorderRadius.only(
                                                               topLeft: Radius.circular(15.0),
@@ -181,21 +170,20 @@ class _ManagementDataScreenState extends State<ManagementDataScreen> {
                                                                                                       size: 26,
                                                                                                     )),
                                                                                                 IconButton(
-                                                                                                  onPressed: () {
-                                                                                                    bottomState2(
-                                                                                                      () {
-                                                                                                        tempRangeStart = selectDate;
-                                                                                                        temp1 = DateFormat('MM/dd').format(tempRangeStart!);
-                                                                                                      },
-                                                                                                    );
-                                                                                                    Navigator.pop(context);
-                                                                                                  },
-                                                                                                  icon: Icon(
-                                                                                                    Icons.check,
-                                                                                                    color: Colors.black,
-                                                                                                    size: 26,
-                                                                                                  ),
-                                                                                                ),
+                                                                                                    onPressed: () {
+                                                                                                      bottomState2(
+                                                                                                        () {
+                                                                                                          tempRangeStart = selectDate;
+                                                                                                          temp1 = DateFormat('MM/dd').format(tempRangeStart!);
+                                                                                                        },
+                                                                                                      );
+                                                                                                      Navigator.pop(context);
+                                                                                                    },
+                                                                                                    icon: Icon(
+                                                                                                      Icons.check,
+                                                                                                      color: Colors.black,
+                                                                                                      size: 26,
+                                                                                                    )),
                                                                                               ],
                                                                                             ),
                                                                                             Divider(
@@ -352,17 +340,19 @@ class _ManagementDataScreenState extends State<ManagementDataScreen> {
                                                                         ),
                                                                         InkWell(
                                                                           onTap: () {
-                                                                            bottomState1(() {
-                                                                              if (tempRangeEnd != null && tempRangeStart != null) {
-                                                                                tempOption1 = '$temp1-$temp2';
-                                                                                viewModel.widgetsDay[3] = Text(tempOption1);
-                                                                                viewModel.isSelectedEnd = true;
-                                                                              } else {
-                                                                                tempOption1 = '직접설정';
-                                                                                viewModel.widgetsDay[3] = Text(tempOption1);
-                                                                                viewModel.isSelectedEnd = false;
-                                                                              }
-                                                                            });
+                                                                            bottomState1(
+                                                                              () {
+                                                                                if (tempRangeEnd != null && tempRangeStart != null) {
+                                                                                  tempOption1 = '$temp1-$temp2';
+                                                                                  viewModel.widgetsDay[3] = Text(tempOption1);
+                                                                                  viewModel.isSelectedEnd = true;
+                                                                                } else {
+                                                                                  tempOption1 = '직접설정';
+                                                                                  viewModel.widgetsDay[3] = Text(tempOption1);
+                                                                                  viewModel.isSelectedEnd = false;
+                                                                                }
+                                                                              },
+                                                                            );
                                                                             context.pop();
                                                                           },
                                                                           child: SizedBox(
@@ -405,7 +395,7 @@ class _ManagementDataScreenState extends State<ManagementDataScreen> {
                                                 minWidth: 80.0,
                                               ),
                                               Text(
-                                                '등록자',
+                                                '정렬',
                                                 style: TextStyle(
                                                   fontSize: 18.0,
                                                 ),
@@ -416,43 +406,18 @@ class _ManagementDataScreenState extends State<ManagementDataScreen> {
                                                     for (int i = 0; i < tempSelections2.length; i++) {
                                                       if (i == index) {
                                                         tempSelections2[i] = true;
-                                                        tempOption2 = (viewModel.widgetsData[i] as Text).data.toString();
+                                                        tempOption2 = (viewModel.widgetsSort[i] as Text).data.toString();
                                                       } else {
                                                         tempSelections2[i] = false;
                                                       }
                                                     }
                                                   });
                                                 },
-                                                options: viewModel.widgetsData,
+                                                options: viewModel.widgetsSort,
                                                 isSelected: tempSelections2,
                                                 isRadius: false,
                                                 minHeight: 30.0,
-                                                minWidth: 80.0,
-                                              ),
-                                              Text(
-                                                '육종',
-                                                style: TextStyle(
-                                                  fontSize: 18.0,
-                                                ),
-                                              ),
-                                              CustomToggleButton(
-                                                onPressed: (index) {
-                                                  bottomState1(() {
-                                                    for (int i = 0; i < tempSelections3.length; i++) {
-                                                      if (i == index) {
-                                                        tempSelections3[i] = true;
-                                                        tempOption3 = (viewModel.widgetsSpecies[i] as Text).data.toString();
-                                                      } else {
-                                                        tempSelections3[i] = false;
-                                                      }
-                                                    }
-                                                  });
-                                                },
-                                                options: viewModel.widgetsSpecies,
-                                                isSelected: tempSelections3,
-                                                isRadius: false,
-                                                minHeight: 30.0,
-                                                minWidth: 105.0,
+                                                minWidth: 160.0,
                                               ),
                                               MainButton(
                                                   text: '확인',
@@ -464,11 +429,9 @@ class _ManagementDataScreenState extends State<ManagementDataScreen> {
                                                           Navigator.pop(context);
                                                           setState(() {
                                                             viewModel.selectionsDay = List.from(tempSelections1);
-                                                            viewModel.selectionsData = List.from(tempSelections2);
-                                                            viewModel.selectionsSpecies = List.from(tempSelections3);
+                                                            viewModel.selectionsSort = List.from(tempSelections2);
                                                             viewModel.textDay = tempOption1;
-                                                            viewModel.textData = tempOption2;
-                                                            viewModel.textSpecies = tempOption3;
+                                                            viewModel.textSort = tempOption2;
                                                             viewModel.rangeStart = tempRangeStart;
                                                             viewModel.rangeEnd = tempRangeEnd;
                                                             if (viewModel.textDay == '3일' || viewModel.textDay == '1개월' || viewModel.textDay == '3개월') {
@@ -478,7 +441,6 @@ class _ManagementDataScreenState extends State<ManagementDataScreen> {
                                                               temp2 = '';
                                                               viewModel.widgetsDay[3] = Text('직접설정');
                                                             }
-                                                            viewModel.setTime();
                                                           });
                                                         }
                                                       : null),
@@ -492,44 +454,37 @@ class _ManagementDataScreenState extends State<ManagementDataScreen> {
                               );
                             },
                             style: TextButton.styleFrom(
-                                foregroundColor: Colors.grey[600],
-                                backgroundColor: Colors.white,
-                                elevation: 0,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(25.0),
-                                    side: BorderSide(
-                                      color: Colors.black,
-                                      width: 0.8,
-                                    ))),
-                            child: Text(
-                              '필터',
-                              style: TextStyle(fontWeight: FontWeight.w700, color: Colors.black, fontSize: 23.sp),
+                              foregroundColor: Colors.grey[600],
                             ),
+                            child: Text('${viewModel.textDay} | ${viewModel.textSort}'),
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
-            ),
-            DataTableGuide(),
-            Consumer<ManagementDataViewModel>(
-              builder: (context, viewModel, child) => Expanded(
-                child: FutureBuilder<List<String>>(
-                    future: viewModel.initialize(20, viewModel.startDay!, viewModel.endDay!),
+              DataTableGuide(),
+              Consumer<ManagementNormalViewModel>(
+                builder: (context, viewModel, child) => Expanded(
+                  child: FutureBuilder<List<String>>(
+                    future: viewModel.initialize(),
                     builder: (context, snapshot) {
                       if (snapshot.hasData == false) {
                         return Center(child: CircularProgressIndicator());
                       } else if (snapshot.hasError) {
                         return Text('Error: ${snapshot.error}\n에러가 발생했습니다!');
                       } else {
-                        return CustomManagementTable(userSource: snapshot.data!);
+                        return CustomManagementNormal(
+                          userSource: snapshot.data!,
+                        );
                       }
-                    }),
+                    },
+                  ),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
