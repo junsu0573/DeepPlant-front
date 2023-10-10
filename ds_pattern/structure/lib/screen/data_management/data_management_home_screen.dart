@@ -93,28 +93,18 @@ class _DataManagementHomeScreenState extends State<DataManagementHomeScreen> {
                     width: 640.w,
                     child: Consumer<DataManagementHomeViewModel>(
                       builder: (context, viewModel, child) => ListView.builder(
-                        itemCount: viewModel.insertedText.isEmpty
-                            ? viewModel.numList.length
-                            : viewModel.filteredList.length,
+                        itemCount: viewModel.selectedList.length,
                         itemBuilder: (context, index) => ListCard(
                             onTap: () async =>
                                 await viewModel.onTap(index, context),
                             idx: index + 1,
-                            num: viewModel.insertedText.isEmpty
-                                ? viewModel.numList[index]["id"]!
-                                : viewModel.filteredList[index]["id"]!,
-                            statusType: viewModel.insertedText.isEmpty
-                                ? viewModel.numList[index]["statusType"]!
-                                : viewModel.filteredList[index]["statusType"]!,
-                            dDay: viewModel.insertedText.isEmpty
-                                ? 3 -
-                                    Usefuls.calculateDateDifference(
-                                        viewModel.numList[index]["createdAt"]!)
-                                : 3 -
-                                    Usefuls.calculateDateDifference(
-                                      viewModel.filteredList[index]
-                                          ["createdAt"]!,
-                                    )),
+                            num: viewModel.selectedList[index]["id"]!,
+                            statusType: viewModel.selectedList[index]
+                                ["statusType"]!,
+                            dDay: 3 -
+                                Usefuls.calculateDateDifference(
+                                  viewModel.selectedList[index]["createdAt"]!,
+                                )),
                       ),
                     ),
                   ),

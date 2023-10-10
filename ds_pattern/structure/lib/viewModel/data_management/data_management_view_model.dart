@@ -10,8 +10,14 @@ class DataManagementHomeViewModel with ChangeNotifier {
     _initialize();
   }
   late BuildContext _context;
+  // 초기 리스트
   List<Map<String, String>> numList = [];
+
+  // 필터링된 리스트
   List<Map<String, String>> filteredList = [];
+
+  // 선택된 리스트
+  List<Map<String, String>> selectedList = [];
 
   String insertedText = '';
 
@@ -89,6 +95,7 @@ class DataManagementHomeViewModel with ChangeNotifier {
 
           numList.add(idStatusPair);
         }
+        selectedList = numList;
       }
     } catch (e) {
       print("에러발생: $e");
@@ -101,6 +108,8 @@ class DataManagementHomeViewModel with ChangeNotifier {
 
     insertedText = value ?? '';
     _filterStrings();
+
+    selectedList = insertedText.isEmpty ? numList : filteredList;
 
     isLoading = false;
     notifyListeners();
