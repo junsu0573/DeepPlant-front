@@ -49,4 +49,18 @@ class UserModel with ChangeNotifier {
     createdAt = null;
     alarm = null;
   }
+
+  @override
+  String toString() {
+    // TODO: implement toString
+    return 'userId:$userId,'
+        'password:$password,'
+        'name:$name,'
+        'homeAdress:$homeAdress,'
+        'company:$company,'
+        'jobTitle:$jobTitle,'
+        'type:$type,'
+        'createdAt:$createdAt,'
+        'alarm:$alarm,';
+  }
 }

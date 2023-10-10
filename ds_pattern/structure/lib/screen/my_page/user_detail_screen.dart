@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:structure/components/custom_app_bar.dart';
 import 'package:structure/components/main_button.dart';
@@ -74,8 +73,9 @@ class UserDetailScreen extends StatelessWidget {
                         // 비밀번호 변경 버튼
                         RoundButton(
                           text: const Text('비밀번호 변경하기'),
-                          onPress: () =>
-                              context.go('/main/my-page/user-detail/change-pw'),
+                          onPress: () => context
+                              .read<UserDetailViewModel>()
+                              .clickedChangePW(context),
                           width: 658.w,
                           height: 85.h,
                         ),
@@ -253,8 +253,8 @@ class UserDetailScreen extends StatelessWidget {
               ),
             ),
           ),
-          context.read<UserDetailViewModel>().isLoading
-              ? const CircularProgressIndicator()
+          context.watch<UserDetailViewModel>().isLoading
+              ? const Center(child: CircularProgressIndicator())
               : Container(),
         ],
       ),

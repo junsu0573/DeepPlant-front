@@ -48,6 +48,12 @@ dependencies:
   intl: ^0.18.1
   kpostal: ^0.5.1
   xml2json: ^6.2.0
+  image_picker: ^1.0.4
+  dotted_border: ^2.1.0
+  cloud_firestore: ^4.9.3
+  crypto: ^3.0.3
+  qr_flutter: ^4.1.0
+  table_calendar: ^3.0.9
 
 dev_dependencies:
   flutter_test:

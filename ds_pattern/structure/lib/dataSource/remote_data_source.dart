@@ -1,5 +1,7 @@
 import 'dart:convert';
+import 'dart:io';
 
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:xml2json/xml2json.dart';
 
@@ -69,11 +71,17 @@ class RemoteDataSource {
     return response;
   }
 
+  // 승인된 관리번호 검색
+  static Future<dynamic> getConfirmedMeatData() async {
+    dynamic response = await _getApi('meat/status?statusType=2');
+    return response;
+  }
+
   // 유저가 등록한 관리번호 조회 (GET)
   static Future<dynamic> getUserMeatData(String? dest) async {
     String endPoint = 'meat/user';
     if (dest != null) {
-      endPoint = 'meat/user/$dest';
+      endPoint = 'meat/user$dest';
     }
     dynamic response = await _getApi(endPoint);
     return response;
@@ -164,27 +172,45 @@ class RemoteDataSource {
       return;
     }
   }
-}
 
-class OpenApiSource {
-  String baseUrl;
-  OpenApiSource({
-    required this.baseUrl,
-  });
+  // 육류 이미지 firebase 저장 (POST)
+  static Future<dynamic> sendImageToFirebase(
+      String imagePath, String imageDest) async {
+    FirebaseStorage firebaseStorage = FirebaseStorage.instance;
+    try {
+      final refMeatImage = firebaseStorage.ref().child('$imageDest.png');
 
-  Future<dynamic> getJsonData() async {
-    final response = await http.get(Uri.parse(baseUrl));
+      await refMeatImage.putFile(
+        File(imagePath),
+        SettableMetadata(contentType: 'image/jpeg'),
+      );
+      return '이미지 전송 성공';
+    } catch (e) {
+      print(e);
+      return;
+    }
+  }
 
-    if (response.statusCode == 200) {
-      final body = utf8.decode(response.bodyBytes);
-      final xml2JsonData = Xml2Json()..parse(body);
-      final jsonData = xml2JsonData.toParker();
+  // 육류 이력관리 정보 (GET)
+  static Future<dynamic> getMeatTraceData(String url) async {
+    try {
+      final response = await http.get(Uri.parse(url));
 
-      final parsingData = jsonDecode(jsonData);
+      if (response.statusCode == 200) {
+        final body = utf8.decode(response.bodyBytes);
+        final xml2JsonData = Xml2Json()..parse(body);
+        final jsonData = xml2JsonData.toParker();
 
-      return parsingData;
-    } else {
-      print(response.statusCode);
+        final parsingData = jsonDecode(jsonData);
+
+        return parsingData;
+      } else {
+        print(response.statusCode);
+        return;
+      }
+    } catch (e) {
+      print("error");
+      return;
     }
   }
 }

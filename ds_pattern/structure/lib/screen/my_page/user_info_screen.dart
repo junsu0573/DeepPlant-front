@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:structure/components/custom_app_bar.dart';
 import 'package:structure/components/round_button.dart';
@@ -10,19 +9,6 @@ class UserInfoScreen extends StatelessWidget {
   const UserInfoScreen({
     super.key,
   });
-
-  // void _signOut(BuildContext context) async {
-  //   try {
-  //     // 파이어베이스 로그아웃
-  //     await FirebaseAuth.instance.signOut();
-
-  //     // home 화면으로 이동
-  //     if (!mounted) return;
-  //     context.go('/');
-  //   } catch (e) {
-  //     print('로그아웃 에러: $e');
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -149,7 +135,8 @@ class UserInfoScreen extends StatelessWidget {
                       color: Colors.black,
                     ),
                   ),
-                  onPress: () => context.go('/main/my-page/user-detail'),
+                  onPress: () =>
+                      context.read<UserInfoViewModel>().clickedEdit(context),
                   width: 139.w,
                   height: 49.h,
                   bgColor: const Color.fromRGBO(217, 217, 217, 1),

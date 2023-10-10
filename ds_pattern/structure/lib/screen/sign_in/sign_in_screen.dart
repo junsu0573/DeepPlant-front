@@ -142,7 +142,10 @@ class SignInScreen extends StatelessWidget {
                       ),
                       // 회원가입 텍스트버튼
                       TextButton(
-                        onPressed: () => context.go('/sign-in/sign-up'),
+                        onPressed: () {
+                          FocusScope.of(context).unfocus();
+                          context.go('/sign-in/sign-up');
+                        },
                         child: Text(
                           '회원가입',
                           style: TextStyle(

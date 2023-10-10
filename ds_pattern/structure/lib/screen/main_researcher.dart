@@ -3,26 +3,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:structure/components/custom_icon_button.dart';
 import 'package:structure/config/pallete.dart';
-import 'package:structure/model/user_model.dart';
 
-class MainScreen extends StatefulWidget {
-  final UserModel userModel;
-  const MainScreen({
+class MainResearcherScreen extends StatelessWidget {
+  const MainResearcherScreen({
     super.key,
-    required this.userModel,
   });
-
-  @override
-  State<MainScreen> createState() => _MainScreenState();
-}
-
-class _MainScreenState extends State<MainScreen> {
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    print(widget.userModel.name);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +22,7 @@ class _MainScreenState extends State<MainScreen> {
             children: [
               CustomIconButton(
                 image: const AssetImage('assets/images/person.png'),
-                onTap: () => context.go('/main/my-page'),
+                onTap: () => context.go('/main-normal/my-page'),
                 width: 63.w,
                 height: 63.h,
               ),
@@ -85,7 +70,7 @@ class _MainScreenState extends State<MainScreen> {
               children: [
                 // 육류 등록 버튼
                 InkWell(
-                  onTap: () => context.go('/main/registration'),
+                  onTap: () => context.go('/main-researcher/registration'),
                   child: Padding(
                     padding: const EdgeInsets.all(5.0),
                     child: Stack(
@@ -141,7 +126,7 @@ class _MainScreenState extends State<MainScreen> {
                 ),
                 // 데이어 관리 버튼
                 InkWell(
-                  onTap: () {},
+                  onTap: () => context.go('/main-researcher/data-manage'),
                   child: Padding(
                     padding: const EdgeInsets.all(5.0),
                     child: Stack(

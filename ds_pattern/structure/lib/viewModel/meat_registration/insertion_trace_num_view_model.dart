@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:structure/dataSource/remote_data_source.dart';
 import 'package:structure/model/meat_model.dart';
@@ -32,7 +33,7 @@ class InsertionTraceNumViewModel with ChangeNotifier {
 
   // 초기 실행 함수
   void initialize() {
-    if (meatModel.traceNum != null) {
+    if (meatModel.id != null) {
       fetchMeatData();
     }
   }
@@ -47,10 +48,26 @@ class InsertionTraceNumViewModel with ChangeNotifier {
     farmAddr = meatModel.farmAddr;
     butcheryYmd = meatModel.butcheryYmd;
     gradeNum = meatModel.gradeNum;
+    tableData.addAll([
+      traceNum,
+      birthYmd,
+      species,
+      sexType,
+      farmerNm,
+      farmAddr,
+      butcheryYmd,
+      gradeNum
+    ]);
+    isAllInserted = 1;
   }
 
   // api를 통해 얻어온 육류의 정보를 객체에 저장
   void saveMeatData() {
+    if (meatModel.traceNum != null && meatModel.traceNum != traceNum) {
+      meatModel.speciesValue = null;
+      meatModel.primalValue = null;
+      meatModel.secondaryValue = null;
+    }
     meatModel.traceNum = traceNum;
     meatModel.farmAddr = farmAddr;
     meatModel.farmerNm = farmerNm;
@@ -118,11 +135,9 @@ class InsertionTraceNumViewModel with ChangeNotifier {
     // 만일 묶음 번호가 들어온다면, 처리하여 이력 번호로 갱신한다.
     if (historyNo.startsWith('L1')) {
       try {
-        OpenApiSource source = OpenApiSource(
-            baseUrl:
-                "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?serviceKey=$apikey&traceNo=$historyNo&optionNo=9");
-
-        final pigAPIData = await source.getJsonData();
+        final pigAPIData = await RemoteDataSource.getMeatTraceData(
+            "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?serviceKey=$apikey&traceNo=$historyNo&optionNo=9");
+        if (pigAPIData == null) throw Error();
 
         if (pigAPIData['response']['body']['items']['item'][0] == null) {
           traceNum = pigAPIData['response']['body']['items']['item']['pigNo'];
@@ -141,19 +156,12 @@ class InsertionTraceNumViewModel with ChangeNotifier {
     // 소의 경우이다.
     if (traceNum!.startsWith('0')) {
       try {
-        OpenApiSource source1 = OpenApiSource(
-            baseUrl:
-                "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?serviceKey=$apikey&traceNo=$traceNum&optionNo=1");
-        OpenApiSource source2 = OpenApiSource(
-            baseUrl:
-                "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?serviceKey=$apikey&traceNo=$traceNum&optionNo=2");
-        OpenApiSource source3 = OpenApiSource(
-            baseUrl:
-                "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?serviceKey=$apikey&traceNo=$traceNum&optionNo=3");
-
-        final meatAPIData1 = await source1.getJsonData();
-        final meatAPIData2 = await source2.getJsonData();
-        final meatAPIData3 = await source3.getJsonData();
+        final meatAPIData1 = await RemoteDataSource.getMeatTraceData(
+            "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?serviceKey=$apikey&traceNo=$traceNum&optionNo=1");
+        final meatAPIData2 = await RemoteDataSource.getMeatTraceData(
+            "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?serviceKey=$apikey&traceNo=$traceNum&optionNo=2");
+        final meatAPIData3 = await RemoteDataSource.getMeatTraceData(
+            "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?serviceKey=$apikey&traceNo=$traceNum&optionNo=3");
 
         String? date =
             meatAPIData1['response']['body']['items']['item']['birthYmd'] ?? "";
@@ -189,15 +197,10 @@ class InsertionTraceNumViewModel with ChangeNotifier {
     } else {
       // 돼지의 경우이다.
       try {
-        OpenApiSource source4 = OpenApiSource(
-            baseUrl:
-                "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?serviceKey=$apikey&traceNo=$traceNum&optionNo=4");
-        OpenApiSource source3 = OpenApiSource(
-            baseUrl:
-                "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?serviceKey=$apikey&traceNo=$traceNum&optionNo=3");
-
-        final meatAPIData4 = await source4.getJsonData();
-        final meatAPIData3 = await source3.getJsonData();
+        final meatAPIData4 = await RemoteDataSource.getMeatTraceData(
+            "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?serviceKey=$apikey&traceNo=$traceNum&optionNo=4");
+        final meatAPIData3 = await RemoteDataSource.getMeatTraceData(
+            "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?serviceKey=$apikey&traceNo=$traceNum&optionNo=3");
 
         gradeNum = meatAPIData4['response']['body']['items']['item']['gradeNm'];
 
@@ -231,16 +234,12 @@ class InsertionTraceNumViewModel with ChangeNotifier {
     }
   }
 
-  // void asyncPaging() async {
-  //   await Navigator.push(
-  //     context,
-  //     MaterialPageRoute(
-  //       builder: (context) => InsertionMeatInfo(
-  //         meatData: widget.meatData,
-  //       ),
-  //     ),
-  //   );
-  //   if (!mounted) return;
-  //   Navigator.pop(context);
-  // }
+  void clickedNextbutton(BuildContext context) {
+    saveMeatData();
+    if (meatModel.id != null) {
+      context.go('/home/data-manage-normal/edit/trace-editable/info-editable');
+    } else {
+      context.go('/home/registration/trace-num/meat-info');
+    }
+  }
 }

@@ -171,17 +171,13 @@ class _InsertionTraceNumScreenState extends State<InsertionTraceNumScreen> {
                 text: '다음',
                 width: 658.w,
                 heigh: 104.h,
-                onPressed: (context
+                onPressed:
+                    (context.read<InsertionTraceNumViewModel>().isAllInserted ==
+                            1)
+                        ? () => context
                             .read<InsertionTraceNumViewModel>()
-                            .isAllInserted ==
-                        1)
-                    ? () {
-                        context
-                            .read<InsertionTraceNumViewModel>()
-                            .saveMeatData();
-                        context.go('/main/registration/trace-num/meat-info');
-                      }
-                    : null,
+                            .clickedNextbutton(context)
+                        : null,
               ),
             ),
           ],

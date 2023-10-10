@@ -3,12 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:structure/config/pallete.dart';
 import 'package:structure/dataSource/remote_data_source.dart';
+import 'package:structure/model/meat_model.dart';
 import 'package:structure/model/user_model.dart';
 
 class SignInViewModel with ChangeNotifier {
   UserModel userModel;
-
-  SignInViewModel({required this.userModel});
+  MeatModel meatModel;
+  SignInViewModel({required this.userModel, required this.meatModel});
 
   String userId = '';
   String userPw = '';
@@ -20,8 +21,11 @@ class SignInViewModel with ChangeNotifier {
   // firbase authentic
   final _authentication = FirebaseAuth.instance;
 
+  late BuildContext _context;
+
   // 로그인 버튼 클릭 시
   Future<void> clickedSignInButton(BuildContext context) async {
+    FocusScope.of(context).unfocus();
     _tryValidation();
     await _signIn(context);
   }
@@ -54,7 +58,8 @@ class SignInViewModel with ChangeNotifier {
           notifyListeners();
 
           // 페이지 이동
-          context.go('/main');
+          _context = context;
+          _movePage();
         } else {
           throw Error();
         }
@@ -141,11 +146,18 @@ class SignInViewModel with ChangeNotifier {
         // 가져오기 성공
         // 데이터 fetch
         userModel.fromJson(userInfo);
+        print(userModel);
+        // 육류 정보 생성자 id 저장
+        meatModel.userId = userModel.userId;
         return true;
       }
     } catch (e) {
       return false;
     }
+  }
+
+  void _movePage() {
+    _context.go('/home');
   }
 }
 

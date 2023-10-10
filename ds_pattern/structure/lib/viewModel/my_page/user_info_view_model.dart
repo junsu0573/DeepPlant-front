@@ -11,7 +11,6 @@ class UserInfoViewModel with ChangeNotifier {
   String createdAt = '';
 
   UserInfoViewModel(UserModel userModel) {
-    print('here');
     userName = userModel.name ?? 'None';
     userId = userModel.userId ?? 'None';
     userType = userModel.type ?? 'None';
@@ -30,9 +29,13 @@ class UserInfoViewModel with ChangeNotifier {
   BuildContext? _context;
 
   Future<void> clickedSignOut(BuildContext context) async {
-    _context = context;
     await FirebaseAuth.instance.signOut();
+    _context = context;
     movePage();
+  }
+
+  void clickedEdit(BuildContext context) {
+    context.go('/home/my-page/user-detail');
   }
 
   void movePage() {

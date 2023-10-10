@@ -1,12 +1,17 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:kpostal/kpostal.dart';
+import 'package:structure/dataSource/remote_data_source.dart';
 import 'package:structure/model/user_model.dart';
 
 class UserDetailViewModel with ChangeNotifier {
+  UserModel userModel;
+  UserDetailViewModel(this.userModel) {
+    _initialize();
+  }
   String userId = '';
-  UserDetailViewModel(UserModel userModel)
-      : userId = userModel.userId ?? 'None';
-
   bool isEditting = false;
   bool isLoading = false;
 
@@ -45,66 +50,77 @@ class UserDetailViewModel with ChangeNotifier {
     );
   }
 
-  Future<void> clickedSaveButton() async {}
+  void clickedChangePW(BuildContext context) {
+    context.go('/home/my-page/user-detail/change-pw');
+  }
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   if (widget.user.homeAdress != null && widget.user.homeAdress!.isNotEmpty) {
-  //     int index = widget.user.homeAdress!.indexOf('/');
-  //     if (index != -1 &&
-  //         widget.user.homeAdress!.substring(0, index).isNotEmpty) {
-  //       _mainAddressController.text =
-  //           widget.user.homeAdress!.substring(0, index);
-  //     }
-  //     if (index != -1 &&
-  //         widget.user.homeAdress!.substring(index + 1).isNotEmpty) {
-  //       _subAddressController.text =
-  //           widget.user.homeAdress!.substring(index + 1);
-  //     }
-  //   }
-  //   if (widget.user.company != null && widget.user.company!.isNotEmpty) {
-  //     _companyController.text = widget.user.company!;
-  //   }
-  //   if (widget.user.jobTitle != null && widget.user.jobTitle!.isNotEmpty) {
-  //     int index = widget.user.jobTitle!.indexOf('/');
-  //     if (index != -1 && widget.user.jobTitle!.substring(0, index).isNotEmpty) {
-  //       _departmentController.text = widget.user.jobTitle!.substring(0, index);
-  //     }
-  //     if (index != -1 &&
-  //         widget.user.jobTitle!.substring(index + 1).isNotEmpty) {
-  //       _jobTitleController.text = widget.user.jobTitle!.substring(index + 1);
-  //     }
-  //   }
-  // }
+  Future<void> clickedSaveButton() async {
+    isLoading = true;
+    notifyListeners();
 
-  // Future<void> saveUserData() async {
-  //   setState(() {
-  //     _isLoading = true;
-  //   });
+    if (mainAddress.text.isNotEmpty) {
+      userModel.homeAdress = '${mainAddress.text}/${subAddress.text}';
+    }
 
-  //   if (_mainAddressController.text.isNotEmpty) {
-  //     widget.user.homeAdress =
-  //         '${_mainAddressController.text}/${_subAddressController.text}';
-  //   }
+    userModel.company = company.text;
+    if (department.text.isNotEmpty || jobTitle.text.isNotEmpty) {
+      userModel.jobTitle = '${department.text}/${jobTitle.text}';
+    }
 
-  //   widget.user.company = _companyController.text;
-  //   if (_departmentController.text.isNotEmpty ||
-  //       _jobTitleController.text.isNotEmpty) {
-  //     widget.user.jobTitle =
-  //         '${_departmentController.text}/${_jobTitleController.text}';
-  //   }
+    try {
+      // 데이터 전송
+      final response =
+          await RemoteDataSource.updateUser(_convertUserUpdateToJson());
+      if (response == null) throw Error();
+    } catch (e) {
+      print('$e');
+      // 에러 페이지
+    }
 
-  //   try {
-  //     // 데이터 전송
-  //     final response = await ApiServices.updateUser(widget.user);
-  //     if (response == null) throw Error();
-  //   } catch (e) {
-  //     print('$e');
-  //   }
+    isLoading = false;
+    notifyListeners();
+  }
 
-  //   setState(() {
-  //     _isLoading = false;
-  //   });
-  // }
+  void _initialize() {
+    userId = userModel.userId ?? 'None';
+    if (userModel.homeAdress != null && userModel.homeAdress!.isNotEmpty) {
+      int index = userModel.homeAdress!.indexOf('/');
+      if (index != -1 && userModel.homeAdress!.substring(0, index).isNotEmpty) {
+        mainAddress.text = userModel.homeAdress!.substring(0, index);
+      }
+      if (index != -1 &&
+          userModel.homeAdress!.substring(index + 1).isNotEmpty) {
+        subAddress.text = userModel.homeAdress!.substring(index + 1);
+      }
+    }
+    if (userModel.company != null && userModel.company!.isNotEmpty) {
+      company.text = userModel.company!;
+    }
+    if (userModel.jobTitle != null && userModel.jobTitle!.isNotEmpty) {
+      int index = userModel.jobTitle!.indexOf('/');
+      if (index != -1 && userModel.jobTitle!.substring(0, index).isNotEmpty) {
+        department.text = userModel.jobTitle!.substring(0, index);
+      }
+      if (index != -1 && userModel.jobTitle!.substring(index + 1).isNotEmpty) {
+        jobTitle.text = userModel.jobTitle!.substring(index + 1);
+      }
+    }
+  }
+
+  Future<void> saveUserData() async {}
+
+  // 유저 정보 업데이트 시 json 변환
+  String _convertUserUpdateToJson() {
+    Map<String, dynamic> jsonData = {
+      "userId": userModel.userId,
+      "name": userModel.name,
+      "company": userModel.company,
+      "jobTitle": userModel.jobTitle,
+      "homeAddr": userModel.homeAdress,
+      "alarm": userModel.alarm,
+      "type": userModel.type,
+    };
+
+    return jsonEncode(jsonData);
+  }
 }

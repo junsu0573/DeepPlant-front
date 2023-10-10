@@ -3,10 +3,14 @@ import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:structure/dataSource/remote_data_source.dart';
-import 'package:structure/main.dart';
+import 'package:structure/model/user_model.dart';
 
 class ChangePasswordViewModel with ChangeNotifier {
+  UserModel userModel;
+  ChangePasswordViewModel({required this.userModel});
+
   final formKey = GlobalKey<FormState>();
+  bool isLoading = false;
 
   // validation 문구를 위한 변수
   bool isRedTextPw = false;
@@ -128,18 +132,26 @@ class ChangePasswordViewModel with ChangeNotifier {
 
   // 비밀번호 변경
   Future<void> changePassword(BuildContext context) async {
+    isLoading = true;
+    notifyListeners();
     try {
-      final response =
-          await RemoteDataSource.checkUserPw(_userInfoToJson(_userPassword));
+      final response = await RemoteDataSource.checkUserPw(_userInfoToJson());
 
       _context = context;
       if (response == null) {
         _showAlert();
+        isLoading = false;
+        notifyListeners();
         return;
       }
 
       User? user = FirebaseAuth.instance.currentUser;
       if (user != null) {
+        final response =
+            await RemoteDataSource.changeUserPw(_convertChangeUserPwToJson());
+        if (response == null) {
+          throw Error();
+        }
         await FirebaseAuth.instance.currentUser?.reauthenticateWithCredential(
           EmailAuthProvider.credential(
             email: userModel.userId!,
@@ -147,24 +159,29 @@ class ChangePasswordViewModel with ChangeNotifier {
           ),
         );
         await user.updatePassword(_userNewPassword);
-        final response = await RemoteDataSource.changeUserPw(
-            _userInfoToJson(_userNewPassword));
-
-        if (response == null) {
-          throw Error();
-        }
       } else {
         print('User does not exist.');
       }
     } catch (e) {
       print('error: $e');
     }
+    isLoading = false;
+    notifyListeners();
   }
 
-  String _userInfoToJson(String password) {
+  // 유저 비밀번호 확인
+  String _userInfoToJson() {
     return jsonEncode({
       "id": userModel.userId,
-      "password": password,
+      "password": _userNewPassword,
+    });
+  }
+
+  // 유저 비밀번호 변경 시 반환
+  String _convertChangeUserPwToJson() {
+    return jsonEncode({
+      "userId": userModel.userId,
+      "password": _userNewPassword,
     });
   }
 

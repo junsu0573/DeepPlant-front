@@ -19,9 +19,8 @@ class _InsertionMeatInfoScreenState extends State<InsertionMeatInfoScreen> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<InsertionMeatInfoViewModel>().initialize();
-    });
+
+    context.read<InsertionMeatInfoViewModel>().initialize();
   }
 
   @override
@@ -61,7 +60,7 @@ class _InsertionMeatInfoScreenState extends State<InsertionMeatInfoScreen> {
                   ),
                   CustomDropdown(
                     hintText: Text(
-                      context.read<InsertionMeatInfoViewModel>().speciesValue,
+                      context.watch<InsertionMeatInfoViewModel>().speciesValue,
                       style: TextStyle(
                         fontSize: 30.sp,
                         fontWeight: FontWeight.w400,
@@ -103,17 +102,15 @@ class _InsertionMeatInfoScreenState extends State<InsertionMeatInfoScreen> {
                     itemList:
                         context.read<InsertionMeatInfoViewModel>().largeDiv,
                     onChanged: context
-                            .read<InsertionMeatInfoViewModel>()
+                            .watch<InsertionMeatInfoViewModel>()
                             .isSelectedSpecies
                         ? (value) {
-                            setState(() {
-                              context
-                                  .read<InsertionMeatInfoViewModel>()
-                                  .primalValue = value as String;
-                              context
-                                  .read<InsertionMeatInfoViewModel>()
-                                  .setPrimal();
-                            });
+                            context
+                                .read<InsertionMeatInfoViewModel>()
+                                .primalValue = value as String;
+                            context
+                                .read<InsertionMeatInfoViewModel>()
+                                .setPrimal();
                           }
                         : null,
                   ),
@@ -130,22 +127,20 @@ class _InsertionMeatInfoScreenState extends State<InsertionMeatInfoScreen> {
                       ),
                     ),
                     value: context
-                        .read<InsertionMeatInfoViewModel>()
+                        .watch<InsertionMeatInfoViewModel>()
                         .secondaryValue,
                     itemList:
-                        context.read<InsertionMeatInfoViewModel>().litteDiv,
+                        context.watch<InsertionMeatInfoViewModel>().litteDiv,
                     onChanged: context
-                            .read<InsertionMeatInfoViewModel>()
+                            .watch<InsertionMeatInfoViewModel>()
                             .isSelectedPrimal
                         ? (value) {
-                            setState(() {
-                              context
-                                  .read<InsertionMeatInfoViewModel>()
-                                  .secondaryValue = value as String;
-                              context
-                                  .read<InsertionMeatInfoViewModel>()
-                                  .secondaryValue;
-                            });
+                            context
+                                .read<InsertionMeatInfoViewModel>()
+                                .secondaryValue = value as String;
+                            context
+                                .read<InsertionMeatInfoViewModel>()
+                                .setSecondary();
                           }
                         : null,
                   ),
@@ -156,16 +151,15 @@ class _InsertionMeatInfoScreenState extends State<InsertionMeatInfoScreen> {
             Container(
               margin: EdgeInsets.only(bottom: 28.h),
               child: MainButton(
-                onPressed:
-                    context.read<InsertionMeatInfoViewModel>().isAllChecked()
-                        ? () {
-                            context
-                                .read<InsertionMeatInfoViewModel>()
-                                .saveMeatData();
-                            Navigator.pop(context);
-                          }
-                        : null,
-                text: '완료',
+                onPressed: context.watch<InsertionMeatInfoViewModel>().completed
+                    ? () => context
+                        .read<InsertionMeatInfoViewModel>()
+                        .clickedNextButton(context)
+                    : null,
+                text: context.read<InsertionMeatInfoViewModel>().meatModel.id ==
+                        null
+                    ? '완료'
+                    : '수정사항 저장',
                 width: 658.w,
                 heigh: 104.h,
                 isWhite: false,
