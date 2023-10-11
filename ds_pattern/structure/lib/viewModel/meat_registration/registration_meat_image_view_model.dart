@@ -55,7 +55,7 @@ class RegistrationMeatImageViewModel with ChangeNotifier {
       // 원육 데이터
       // 등록, 수정
       imagePath = meatModel.imagePath;
-      if (meatModel.freshmeat != null) {
+      if (imagePath != null && meatModel.freshmeat != null) {
         userName = meatModel.freshmeat!['userId'] ?? '-';
         if (meatModel.freshmeat!['createdAt'] != null) {
           fetchDate(meatModel.freshmeat!['createdAt']);
@@ -65,7 +65,7 @@ class RegistrationMeatImageViewModel with ChangeNotifier {
     } else {
       // 처리육 데이터
       imagePath = meatModel.deepAgedImage;
-      if (meatModel.deepAgedFreshmeat != null) {
+      if (imagePath != null && meatModel.deepAgedFreshmeat != null) {
         userName = meatModel.deepAgedFreshmeat!["userId"] ?? '-';
         if (meatModel.deepAgedFreshmeat!["createdAt"] != null) {
           fetchDate(meatModel.deepAgedFreshmeat!["createdAt"]);

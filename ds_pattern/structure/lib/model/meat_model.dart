@@ -188,19 +188,35 @@ class MeatModel with ChangeNotifier {
       "seqno": meatModel.seqno,
       "deepAging": deepAging,
     });
-    return jsonEncode({
-      "id": id,
-      "createdAt": Usefuls.getCurrentDate(),
-      "userId": userId,
-      "period": Usefuls.getMeatPeriod(this),
-      "marbling": freshmeat?["marbling"],
-      "color": freshmeat?["color"],
-      "texture": freshmeat?["texture"],
-      "surfaceMoisture": freshmeat?["surfaceMoisture"],
-      "overall": freshmeat?["overall"],
-      "seqno": meatModel.seqno,
-      "deepAging": deepAging,
-    });
+    if (deepAging == null) {
+      return jsonEncode({
+        "id": id,
+        "createdAt": Usefuls.getCurrentDate(),
+        "userId": userId,
+        "period": Usefuls.getMeatPeriod(this),
+        "marbling": freshmeat?["marbling"],
+        "color": freshmeat?["color"],
+        "texture": freshmeat?["texture"],
+        "surfaceMoisture": freshmeat?["surfaceMoisture"],
+        "overall": freshmeat?["overall"],
+        "seqno": meatModel.seqno,
+        "deepAging": deepAging,
+      });
+    } else {
+      return jsonEncode({
+        "id": id,
+        "createdAt": Usefuls.getCurrentDate(),
+        "userId": userId,
+        "period": Usefuls.getMeatPeriod(this),
+        "marbling": deepAgedFreshmeat?["marbling"],
+        "color": deepAgedFreshmeat?["color"],
+        "texture": deepAgedFreshmeat?["texture"],
+        "surfaceMoisture": deepAgedFreshmeat?["surfaceMoisture"],
+        "overall": deepAgedFreshmeat?["overall"],
+        "seqno": meatModel.seqno,
+        "deepAging": deepAging,
+      });
+    }
   }
 
   String toJsonHeated() {
