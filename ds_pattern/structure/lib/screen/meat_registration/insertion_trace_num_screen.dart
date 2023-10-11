@@ -32,7 +32,7 @@ class _InsertionTraceNumScreenState extends State<InsertionTraceNumScreen> {
   void initState() {
     super.initState();
     context.read<InsertionTraceNumViewModel>().initialize();
-    _eventChannel = const EventChannel('com.example.deep_plant_app/barcode');
+    _eventChannel = const EventChannel('com.example.structure/barcode');
     _eventSubscription =
         _eventChannel!.receiveBroadcastStream().listen((dynamic event) {
       setState(() {
