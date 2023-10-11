@@ -12,9 +12,9 @@ import 'package:structure/config/userfuls.dart';
 import 'package:structure/dataSource/remote_data_source.dart';
 import 'package:structure/model/meat_model.dart';
 
-class CreationManagementNumViewModel with ChangeNotifier {
+class CreationManagementNumResearcherViewModel with ChangeNotifier {
   MeatModel meatModel;
-  CreationManagementNumViewModel(this.meatModel) {
+  CreationManagementNumResearcherViewModel(this.meatModel) {
     _initialize();
   }
 
@@ -28,6 +28,9 @@ class CreationManagementNumViewModel with ChangeNotifier {
     // 데이터 전송
     await _sendMeatData();
 
+    // 데이터 승인
+    await RemoteDataSource.confirmMeatData(managementNum);
+
     isLoading = false;
     notifyListeners();
   }
@@ -35,6 +38,7 @@ class CreationManagementNumViewModel with ChangeNotifier {
   String managementNum = '-';
   FirebaseFirestore firestore = FirebaseFirestore.instance;
   bool isLoading = true;
+  bool isFetchLoading = false;
 
   // 관리번호 생성
   void _createManagementNum() {
@@ -135,5 +139,30 @@ class CreationManagementNumViewModel with ChangeNotifier {
 
   void clickedHomeButton(BuildContext context) {
     context.go('/home');
+  }
+
+  late BuildContext _context;
+  Future<void> clickedAddData(BuildContext context) async {
+    String id = managementNum;
+
+    try {
+      isFetchLoading = true;
+      notifyListeners();
+
+      dynamic response = await RemoteDataSource.getMeatData(id);
+      if (response == null) throw Error();
+      meatModel.reset();
+      meatModel.fromJson(response);
+      _context = context;
+      _movePage();
+    } catch (e) {
+      print("에러발생: $e");
+    }
+    isFetchLoading = false;
+    notifyListeners();
+  }
+
+  void _movePage() {
+    _context.go('/home/data-manage-researcher/add');
   }
 }
