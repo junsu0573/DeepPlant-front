@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:structure/config/userfuls.dart';
 import 'package:structure/dataSource/remote_data_source.dart';
 import 'package:structure/model/meat_model.dart';
 
@@ -13,7 +14,7 @@ class RegistrationMeatImageViewModel with ChangeNotifier {
   final MeatModel meatModel;
 
   RegistrationMeatImageViewModel(this.meatModel) {
-    _fetch();
+    _initialize();
   }
 
   String date = '-';
@@ -50,7 +51,7 @@ class RegistrationMeatImageViewModel with ChangeNotifier {
     }
   }
 
-  void _fetch() {
+  void _initialize() {
     if (meatModel.seqno == 0) {
       // 원육 데이터
       // 등록, 수정
@@ -120,6 +121,7 @@ class RegistrationMeatImageViewModel with ChangeNotifier {
         meatModel.imagePath = imagePath;
         meatModel.freshmeat ??= {};
         meatModel.freshmeat!['userId'] = meatModel.userId;
+        meatModel.freshmeat!['createdAt'] = Usefuls.getCurrentDate();
         if (meatModel.id == null) {
           // 등록
         } else {
@@ -134,6 +136,7 @@ class RegistrationMeatImageViewModel with ChangeNotifier {
         meatModel.deepAgedImage = imagePath;
         meatModel.deepAgedFreshmeat ??= {};
         meatModel.deepAgedFreshmeat!['userId'] = meatModel.userId;
+        meatModel.deepAgedFreshmeat!['createdAt'] = Usefuls.getCurrentDate();
         await _sendImageToFirebase();
         await RemoteDataSource.sendMeatData(
             'sensory_eval',

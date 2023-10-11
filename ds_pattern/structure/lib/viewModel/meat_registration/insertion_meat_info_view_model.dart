@@ -31,7 +31,7 @@ class InsertionMeatInfoViewModel with ChangeNotifier {
       isSelectedSpecies = true;
     }
     // data fetch
-    if (meatModel.id != null) {
+    if (meatModel.secondaryValue != null) {
       primalValue = meatModel.primalValue;
       secondaryValue = meatModel.secondaryValue;
       isSelectedPrimal = true;

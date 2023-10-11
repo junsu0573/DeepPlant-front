@@ -5,7 +5,7 @@ import 'package:path_provider/path_provider.dart';
 
 class LocalDataSource {
   // 임시저장 데이터 POST
-  Future<dynamic> saveDataToLocal(String jsonData, String dest) async {
+  static Future<dynamic> saveDataToLocal(String jsonData, String dest) async {
     try {
       final directory = await getApplicationDocumentsDirectory();
       final file = File('${directory.path}/$dest.json');
@@ -24,10 +24,10 @@ class LocalDataSource {
   }
 
   // 임시저장 데이터 GET
-  Future<dynamic> initMeatData(String dest) async {
+  static Future<dynamic> getLocalData(String dest) async {
     try {
       final directory = await getApplicationDocumentsDirectory();
-      final file = File('${directory.path}/$dest');
+      final file = File('${directory.path}/$dest.json');
       if (await file.exists()) {
         final response = await file.readAsString();
         print('임시저장 데이터 fetch 성공');
@@ -39,6 +39,23 @@ class LocalDataSource {
     } catch (e) {
       print('데이터 읽기 실패: $e');
       return;
+    }
+  }
+
+  // 임시저장 데이터 삭제
+  static Future<void> deleteLocalData(String dest) async {
+    try {
+      final directory = await getApplicationDocumentsDirectory();
+      final file = File('${directory.path}/$dest.json');
+
+      if (await file.exists()) {
+        await file.delete();
+        print('임시저장 데이터 삭제 성공');
+      } else {
+        print('삭제할 데이터가 없음');
+      }
+    } catch (e) {
+      print('데이터 삭제 실패: $e');
     }
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:structure/config/userfuls.dart';
 import 'package:structure/dataSource/remote_data_source.dart';
 import 'package:structure/model/meat_model.dart';
 
@@ -100,6 +101,8 @@ class FreshMeatEvalViewModel with ChangeNotifier {
       if (meatModel.seqno == 0) {
         // 원육 - 등록, 수정
         meatModel.freshmeat ??= {};
+        meatModel.freshmeat!['createdAt'] = Usefuls.getCurrentDate();
+        meatModel.freshmeat!['peiod'] = Usefuls.getMeatPeriod(meatModel);
         meatModel.freshmeat!['marbling'] = marbling;
         meatModel.freshmeat!['color'] = color;
         meatModel.freshmeat!['texture'] = texture;
@@ -113,6 +116,9 @@ class FreshMeatEvalViewModel with ChangeNotifier {
       } else {
         // 처리육
         meatModel.deepAgedFreshmeat ??= {};
+        meatModel.deepAgedFreshmeat!['createdAt'] = Usefuls.getCurrentDate();
+        meatModel.deepAgedFreshmeat!['peiod'] =
+            Usefuls.getMeatPeriod(meatModel);
         meatModel.deepAgedFreshmeat!['marbling'] = marbling;
         meatModel.deepAgedFreshmeat!['color'] = color;
         meatModel.deepAgedFreshmeat!['texture'] = texture;

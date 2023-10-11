@@ -33,12 +33,12 @@ class InsertionTraceNumViewModel with ChangeNotifier {
 
   // 초기 실행 함수
   void initialize() {
-    if (meatModel.id != null) {
+    if (meatModel.speciesValue != null) {
       fetchMeatData();
     }
   }
 
-  // 객체에 값이 존재하면 fetch(api를 매번 호출하는 것 보다 빠름)
+  // 인스턴스에 값이 존재하면 fetch(api를 매번 호출하는 것 보다 빠름)
   void fetchMeatData() {
     traceNum = meatModel.traceNum;
     birthYmd = meatModel.birthYmd;

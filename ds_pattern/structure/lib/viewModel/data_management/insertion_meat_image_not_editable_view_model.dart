@@ -11,7 +11,7 @@ class InsertionMeatImageNotEditableViewModel with ChangeNotifier {
 
   InsertionMeatImageNotEditableViewModel(
       this.meatModel, this.userModel, this.imageIdx) {
-    fetchDate(meatModel.createdAt!);
+    fetchDate(meatModel.freshmeat!['createdAt']!);
     imagePath = meatModel.imagePath;
     date = '${time.year}.${time.month}.${time.day}';
     userName = meatModel.createUser!;

@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:structure/config/userfuls.dart';
 import 'package:structure/main.dart';
 
 class MeatModel with ChangeNotifier {
@@ -107,17 +106,15 @@ class MeatModel with ChangeNotifier {
     secondaryValue = jsonData['secondaryValue'];
     imagePath = jsonData['rawmeat']['sensory_eval']['imagePath'];
     // deepAgedImage = jsonData['deepAgedImage'];
-    // seqno = jsonData['seqno'];
 
     freshmeat = jsonData['rawmeat']['sensory_eval'];
     // deepAgedFreshmeat = jsonData['deepAgedFreshmeat'];
     statusType = jsonData['statusType'];
 
-    // 연구 데이터 추가 입력 완료 시 저장
-    // deepAging = jsonData['deepAging'];
+    // 딥에이징 데이터 입력시 저장
     // heatedmeat = jsonData['heatedmeat'];
-    //tongueData = jsonData['tongueData'];
-    //labData = jsonData['labData'];
+    // tongueData = jsonData['tongueData'];
+    // labData = jsonData['labData'];
 
     // 데이터 fetch 시 저장
     processedmeat = jsonData['processedmeat'];
@@ -144,6 +141,21 @@ class MeatModel with ChangeNotifier {
     }
   }
 
+  void fromJsonTemp(Map<String, dynamic> jsonData) {
+    sexType = jsonData["sexType"];
+    speciesValue = jsonData["specieValue"];
+    primalValue = jsonData["primalValue"];
+    secondaryValue = jsonData["secondaryValue"];
+    gradeNum = jsonData["gradeNum"];
+    traceNum = jsonData["traceNum"];
+    farmAddr = jsonData["farmAddr"];
+    farmerNm = jsonData["farmerNm"];
+    butcheryYmd = jsonData["butcheryYmd"];
+    birthYmd = jsonData["birthYmd"];
+    imagePath = jsonData["iamgePath"];
+    freshmeat = jsonData["freshmeat"];
+  }
+
   void fromJsonAdditional(String deepAgingNum) {
     if (deepAgingNum == 'RAW') {
       heatedmeat = rawmeat?['heatedmeat_sensory_eval'];
@@ -154,6 +166,23 @@ class MeatModel with ChangeNotifier {
       heatedmeat = processedmeat?[deepAgingNum]['heatedmeat_sensory_eval'];
       probexptData = processedmeat?[deepAgingNum]['probexpt_data'];
     }
+  }
+
+  String toJsonTemp() {
+    return jsonEncode({
+      "sexType": sexType,
+      "specieValue": speciesValue,
+      "primalValue": primalValue,
+      "secondaryValue": secondaryValue,
+      "gradeNum": gradeNum,
+      "traceNum": traceNum,
+      "farmAddr": farmAddr,
+      "farmerNm": farmerNm,
+      "butcheryYmd": butcheryYmd,
+      "birthYmd": birthYmd,
+      "iamgePath": imagePath,
+      "freshmeat": freshmeat,
+    });
   }
 
   String toJsonBasic() {
@@ -177,9 +206,9 @@ class MeatModel with ChangeNotifier {
   String toJsonFresh(Map<String, dynamic>? deepAging) {
     print({
       "id": id,
-      "createdAt": Usefuls.getCurrentDate(),
+      "createdAt": freshmeat?["createdAt"],
       "userId": userId,
-      "period": Usefuls.getMeatPeriod(this),
+      "period": freshmeat?["period"],
       "marbling": freshmeat?["marbling"],
       "color": freshmeat?["color"],
       "texture": freshmeat?["texture"],
@@ -191,9 +220,9 @@ class MeatModel with ChangeNotifier {
     if (deepAging == null) {
       return jsonEncode({
         "id": id,
-        "createdAt": Usefuls.getCurrentDate(),
+        "createdAt": freshmeat?["createdAt"],
         "userId": userId,
-        "period": Usefuls.getMeatPeriod(this),
+        "period": freshmeat?["period"],
         "marbling": freshmeat?["marbling"],
         "color": freshmeat?["color"],
         "texture": freshmeat?["texture"],
@@ -205,9 +234,9 @@ class MeatModel with ChangeNotifier {
     } else {
       return jsonEncode({
         "id": id,
-        "createdAt": Usefuls.getCurrentDate(),
+        "createdAt": deepAgedFreshmeat?["createdAt"],
         "userId": userId,
-        "period": Usefuls.getMeatPeriod(this),
+        "period": deepAgedFreshmeat?["peiod"],
         "marbling": deepAgedFreshmeat?["marbling"],
         "color": deepAgedFreshmeat?["color"],
         "texture": deepAgedFreshmeat?["texture"],
@@ -222,10 +251,10 @@ class MeatModel with ChangeNotifier {
   String toJsonHeated() {
     return jsonEncode({
       "id": id,
-      "createdAt": Usefuls.getCurrentDate(),
+      "createdAt": heatedmeat?["createdAt"],
       "userId": userId,
       "seqno": seqno,
-      "period": Usefuls.getMeatPeriod(this),
+      "period": heatedmeat?["createdAt"],
       "flavor": heatedmeat?['flavor'],
       "juiciness": heatedmeat?['juiciness'],
       "tenderness": heatedmeat?['tenderness'],
@@ -237,10 +266,10 @@ class MeatModel with ChangeNotifier {
   String toJsonProbexpt() {
     return jsonEncode({
       "id": id,
-      "updatedAt": Usefuls.getCurrentDate(),
+      "updatedAt": probexptData?["updatedAt"],
       "userId": userId,
       "seqno": seqno,
-      "period": Usefuls.getMeatPeriod(this),
+      "period": probexptData?["period"],
       "L": probexptData?["L"],
       "a": probexptData?["a"],
       "b": probexptData?["b"],
@@ -261,6 +290,7 @@ class MeatModel with ChangeNotifier {
 
   // Data reset
   void reset() {
+    // userId을 제외한 모든 데아터 초기화
     id = null;
     createUser = null;
     createdAt = null;
@@ -295,6 +325,7 @@ class MeatModel with ChangeNotifier {
     processedmeatDataComplete = null;
   }
 
+  // text code
   @override
   String toString() {
     return "id: $id,"
