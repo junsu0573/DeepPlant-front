@@ -145,6 +145,7 @@ class RegistrationMeatImageViewModel with ChangeNotifier {
               "minute": meatModel.deepAgingData![meatModel.seqno! - 1]["minute"]
             }));
       }
+      meatModel.checkCompleted();
       _movePage();
     } catch (e) {
       print('에러발생: $e');

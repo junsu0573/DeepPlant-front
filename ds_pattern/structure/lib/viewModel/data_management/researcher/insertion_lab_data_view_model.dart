@@ -87,7 +87,8 @@ class InsertionLabDataViewModel with ChangeNotifier {
         mfi.text.isNotEmpty ? double.parse(mfi.text) : null;
     meatModel.probexptData!["Collagen"] =
         collagen.text.isNotEmpty ? double.parse(collagen.text) : null;
-
+    // 완료 검사
+    meatModel.checkCompleted();
     try {
       dynamic response = await RemoteDataSource.sendMeatData(
           'probexpt_data', meatModel.toJsonProbexpt());

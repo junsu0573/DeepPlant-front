@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
+import 'package:structure/config/userfuls.dart';
 import 'package:structure/dataSource/remote_data_source.dart';
 import 'package:structure/model/meat_model.dart';
 
@@ -38,6 +39,8 @@ class InsertionTongueDataViewModel with ChangeNotifier {
 
     // 인스턴스 데이터 업데이트
     meatModel.probexptData ??= {};
+    meatModel.probexptData!['updatedAt'] = Usefuls.getCurrentDate();
+    meatModel.probexptData!['period'] = Usefuls.getMeatPeriod(meatModel);
     meatModel.probexptData!['sourness'] =
         sourness.text.isNotEmpty ? double.parse(sourness.text) : null;
     meatModel.probexptData!['bitterness'] =
@@ -46,6 +49,8 @@ class InsertionTongueDataViewModel with ChangeNotifier {
         umami.text.isNotEmpty ? double.parse(umami.text) : null;
     meatModel.probexptData!['richness'] =
         richness.text.isNotEmpty ? double.parse(richness.text) : null;
+    // 완료 검사
+    meatModel.checkCompleted();
 
     try {
       dynamic response = await RemoteDataSource.sendMeatData(

@@ -56,7 +56,7 @@ class InsertionMeatInfoViewModel with ChangeNotifier {
       litteDiv = List<String>.from(
           dataTable![primalValue].map((element) => element.toString()));
     }
-    print(secondaryValue);
+
     notifyListeners();
   }
 
@@ -105,7 +105,7 @@ class InsertionMeatInfoViewModel with ChangeNotifier {
   late BuildContext _context;
   Future<void> clickedNextButton(BuildContext context) async {
     saveMeatData();
-
+    meatModel.checkCompleted();
     if (meatModel.id != null) {
       final response =
           await RemoteDataSource.sendMeatData(null, meatModel.toJsonBasic());

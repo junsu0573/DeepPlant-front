@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
+import 'package:structure/config/userfuls.dart';
 import 'package:structure/dataSource/remote_data_source.dart';
 import 'package:structure/model/meat_model.dart';
 
@@ -9,6 +10,7 @@ class HeatedMeatEvalViewModel with ChangeNotifier {
     _initialize();
   }
   bool isLoading = false;
+  bool completed = false;
 
   double flavor = 0;
   double juiciness = 0;
@@ -22,31 +24,50 @@ class HeatedMeatEvalViewModel with ChangeNotifier {
     tenderness = meatModel.heatedmeat?["tenderness"] ?? 0;
     umami = meatModel.heatedmeat?["umami"] ?? 0;
     palatability = meatModel.heatedmeat?["palability"] ?? 0;
+    _checkAllInserted();
+    notifyListeners();
   }
 
   void onChangedFlavor(dynamic value) {
     flavor = double.parse(value.toStringAsFixed(1));
+    _checkAllInserted();
     notifyListeners();
   }
 
   void onChangedJuiciness(dynamic value) {
     juiciness = double.parse(value.toStringAsFixed(1));
+    _checkAllInserted();
     notifyListeners();
   }
 
   void onChangedTenderness(dynamic value) {
     tenderness = double.parse(value.toStringAsFixed(1));
+    _checkAllInserted();
     notifyListeners();
   }
 
   void onChangedUmami(dynamic value) {
     umami = double.parse(value.toStringAsFixed(1));
+    _checkAllInserted();
     notifyListeners();
   }
 
   void onChangedPalatability(dynamic value) {
     palatability = double.parse(value.toStringAsFixed(1));
+    _checkAllInserted();
     notifyListeners();
+  }
+
+  void _checkAllInserted() {
+    if (flavor != 0 &&
+        juiciness != 0 &&
+        tenderness != 0 &&
+        umami != 0 &&
+        palatability != 0) {
+      completed = true;
+    } else {
+      completed = false;
+    }
   }
 
   late BuildContext _context;
@@ -55,11 +76,15 @@ class HeatedMeatEvalViewModel with ChangeNotifier {
     notifyListeners();
 
     meatModel.heatedmeat ??= {};
+    meatModel.heatedmeat!['createdAt'] = Usefuls.getCurrentDate();
+    print(meatModel.butcheryYmd);
+    meatModel.heatedmeat!['period'] = Usefuls.getMeatPeriod(meatModel);
     meatModel.heatedmeat!['flavor'] = flavor;
     meatModel.heatedmeat!['juiciness'] = juiciness;
     meatModel.heatedmeat!['tenderness'] = tenderness;
     meatModel.heatedmeat!['umami'] = umami;
     meatModel.heatedmeat!['palability'] = palatability;
+    meatModel.checkCompleted();
 
     try {
       dynamic response = await RemoteDataSource.sendMeatData(

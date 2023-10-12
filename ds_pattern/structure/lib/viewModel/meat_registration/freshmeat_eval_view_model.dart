@@ -102,12 +102,13 @@ class FreshMeatEvalViewModel with ChangeNotifier {
         // 원육 - 등록, 수정
         meatModel.freshmeat ??= {};
         meatModel.freshmeat!['createdAt'] = Usefuls.getCurrentDate();
-        meatModel.freshmeat!['peiod'] = Usefuls.getMeatPeriod(meatModel);
+        meatModel.freshmeat!['period'] = Usefuls.getMeatPeriod(meatModel);
         meatModel.freshmeat!['marbling'] = marbling;
         meatModel.freshmeat!['color'] = color;
         meatModel.freshmeat!['texture'] = texture;
         meatModel.freshmeat!['surfaceMoisture'] = surface;
         meatModel.freshmeat!['overall'] = overall;
+
         if (meatModel.id != null) {
           // 수정
           await RemoteDataSource.sendMeatData(
@@ -117,13 +118,14 @@ class FreshMeatEvalViewModel with ChangeNotifier {
         // 처리육
         meatModel.deepAgedFreshmeat ??= {};
         meatModel.deepAgedFreshmeat!['createdAt'] = Usefuls.getCurrentDate();
-        meatModel.deepAgedFreshmeat!['peiod'] =
+        meatModel.deepAgedFreshmeat!['period'] =
             Usefuls.getMeatPeriod(meatModel);
         meatModel.deepAgedFreshmeat!['marbling'] = marbling;
         meatModel.deepAgedFreshmeat!['color'] = color;
         meatModel.deepAgedFreshmeat!['texture'] = texture;
         meatModel.deepAgedFreshmeat!['surfaceMoisture'] = surface;
         meatModel.deepAgedFreshmeat!['overall'] = overall;
+
         await RemoteDataSource.sendMeatData(
             'sensory_eval',
             meatModel.toJsonFresh({
@@ -131,6 +133,7 @@ class FreshMeatEvalViewModel with ChangeNotifier {
               "minute": meatModel.deepAgingData![meatModel.seqno! - 1]["minute"]
             }));
       }
+      meatModel.checkCompleted();
       _context = context;
       _goNext();
     } catch (e) {

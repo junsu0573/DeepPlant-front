@@ -51,7 +51,7 @@ class _AddProcessedMeatMainScreenState
                 mainText: '처리육 단면 촬영',
                 subText: '육류 단면을 촬영해주세요',
                 step: '1',
-                isCompleted: meatModel.deepAgedImage != null,
+                isCompleted: meatModel.deepAgedImageCompleted,
                 isBefore: false,
               ),
             ),
@@ -59,19 +59,19 @@ class _AddProcessedMeatMainScreenState
               height: 18.h,
             ),
             InkWell(
-              onTap: () => widget.meatModel.deepAgedImage != null
+              onTap: () => widget.meatModel.deepAgedImageCompleted
                   ? context
                       .read<AddProcessedMeatViewModel>()
                       .clickedProcessedEval(context)
                   : null,
               child: StepCard(
                 mainText: '처리육 관능평가',
-                subText: widget.meatModel.deepAgedImage != null
+                subText: widget.meatModel.deepAgedImageCompleted
                     ? '육류 관능평가를 진행해주세요'
                     : '육류 단면 촬영 완료 후 진행해주세요',
                 step: '2',
-                isCompleted: false,
-                isBefore: widget.meatModel.deepAgedImage == null,
+                isCompleted: widget.meatModel.deepAgedFreshCompleted,
+                isBefore: !widget.meatModel.deepAgedImageCompleted,
               ),
             ),
             SizedBox(
@@ -81,11 +81,11 @@ class _AddProcessedMeatMainScreenState
               onTap: () => context
                   .read<AddProcessedMeatViewModel>()
                   .clickedHeatedEval(context),
-              child: const StepCard(
+              child: StepCard(
                 mainText: '가열육 관능평가',
                 subText: '육류 관능평가를 진행해주세요',
                 step: '3',
-                isCompleted: false,
+                isCompleted: widget.meatModel.heatedCompleted,
                 isBefore: false,
               ),
             ),
@@ -96,11 +96,11 @@ class _AddProcessedMeatMainScreenState
               onTap: () => context
                   .read<AddProcessedMeatViewModel>()
                   .clickedTongue(context),
-              child: const StepCard(
+              child: StepCard(
                 mainText: '전자혀 데이터',
                 subText: '전자혀 측정 데이터를 입력해주세요',
                 step: '4',
-                isCompleted: false,
+                isCompleted: widget.meatModel.tongueCompleted,
                 isBefore: false,
               ),
             ),
@@ -110,11 +110,11 @@ class _AddProcessedMeatMainScreenState
             InkWell(
               onTap: () =>
                   context.read<AddProcessedMeatViewModel>().clickedLab(context),
-              child: const StepCard(
+              child: StepCard(
                 mainText: '실험 데이터',
                 subText: '실험 결과 데이터를 입력해주세요',
                 step: '5',
-                isCompleted: false,
+                isCompleted: widget.meatModel.labCompleted,
                 isBefore: false,
               ),
             ),

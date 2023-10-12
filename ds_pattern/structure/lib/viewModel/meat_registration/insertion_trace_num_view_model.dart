@@ -33,32 +33,27 @@ class InsertionTraceNumViewModel with ChangeNotifier {
 
   // 초기 실행 함수
   void initialize() {
-    if (meatModel.speciesValue != null) {
-      fetchMeatData();
+    if (meatModel.basicCompleted) {
+      traceNum = meatModel.traceNum;
+      birthYmd = meatModel.birthYmd;
+      species = meatModel.speciesValue;
+      sexType = meatModel.sexType;
+      farmerNm = meatModel.farmerNm;
+      farmAddr = meatModel.farmAddr;
+      butcheryYmd = meatModel.butcheryYmd;
+      gradeNum = meatModel.gradeNum;
+      tableData.addAll([
+        traceNum,
+        birthYmd,
+        species,
+        sexType,
+        farmerNm,
+        farmAddr,
+        butcheryYmd,
+        gradeNum
+      ]);
+      isAllInserted = 1;
     }
-  }
-
-  // 인스턴스에 값이 존재하면 fetch(api를 매번 호출하는 것 보다 빠름)
-  void fetchMeatData() {
-    traceNum = meatModel.traceNum;
-    birthYmd = meatModel.birthYmd;
-    species = meatModel.speciesValue;
-    sexType = meatModel.sexType;
-    farmerNm = meatModel.farmerNm;
-    farmAddr = meatModel.farmAddr;
-    butcheryYmd = meatModel.butcheryYmd;
-    gradeNum = meatModel.gradeNum;
-    tableData.addAll([
-      traceNum,
-      birthYmd,
-      species,
-      sexType,
-      farmerNm,
-      farmAddr,
-      butcheryYmd,
-      gradeNum
-    ]);
-    isAllInserted = 1;
   }
 
   // api를 통해 얻어온 육류의 정보를 객체에 저장

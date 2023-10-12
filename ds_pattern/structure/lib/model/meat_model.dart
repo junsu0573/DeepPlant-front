@@ -184,6 +184,9 @@ class MeatModel with ChangeNotifier {
     birthYmd = jsonData["birthYmd"];
     imagePath = jsonData["iamgePath"];
     freshmeat = jsonData["freshmeat"];
+    basicCompleted = jsonData["basicCompleted"];
+    freshImageCompleted = jsonData["freshImageCompleted"];
+    rawFreshCompleted = jsonData["rawFreshCompleted"];
   }
 
   void fromJsonAdditional(String deepAgingNum) {
@@ -260,6 +263,9 @@ class MeatModel with ChangeNotifier {
       "birthYmd": birthYmd,
       "iamgePath": imagePath,
       "freshmeat": freshmeat,
+      "basicCompleted": basicCompleted,
+      "freshImageCompleted": freshImageCompleted,
+      "rawFreshCompleted": rawFreshCompleted
     });
   }
 
@@ -332,7 +338,7 @@ class MeatModel with ChangeNotifier {
       "createdAt": heatedmeat?["createdAt"],
       "userId": userId,
       "seqno": seqno,
-      "period": heatedmeat?["createdAt"],
+      "period": heatedmeat?["period"],
       "flavor": heatedmeat?['flavor'],
       "juiciness": heatedmeat?['juiciness'],
       "tenderness": heatedmeat?['tenderness'],
@@ -411,6 +417,73 @@ class MeatModel with ChangeNotifier {
     heatedCompleted = false;
     tongueCompleted = false;
     labCompleted = false;
+  }
+
+  void checkCompleted() {
+    if (traceNum != null && speciesValue != null && secondaryValue != null) {
+      basicCompleted = true;
+    }
+    if (imagePath != null) {
+      freshImageCompleted = true;
+    }
+    if (freshmeat?['marbling'] != null &&
+        freshmeat?['marbling'] != 0 &&
+        freshmeat?['color'] != null &&
+        freshmeat?['color'] != 0 &&
+        freshmeat?['texture'] != null &&
+        freshmeat?['texture'] != 0 &&
+        freshmeat?['surfaceMoisture'] != null &&
+        freshmeat?['surfaceMoisture'] != 0 &&
+        freshmeat?['overall'] != null &&
+        freshmeat?['overall'] != 0) {
+      rawFreshCompleted = true;
+    }
+    if (deepAgedImage != null) {
+      deepAgedImageCompleted = true;
+    }
+    if (deepAgedFreshmeat?['marbling'] != null &&
+        deepAgedFreshmeat?['marbling'] != 0 &&
+        deepAgedFreshmeat?['color'] != null &&
+        deepAgedFreshmeat?['color'] != 0 &&
+        deepAgedFreshmeat?['texture'] != null &&
+        deepAgedFreshmeat?['texture'] != 0 &&
+        deepAgedFreshmeat?['surfaceMoisture'] != null &&
+        deepAgedFreshmeat?['surfaceMoisture'] != 0 &&
+        deepAgedFreshmeat?['overall'] != null &&
+        deepAgedFreshmeat?['overall'] != 0) {
+      deepAgedFreshCompleted = true;
+    }
+    if (heatedmeat?['flavor'] != null &&
+        heatedmeat?['flavor'] != 0 &&
+        heatedmeat?['juiciness'] != null &&
+        heatedmeat?['juiciness'] != 0 &&
+        heatedmeat?['tenderness'] != null &&
+        heatedmeat?['tenderness'] != 0 &&
+        heatedmeat?['umami'] != null &&
+        heatedmeat?['umami'] != 0 &&
+        heatedmeat?['palability'] != null &&
+        heatedmeat?['palability'] != 0) {
+      heatedCompleted = true;
+    }
+    if (probexptData?['sourness'] != null &&
+        probexptData?['bitterness'] != null &&
+        probexptData?['umami'] != null &&
+        probexptData?['richness'] != null) {
+      tongueCompleted = true;
+    }
+    if (probexptData?["L"] != null &&
+        probexptData?["a"] != null &&
+        probexptData?["b"] != null &&
+        probexptData?["DL"] != null &&
+        probexptData?["CL"] != null &&
+        probexptData?["RW"] != null &&
+        probexptData?["ph"] != null &&
+        probexptData?["WBSF"] != null &&
+        probexptData?["cardepsin_activity"] != null &&
+        probexptData?["MFI"] != null &&
+        probexptData?["Collagen"] != null) {
+      labCompleted = true;
+    }
   }
 
   // text code

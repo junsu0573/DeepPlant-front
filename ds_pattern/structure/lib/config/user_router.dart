@@ -319,7 +319,9 @@ class UserRouter {
                       path: 'raw-meat',
                       builder: (context, state) => ChangeNotifierProvider(
                           create: (context) => AddRawMeatViewModel(),
-                          child: const StepFreshMeat()),
+                          child: StepFreshMeat(
+                            meatModel: meatModel,
+                          )),
                       routes: [
                         GoRoute(
                           path: 'heated-meat',

@@ -129,6 +129,7 @@ class CreationManagementNumResearcherViewModel with ChangeNotifier {
 
     if (response1 == null || response2 == null) {
       // 에러 페이지
+      print('error');
     } else {
       // 로딩상태 비활성화
 

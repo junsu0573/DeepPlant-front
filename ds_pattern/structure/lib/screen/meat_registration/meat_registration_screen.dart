@@ -59,9 +59,7 @@ class _MeatRegistrationScreenState extends State<MeatRegistrationScreen> {
                       mainText: '육류 기본정보 입력',
                       subText: '육류 정보를 입력해 주세요.',
                       step: '1',
-                      isCompleted: widget.meatModel.secondaryValue != null
-                          ? true
-                          : false,
+                      isCompleted: widget.meatModel.basicCompleted,
                       isBefore: false,
                     ),
                   ),
@@ -70,20 +68,19 @@ class _MeatRegistrationScreenState extends State<MeatRegistrationScreen> {
                   ),
                   // STEP 2
                   InkWell(
-                    onTap: () => widget.meatModel.secondaryValue != null
+                    onTap: () => widget.meatModel.basicCompleted
                         ? context
                             .read<MeatRegistrationViewModel>()
                             .clickedImage(context)
                         : null,
                     child: StepCard(
                       mainText: '육류 단면 촬영',
-                      subText: widget.meatModel.secondaryValue != null
+                      subText: widget.meatModel.basicCompleted
                           ? '육류 단면을 촬영해 주세요.'
                           : '육류 기본정보 입력 후 진행해주세요.',
                       step: '2',
-                      isCompleted:
-                          widget.meatModel.imagePath != null ? true : false,
-                      isBefore: widget.meatModel.secondaryValue == null,
+                      isCompleted: widget.meatModel.freshImageCompleted,
+                      isBefore: !widget.meatModel.basicCompleted,
                     ),
                   ),
                   SizedBox(
@@ -91,20 +88,19 @@ class _MeatRegistrationScreenState extends State<MeatRegistrationScreen> {
                   ),
                   // STEP 3
                   InkWell(
-                    onTap: () => widget.meatModel.imagePath != null
+                    onTap: () => widget.meatModel.freshImageCompleted
                         ? context
                             .read<MeatRegistrationViewModel>()
                             .clickedFreshmeat(context)
                         : null,
                     child: StepCard(
                       mainText: '신선육 관능평가',
-                      subText: widget.meatModel.imagePath != null
+                      subText: widget.meatModel.freshImageCompleted
                           ? '육류 관능평가를 진행해 주세요.'
                           : '육류 단면 촬영 완료 후 진행해주세요.',
                       step: '3',
-                      isCompleted:
-                          widget.meatModel.freshmeat != null ? true : false,
-                      isBefore: widget.meatModel.imagePath == null,
+                      isCompleted: widget.meatModel.rawFreshCompleted,
+                      isBefore: !widget.meatModel.freshImageCompleted,
                     ),
                   ),
                   const Spacer(),
@@ -114,7 +110,7 @@ class _MeatRegistrationScreenState extends State<MeatRegistrationScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         MainButton(
-                          onPressed: widget.meatModel.secondaryValue != null
+                          onPressed: widget.meatModel.basicCompleted
                               ? () async => context
                                   .read<MeatRegistrationViewModel>()
                                   .clickedTempSaveButton(context)
@@ -128,9 +124,9 @@ class _MeatRegistrationScreenState extends State<MeatRegistrationScreen> {
                           width: 32.w,
                         ),
                         MainButton(
-                          onPressed: widget.meatModel.secondaryValue != null &&
-                                  widget.meatModel.imagePath != null &&
-                                  widget.meatModel.freshmeat != null
+                          onPressed: widget.meatModel.basicCompleted &&
+                                  widget.meatModel.freshImageCompleted &&
+                                  widget.meatModel.rawFreshCompleted
                               ? () => context
                                   .read<MeatRegistrationViewModel>()
                                   .clickedSaveButton(context)

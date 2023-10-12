@@ -101,9 +101,12 @@ class _HeatedMeatEvaluation extends State<HeatedMeatEvaluation>
                 Container(
                   margin: EdgeInsets.only(bottom: 18.h),
                   child: MainButton(
-                    onPressed: () => context
-                        .read<HeatedMeatEvalViewModel>()
-                        .saveData(context),
+                    onPressed:
+                        context.watch<HeatedMeatEvalViewModel>().completed
+                            ? () => context
+                                .read<HeatedMeatEvalViewModel>()
+                                .saveData(context)
+                            : null,
                     text: '저장',
                     width: 658.w,
                     heigh: 104.h,
