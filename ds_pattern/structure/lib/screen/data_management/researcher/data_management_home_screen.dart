@@ -8,7 +8,7 @@ import 'package:structure/components/main_text_field.dart';
 import 'package:structure/config/pallete.dart';
 import 'package:structure/config/userfuls.dart';
 import 'package:structure/screen/ui_update_screen.dart';
-import 'package:structure/viewModel/data_management/data_management_view_model.dart';
+import 'package:structure/viewModel/data_management/normal/data_management_view_model.dart';
 
 class DataManagementHomeScreen extends StatefulWidget {
   const DataManagementHomeScreen({super.key});

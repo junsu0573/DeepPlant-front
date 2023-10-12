@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:structure/components/custom_app_bar.dart';
 import 'package:structure/components/part_eval.dart';
 import 'package:structure/config/pallete.dart';
-import 'package:structure/viewModel/data_management/freshmeat_eval_not_editable_view_model.dart';
+import 'package:structure/viewModel/data_management/normal/not_editable/freshmeat_eval_not_editable_view_model.dart';
 
 class FreshMeatEvalNotEditableScreen extends StatefulWidget {
   const FreshMeatEvalNotEditableScreen({

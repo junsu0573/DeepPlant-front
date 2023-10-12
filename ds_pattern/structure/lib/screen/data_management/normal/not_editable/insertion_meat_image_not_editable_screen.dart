@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:structure/components/custom_app_bar.dart';
 import 'package:structure/config/pallete.dart';
-import 'package:structure/viewModel/data_management/insertion_meat_image_not_editable_view_model.dart';
+import 'package:structure/viewModel/data_management/normal/not_editable/insertion_meat_image_not_editable_view_model.dart';
 
 class InsertionMeatImageNotEditableScreen extends StatelessWidget {
   const InsertionMeatImageNotEditableScreen({super.key});

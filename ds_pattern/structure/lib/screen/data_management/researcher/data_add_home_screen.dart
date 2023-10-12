@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:structure/components/custom_app_bar.dart';
 import 'package:structure/components/deep_aging_card.dart';
 import 'package:structure/config/pallete.dart';
-import 'package:structure/viewModel/data_management/data_add_home_view_model.dart';
+import 'package:structure/viewModel/data_management/researcher/data_add_home_view_model.dart';
 
 class DataAddHome extends StatefulWidget {
   const DataAddHome({super.key});

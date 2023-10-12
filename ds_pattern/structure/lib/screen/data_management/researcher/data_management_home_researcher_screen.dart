@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:structure/components/custom_app_bar.dart';
 import 'package:structure/components/list_card_researcher.dart';
 import 'package:structure/components/main_text_field.dart';
-import 'package:structure/viewModel/data_management/data_management_researcher_view_model.dart';
+import 'package:structure/viewModel/data_management/researcher/data_management_researcher_view_model.dart';
 
 class DataManagementHomeResearcherScreen extends StatefulWidget {
   const DataManagementHomeResearcherScreen({super.key});

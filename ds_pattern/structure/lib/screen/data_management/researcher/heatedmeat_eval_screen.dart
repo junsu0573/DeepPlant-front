@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:structure/components/custom_app_bar.dart';
 import 'package:structure/components/main_button.dart';
 import 'package:structure/components/part_eval.dart';
-import 'package:structure/viewModel/data_management/heatedmeat_eval_view_model.dart';
+import 'package:structure/viewModel/data_management/researcher/heatedmeat_eval_view_model.dart';
 
 class HeatedMeatEvaluation extends StatefulWidget {
   const HeatedMeatEvaluation({super.key});

@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:structure/components/custom_app_bar.dart';
 import 'package:structure/components/step_card.dart';
-import 'package:structure/viewModel/data_management/add_raw_meat_view_model.dart';
+import 'package:structure/viewModel/data_management/researcher/add_raw_meat_view_model.dart';
 
 class StepFreshMeat extends StatelessWidget {
   const StepFreshMeat({super.key});

@@ -3,7 +3,7 @@ import 'package:structure/components/custom_app_bar.dart';
 import 'package:structure/components/custom_drop_down.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:structure/viewModel/data_management/insertion_meat_info_not_editable_view_model.dart';
+import 'package:structure/viewModel/data_management/normal/not_editable/insertion_meat_info_not_editable_view_model.dart';
 
 class InsertionMeatInfoNotEditableScreen extends StatefulWidget {
   const InsertionMeatInfoNotEditableScreen({super.key});

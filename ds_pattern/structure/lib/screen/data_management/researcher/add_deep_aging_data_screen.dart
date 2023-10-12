@@ -7,7 +7,7 @@ import 'package:structure/components/custom_table_calendat.dart';
 
 import 'package:structure/components/main_button.dart';
 import 'package:structure/components/nonform_text_field.dart';
-import 'package:structure/viewModel/data_management/add_deep_aging_data_view_model.dart';
+import 'package:structure/viewModel/data_management/researcher/add_deep_aging_data_view_model.dart';
 
 class AddDeepAgingDataScreen extends StatefulWidget {
   const AddDeepAgingDataScreen({super.key});
