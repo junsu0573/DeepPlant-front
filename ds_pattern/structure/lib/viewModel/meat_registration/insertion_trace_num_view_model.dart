@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:structure/dataSource/remote_data_source.dart';
@@ -6,7 +9,14 @@ import 'package:structure/model/meat_model.dart';
 
 class InsertionTraceNumViewModel with ChangeNotifier {
   final MeatModel meatModel;
-  InsertionTraceNumViewModel({required this.meatModel});
+  InsertionTraceNumViewModel(this.meatModel) {
+    initialize();
+  }
+  // 바코드 이벤트 채널
+  EventChannel? _eventChannel;
+
+  // 바코드 스트림 구독
+  StreamSubscription<dynamic>? _eventSubscription;
 
   // form
   final formKey = GlobalKey<FormState>();
@@ -54,6 +64,17 @@ class InsertionTraceNumViewModel with ChangeNotifier {
       ]);
       isAllInserted = 1;
     }
+    // 바코드 제어
+    _eventChannel = const EventChannel('com.example.structure/barcode');
+    _eventSubscription =
+        _eventChannel!.receiveBroadcastStream().listen((dynamic event) {
+      textEditingController.text = event.toString();
+      notifyListeners();
+    });
+  }
+
+  void disposeMethod() {
+    _eventSubscription?.cancel();
   }
 
   // api를 통해 얻어온 육류의 정보를 객체에 저장

@@ -38,7 +38,7 @@ class MainActivity : FlutterActivity() {
                     )
                     val data =
                         if (symbologyIdent != BarcodeDeclaration.SYMBOLOGY_IDENT.NOT_READ) {
-                            "[" + symbologyIdent.toString() + "]" + intent.getStringExtra("EXTRA_BARCODE_DECODED_DATA")
+                            intent.getStringExtra("EXTRA_BARCODE_DECODED_DATA")
                         } else {
                             "NOT READ"
                         }

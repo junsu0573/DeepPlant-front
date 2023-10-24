@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'package:provider/provider.dart';
 import 'package:structure/components/inner_box.dart';
 import 'package:structure/config/pallete.dart';
@@ -20,35 +19,15 @@ class InsertionTraceNumScreen extends StatefulWidget {
 }
 
 class _InsertionTraceNumScreenState extends State<InsertionTraceNumScreen> {
-  // 바코드 이벤트 채널
-  EventChannel? _eventChannel;
-
-  // 바코드 스트림 구독
-  StreamSubscription<dynamic>? _eventSubscription;
-
-  String _barcodeData = 'No Data';
-
   @override
   void initState() {
     super.initState();
     context.read<InsertionTraceNumViewModel>().initialize();
-    _eventChannel = const EventChannel('com.example.structure/barcode');
-    _eventSubscription =
-        _eventChannel!.receiveBroadcastStream().listen((dynamic event) {
-      setState(() {
-        _barcodeData = context
-            .read<InsertionTraceNumViewModel>()
-            .parsingData(event.toString());
-        context.read<InsertionTraceNumViewModel>().traceNum = _barcodeData;
-        context.read<InsertionTraceNumViewModel>().textEditingController.text =
-            _barcodeData;
-      });
-    });
   }
 
   @override
   void dispose() {
-    _eventSubscription?.cancel();
+    context.read<InsertionTraceNumViewModel>().disposeMethod();
     super.dispose();
   }
 
@@ -82,7 +61,7 @@ class _InsertionTraceNumScreenState extends State<InsertionTraceNumScreen> {
                     height: 85.h,
                     child: TextFormField(
                       controller: context
-                          .read<InsertionTraceNumViewModel>()
+                          .watch<InsertionTraceNumViewModel>()
                           .textEditingController,
                       textInputAction: TextInputAction.search,
                       inputFormatters: [
