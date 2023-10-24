@@ -16,7 +16,7 @@ class HomeViewModel with ChangeNotifier {
   }
 
   void clickedDataManage(BuildContext context) {
-    if (userModel.type == 'Researcher') {
+    if (userModel.type == 'Normal') {
       context.go('/home/data-manage-normal');
     } else if (userModel.type == 'Researcher') {
       context.go('/home/data-manage-researcher');

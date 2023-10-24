@@ -10,7 +10,6 @@ class CustomTableBar extends StatelessWidget {
     return Container(
       color: Colors.grey[50],
       padding: EdgeInsets.only(top: 18.h),
-      height: 70.h,
       child: Column(
         children: [
           Row(
@@ -56,7 +55,10 @@ class CustomTableBar extends StatelessWidget {
               )
             ],
           ),
-          Container(margin: EdgeInsets.only(top: 18.h), height: 0, child: const Divider()),
+          Container(
+              margin: EdgeInsets.only(top: 18.h),
+              height: 0,
+              child: const Divider()),
         ],
       ),
     );

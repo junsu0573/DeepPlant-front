@@ -12,6 +12,8 @@ class InsertionUserDetailViewModel with ChangeNotifier {
   UserModel userModel;
   InsertionUserDetailViewModel({required this.userModel});
 
+  bool isLoading = false;
+
   final TextEditingController mainAddressController = TextEditingController();
 
   String subHomeAdress = '';
@@ -39,8 +41,14 @@ class InsertionUserDetailViewModel with ChangeNotifier {
 
   // 다음 버튼 클릭시
   Future<void> clickedNextButton(BuildContext context) async {
+    isLoading = true;
+    notifyListeners();
+
     _saveUserData();
     await _sendData(context);
+
+    isLoading = false;
+    notifyListeners();
   }
 
   void _saveUserData() {
