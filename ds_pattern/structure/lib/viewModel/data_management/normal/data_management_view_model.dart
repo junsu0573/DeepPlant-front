@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
-import 'package:structure/components/get_qr.dart';
 import 'package:structure/dataSource/remote_data_source.dart';
 import 'package:structure/main.dart';
 import 'package:structure/model/user_model.dart';
@@ -46,24 +45,35 @@ class DataManagementHomeViewModel with ChangeNotifier {
   DateTime? monthsAgo;
   DateTime? threeMonthsAgo;
 
-  DateTime selected = DateTime.now();
   DateTime focused = DateTime.now();
+  DateTime? temp1;
+  DateTime? temp2;
   DateTime? firstDay;
   DateTime? lastDay;
+  String firstDayText = '';
+  String lastDayText = '';
   int indexDay = 0;
 
-  Future<void> clickedQr(BuildContext context) async {
-    final response = await Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => const GetQr(),
-      ),
-    );
-    if (response != null) {
-      controller.text = response;
-      insertedText = response;
-      _filterStrings();
-      notifyListeners();
+  void formatting() {
+    if (firstDay != null) {
+      firstDayText = DateFormat('yyyy.MM.dd').format(firstDay!);
+    }
+    if (lastDay != null) {
+      lastDayText = DateFormat('yyyy.MM.dd').format(lastDay!);
+    }
+  }
+
+  void dateSwap() {
+    if (temp1 != null && temp2 != null) {
+      bool isA = temp1!.isAfter(temp2!);
+      if (isA == true) {
+        DateTime dtemp = temp1!;
+        temp1 = temp2;
+        temp2 = dtemp;
+        String ttemp = firstDayText;
+        firstDayText = lastDayText;
+        lastDayText = ttemp;
+      }
     }
   }
 
@@ -74,6 +84,19 @@ class DataManagementHomeViewModel with ChangeNotifier {
     sortStatus[sortSelectedIdx] = true;
 
     // 필터가 호출될 때, 변해야 하는 변수
+    if (dateSelectedIdx != 3) {
+      firstDayText = '';
+      lastDayText = '';
+    } else {
+      formatting();
+      temp1 = firstDay;
+      temp2 = lastDay;
+    }
+
+    if (firstDay == null || lastDay == null) {
+      temp1 = null;
+      temp2 = null;
+    }
     isOpnedFilter = !isOpnedFilter;
     if (isOpenTable) {
       isOpenTable = false;
@@ -87,7 +110,17 @@ class DataManagementHomeViewModel with ChangeNotifier {
     // 직접 설정이면 TableCalendar 호출
     if (index != 3) {
       isOpenTable = false;
+      firstDayText = '';
+      lastDayText = '';
+    } else {
+      formatting();
     }
+
+    if (firstDay == null || lastDay == null) {
+      temp1 = null;
+      temp2 = null;
+    }
+
     notifyListeners();
   }
 
@@ -101,38 +134,38 @@ class DataManagementHomeViewModel with ChangeNotifier {
   void onTapTable(int index) {
     // 만일 날짜를 처음 지정할 시 기존 값을 초기화
     if (firstDay == null || lastDay == null) {
-      selected = DateTime.now();
       focused = DateTime.now();
     }
     isOpenTable = !isOpenTable;
     indexDay = index;
     // 날짜 지정 이후 선택할 시 이전 날짜 호출
-    if (index == 0 && firstDay != null) {
-      selected = firstDay!;
-      focused = firstDay!;
-    } else if (index == 1 && lastDay != null) {
-      selected = lastDay!;
-      focused = lastDay!;
+    if (index == 0 && temp1 != null) {
+      focused = temp1!;
+    } else if (index == 1 && temp2 != null) {
+      focused = temp2!;
     }
+    dateSwap();
     notifyListeners();
   }
 
   // TableCalendar 위젯에 사용될 날짜 변경 함수
   void onDaySelected(DateTime selectedDay, DateTime focusedDay) {
-    selected = selectedDay;
-    focused = focusedDay;
+    focused = selectedDay;
     // 시작 | 종료 중 어느 지점이 변경될 지 지정
     if (indexDay == 0) {
-      firstDay = selectedDay;
+      temp1 = selectedDay;
+      firstDayText = DateFormat('yyyy.MM.dd').format(temp1!);
     } else {
-      lastDay = focusedDay;
+      temp2 = selectedDay;
+      lastDayText = DateFormat('yyyy.MM.dd').format(temp2!);
     }
+
     notifyListeners();
   }
 
   // 직접 설정 필터가 적용된 후, 날짜 선택이 완료 되었는지 판단
   bool checkedFilter() {
-    if (dateStatus[3] == true && (firstDay == null || lastDay == null)) {
+    if (dateStatus[3] == true && (temp1 == null || temp2 == null)) {
       return false;
     } else {
       return true;
@@ -146,6 +179,10 @@ class DataManagementHomeViewModel with ChangeNotifier {
     filterdResult = '${dateList[dateSelectedIdx]}∙${sortList[sortSelectedIdx]}';
     isOpnedFilter = false;
     isOpenTable = false;
+    dateSwap();
+    firstDay = temp1;
+    lastDay = temp2;
+    formatting();
     filterlize();
     notifyListeners();
   }
@@ -160,8 +197,8 @@ class DataManagementHomeViewModel with ChangeNotifier {
   // 필터링 시 호출될 함수
   void filterlize() {
     setTime();
-    sortUserData();
     setDay();
+    sortUserData();
   }
 
   // 현재 필터링 시간을 기준으로 시간 지정
@@ -174,7 +211,7 @@ class DataManagementHomeViewModel with ChangeNotifier {
 
   // 정렬 필터 입력에 따라 필터링
   void sortUserData() {
-    numList.sort((a, b) {
+    filteredList.sort((a, b) {
       DateTime dateA = DateTime.parse(a["createdAt"]!);
       DateTime dateB = DateTime.parse(b["createdAt"]!);
       if (sortSelectedIdx == 1) {
@@ -183,32 +220,33 @@ class DataManagementHomeViewModel with ChangeNotifier {
         return dateB.compareTo(dateA);
       }
     });
+    selectedList = filteredList;
   }
 
   // 날짜 필터 입력에 따라 필터링
   void setDay() {
-    selectedList = numList;
+    filteredList = numList;
     if (dateSelectedIdx == 0) {
       print('3일');
-      selectedList = selectedList.where((data) {
+      filteredList = filteredList.where((data) {
         DateTime dateTime = DateTime.parse(data["createdAt"]!);
         return dateTime.isAfter(threeDaysAgo!) && dateTime.isBefore(toDay!);
       }).toList();
     } else if (dateSelectedIdx == 1) {
       print('1개월');
-      selectedList = selectedList.where((data) {
+      filteredList = filteredList.where((data) {
         DateTime dateTime = DateTime.parse(data["createdAt"]!);
         return dateTime.isAfter(monthsAgo!) && dateTime.isBefore(toDay!);
       }).toList();
     } else if (dateSelectedIdx == 2) {
       print('3개월');
-      selectedList = selectedList.where((data) {
+      filteredList = filteredList.where((data) {
         DateTime dateTime = DateTime.parse(data["createdAt"]!);
         return dateTime.isAfter(threeMonthsAgo!) && dateTime.isBefore(toDay!);
       }).toList();
     } else {
       print('직접설정');
-      selectedList = selectedList.where((data) {
+      filteredList = filteredList.where((data) {
         DateTime dateTime = DateTime.parse(data["createdAt"]!);
         return dateTime.isAfter(firstDay!) && dateTime.isBefore(lastDay!);
       }).toList();
@@ -218,8 +256,7 @@ class DataManagementHomeViewModel with ChangeNotifier {
   Future<void> _fetchData() async {
     try {
       // 자신이 입력한 데이터만 호출
-      List<dynamic>? jsonData =
-          await RemoteDataSource.getUserMeatData('?userId=${userModel.userId}');
+      List<dynamic>? jsonData = await RemoteDataSource.getUserMeatData('?userId=${userModel.userId}');
 
       if (jsonData == null) {
         print('데이터 없음');
@@ -230,8 +267,7 @@ class DataManagementHomeViewModel with ChangeNotifier {
           String id = item["id"];
           String statusType = item["statusType"];
           String createdAt = item["createdAt"];
-          String dayTime =
-              DateFormat('yyyy.MM.dd').format(DateTime.parse(createdAt));
+          String dayTime = DateFormat('yyyy.MM.dd').format(DateTime.parse(createdAt));
           Map<String, String> idStatusPair = {
             "id": id,
             "statusType": statusType,
@@ -241,7 +277,6 @@ class DataManagementHomeViewModel with ChangeNotifier {
 
           numList.add(idStatusPair);
         }
-        selectedList = numList;
       }
     } catch (e) {
       print("에러발생: $e");
@@ -254,8 +289,6 @@ class DataManagementHomeViewModel with ChangeNotifier {
 
     insertedText = value ?? '';
     _filterStrings();
-
-    selectedList = insertedText.isEmpty ? numList : filteredList;
 
     isLoading = false;
     notifyListeners();
@@ -294,7 +327,7 @@ class DataManagementHomeViewModel with ChangeNotifier {
 
   void _filterStrings() {
     // 검색어를 포함하는 문자열을 반환
-    filteredList = selectedList.where((map) {
+    selectedList = filteredList.where((map) {
       String id = map["id"] ?? "";
       return id.contains(insertedText);
     }).toList();

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:structure/components/custom_app_bar.dart';
 import 'package:structure/components/custom_table_bar.dart';
@@ -10,15 +9,13 @@ import 'package:structure/components/main_button.dart';
 import 'package:structure/components/main_text_field.dart';
 import 'package:structure/config/pallete.dart';
 import 'package:structure/config/userfuls.dart';
-import 'package:structure/screen/ui_update_screen.dart';
 import 'package:structure/viewModel/data_management/normal/data_management_view_model.dart';
 
 class DataManagementHomeScreen extends StatefulWidget {
   const DataManagementHomeScreen({super.key});
 
   @override
-  State<DataManagementHomeScreen> createState() =>
-      _DataManagementHomeScreenState();
+  State<DataManagementHomeScreen> createState() => _DataManagementHomeScreenState();
 }
 
 class _DataManagementHomeScreenState extends State<DataManagementHomeScreen> {
@@ -46,19 +43,13 @@ class _DataManagementHomeScreenState extends State<DataManagementHomeScreen> {
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         InkWell(
-                          onTap: () => context
-                              .read<DataManagementHomeViewModel>()
-                              .clickedFilter(),
+                          onTap: () => context.read<DataManagementHomeViewModel>().clickedFilter(),
                           child: Container(
                             alignment: Alignment.center,
                             child: Row(
                               children: [
-                                Text(context
-                                    .watch<DataManagementHomeViewModel>()
-                                    .filterdResult),
-                                context
-                                        .watch<DataManagementHomeViewModel>()
-                                        .isOpnedFilter
+                                Text(context.watch<DataManagementHomeViewModel>().filterdResult),
+                                context.watch<DataManagementHomeViewModel>().isOpnedFilter
                                     ? const Icon(Icons.arrow_drop_up_outlined)
                                     : const Icon(Icons.arrow_drop_down),
                               ],
@@ -81,28 +72,17 @@ class _DataManagementHomeScreenState extends State<DataManagementHomeScreen> {
                         MainTextField(
                           validateFunc: null,
                           onSaveFunc: null,
-                          controller: context
-                              .read<DataManagementHomeViewModel>()
-                              .controller,
-                          onChangeFunc: (value) => context
-                              .read<DataManagementHomeViewModel>()
-                              .onChanged(value),
-                          focusNode: context
-                              .read<DataManagementHomeViewModel>()
-                              .focusNode,
+                          controller: context.read<DataManagementHomeViewModel>().controller,
+                          onChangeFunc: (value) => context.read<DataManagementHomeViewModel>().onChanged(value),
+                          focusNode: context.read<DataManagementHomeViewModel>().focusNode,
                           mainText: '관리번호 입력',
                           width: 590.w,
                           height: 72.h,
                           prefixIcon: const Icon(Icons.search),
-                          suffixIcon: context
-                                  .watch<DataManagementHomeViewModel>()
-                                  .focusNode
-                                  .hasFocus
+                          suffixIcon: context.watch<DataManagementHomeViewModel>().focusNode.hasFocus
                               ? IconButton(
                                   onPressed: () {
-                                    context
-                                        .read<DataManagementHomeViewModel>()
-                                        .textClear(context);
+                                    context.read<DataManagementHomeViewModel>().textClear(context);
                                   },
                                   icon: const Icon(Icons.cancel),
                                 )
@@ -110,9 +90,7 @@ class _DataManagementHomeScreenState extends State<DataManagementHomeScreen> {
                         ),
                         IconButton(
                           iconSize: 48.w,
-                          onPressed: () async => context
-                              .read<DataManagementHomeViewModel>()
-                              .clickedQr(context),
+                          onPressed: () {},
                           icon: const Icon(Icons.qr_code_scanner_rounded),
                         ),
                       ],
@@ -126,22 +104,17 @@ class _DataManagementHomeScreenState extends State<DataManagementHomeScreen> {
                       child: SizedBox(
                         width: 640.w,
                         child: Consumer<DataManagementHomeViewModel>(
-                          builder: (context, viewModel, child) =>
-                              ListView.builder(
+                          builder: (context, viewModel, child) => ListView.builder(
                             itemCount: viewModel.selectedList.length,
                             itemBuilder: (context, index) => ListCard(
-                                onTap: () async =>
-                                    await viewModel.onTap(index, context),
+                                onTap: () async => await viewModel.onTap(index, context),
                                 idx: index + 1,
                                 num: viewModel.selectedList[index]["id"]!,
-                                dayTime: viewModel.selectedList[index]
-                                    ["dayTime"]!,
-                                statusType: viewModel.selectedList[index]
-                                    ["statusType"]!,
+                                dayTime: viewModel.selectedList[index]["dayTime"]!,
+                                statusType: viewModel.selectedList[index]["statusType"]!,
                                 dDay: 3 -
                                     Usefuls.calculateDateDifference(
-                                      viewModel.selectedList[index]
-                                          ["createdAt"]!,
+                                      viewModel.selectedList[index]["createdAt"]!,
                                     )),
                           ),
                         ),
@@ -196,15 +169,9 @@ class NormalFilterBox extends StatelessWidget {
                       width: 15.w,
                     ),
                     FilterRow(
-                        filterList: context
-                            .watch<DataManagementHomeViewModel>()
-                            .dateList,
-                        onTap: (index) => context
-                            .read<DataManagementHomeViewModel>()
-                            .onTapDate(index),
-                        status: context
-                            .watch<DataManagementHomeViewModel>()
-                            .dateStatus),
+                        filterList: context.watch<DataManagementHomeViewModel>().dateList,
+                        onTap: (index) => context.read<DataManagementHomeViewModel>().onTapDate(index),
+                        status: context.watch<DataManagementHomeViewModel>().dateStatus),
                   ],
                 ),
                 SizedBox(
@@ -215,24 +182,19 @@ class NormalFilterBox extends StatelessWidget {
                   children: [
                     Consumer<DataManagementHomeViewModel>(
                       builder: (context, viewModel, child) => InkWell(
-                        onTap: (viewModel.dateStatus[3])
-                            ? () => viewModel.onTapTable(0)
-                            : null,
+                        onTap: (viewModel.dateStatus[3]) ? () => viewModel.onTapTable(0) : null,
                         child: Container(
                           width: 290.w,
                           height: 64.h,
                           decoration: BoxDecoration(
-                            color: viewModel.dateStatus[3]
-                                ? Palette.subButtonColor
-                                : Palette.disabledButtonColor,
+                            color: viewModel.dateStatus[3] ? Palette.subButtonColor : Palette.disabledButtonColor,
                             borderRadius: BorderRadius.circular(20.w),
                           ),
                           alignment: Alignment.centerLeft,
                           padding: const EdgeInsets.only(left: 10.0),
-                          child: Text((viewModel.firstDay != null)
-                              ? DateFormat('yyyy.MM.dd')
-                                  .format(viewModel.firstDay!)
-                              : ''),
+                          child: Text(
+                            viewModel.firstDayText,
+                          ),
                         ),
                       ),
                     ),
@@ -245,25 +207,18 @@ class NormalFilterBox extends StatelessWidget {
                     ),
                     Consumer<DataManagementHomeViewModel>(
                       builder: (context, viewModel, child) => InkWell(
-                        onTap: (viewModel.dateStatus[3])
-                            ? () => viewModel.onTapTable(1)
-                            : null,
+                        onTap: (viewModel.dateStatus[3]) ? () => viewModel.onTapTable(1) : null,
                         child: Container(
                           width: 290.w,
                           height: 64.h,
                           decoration: BoxDecoration(
-                            color: viewModel.dateStatus[3]
-                                ? Palette.subButtonColor
-                                : Palette.disabledButtonColor,
+                            color: viewModel.dateStatus[3] ? Palette.subButtonColor : Palette.disabledButtonColor,
                             borderRadius: BorderRadius.circular(20.w),
                           ),
                           alignment: Alignment.centerLeft,
                           padding: const EdgeInsets.only(left: 10.0),
                           child: Text(
-                            (viewModel.lastDay != null)
-                                ? DateFormat('yyyy.MM.dd')
-                                    .format(viewModel.lastDay!)
-                                : '',
+                            viewModel.lastDayText,
                           ),
                         ),
                       ),
@@ -276,13 +231,10 @@ class NormalFilterBox extends StatelessWidget {
                 context.watch<DataManagementHomeViewModel>().isOpenTable
                     ? SizedBox(
                         child: Consumer<DataManagementHomeViewModel>(
-                          builder: (context, viewModel, child) =>
-                              CustomTableCalendar(
-                                  focusedDay: viewModel.focused,
-                                  selectedDay: viewModel.selected,
-                                  onDaySelected: (selectedDay, focusedDay) =>
-                                      viewModel.onDaySelected(
-                                          selectedDay, focusedDay)),
+                          builder: (context, viewModel, child) => CustomTableCalendar(
+                              focusedDay: viewModel.focused,
+                              selectedDay: viewModel.focused,
+                              onDaySelected: (selectedDay, focusedDay) => viewModel.onDaySelected(selectedDay, focusedDay)),
                         ),
                       )
                     : const SizedBox(),
@@ -303,15 +255,9 @@ class NormalFilterBox extends StatelessWidget {
                       width: 15.w,
                     ),
                     FilterRow(
-                        filterList: context
-                            .watch<DataManagementHomeViewModel>()
-                            .sortList,
-                        onTap: (index) => context
-                            .read<DataManagementHomeViewModel>()
-                            .onTapSort(index),
-                        status: context
-                            .watch<DataManagementHomeViewModel>()
-                            .sortStatus),
+                        filterList: context.watch<DataManagementHomeViewModel>().sortList,
+                        onTap: (index) => context.read<DataManagementHomeViewModel>().onTapSort(index),
+                        status: context.watch<DataManagementHomeViewModel>().sortStatus),
                   ],
                 ),
                 SizedBox(
@@ -322,12 +268,8 @@ class NormalFilterBox extends StatelessWidget {
                   width: 640.w,
                   heigh: 70.h,
                   isWhite: false,
-                  onPressed: context
-                          .read<DataManagementHomeViewModel>()
-                          .checkedFilter()
-                      ? () => context
-                          .read<DataManagementHomeViewModel>()
-                          .onPressedFilterSave()
+                  onPressed: context.read<DataManagementHomeViewModel>().checkedFilter()
+                      ? () => context.read<DataManagementHomeViewModel>().onPressedFilterSave()
                       : null,
                 ),
               ],
@@ -335,6 +277,45 @@ class NormalFilterBox extends StatelessWidget {
           ),
           const Divider(),
         ],
+      ),
+    );
+  }
+}
+
+class FilterRow extends StatelessWidget {
+  const FilterRow({
+    super.key,
+    required this.filterList,
+    required this.onTap,
+    required this.status,
+  });
+
+  final List<String> filterList;
+  final Function? onTap;
+  final List<bool> status;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: List.generate(
+        filterList.length,
+        (index) => InkWell(
+          onTap: onTap != null ? () => onTap!(index) : null,
+          child: Container(
+            height: 48.h,
+            margin: EdgeInsets.only(right: 10.w),
+            alignment: Alignment.center,
+            padding: EdgeInsets.symmetric(horizontal: 30.w),
+            decoration: BoxDecoration(
+                color: status[index] ? Palette.mainButtonColor : Palette.disabledButtonColor, borderRadius: BorderRadius.all(Radius.circular(50.sp))),
+            child: Text(
+              filterList[index],
+              style: TextStyle(
+                color: status[index] ? Colors.white : Palette.greyTextColor,
+              ),
+            ),
+          ),
+        ),
       ),
     );
   }
