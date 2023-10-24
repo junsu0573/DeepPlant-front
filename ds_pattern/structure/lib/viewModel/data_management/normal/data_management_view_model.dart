@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
+import 'package:structure/components/get_qr.dart';
 import 'package:structure/dataSource/remote_data_source.dart';
 import 'package:structure/main.dart';
 import 'package:structure/model/user_model.dart';
@@ -50,6 +51,19 @@ class DataManagementHomeViewModel with ChangeNotifier {
   DateTime? firstDay;
   DateTime? lastDay;
   int indexDay = 0;
+
+  Future<void> clickedQr(BuildContext context) async {
+    final response = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const GetQr(),
+      ),
+    );
+    if (response != null) {
+      insertedText = response;
+      _filterStrings();
+    }
+  }
 
   void clickedFilter() {
     dateStatus = List.filled(dateStatus.length, false);
@@ -202,7 +216,8 @@ class DataManagementHomeViewModel with ChangeNotifier {
   Future<void> _fetchData() async {
     try {
       // 자신이 입력한 데이터만 호출
-      List<dynamic>? jsonData = await RemoteDataSource.getUserMeatData('?userId=${userModel.userId}');
+      List<dynamic>? jsonData =
+          await RemoteDataSource.getUserMeatData('?userId=${userModel.userId}');
 
       if (jsonData == null) {
         print('데이터 없음');
@@ -213,7 +228,8 @@ class DataManagementHomeViewModel with ChangeNotifier {
           String id = item["id"];
           String statusType = item["statusType"];
           String createdAt = item["createdAt"];
-          String dayTime = DateFormat('yyyy.MM.dd').format(DateTime.parse(createdAt));
+          String dayTime =
+              DateFormat('yyyy.MM.dd').format(DateTime.parse(createdAt));
           Map<String, String> idStatusPair = {
             "id": id,
             "statusType": statusType,
@@ -276,7 +292,7 @@ class DataManagementHomeViewModel with ChangeNotifier {
 
   void _filterStrings() {
     // 검색어를 포함하는 문자열을 반환
-    filteredList = numList.where((map) {
+    filteredList = selectedList.where((map) {
       String id = map["id"] ?? "";
       return id.contains(insertedText);
     }).toList();
