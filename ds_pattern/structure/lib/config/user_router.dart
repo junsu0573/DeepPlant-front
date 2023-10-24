@@ -131,8 +131,7 @@ class UserRouter {
                 GoRoute(
                   path: 'trace-num',
                   builder: (context, state) => ChangeNotifierProvider(
-                    create: (context) =>
-                        InsertionTraceNumViewModel(meatModel: meatModel),
+                    create: (context) => InsertionTraceNumViewModel(meatModel),
                     child: const InsertionTraceNumScreen(),
                   ),
                   routes: [
@@ -273,7 +272,7 @@ class UserRouter {
                       path: 'trace-editable',
                       builder: (context, state) => ChangeNotifierProvider(
                         create: (context) =>
-                            InsertionTraceNumViewModel(meatModel: meatModel),
+                            InsertionTraceNumViewModel(meatModel),
                         child: const InsertionTraceNumScreen(),
                       ),
                       routes: [
