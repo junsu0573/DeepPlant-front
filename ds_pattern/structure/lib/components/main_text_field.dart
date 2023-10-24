@@ -33,6 +33,9 @@ class MainTextField extends StatelessWidget {
   final int? maxLength;
   final List<FilteringTextInputFormatter>? formatter;
   final TextInputAction? action;
+  final FocusNode? focusNode;
+  final Widget? suffixIcon;
+  final Widget? prefixIcon;
 
   const MainTextField({
     super.key,
@@ -50,6 +53,9 @@ class MainTextField extends StatelessWidget {
     this.maxLength,
     this.formatter,
     this.action,
+    this.focusNode,
+    this.suffixIcon,
+    this.prefixIcon,
   });
 
   @override
@@ -59,6 +65,8 @@ class MainTextField extends StatelessWidget {
       width: width,
       child: TextFormField(
         controller: controller,
+        focusNode: focusNode,
+        autofocus: false,
         maxLength: maxLength,
         // 유효성 검사
         validator: validateFunc,
@@ -69,6 +77,7 @@ class MainTextField extends StatelessWidget {
         textInputAction: action,
         obscureText: isObscure ?? false,
         decoration: InputDecoration(
+            prefixIcon: prefixIcon,
             label: isCenter != null && isCenter == true
                 ? Center(
                     child: Text(mainText),
@@ -78,9 +87,9 @@ class MainTextField extends StatelessWidget {
             fillColor: Palette.mainTextFieldColor,
             hintText: hintText, // 입력 필드에 힌트로 표시될 텍스트
 
-            suffixIcon: null, // 입력 필드 오른쪽에 표시될 아이콘
+            suffixIcon: suffixIcon, // 입력 필드 오른쪽에 표시될 아이콘
             border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(42.5.w),
+              borderRadius: BorderRadius.circular(20.w),
               borderSide: BorderSide.none,
             ),
             contentPadding: const EdgeInsets.symmetric(horizontal: 16)),

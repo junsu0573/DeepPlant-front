@@ -6,6 +6,7 @@ class ListCard extends StatelessWidget {
   final VoidCallback? onTap;
   final int idx;
   final String num;
+  final String dayTime;
   final String statusType;
   final int dDay;
   const ListCard({
@@ -13,6 +14,7 @@ class ListCard extends StatelessWidget {
     required this.onTap,
     required this.idx,
     required this.num,
+    required this.dayTime,
     required this.statusType,
     required this.dDay,
   });
@@ -31,14 +33,16 @@ class ListCard extends StatelessWidget {
         ),
         child: Row(
           children: [
+            // SizedBox(
+            //   width: 10.w,
+            // ),
+            // Text('$idx'),
             SizedBox(
               width: 10.w,
             ),
-            Text('$idx'),
-            SizedBox(
-              width: 50.w,
-            ),
             Text(num),
+            const Spacer(),
+            Text(dayTime),
             const Spacer(),
             Text(statusType),
             statusType == "대기중"
@@ -46,19 +50,14 @@ class ListCard extends StatelessWidget {
                     children: [
                       Icon(
                         Icons.edit_note,
-                        color: dDay >= 0
-                            ? Colors.black
-                            : Palette.disabledButtonColor,
+                        color: dDay >= 0 ? Colors.black : Palette.disabledButtonColor,
                       ),
                       Positioned(
                         right: 0,
                         child: Container(
                           width: 36.w,
                           height: 16.h,
-                          decoration: BoxDecoration(
-                              color: Colors.amber,
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(28.5.sp))),
+                          decoration: BoxDecoration(color: Colors.amber, borderRadius: BorderRadius.all(Radius.circular(28.5.sp))),
                           alignment: Alignment.center,
                           child: Text(
                             'D-$dDay',
@@ -70,9 +69,7 @@ class ListCard extends StatelessWidget {
                   )
                 : Icon(
                     Icons.edit_note,
-                    color: dDay <= 3 && statusType == '대기중'
-                        ? Colors.black
-                        : Palette.disabledButtonColor,
+                    color: dDay <= 3 && statusType == '대기중' ? Colors.black : Palette.disabledButtonColor,
                   ),
             SizedBox(
               width: 10.w,

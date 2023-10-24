@@ -43,6 +43,7 @@ class CustomTableCalendar extends StatelessWidget {
         headerMargin: const EdgeInsets.only(bottom: 25.0),
       ),
       calendarStyle: const CalendarStyle(
+        isTodayHighlighted: false,
         outsideDaysVisible: false,
         selectedTextStyle: TextStyle(
           color: Colors.black,
