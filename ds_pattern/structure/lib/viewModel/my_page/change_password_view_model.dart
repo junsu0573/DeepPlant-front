@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:structure/dataSource/remote_data_source.dart';
 import 'package:structure/model/user_model.dart';
 
@@ -159,6 +160,8 @@ class ChangePasswordViewModel with ChangeNotifier {
           ),
         );
         await user.updatePassword(_userNewPassword);
+        _context = context;
+        _success();
       } else {
         print('User does not exist.');
       }
@@ -173,7 +176,7 @@ class ChangePasswordViewModel with ChangeNotifier {
   String _userInfoToJson() {
     return jsonEncode({
       "id": userModel.userId,
-      "password": _userNewPassword,
+      "password": _userPassword,
     });
   }
 
@@ -192,5 +195,9 @@ class ChangePasswordViewModel with ChangeNotifier {
         backgroundColor: Colors.amber,
       ),
     );
+  }
+
+  void _success() {
+    _context.go('/home/my-page/user-detail/success-change');
   }
 }

@@ -79,7 +79,7 @@ class RegistrationMeatImageScreen extends StatelessWidget {
                           children: [
                             SizedBox(
                               width: 640.w,
-                              height: 473.h,
+                              height: 653.h,
                               child: context
                                               .watch<
                                                   RegistrationMeatImageViewModel>()

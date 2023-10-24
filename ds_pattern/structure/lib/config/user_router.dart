@@ -22,6 +22,7 @@ import 'package:structure/screen/meat_registration/insertion_meat_info_screen.da
 import 'package:structure/screen/meat_registration/insertion_trace_num_screen.dart';
 import 'package:structure/screen/meat_registration/registration_meat_image_screen.dart';
 import 'package:structure/screen/my_page/change_password_screen.dart';
+import 'package:structure/screen/my_page/success_change_pw_screen.dart';
 import 'package:structure/screen/my_page/user_detail_screen.dart';
 import 'package:structure/screen/my_page/user_info_screen.dart';
 import 'package:structure/screen/sign_up/complete_sign_up_screen.dart';
@@ -205,6 +206,11 @@ class UserRouter {
                         builder: (context, child) =>
                             const ChangePasswordScreen(),
                       ),
+                    ),
+                    GoRoute(
+                      path: 'success-change',
+                      builder: (context, state) =>
+                          const SuccessChangePWScreen(),
                     ),
                   ],
                 ),

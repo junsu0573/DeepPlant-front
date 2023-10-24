@@ -84,6 +84,7 @@ class SignInViewModel with ChangeNotifier {
       // 에러 스낵바
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
+          duration: const Duration(seconds: 1),
           content: Text(errorMessage),
           backgroundColor: Palette.alertColor,
         ),
