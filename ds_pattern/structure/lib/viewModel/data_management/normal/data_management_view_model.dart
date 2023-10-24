@@ -60,8 +60,10 @@ class DataManagementHomeViewModel with ChangeNotifier {
       ),
     );
     if (response != null) {
+      controller.text = response;
       insertedText = response;
       _filterStrings();
+      notifyListeners();
     }
   }
 
