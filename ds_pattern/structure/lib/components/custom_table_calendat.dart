@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class CustomTableCalendar extends StatelessWidget {
@@ -18,10 +17,7 @@ class CustomTableCalendar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Intl.defaultLocale = 'ko_KR';
-
     return TableCalendar(
-      locale: 'ko_KR',
       firstDay: DateTime.utc(2023, 1, 1),
       lastDay: DateTime.utc(2032, 12, 31),
       focusedDay: focusedDay,
