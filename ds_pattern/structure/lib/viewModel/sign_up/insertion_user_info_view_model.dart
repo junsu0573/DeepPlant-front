@@ -140,12 +140,7 @@ class InsertionUserInfoViewModel with ChangeNotifier {
   // 이메일 중복 검사
   Future<void> dupliCheck(BuildContext context) async {
     dynamic isDuplicated = await RemoteDataSource.dupliCheck(userEmail);
-    // if (isDuplicated) {
-    //
-    // } else {
-    //   isUnique = true;
-    //   notifyListeners();
-    // }
+
     if (isDuplicated != null) {
       isUnique = true;
       notifyListeners();
