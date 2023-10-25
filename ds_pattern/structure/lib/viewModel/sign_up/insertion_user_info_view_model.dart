@@ -1,6 +1,7 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:structure/components/custom_pop_up.dart';
 import 'package:structure/main.dart';
 import 'package:structure/screen/sign_up/certification_bottom_screen.dart';
 import 'package:structure/dataSource/remote_data_source.dart';
@@ -140,10 +141,7 @@ class InsertionUserInfoViewModel with ChangeNotifier {
   Future<void> dupliCheck(BuildContext context) async {
     dynamic isDuplicated = await RemoteDataSource.dupliCheck(userEmail);
     // if (isDuplicated) {
-    //   isUnique = false;
-    //   notifyListeners();
-    //   // popup 창 띄우기
-    //   showDuplicateEmailPopup(context);
+    //
     // } else {
     //   isUnique = true;
     //   notifyListeners();
@@ -151,6 +149,11 @@ class InsertionUserInfoViewModel with ChangeNotifier {
     if (isDuplicated != null) {
       isUnique = true;
       notifyListeners();
+    } else {
+      isUnique = false;
+      notifyListeners();
+      // popup 창 띄우기
+      showDuplicateEmailPopup(context);
     }
   }
 
