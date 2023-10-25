@@ -90,7 +90,7 @@ class _DataManagementHomeScreenState extends State<DataManagementHomeScreen> {
                         ),
                         IconButton(
                           iconSize: 48.w,
-                          onPressed: () {},
+                          onPressed: () async => context.read<DataManagementHomeViewModel>().clickedQr(context),
                           icon: const Icon(Icons.qr_code_scanner_rounded),
                         ),
                       ],

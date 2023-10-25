@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
+import 'package:structure/components/get_qr.dart';
 import 'package:structure/dataSource/remote_data_source.dart';
 import 'package:structure/main.dart';
 import 'package:structure/model/user_model.dart';
@@ -53,6 +54,44 @@ class DataManagementHomeViewModel with ChangeNotifier {
   String firstDayText = '';
   String lastDayText = '';
   int indexDay = 0;
+
+  Future<void> _initialize() async {
+    await _fetchData();
+    filterlize();
+    isLoading = false;
+    notifyListeners();
+  }
+
+  // 필터링 시 호출될 함수
+  void filterlize() {
+    setTime();
+    setDay();
+    sortUserData();
+  }
+
+  // 직접 설정 필터가 적용된 후, 날짜 선택이 완료 되었는지 판단
+  bool checkedFilter() {
+    if (dateStatus[3] == true && (temp1 == null || temp2 == null)) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  // 필터 조회 버튼 클릭시
+  void onPressedFilterSave() {
+    dateSelectedIdx = dateStatus.indexWhere((element) => element == true);
+    sortSelectedIdx = sortStatus.indexWhere((element) => element == true);
+    filterdResult = '${dateList[dateSelectedIdx]}∙${sortList[sortSelectedIdx]}';
+    isOpnedFilter = false;
+    isOpenTable = false;
+    dateSwap();
+    firstDay = temp1;
+    lastDay = temp2;
+    formatting();
+    filterlize();
+    notifyListeners();
+  }
 
   void formatting() {
     if (firstDay != null) {
@@ -163,44 +202,6 @@ class DataManagementHomeViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  // 직접 설정 필터가 적용된 후, 날짜 선택이 완료 되었는지 판단
-  bool checkedFilter() {
-    if (dateStatus[3] == true && (temp1 == null || temp2 == null)) {
-      return false;
-    } else {
-      return true;
-    }
-  }
-
-  // 필터 조회 버튼 클릭시
-  void onPressedFilterSave() {
-    dateSelectedIdx = dateStatus.indexWhere((element) => element == true);
-    sortSelectedIdx = sortStatus.indexWhere((element) => element == true);
-    filterdResult = '${dateList[dateSelectedIdx]}∙${sortList[sortSelectedIdx]}';
-    isOpnedFilter = false;
-    isOpenTable = false;
-    dateSwap();
-    firstDay = temp1;
-    lastDay = temp2;
-    formatting();
-    filterlize();
-    notifyListeners();
-  }
-
-  Future<void> _initialize() async {
-    await _fetchData();
-    filterlize();
-    isLoading = false;
-    notifyListeners();
-  }
-
-  // 필터링 시 호출될 함수
-  void filterlize() {
-    setTime();
-    setDay();
-    sortUserData();
-  }
-
   // 현재 필터링 시간을 기준으로 시간 지정
   void setTime() {
     toDay = DateTime.now();
@@ -250,6 +251,21 @@ class DataManagementHomeViewModel with ChangeNotifier {
         DateTime dateTime = DateTime.parse(data["createdAt"]!);
         return dateTime.isAfter(firstDay!) && dateTime.isBefore(lastDay!);
       }).toList();
+    }
+  }
+
+  Future<void> clickedQr(BuildContext context) async {
+    final response = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const GetQr(),
+      ),
+    );
+    if (response != null) {
+      controller.text = response;
+      insertedText = response;
+      _filterStrings();
+      notifyListeners();
     }
   }
 

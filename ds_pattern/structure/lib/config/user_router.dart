@@ -278,7 +278,7 @@ class UserRouter {
             GoRoute(
               path: 'data-manage-researcher',
               builder: (context, state) => ChangeNotifierProvider(
-                create: (context) => DataManagementHomeResearcherViewModel(meatModel),
+                create: (context) => DataManagementHomeResearcherViewModel(meatModel, userModel),
                 child: const DataManagementHomeResearcherScreen(),
               ),
               routes: [
