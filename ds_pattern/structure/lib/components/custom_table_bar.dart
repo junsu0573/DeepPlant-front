@@ -19,7 +19,7 @@ class CustomTableBar extends StatelessWidget {
                 width: 50.w,
               ),
               SizedBox(
-                width: 180.w,
+                width: 200.w,
                 child: Text(
                   '관리번호',
                   style: TextStyle(
@@ -30,7 +30,7 @@ class CustomTableBar extends StatelessWidget {
               ),
               const Spacer(),
               SizedBox(
-                width: 80.w,
+                width: 150.w,
                 child: Text(
                   isNormal ? '날짜' : '작성자',
                   style: TextStyle(
@@ -41,9 +41,9 @@ class CustomTableBar extends StatelessWidget {
               ),
               const Spacer(),
               SizedBox(
-                width: 100.w,
+                width: 80.w,
                 child: Text(
-                  '관리',
+                  isNormal ? '관리' : '날짜',
                   style: TextStyle(
                     fontSize: 25.sp,
                     color: Colors.black,
@@ -51,14 +51,11 @@ class CustomTableBar extends StatelessWidget {
                 ),
               ),
               SizedBox(
-                width: 50.w,
+                width: 100.w,
               )
             ],
           ),
-          Container(
-              margin: EdgeInsets.only(top: 18.h),
-              height: 0,
-              child: const Divider()),
+          Container(margin: EdgeInsets.only(top: 18.h), height: 0, child: const Divider()),
         ],
       ),
     );

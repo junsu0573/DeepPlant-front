@@ -32,15 +32,18 @@ class ListCardResearcher extends StatelessWidget {
         child: Row(
           children: [
             SizedBox(
-              width: 10.w,
+              width: 5.w,
             ),
-            Text(num),
+            SizedBox(child: Text(num)),
             const Spacer(),
-            Text(userId),
-            const Spacer(),
-            Text(dayTime),
             SizedBox(
-              width: 10.w,
+              width: 160.w,
+              child: SingleChildScrollView(scrollDirection: Axis.horizontal, child: Text(userId)),
+            ),
+            const Spacer(),
+            SizedBox(child: Text(dayTime)),
+            SizedBox(
+              width: 5.w,
             ),
             const Icon(Icons.arrow_forward_ios)
           ],

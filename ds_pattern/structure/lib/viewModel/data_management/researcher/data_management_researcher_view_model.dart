@@ -31,15 +31,15 @@ class DataManagementHomeResearcherViewModel with ChangeNotifier {
   bool isOpenTable = false;
   bool isChecked = false;
 
-  String filterdResult = '3일∙나의 데이터∙전체';
+  String filterdResult = '3일∙전체∙전체';
 
   List<String> dateList = ['3일', '1개월', '3개월', '직접입력'];
   List<bool> dateStatus = [true, false, false, false];
   int dateSelectedIdx = 0;
 
-  List<String> dataList = ['나의 데이터', '일반 데이터', '연구 데이터', '전체'];
-  List<bool> dataStatus = [true, false, false, false];
-  int dataSelectedIdx = 0;
+  List<String> dataList = ['나의 데이터', '전체'];
+  List<bool> dataStatus = [false, true];
+  int dataSelectedIdx = 1;
 
   List<String> speciesList = ['소', '돼지', '전체'];
   List<bool> speciesStatus = [false, false, true];
@@ -101,8 +101,19 @@ class DataManagementHomeResearcherViewModel with ChangeNotifier {
   void filterlize() {
     setTime();
     setDay();
+    sortUserData();
     setData();
     setSpecies();
+  }
+
+  // 정렬 필터 입력에 따라 필터링
+  void sortUserData() {
+    filteredList.sort((a, b) {
+      DateTime dateA = DateTime.parse(a["createdAt"]!);
+      DateTime dateB = DateTime.parse(b["createdAt"]!);
+      return dateB.compareTo(dateA);
+    });
+    selectedList = filteredList;
   }
 
   void setData() {
@@ -110,18 +121,6 @@ class DataManagementHomeResearcherViewModel with ChangeNotifier {
       filteredList = filteredList.where((data) {
         return (data["createUser"] == userModel.userId);
       }).toList();
-      // } else if (dataSelectedIdx == 1) {
-      //   source = source.where((data) {
-      //     List<String> parts = data.split(',');
-      //     String dataStatus = parts[5];
-      //     return (dataStatus == 'Normal');
-      //   }).toList();
-      // } else if (dataSelectedIdx == 2) {
-      //   source = source.where((data) {
-      //     List<String> parts = data.split(',');
-      //     String dataStatus = parts[5];
-      //     return (dataStatus == 'Researcher');
-      //   }).toList();
     } else {}
   }
 
@@ -248,16 +247,15 @@ class DataManagementHomeResearcherViewModel with ChangeNotifier {
       temp2 = selectedDay;
       lastDayText = DateFormat('yyyy.MM.dd').format(temp2!);
     }
-
     notifyListeners();
   }
 
   // 현재 필터링 시간을 기준으로 시간 지정
   void setTime() {
     toDay = DateTime.now();
-    threeDaysAgo = toDay!.subtract(const Duration(days: 3));
-    monthsAgo = toDay!.subtract(const Duration(days: 30));
-    threeMonthsAgo = toDay!.subtract(const Duration(days: 30 * 3));
+    threeDaysAgo = DateTime(toDay!.year, toDay!.month, toDay!.day - 3, 0, 0, 0, 0);
+    monthsAgo = DateTime(toDay!.year, toDay!.month - 1, toDay!.day, 0, 0, 0, 0);
+    threeMonthsAgo = DateTime(toDay!.year, toDay!.month - 3, toDay!.day, 0, 0, 0, 0);
   }
 
   // 날짜 필터 입력에 따라 필터링
@@ -285,7 +283,8 @@ class DataManagementHomeResearcherViewModel with ChangeNotifier {
       print('직접설정');
       filteredList = filteredList.where((data) {
         DateTime dateTime = DateTime.parse(data["createdAt"]!);
-        return dateTime.isAfter(firstDay!) && dateTime.isBefore(lastDay!);
+        return dateTime.isAfter(DateTime(firstDay!.year, firstDay!.month, firstDay!.day, 0, 0, 0, 0)) &&
+            dateTime.isBefore(DateTime(lastDay!.year, lastDay!.month, lastDay!.day + 1, 0, 0, 0, 0));
       }).toList();
     }
   }

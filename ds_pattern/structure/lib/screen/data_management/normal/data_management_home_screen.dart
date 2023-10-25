@@ -226,7 +226,7 @@ class NormalFilterBox extends StatelessWidget {
                   ],
                 ),
                 SizedBox(
-                  height: 20.w,
+                  height: 15.w,
                 ),
                 context.watch<DataManagementHomeViewModel>().isOpenTable
                     ? SizedBox(
@@ -239,7 +239,7 @@ class NormalFilterBox extends StatelessWidget {
                       )
                     : const SizedBox(),
                 SizedBox(
-                  height: 20.w,
+                  height: 15.w,
                 ),
                 const Row(
                   children: [
@@ -247,7 +247,7 @@ class NormalFilterBox extends StatelessWidget {
                   ],
                 ),
                 SizedBox(
-                  height: 10.w,
+                  height: 15.w,
                 ),
                 Row(
                   children: [

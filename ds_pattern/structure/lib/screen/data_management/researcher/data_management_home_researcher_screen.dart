@@ -95,7 +95,7 @@ class _DataManagementHomeResearcherScreenState extends State<DataManagementHomeR
                     Container(
                         margin: EdgeInsets.symmetric(vertical: 10.h),
                         child: const CustomTableBar(
-                          isNormal: true,
+                          isNormal: false,
                         )),
                     Expanded(
                       child: SizedBox(
@@ -220,7 +220,7 @@ class ResercherFilterBox extends StatelessWidget {
                   ],
                 ),
                 SizedBox(
-                  height: 20.w,
+                  height: 15.w,
                 ),
                 context.watch<DataManagementHomeResearcherViewModel>().isOpenTable
                     ? SizedBox(
@@ -233,7 +233,7 @@ class ResercherFilterBox extends StatelessWidget {
                       )
                     : const SizedBox(),
                 SizedBox(
-                  height: 20.w,
+                  height: 15.w,
                 ),
                 const Row(
                   children: [
@@ -241,7 +241,7 @@ class ResercherFilterBox extends StatelessWidget {
                   ],
                 ),
                 SizedBox(
-                  height: 10.w,
+                  height: 15.w,
                 ),
                 Row(
                   children: [
@@ -253,6 +253,9 @@ class ResercherFilterBox extends StatelessWidget {
                         onTap: (index) => context.read<DataManagementHomeResearcherViewModel>().onTapData(index),
                         status: context.watch<DataManagementHomeResearcherViewModel>().dataStatus),
                   ],
+                ),
+                SizedBox(
+                  height: 15.w,
                 ),
                 const Row(
                   children: [
