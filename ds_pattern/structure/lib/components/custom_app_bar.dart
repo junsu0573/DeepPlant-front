@@ -10,6 +10,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final bool closeButton;
   final VoidCallback? backButtonOnPressed;
   final VoidCallback? closeButtonOnPressed;
+  final bool? centerTitle;
+  final double? top;
 
   const CustomAppBar({
     super.key,
@@ -18,6 +20,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     required this.closeButton,
     this.backButtonOnPressed,
     this.closeButtonOnPressed,
+    this.centerTitle,
+    this.top,
   });
 
   @override
@@ -26,6 +30,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       elevation: 0,
       automaticallyImplyLeading: backButton,
       foregroundColor: Colors.black,
+      centerTitle: centerTitle,
       title: Text(
         title,
         style: TextStyle(
@@ -39,7 +44,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               Container(
                 margin: EdgeInsets.only(
                   right: 45.w,
-                  top: 39.h,
+                  top: top ?? 39.h,
                 ),
                 child: Row(
                   children: [

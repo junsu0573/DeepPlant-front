@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
+import 'package:structure/components/custom_app_bar.dart';
 
 class GetQr extends StatefulWidget {
   const GetQr({
@@ -32,37 +34,16 @@ class _GetQrState extends State<GetQr> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(65.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            AppBar(
-              title: const Text(
-                'QR 스캔',
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              backgroundColor: Colors.black,
-              centerTitle: true,
-              elevation: 0.0,
-              actions: [
-                ElevatedButton(
-                  onPressed: () {
-                    controller!.pauseCamera();
-                  },
-                  style: ElevatedButton.styleFrom(
-                    foregroundColor: Colors.white,
-                    backgroundColor: Colors.black,
-                  ),
-                  child: const Icon(
-                    Icons.close,
-                    size: 40.0,
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
+      appBar: CustomAppBar(
+        centerTitle: true,
+        title: 'QR코드 스캔',
+        backButton: false,
+        closeButton: true,
+        top: 10.h,
+        closeButtonOnPressed: () {
+          controller!.pauseCamera();
+          Navigator.pop(context);
+        },
       ),
       body: Stack(children: [
         // 화면에 텍스트를 표현하기 위해 사용되었다.
@@ -131,9 +112,7 @@ class _GetQrState extends State<GetQr> {
         ),
         // 카메라 위에 내용을 올리기 위해 사용
         Positioned(
-          bottom: (MediaQuery.of(context).size.height -
-                  MediaQuery.of(context).padding.top) *
-              0.24,
+          bottom: (MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top) * 0.24,
           right: (MediaQuery.of(context).size.width) * 0.29,
           child: const Text(
             '저장된 데이터 불러오기',
@@ -144,9 +123,7 @@ class _GetQrState extends State<GetQr> {
           ),
         ),
         Positioned(
-          bottom: (MediaQuery.of(context).size.height -
-                  MediaQuery.of(context).padding.top) *
-              0.19,
+          bottom: (MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top) * 0.19,
           right: (MediaQuery.of(context).size.width) * 0.22,
           child: const Text(
             'QR코드를 스캔하세요.',

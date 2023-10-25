@@ -198,16 +198,15 @@ class DataManagementHomeViewModel with ChangeNotifier {
       temp2 = selectedDay;
       lastDayText = DateFormat('yyyy.MM.dd').format(temp2!);
     }
-
     notifyListeners();
   }
 
   // 현재 필터링 시간을 기준으로 시간 지정
   void setTime() {
     toDay = DateTime.now();
-    threeDaysAgo = toDay!.subtract(const Duration(days: 3));
-    monthsAgo = toDay!.subtract(const Duration(days: 30));
-    threeMonthsAgo = toDay!.subtract(const Duration(days: 30 * 3));
+    threeDaysAgo = DateTime(toDay!.year, toDay!.month, toDay!.day - 3, 0, 0, 0, 0);
+    monthsAgo = DateTime(toDay!.year, toDay!.month - 1, toDay!.day, 0, 0, 0, 0);
+    threeMonthsAgo = DateTime(toDay!.year, toDay!.month - 3, toDay!.day, 0, 0, 0, 0);
   }
 
   // 정렬 필터 입력에 따라 필터링
@@ -249,7 +248,8 @@ class DataManagementHomeViewModel with ChangeNotifier {
       print('직접설정');
       filteredList = filteredList.where((data) {
         DateTime dateTime = DateTime.parse(data["createdAt"]!);
-        return dateTime.isAfter(firstDay!) && dateTime.isBefore(lastDay!);
+        return dateTime.isAfter(DateTime(firstDay!.year, firstDay!.month, firstDay!.day, 0, 0, 0, 0)) &&
+            dateTime.isBefore(DateTime(lastDay!.year, lastDay!.month, lastDay!.day + 1, 0, 0, 0, 0));
       }).toList();
     }
   }
