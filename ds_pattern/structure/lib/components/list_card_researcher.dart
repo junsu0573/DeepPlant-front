@@ -6,14 +6,15 @@ class ListCardResearcher extends StatelessWidget {
   final VoidCallback? onTap;
   final int idx;
   final String num;
-  final String createdAt;
-
+  final String dayTime;
+  final String userId;
   const ListCardResearcher({
     super.key,
     required this.onTap,
     required this.idx,
     required this.num,
-    required this.createdAt,
+    required this.dayTime,
+    required this.userId,
   });
 
   @override
@@ -33,13 +34,11 @@ class ListCardResearcher extends StatelessWidget {
             SizedBox(
               width: 10.w,
             ),
-            Text('$idx'),
-            SizedBox(
-              width: 50.w,
-            ),
             Text(num),
             const Spacer(),
-            Text(createdAt),
+            Text(userId),
+            const Spacer(),
+            Text(dayTime),
             SizedBox(
               width: 10.w,
             ),

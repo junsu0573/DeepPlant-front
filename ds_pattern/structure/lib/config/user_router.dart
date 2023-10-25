@@ -31,7 +31,6 @@ import 'package:structure/screen/sign_up/insertion_user_detail_screen.dart';
 import 'package:structure/screen/sign_up/insertion_user_info_screen.dart';
 import 'package:structure/screen/meat_registration/meat_registration_screen.dart';
 import 'package:structure/screen/sign_in/sign_in_screen.dart';
-import 'package:structure/screen/ui_update_screen.dart';
 import 'package:structure/viewModel/data_management/researcher/add_processed_meat_view_model.dart';
 import 'package:structure/viewModel/data_management/researcher/add_raw_meat_view_model.dart';
 import 'package:structure/viewModel/data_management/researcher/data_add_home_view_model.dart';
@@ -59,7 +58,6 @@ import 'package:structure/viewModel/sign_up/insertion_user_detail_view_model.dar
 import 'package:structure/viewModel/sign_up/insertion_user_info_view_model.dart';
 import 'package:structure/viewModel/meat_registration/meat_registration_view_model.dart';
 import 'package:structure/viewModel/sign_in/sign_in_view_model.dart';
-import 'package:structure/viewModel/ui_update_view_model.dart';
 
 class UserRouter {
   final MeatModel meatModel;
@@ -70,19 +68,11 @@ class UserRouter {
     return GoRouter(
       initialLocation: '/sign-in',
       routes: [
-        // UI Update
-        GoRoute(
-          path: '/ui-update',
-          builder: (context, state) => ChangeNotifierProvider(
-              create: (context) => UIUpdateViewModel(),
-              child: const UIUpdate()),
-        ),
         // 로그인
         GoRoute(
           path: '/sign-in',
           builder: (context, state) => ChangeNotifierProvider(
-            create: (context) =>
-                SignInViewModel(userModel: userModel, meatModel: meatModel),
+            create: (context) => SignInViewModel(userModel: userModel, meatModel: meatModel),
             child: const SignInScreen(),
           ),
           routes: [
@@ -97,8 +87,7 @@ class UserRouter {
                 GoRoute(
                   path: 'user-detail',
                   builder: (context, state) => ChangeNotifierProvider(
-                    create: (context) =>
-                        InsertionUserDetailViewModel(userModel: userModel),
+                    create: (context) => InsertionUserDetailViewModel(userModel: userModel),
                     child: const InsertionUserDetailScreen(),
                   ),
                 ),
@@ -114,16 +103,13 @@ class UserRouter {
         // 메인 페이지
         GoRoute(
           path: '/home',
-          builder: (context, state) => ChangeNotifierProvider(
-              create: (context) => HomeViewModel(userModel: userModel),
-              child: const HomeScreen()),
+          builder: (context, state) => ChangeNotifierProvider(create: (context) => HomeViewModel(userModel: userModel), child: const HomeScreen()),
           routes: [
             // 육류 등록 페이지
             GoRoute(
               path: 'registration',
               builder: (context, state) => ChangeNotifierProvider(
-                create: (context) => MeatRegistrationViewModel(
-                    meatModel: meatModel, userModel: userModel),
+                create: (context) => MeatRegistrationViewModel(meatModel: meatModel, userModel: userModel),
                 child: MeatRegistrationScreen(meatModel: meatModel),
               ),
               routes: [
@@ -138,8 +124,7 @@ class UserRouter {
                     GoRoute(
                       path: 'meat-info',
                       builder: (context, state) => ChangeNotifierProvider(
-                        create: (context) =>
-                            InsertionMeatInfoViewModel(meatModel: meatModel),
+                        create: (context) => InsertionMeatInfoViewModel(meatModel: meatModel),
                         child: const InsertionMeatInfoScreen(),
                       ),
                     ),
@@ -148,8 +133,7 @@ class UserRouter {
                 GoRoute(
                   path: 'image',
                   builder: (context, state) => ChangeNotifierProvider(
-                    create: (context) =>
-                        RegistrationMeatImageViewModel(meatModel),
+                    create: (context) => RegistrationMeatImageViewModel(meatModel),
                     child: const RegistrationMeatImageScreen(),
                   ),
                 ),
@@ -175,8 +159,7 @@ class UserRouter {
             GoRoute(
               path: 'success-registration-researcher',
               builder: (context, state) => ChangeNotifierProvider(
-                create: (context) =>
-                    CreationManagementNumResearcherViewModel(meatModel),
+                create: (context) => CreationManagementNumResearcherViewModel(meatModel),
                 child: const CreationManagementNumResearcherNumScreen(),
               ),
             ),
@@ -200,16 +183,13 @@ class UserRouter {
                     GoRoute(
                       path: 'change-pw',
                       builder: (context, state) => ChangeNotifierProvider(
-                        create: (context) =>
-                            ChangePasswordViewModel(userModel: userModel),
-                        builder: (context, child) =>
-                            const ChangePasswordScreen(),
+                        create: (context) => ChangePasswordViewModel(userModel: userModel),
+                        builder: (context, child) => const ChangePasswordScreen(),
                       ),
                     ),
                     GoRoute(
                       path: 'success-change',
-                      builder: (context, state) =>
-                          const SuccessChangePWScreen(),
+                      builder: (context, state) => const SuccessChangePWScreen(),
                     ),
                   ],
                 ),
@@ -226,25 +206,20 @@ class UserRouter {
                 // 데이터 수정
                 GoRoute(
                   path: 'edit',
-                  builder: (context, state) => ChangeNotifierProvider(
-                      create: (context) => EditMeatDataViewModel(meatModel),
-                      child: const EditMeatDataScreen()),
+                  builder: (context, state) => ChangeNotifierProvider(create: (context) => EditMeatDataViewModel(meatModel), child: const EditMeatDataScreen()),
                   routes: [
                     // 수정불가
                     GoRoute(
                       path: 'trace',
                       builder: (context, state) => ChangeNotifierProvider(
-                        create: (context) =>
-                            InsertionTraceNumNotEditableViewModel(meatModel),
+                        create: (context) => InsertionTraceNumNotEditableViewModel(meatModel),
                         child: const InsertionTraceNumNotEditableScreen(),
                       ),
                       routes: [
                         GoRoute(
                           path: 'info',
                           builder: (context, state) => ChangeNotifierProvider(
-                            create: (context) =>
-                                InsertionMeatInfoNotEditableViewModel(
-                                    meatModel),
+                            create: (context) => InsertionMeatInfoNotEditableViewModel(meatModel),
                             child: const InsertionMeatInfoNotEditableScreen(),
                           ),
                         ),
@@ -253,17 +228,14 @@ class UserRouter {
                     GoRoute(
                       path: 'image',
                       builder: (context, state) => ChangeNotifierProvider(
-                        create: (context) =>
-                            InsertionMeatImageNotEditableViewModel(
-                                meatModel, userModel, 0),
+                        create: (context) => InsertionMeatImageNotEditableViewModel(meatModel, userModel, 0),
                         child: const InsertionMeatImageNotEditableScreen(),
                       ),
                     ),
                     GoRoute(
                       path: 'freshmeat',
                       builder: (context, state) => ChangeNotifierProvider(
-                        create: (context) =>
-                            FreshMeatEvalNotEditableViewModel(meatModel, false),
+                        create: (context) => FreshMeatEvalNotEditableViewModel(meatModel, false),
                         child: const FreshMeatEvalNotEditableScreen(),
                       ),
                     ),
@@ -271,16 +243,14 @@ class UserRouter {
                     GoRoute(
                       path: 'trace-editable',
                       builder: (context, state) => ChangeNotifierProvider(
-                        create: (context) =>
-                            InsertionTraceNumViewModel(meatModel),
+                        create: (context) => InsertionTraceNumViewModel(meatModel),
                         child: const InsertionTraceNumScreen(),
                       ),
                       routes: [
                         GoRoute(
                           path: 'info-editable',
                           builder: (context, state) => ChangeNotifierProvider(
-                            create: (context) => InsertionMeatInfoViewModel(
-                                meatModel: meatModel),
+                            create: (context) => InsertionMeatInfoViewModel(meatModel: meatModel),
                             child: const InsertionMeatInfoScreen(),
                           ),
                         ),
@@ -289,8 +259,7 @@ class UserRouter {
                     GoRoute(
                       path: 'image-editable',
                       builder: (context, state) => ChangeNotifierProvider(
-                        create: (context) =>
-                            RegistrationMeatImageViewModel(meatModel),
+                        create: (context) => RegistrationMeatImageViewModel(meatModel),
                         child: const RegistrationMeatImageScreen(),
                       ),
                     ),
@@ -309,16 +278,13 @@ class UserRouter {
             GoRoute(
               path: 'data-manage-researcher',
               builder: (context, state) => ChangeNotifierProvider(
-                create: (context) =>
-                    DataManagementHomeResearcherViewModel(meatModel),
+                create: (context) => DataManagementHomeResearcherViewModel(meatModel, userModel),
                 child: const DataManagementHomeResearcherScreen(),
               ),
               routes: [
                 GoRoute(
                   path: 'add',
-                  builder: (context, state) => ChangeNotifierProvider(
-                      create: (context) => DataAddHomeViewModel(meatModel),
-                      child: const DataAddHome()),
+                  builder: (context, state) => ChangeNotifierProvider(create: (context) => DataAddHomeViewModel(meatModel), child: const DataAddHome()),
                   routes: [
                     GoRoute(
                       path: 'raw-meat',
@@ -330,24 +296,20 @@ class UserRouter {
                       routes: [
                         GoRoute(
                           path: 'heated-meat',
-                          builder: (context, state) => ChangeNotifierProvider(
-                              create: (context) =>
-                                  HeatedMeatEvalViewModel(meatModel),
-                              child: const HeatedMeatEvaluation()),
+                          builder: (context, state) =>
+                              ChangeNotifierProvider(create: (context) => HeatedMeatEvalViewModel(meatModel), child: const HeatedMeatEvaluation()),
                         ),
                         GoRoute(
                           path: 'tongue',
                           builder: (context, state) => ChangeNotifierProvider(
-                            create: (context) =>
-                                InsertionTongueDataViewModel(meatModel),
+                            create: (context) => InsertionTongueDataViewModel(meatModel),
                             child: const InsertionTongueDataScreen(),
                           ),
                         ),
                         GoRoute(
                           path: 'lab',
                           builder: (context, state) => ChangeNotifierProvider(
-                            create: (context) =>
-                                InsertionLabDataViewModel(meatModel),
+                            create: (context) => InsertionLabDataViewModel(meatModel),
                             child: const InsertionLabDataScreen(),
                           ),
                         ),
@@ -355,46 +317,38 @@ class UserRouter {
                     ),
                     GoRoute(
                       path: 'processed-meat',
-                      builder: (context, state) => ChangeNotifierProvider(
-                          create: (context) => AddProcessedMeatViewModel(),
-                          child:
-                              AddProcessedMeatMainScreen(meatModel: meatModel)),
+                      builder: (context, state) =>
+                          ChangeNotifierProvider(create: (context) => AddProcessedMeatViewModel(), child: AddProcessedMeatMainScreen(meatModel: meatModel)),
                       routes: [
                         GoRoute(
                             path: 'image',
                             builder: (context, state) => ChangeNotifierProvider(
-                                  create: (context) =>
-                                      RegistrationMeatImageViewModel(meatModel),
+                                  create: (context) => RegistrationMeatImageViewModel(meatModel),
                                   child: const RegistrationMeatImageScreen(),
                                 )),
                         GoRoute(
                           path: 'eval',
                           builder: (context, state) => ChangeNotifierProvider(
-                            create: (context) =>
-                                FreshMeatEvalViewModel(meatModel),
+                            create: (context) => FreshMeatEvalViewModel(meatModel),
                             child: const FreshMeatEvalScreen(),
                           ),
                         ),
                         GoRoute(
                           path: 'heated-meat',
-                          builder: (context, state) => ChangeNotifierProvider(
-                              create: (context) =>
-                                  HeatedMeatEvalViewModel(meatModel),
-                              child: const HeatedMeatEvaluation()),
+                          builder: (context, state) =>
+                              ChangeNotifierProvider(create: (context) => HeatedMeatEvalViewModel(meatModel), child: const HeatedMeatEvaluation()),
                         ),
                         GoRoute(
                           path: 'tongue',
                           builder: (context, state) => ChangeNotifierProvider(
-                            create: (context) =>
-                                InsertionTongueDataViewModel(meatModel),
+                            create: (context) => InsertionTongueDataViewModel(meatModel),
                             child: const InsertionTongueDataScreen(),
                           ),
                         ),
                         GoRoute(
                           path: 'lab',
                           builder: (context, state) => ChangeNotifierProvider(
-                            create: (context) =>
-                                InsertionLabDataViewModel(meatModel),
+                            create: (context) => InsertionLabDataViewModel(meatModel),
                             child: const InsertionLabDataScreen(),
                           ),
                         ),

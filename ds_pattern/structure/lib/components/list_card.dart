@@ -33,10 +33,6 @@ class ListCard extends StatelessWidget {
         ),
         child: Row(
           children: [
-            // SizedBox(
-            //   width: 10.w,
-            // ),
-            // Text('$idx'),
             SizedBox(
               width: 10.w,
             ),
