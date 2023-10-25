@@ -9,11 +9,25 @@ class UserInfoViewModel with ChangeNotifier {
   String userId = '';
   String userType = '';
   String createdAt = '';
+  UserModel userModel;
+  UserInfoViewModel(this.userModel) {
+    _initialize();
+  }
 
-  UserInfoViewModel(UserModel userModel) {
+  void _initialize() {
     userName = userModel.name ?? 'None';
+    if (userModel.type != null) {
+      if (userModel.type == 'Normal') {
+        userType = '일반데이터 수집자';
+      } else if (userModel.type == 'Researcher') {
+        userType = '연구데이터 수집자';
+      } else {
+        userType = 'None';
+      }
+    } else {
+      userName = 'None';
+    }
     userId = userModel.userId ?? 'None';
-    userType = userModel.type ?? 'None';
     createdAt = _formatDate(userModel.createdAt) ?? 'None';
   }
 
