@@ -5,7 +5,7 @@ import 'package:structure/config/user_router.dart';
 import 'package:structure/model/meat_model.dart';
 import 'package:structure/model/user_model.dart';
 
-void main() async {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
 
