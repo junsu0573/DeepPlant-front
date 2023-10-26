@@ -26,8 +26,7 @@ class SignInScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       ColorFiltered(
-                        colorFilter: const ColorFilter.mode(
-                            Colors.black, BlendMode.modulate),
+                        colorFilter: const ColorFilter.mode(Colors.black, BlendMode.modulate),
                         child: Image.asset(
                           'assets/images/logo.png',
                           height: 111.w,
@@ -46,8 +45,7 @@ class SignInScreen extends StatelessWidget {
                       ),
                       // 아이디 입력 필드
                       MainTextField(
-                        validateFunc:
-                            context.read<SignInViewModel>().idValidate,
+                        validateFunc: context.read<SignInViewModel>().idValidate,
                         onSaveFunc: (value) {
                           context.read<SignInViewModel>().userId = value!;
                         },
@@ -65,8 +63,7 @@ class SignInScreen extends StatelessWidget {
                       ),
                       // 비밀번호 입력 필드
                       MainTextField(
-                        validateFunc:
-                            context.read<SignInViewModel>().pwValidate,
+                        validateFunc: context.read<SignInViewModel>().pwValidate,
                         mainText: '비밀번호',
                         hintText: '비밀번호를 입력하세요.',
                         width: 540.w,
@@ -92,9 +89,7 @@ class SignInScreen extends StatelessWidget {
                             fontWeight: FontWeight.w400,
                           ),
                         ),
-                        onPress: () async => await context
-                            .read<SignInViewModel>()
-                            .clickedSignInButton(context),
+                        onPress: () async => await context.read<SignInViewModel>().clickedSignInButton(context),
                         width: 372.w,
                         height: 85.h,
                         bgColor: Palette.mainButtonColor,
@@ -112,11 +107,9 @@ class SignInScreen extends StatelessWidget {
                             width: 32.w,
                             height: 32.h,
                             child: Checkbox(
-                              value:
-                                  context.read<SignInViewModel>().isAutoLogin,
+                              value: context.read<SignInViewModel>().isAutoLogin,
                               onChanged: (value) {
-                                context.read<SignInViewModel>().isAutoLogin =
-                                    value!;
+                                context.read<SignInViewModel>().isAutoLogin = value!;
                               },
                               side: BorderSide(
                                 color: Palette.mainButtonColor,
@@ -163,9 +156,7 @@ class SignInScreen extends StatelessWidget {
             ),
             Center(
               child: // 데이터를 처리하는 동안 로딩 위젯 보여주기
-                  context.watch<SignInViewModel>().isLoading
-                      ? const CircularProgressIndicator()
-                      : Container(),
+                  context.watch<SignInViewModel>().isLoading ? const CircularProgressIndicator() : Container(),
             ),
           ],
         ),
