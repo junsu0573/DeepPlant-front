@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:structure/dataSource/local_data_source.dart';
 import 'package:structure/model/user_model.dart';
 import 'package:intl/intl.dart';
 
@@ -44,6 +47,9 @@ class UserInfoViewModel with ChangeNotifier {
 
   Future<void> clickedSignOut(BuildContext context) async {
     await FirebaseAuth.instance.signOut();
+    await LocalDataSource.saveDataToLocal(
+        jsonEncode({'auto': null}), 'auto.json');
+    userModel.reset();
     _context = context;
     movePage();
   }

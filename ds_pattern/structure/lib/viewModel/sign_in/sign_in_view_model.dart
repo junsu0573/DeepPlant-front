@@ -1,7 +1,9 @@
+import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:structure/config/pallete.dart';
+import 'package:structure/dataSource/local_data_source.dart';
 import 'package:structure/dataSource/remote_data_source.dart';
 import 'package:structure/model/meat_model.dart';
 import 'package:structure/model/user_model.dart';
@@ -16,12 +18,24 @@ class SignInViewModel with ChangeNotifier {
   bool isLoading = false;
   bool isAutoLogin = false;
 
+  void autoLoginCheck(BuildContext context) {
+    if (userModel.auto) {
+      context.go('/home');
+    }
+  }
+
   final formKey = GlobalKey<FormState>();
 
   // firbase authentic
   final _authentication = FirebaseAuth.instance;
 
   late BuildContext _context;
+
+  // 자동로그인 버튼 클릭 시
+  void clickedAutoLogin(bool value) {
+    isAutoLogin = value;
+    notifyListeners();
+  }
 
   // 로그인 버튼 클릭 시
   Future<void> clickedSignInButton(BuildContext context) async {
@@ -53,6 +67,15 @@ class SignInViewModel with ChangeNotifier {
         // 이메일 valid
         // 유저 정보 저장
         if (await saveUserInfo()) {
+          // 자동 로그인 설정
+          if (isAutoLogin) {
+            await LocalDataSource.saveDataToLocal(
+                jsonEncode({'auto': userModel.userId}), 'auto.json');
+          } else {
+            await LocalDataSource.saveDataToLocal(
+                jsonEncode({'auto': null}), 'auto.json');
+          }
+
           // 로딩 상태를 비활성화
           isLoading = false;
           notifyListeners();

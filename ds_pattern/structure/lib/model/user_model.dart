@@ -10,6 +10,7 @@ class UserModel with ChangeNotifier {
   String? type;
   String? createdAt;
   bool? alarm;
+  bool auto = false;
 
   // Constructor
   UserModel({
@@ -48,6 +49,7 @@ class UserModel with ChangeNotifier {
     type = null;
     createdAt = null;
     alarm = null;
+    auto = false;
   }
 
   @override
