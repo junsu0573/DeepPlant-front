@@ -126,9 +126,9 @@ class RegistrationMeatImageViewModel with ChangeNotifier {
           // 등록
         } else {
           // 수정
-
           await _sendImageToFirebase();
-          await RemoteDataSource.sendMeatData('sensory_eval', meatModel.toJsonFresh(null));
+          await RemoteDataSource.sendMeatData(
+              'sensory_eval', meatModel.toJsonFresh(null));
         }
       } else {
         // 처리육
@@ -139,8 +139,10 @@ class RegistrationMeatImageViewModel with ChangeNotifier {
         await _sendImageToFirebase();
         await RemoteDataSource.sendMeatData(
             'sensory_eval',
-            meatModel.toJsonFresh(
-                {"date": meatModel.deepAgingData![meatModel.seqno! - 1]["date"], "minute": meatModel.deepAgingData![meatModel.seqno! - 1]["minute"]}));
+            meatModel.toJsonFresh({
+              "date": meatModel.deepAgingData![meatModel.seqno! - 1]["date"],
+              "minute": meatModel.deepAgingData![meatModel.seqno! - 1]["minute"]
+            }));
       }
       meatModel.checkCompleted();
       _movePage();
@@ -173,11 +175,15 @@ class RegistrationMeatImageViewModel with ChangeNotifier {
   Future<void> _sendImageToFirebase() async {
     try {
       // fire storage에 육류 이미지 저장
-      final refMeatImage = FirebaseStorage.instance.ref().child('sensory_evals/${meatModel.id}-${meatModel.seqno}.png');
+      final refMeatImage = FirebaseStorage.instance
+          .ref()
+          .child('sensory_evals/${meatModel.id}-${meatModel.seqno}.png');
+      print(imagePath);
 
       if (imagePath!.contains('http')) {
         // db 사진
-        final http.Response response = await http.get(Uri.parse(meatModel.imagePath!));
+        final http.Response response =
+            await http.get(Uri.parse(meatModel.imagePath!));
         final Uint8List imageData = Uint8List.fromList(response.bodyBytes);
         await refMeatImage.putData(
           imageData,

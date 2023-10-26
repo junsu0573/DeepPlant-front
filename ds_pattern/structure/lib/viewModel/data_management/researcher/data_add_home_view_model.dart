@@ -79,7 +79,11 @@ class DataAddHomeViewModel with ChangeNotifier {
     total = '${meatModel.deepAgingData!.length}회 / $totalMinutes분';
   }
 
-  void clickedRawMeat(BuildContext context) {
+  Future<void> clickedRawMeat(BuildContext context) async {
+    dynamic response = await RemoteDataSource.getMeatData(meatModel.id!);
+    if (response == null) throw Error();
+    meatModel.reset();
+    meatModel.fromJson(response);
     meatModel.fromJsonAdditional('RAW');
     meatModel.seqno = 0;
     context.go('/home/data-manage-researcher/add/raw-meat');

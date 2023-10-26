@@ -119,7 +119,7 @@ class DataManagementHomeResearcherViewModel with ChangeNotifier {
   void setData() {
     if (dataSelectedIdx == 0) {
       filteredList = filteredList.where((data) {
-        return (data["createUser"] == userModel.userId);
+        return (data["userId"] == userModel.userId);
       }).toList();
     } else {}
   }
@@ -143,7 +143,8 @@ class DataManagementHomeResearcherViewModel with ChangeNotifier {
     dateSelectedIdx = dateStatus.indexWhere((element) => element == true);
     dataSelectedIdx = dataStatus.indexWhere((element) => element == true);
     speciesSelectedIdx = speciesStatus.indexWhere((element) => element == true);
-    filterdResult = '${dateList[dateSelectedIdx]}∙${dataList[dataSelectedIdx]}∙${speciesList[speciesSelectedIdx]}';
+    filterdResult =
+        '${dateList[dateSelectedIdx]}∙${dataList[dataSelectedIdx]}∙${speciesList[speciesSelectedIdx]}';
     isOpnedFilter = false;
     isOpenTable = false;
     dateSwap();
@@ -253,9 +254,11 @@ class DataManagementHomeResearcherViewModel with ChangeNotifier {
   // 현재 필터링 시간을 기준으로 시간 지정
   void setTime() {
     toDay = DateTime.now();
-    threeDaysAgo = DateTime(toDay!.year, toDay!.month, toDay!.day - 3, 0, 0, 0, 0);
+    threeDaysAgo =
+        DateTime(toDay!.year, toDay!.month, toDay!.day - 3, 0, 0, 0, 0);
     monthsAgo = DateTime(toDay!.year, toDay!.month - 1, toDay!.day, 0, 0, 0, 0);
-    threeMonthsAgo = DateTime(toDay!.year, toDay!.month - 3, toDay!.day, 0, 0, 0, 0);
+    threeMonthsAgo =
+        DateTime(toDay!.year, toDay!.month - 3, toDay!.day, 0, 0, 0, 0);
   }
 
   // 날짜 필터 입력에 따라 필터링
@@ -283,8 +286,10 @@ class DataManagementHomeResearcherViewModel with ChangeNotifier {
       print('직접설정');
       filteredList = filteredList.where((data) {
         DateTime dateTime = DateTime.parse(data["createdAt"]!);
-        return dateTime.isAfter(DateTime(firstDay!.year, firstDay!.month, firstDay!.day, 0, 0, 0, 0)) &&
-            dateTime.isBefore(DateTime(lastDay!.year, lastDay!.month, lastDay!.day + 1, 0, 0, 0, 0));
+        return dateTime.isAfter(DateTime(
+                firstDay!.year, firstDay!.month, firstDay!.day, 0, 0, 0, 0)) &&
+            dateTime.isBefore(DateTime(
+                lastDay!.year, lastDay!.month, lastDay!.day + 1, 0, 0, 0, 0));
       }).toList();
     }
   }
@@ -292,7 +297,8 @@ class DataManagementHomeResearcherViewModel with ChangeNotifier {
   Future<void> _fetchData() async {
     try {
       // 자신이 입력한 데이터만 호출
-      Map<String, dynamic>? jsonData = await RemoteDataSource.getConfirmedMeatData();
+      Map<String, dynamic>? jsonData =
+          await RemoteDataSource.getConfirmedMeatData();
 
       if (jsonData == null) {
         print('데이터 없음');
@@ -304,7 +310,8 @@ class DataManagementHomeResearcherViewModel with ChangeNotifier {
             String id = item["id"];
             String createdAt = item["createdAt"];
             String userId = item["userId"];
-            String dayTime = DateFormat('yyyy.MM.dd').format(DateTime.parse(createdAt));
+            String dayTime =
+                DateFormat('yyyy.MM.dd').format(DateTime.parse(createdAt));
             String specieValue = item['specieValue'];
             Map<String, String> idStatusPair = {
               "id": id,
@@ -360,7 +367,7 @@ class DataManagementHomeResearcherViewModel with ChangeNotifier {
   Future<void> onTap(int idx, BuildContext context) async {
     String id = '';
 
-    id = insertedText.isEmpty ? numList[idx]["id"]! : filteredList[idx]["id"]!;
+    id = selectedList[idx]['id']!;
 
     try {
       isLoading = true;
