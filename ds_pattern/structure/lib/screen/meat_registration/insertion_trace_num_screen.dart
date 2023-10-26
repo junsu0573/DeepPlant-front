@@ -14,15 +14,13 @@ class InsertionTraceNumScreen extends StatefulWidget {
   const InsertionTraceNumScreen({super.key});
 
   @override
-  State<InsertionTraceNumScreen> createState() =>
-      _InsertionTraceNumScreenState();
+  State<InsertionTraceNumScreen> createState() => _InsertionTraceNumScreenState();
 }
 
 class _InsertionTraceNumScreenState extends State<InsertionTraceNumScreen> {
   @override
   void initState() {
     super.initState();
-    context.read<InsertionTraceNumViewModel>().initialize();
   }
 
   @override
@@ -60,13 +58,9 @@ class _InsertionTraceNumScreenState extends State<InsertionTraceNumScreen> {
                     width: 479.w,
                     height: 85.h,
                     child: TextFormField(
-                      controller: context
-                          .watch<InsertionTraceNumViewModel>()
-                          .textEditingController,
+                      controller: context.watch<InsertionTraceNumViewModel>().textEditingController,
                       textInputAction: TextInputAction.search,
-                      inputFormatters: [
-                        FilteringTextInputFormatter.allow(RegExp(r'[0-9L]'))
-                      ],
+                      inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'[0-9L]'))],
                       validator: (value) {
                         if (value!.isEmpty || value.length < 12) {
                           return "유효하지 않습니다!";
@@ -75,16 +69,13 @@ class _InsertionTraceNumScreenState extends State<InsertionTraceNumScreen> {
                         }
                       },
                       onSaved: (value) {
-                        context.read<InsertionTraceNumViewModel>().traceNum =
-                            value!;
+                        context.read<InsertionTraceNumViewModel>().traceNum = value!;
                       },
                       onChanged: (value) {
-                        context.read<InsertionTraceNumViewModel>().traceNum =
-                            value;
+                        context.read<InsertionTraceNumViewModel>().traceNum = value;
                       },
                       onFieldSubmitted: (value) {
-                        context.read<InsertionTraceNumViewModel>().traceNum =
-                            value;
+                        context.read<InsertionTraceNumViewModel>().traceNum = value;
                       },
                       decoration: const InputDecoration(
                         hintText: '이력번호/묶음번호 입력',
@@ -117,12 +108,8 @@ class _InsertionTraceNumScreenState extends State<InsertionTraceNumScreen> {
               height: 5.0,
             ),
             if (context.watch<InsertionTraceNumViewModel>().isAllInserted == 1)
-              Expanded(
-                  child: ListTable(
-                      tableData:
-                          context.read<InsertionTraceNumViewModel>().tableData))
-            else if (context.read<InsertionTraceNumViewModel>().isAllInserted ==
-                2)
+              Expanded(child: ListTable(tableData: context.read<InsertionTraceNumViewModel>().tableData))
+            else if (context.read<InsertionTraceNumViewModel>().isAllInserted == 2)
               const Expanded(
                 child: Center(
                   child: Padding(
@@ -138,8 +125,7 @@ class _InsertionTraceNumScreenState extends State<InsertionTraceNumScreen> {
                   ),
                 ),
               )
-            else if (context.read<InsertionTraceNumViewModel>().isAllInserted ==
-                0)
+            else if (context.read<InsertionTraceNumViewModel>().isAllInserted == 0)
               const Spacer(
                 flex: 2,
               ),
@@ -150,13 +136,9 @@ class _InsertionTraceNumScreenState extends State<InsertionTraceNumScreen> {
                 text: '다음',
                 width: 658.w,
                 heigh: 104.h,
-                onPressed:
-                    (context.read<InsertionTraceNumViewModel>().isAllInserted ==
-                            1)
-                        ? () => context
-                            .read<InsertionTraceNumViewModel>()
-                            .clickedNextbutton(context)
-                        : null,
+                onPressed: (context.read<InsertionTraceNumViewModel>().isAllInserted == 1)
+                    ? () => context.read<InsertionTraceNumViewModel>().clickedNextbutton(context)
+                    : null,
               ),
             ),
           ],
@@ -208,8 +190,7 @@ class ListTable extends StatelessWidget {
                         ),
                       )
                     : InnerBox(
-                        text:
-                            (tableData[index] != null) ? tableData[index] : "",
+                        text: (tableData[index] != null) ? tableData[index] : "",
                       ),
               ),
             ],

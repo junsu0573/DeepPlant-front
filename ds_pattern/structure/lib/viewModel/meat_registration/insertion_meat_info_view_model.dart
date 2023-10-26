@@ -5,7 +5,9 @@ import 'package:structure/model/meat_model.dart';
 
 class InsertionMeatInfoViewModel with ChangeNotifier {
   MeatModel meatModel;
-  InsertionMeatInfoViewModel({required this.meatModel});
+  InsertionMeatInfoViewModel(this.meatModel) {
+    initialize();
+  }
 
   String speciesValue = '';
   String? primalValue;
@@ -53,8 +55,7 @@ class InsertionMeatInfoViewModel with ChangeNotifier {
 
     largeDiv = lDiv;
     if (isSelectedSecondary) {
-      litteDiv = List<String>.from(
-          dataTable![primalValue].map((element) => element.toString()));
+      litteDiv = List<String>.from(dataTable![primalValue].map((element) => element.toString()));
     }
 
     notifyListeners();
@@ -89,8 +90,7 @@ class InsertionMeatInfoViewModel with ChangeNotifier {
     isSelectedPrimal = true;
     secondaryValue = null;
     isSelectedSecondary = false;
-    litteDiv = List<String>.from(
-        dataTable![primalValue].map((element) => element.toString()));
+    litteDiv = List<String>.from(dataTable![primalValue].map((element) => element.toString()));
     completed = false;
     notifyListeners();
   }
@@ -107,8 +107,7 @@ class InsertionMeatInfoViewModel with ChangeNotifier {
     saveMeatData();
     meatModel.checkCompleted();
     if (meatModel.id != null) {
-      final response =
-          await RemoteDataSource.sendMeatData(null, meatModel.toJsonBasic());
+      final response = await RemoteDataSource.sendMeatData(null, meatModel.toJsonBasic());
 
       if (response == null) {
         // 에러 페이지
