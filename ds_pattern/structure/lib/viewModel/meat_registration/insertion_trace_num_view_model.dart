@@ -116,7 +116,6 @@ class InsertionTraceNumViewModel with ChangeNotifier {
       return true;
     } else {
       reset();
-      isAllInserted = 0;
       return false;
     }
   }
