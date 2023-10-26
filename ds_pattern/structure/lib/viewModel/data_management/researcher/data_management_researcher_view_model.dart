@@ -119,7 +119,7 @@ class DataManagementHomeResearcherViewModel with ChangeNotifier {
   void setData() {
     if (dataSelectedIdx == 0) {
       filteredList = filteredList.where((data) {
-        return (data["createUser"] == userModel.userId);
+        return (data["userId"] == userModel.userId);
       }).toList();
     } else {}
   }

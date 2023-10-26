@@ -29,75 +29,73 @@ class _DataManagementHomeResearcherScreenState extends State<DataManagementHomeR
           backButton: true,
           closeButton: false,
         ),
-        body: SingleChildScrollView(
-          child: SizedBox(
-            height: context.watch<DataManagementHomeResearcherViewModel>().isOpenTable
-                ? MediaQuery.of(context).size.height + 120.h
-                : MediaQuery.of(context).size.height - 120.h,
-            child: Stack(
-              children: [
-                Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        InkWell(
-                          onTap: () => context.read<DataManagementHomeResearcherViewModel>().clickedFilter(),
-                          child: Container(
-                            alignment: Alignment.center,
-                            child: Row(
-                              children: [
-                                Text(context.watch<DataManagementHomeResearcherViewModel>().filterdResult),
-                                context.watch<DataManagementHomeResearcherViewModel>().isOpnedFilter
-                                    ? const Icon(Icons.arrow_drop_up_outlined)
-                                    : const Icon(Icons.arrow_drop_down),
-                              ],
-                            ),
+        body: Stack(
+          children: [
+            SingleChildScrollView(
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      InkWell(
+                        onTap: () => context.read<DataManagementHomeResearcherViewModel>().clickedFilter(),
+                        child: Container(
+                          alignment: Alignment.center,
+                          child: Row(
+                            children: [
+                              Text(context.watch<DataManagementHomeResearcherViewModel>().filterdResult),
+                              context.watch<DataManagementHomeResearcherViewModel>().isOpnedFilter
+                                  ? const Icon(Icons.arrow_drop_up_outlined)
+                                  : const Icon(Icons.arrow_drop_down),
+                            ],
                           ),
                         ),
-                        SizedBox(
-                          width: 30.w,
+                      ),
+                      SizedBox(
+                        width: 30.w,
+                      ),
+                    ],
+                  ),
+                  context.watch<DataManagementHomeResearcherViewModel>().isOpnedFilter
+                      ? const ResercherFilterBox()
+                      : const SizedBox(
+                          height: 10.0,
                         ),
-                      ],
-                    ),
-                    context.watch<DataManagementHomeResearcherViewModel>().isOpnedFilter
-                        ? const ResercherFilterBox()
-                        : const SizedBox(
-                            height: 10.0,
-                          ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        MainTextField(
-                            validateFunc: null,
-                            onSaveFunc: null,
-                            controller: context.read<DataManagementHomeResearcherViewModel>().controller,
-                            focusNode: context.read<DataManagementHomeResearcherViewModel>().focusNode,
-                            onChangeFunc: (value) => context.read<DataManagementHomeResearcherViewModel>().onChanged(value),
-                            mainText: '관리번호 입력',
-                            width: 590.w,
-                            height: 72.h,
-                            prefixIcon: const Icon(Icons.search),
-                            suffixIcon: context.watch<DataManagementHomeResearcherViewModel>().focusNode.hasFocus
-                                ? IconButton(
-                                    onPressed: () {
-                                      context.read<DataManagementHomeResearcherViewModel>().textClear(context);
-                                    },
-                                    icon: const Icon(Icons.cancel))
-                                : null),
-                        IconButton(
-                          iconSize: 48.w,
-                          onPressed: () async => context.read<DataManagementHomeResearcherViewModel>().clickedQr(context),
-                          icon: const Icon(Icons.qr_code_scanner_rounded),
-                        ),
-                      ],
-                    ),
-                    Container(
-                        margin: EdgeInsets.symmetric(vertical: 10.h),
-                        child: const CustomTableBar(
-                          isNormal: false,
-                        )),
-                    Expanded(
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      MainTextField(
+                          validateFunc: null,
+                          onSaveFunc: null,
+                          controller: context.read<DataManagementHomeResearcherViewModel>().controller,
+                          focusNode: context.read<DataManagementHomeResearcherViewModel>().focusNode,
+                          onChangeFunc: (value) => context.read<DataManagementHomeResearcherViewModel>().onChanged(value),
+                          mainText: '관리번호 입력',
+                          width: 590.w,
+                          height: 72.h,
+                          prefixIcon: const Icon(Icons.search),
+                          suffixIcon: context.watch<DataManagementHomeResearcherViewModel>().focusNode.hasFocus
+                              ? IconButton(
+                                  onPressed: () {
+                                    context.read<DataManagementHomeResearcherViewModel>().textClear(context);
+                                  },
+                                  icon: const Icon(Icons.cancel))
+                              : null),
+                      IconButton(
+                        iconSize: 48.w,
+                        onPressed: () async => context.read<DataManagementHomeResearcherViewModel>().clickedQr(context),
+                        icon: const Icon(Icons.qr_code_scanner_rounded),
+                      ),
+                    ],
+                  ),
+                  Container(
+                      margin: EdgeInsets.symmetric(vertical: 10.h),
+                      child: const CustomTableBar(
+                        isNormal: false,
+                      )),
+                  SizedBox(
+                    height: 800.h,
+                    child: Expanded(
                       child: SizedBox(
                         width: 640.w,
                         child: Consumer<DataManagementHomeResearcherViewModel>(
@@ -114,19 +112,19 @@ class _DataManagementHomeResearcherScreenState extends State<DataManagementHomeR
                         ),
                       ),
                     ),
-                    SizedBox(
-                      height: 50.h,
-                    ),
-                  ],
-                ),
-                context.watch<DataManagementHomeResearcherViewModel>().isLoading
-                    ? const Center(
-                        child: CircularProgressIndicator(),
-                      )
-                    : Container(),
-              ],
+                  ),
+                  SizedBox(
+                    height: 50.h,
+                  ),
+                ],
+              ),
             ),
-          ),
+            context.watch<DataManagementHomeResearcherViewModel>().isLoading
+                ? const Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : Container(),
+          ],
         ),
       ),
     );

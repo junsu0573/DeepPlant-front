@@ -124,7 +124,7 @@ class UserRouter {
                     GoRoute(
                       path: 'meat-info',
                       builder: (context, state) => ChangeNotifierProvider(
-                        create: (context) => InsertionMeatInfoViewModel(meatModel: meatModel),
+                        create: (context) => InsertionMeatInfoViewModel(meatModel),
                         child: const InsertionMeatInfoScreen(),
                       ),
                     ),
@@ -250,7 +250,7 @@ class UserRouter {
                         GoRoute(
                           path: 'info-editable',
                           builder: (context, state) => ChangeNotifierProvider(
-                            create: (context) => InsertionMeatInfoViewModel(meatModel: meatModel),
+                            create: (context) => InsertionMeatInfoViewModel(meatModel),
                             child: const InsertionMeatInfoScreen(),
                           ),
                         ),
